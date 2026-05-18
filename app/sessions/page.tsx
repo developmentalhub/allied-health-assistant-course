@@ -16,6 +16,7 @@ const placeholderSessions = [
     tag: "Small Group",
     tagColor: "#ede9fe",
     tagText: "#6d28d9",
+    borderColor: "#7c3aed",
   },
   {
     id: "2",
@@ -31,6 +32,7 @@ const placeholderSessions = [
     tag: "Small Group",
     tagColor: "#ede9fe",
     tagText: "#6d28d9",
+    borderColor: "#7c3aed",
   },
   {
     id: "3",
@@ -46,6 +48,7 @@ const placeholderSessions = [
     tag: "Webinar",
     tagColor: "#e0e7ff",
     tagText: "#4338ca",
+    borderColor: "#4338ca",
   },
   {
     id: "4",
@@ -61,6 +64,7 @@ const placeholderSessions = [
     tag: "Small Group",
     tagColor: "#ede9fe",
     tagText: "#6d28d9",
+    borderColor: "#7c3aed",
   },
   {
     id: "5",
@@ -76,6 +80,7 @@ const placeholderSessions = [
     tag: "Specialist Webinar",
     tagColor: "#dbeafe",
     tagText: "#1d4ed8",
+    borderColor: "#1d4ed8",
   },
   {
     id: "6",
@@ -91,6 +96,7 @@ const placeholderSessions = [
     tag: "Specialist Webinar",
     tagColor: "#dbeafe",
     tagText: "#1d4ed8",
+    borderColor: "#1d4ed8",
   },
 ];
 
@@ -110,6 +116,22 @@ export default function SessionsPage() {
         <p style={{ fontSize: "16px", color: "#6b6880", maxWidth: "520px", lineHeight: 1.7, fontWeight: 300 }}>
           Browse upcoming small group sessions and webinars. All sessions are live, online, and led by vetted specialists.
         </p>
+      </section>
+
+      {/* Legend */}
+      <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 24px" }}>
+        <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+          {[
+            { label: "Small Group", color: "#7c3aed", bg: "#ede9fe", text: "#6d28d9" },
+            { label: "Webinar", color: "#4338ca", bg: "#e0e7ff", text: "#4338ca" },
+            { label: "Specialist Webinar", color: "#1d4ed8", bg: "#dbeafe", text: "#1d4ed8" },
+          ].map((item) => (
+            <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div style={{ width: "12px", height: "12px", borderRadius: "3px", backgroundColor: item.color }} />
+              <span style={{ fontSize: "13px", color: "#6b6880" }}>{item.label}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Filter tabs */}
@@ -138,11 +160,11 @@ export default function SessionsPage() {
           {placeholderSessions.map((session) => (
             <div
               key={session.id}
-              style={{ backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de", padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
+              style={{ backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de", borderLeft: `4px solid ${session.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
             >
               {/* Tag + spots */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <span style={{ fontSize: "11px", fontWeight: 600, padding: "4px 10px", borderRadius: "999px", backgroundColor: session.tagColor, color: session.tagText }}>
+                <span style={{ fontSize: "12px", fontWeight: 700, padding: "5px 12px", borderRadius: "999px", backgroundColor: session.tagColor, color: session.tagText, letterSpacing: "0.02em" }}>
                   {session.tag}
                 </span>
                 <span style={{ fontSize: "11px", color: session.spotsLeft <= 3 ? "#dc2626" : "#6b6880", fontWeight: session.spotsLeft <= 3 ? 600 : 400 }}>
