@@ -322,13 +322,40 @@ export default async function SessionDetailPage({
             >
               Book this session
             </Link>
+
             <p style={{ fontSize: "12px", color: "#6b6880", textAlign: "center", marginTop: "12px" }}>
               You will need an account to complete your booking.
             </p>
 
-            <div style={{ marginTop: "16px", backgroundColor: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "12px", padding: "12px 14px" }}>
+            <div style={{ marginTop: "20px", backgroundColor: "#fffbeb", border: "1px solid #fcd34d", borderRadius: "12px", padding: "16px" }}>
+              <p style={{ fontSize: "13px", fontWeight: 600, color: "#92400e", margin: "0 0 12px 0" }}>
+                How payment works
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {[
+                  "Your card is authorised when you book. No money is taken yet.",
+                  "Once minimum numbers are reached your spot is confirmed.",
+                  "Payment is captured 24 hours before the session starts.",
+                  "If minimum numbers are not reached you are never charged.",
+                ].map((text, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                    <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: "#fcd34d", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <span style={{ fontSize: "11px", fontWeight: 700, color: "#92400e" }}>{i + 1}</span>
+                    </div>
+                    <p style={{ fontSize: "12px", color: "#92400e", margin: 0, lineHeight: 1.5 }}>
+                      {text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ marginTop: "12px", backgroundColor: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "12px", padding: "12px 14px", display: "flex", alignItems: "flex-start", gap: "8px" }}>
+              <svg width="16" height="16" fill="none" stroke="#166534" strokeWidth="2" style={{ flexShrink: 0, marginTop: "1px" }}>
+                <path d="M12 4L6 10l-3-3" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               <p style={{ fontSize: "12px", color: "#166534", margin: 0, lineHeight: 1.6 }}>
-                Full refund if the session does not reach its minimum attendance 24 hours before the start time.
+                Zero risk. If the session does not run you will never be charged.
               </p>
             </div>
 
