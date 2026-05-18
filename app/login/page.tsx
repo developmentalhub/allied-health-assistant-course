@@ -3,10 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/dashboard";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -29,7 +33,7 @@ export default function LoginPage() {
     }
 
     router.refresh();
-    router.push("/dashboard");
+    router.push(redirectTo);
   }
 
   return (
@@ -40,11 +44,7 @@ export default function LoginPage() {
           <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "24px" }}>
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <circle cx="16" cy="16" r="16" fill="#3730a3" />
-              <path
-                d="M10 9h6.5C20.09 9 23 11.91 23 16s-2.91 7-6.5 7H10V9z"
-                fill="white"
-                opacity="0.9"
-              />
+              <path d="M10 9h6.5C20.09 9 23 11.91 23 16s-2.91 7-6.5 7H10V9z" fill="white" opacity="0.9" />
               <circle cx="16" cy="16" r="3" fill="#3730a3" />
             </svg>
             <span style={{ fontFamily: "var(--font-display)", color: "#1e1b2e", fontWeight: 600, fontSize: "18px" }}>
@@ -113,7 +113,7 @@ export default function LoginPage() {
 
           <p style={{ textAlign: "center", fontSize: "14px", color: "#6b6880", marginTop: "24px" }}>
             Don't have an account?{" "}
-            <Link href="/signup" style={{ color: "#3730a3", fontWeight: 500 }}>
+            <Link href={`/signup?redirect=${redirectTo}`} style={{ color: "#3730a3", fontWeight: 500 }}>
               Join free
             </Link>
           </p>
@@ -121,5 +121,13 @@ export default function LoginPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }} />}>
+      <LoginForm />
+    </Suspense>
   );
 }

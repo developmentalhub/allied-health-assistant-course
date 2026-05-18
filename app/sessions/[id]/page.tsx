@@ -317,7 +317,7 @@ export default async function SessionDetailPage({
             </div>
 
             <Link
-              href="/signup"
+              href={`/signup?redirect=/sessions/${id}`}
               style={{ display: "block", width: "100%", backgroundColor: session.tagColor, color: "white", padding: "14px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none", textAlign: "center", boxSizing: "border-box" }}
             >
               Book this session

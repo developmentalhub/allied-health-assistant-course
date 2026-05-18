@@ -3,10 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/dashboard";
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +50,7 @@ export default function SignupPage() {
       });
     }
 
-    router.push("/signup/confirm");
+    router.push(`/signup/confirm?redirect=${redirectTo}`);
   }
 
   return (
@@ -57,11 +61,7 @@ export default function SignupPage() {
           <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "24px" }}>
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <circle cx="16" cy="16" r="16" fill="#3730a3" />
-              <path
-                d="M10 9h6.5C20.09 9 23 11.91 23 16s-2.91 7-6.5 7H10V9z"
-                fill="white"
-                opacity="0.9"
-              />
+              <path d="M10 9h6.5C20.09 9 23 11.91 23 16s-2.91 7-6.5 7H10V9z" fill="white" opacity="0.9" />
               <circle cx="16" cy="16" r="3" fill="#3730a3" />
             </svg>
             <span style={{ fontFamily: "var(--font-display)", color: "#1e1b2e", fontWeight: 600, fontSize: "18px" }}>
@@ -80,9 +80,7 @@ export default function SignupPage() {
           <form onSubmit={handleSignup} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-              <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>
-                Full name
-              </label>
+              <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>Full name</label>
               <input
                 type="text"
                 value={fullName}
@@ -94,9 +92,7 @@ export default function SignupPage() {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-              <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>
-                Email address
-              </label>
+              <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>Email address</label>
               <input
                 type="email"
                 value={email}
@@ -108,9 +104,7 @@ export default function SignupPage() {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-              <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>
-                Password
-              </label>
+              <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>Password</label>
               <input
                 type="password"
                 value={password}
@@ -156,7 +150,7 @@ export default function SignupPage() {
 
           <p style={{ textAlign: "center", fontSize: "14px", color: "#6b6880", marginTop: "24px" }}>
             Already have an account?{" "}
-            <Link href="/login" style={{ color: "#3730a3", fontWeight: 500 }}>
+            <Link href={`/login?redirect=${redirectTo}`} style={{ color: "#3730a3", fontWeight: 500 }}>
               Sign in
             </Link>
           </p>
@@ -164,5 +158,13 @@ export default function SignupPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }} />}>
+      <SignupForm />
+    </Suspense>
   );
 }
