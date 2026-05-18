@@ -178,7 +178,6 @@ const sessionData: Record<string, {
     whoIsThisFor: "Parents and carers of children aged 2 to 8 who want to build fine motor foundations at home.",
   },
 };
-
 export default function SessionDetailPage({
   params,
 }: {
@@ -212,7 +211,6 @@ export default function SessionDetailPage({
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
       <Navbar />
 
-      {/* Back link */}
       <div style={{ maxWidth: "960px", margin: "0 auto", padding: "32px 24px 0" }}>
         <Link
           href="/sessions"
@@ -225,33 +223,25 @@ export default function SessionDetailPage({
         </Link>
       </div>
 
-      {/* Main content */}
       <div style={{ maxWidth: "960px", margin: "0 auto", padding: "32px 24px 80px", display: "grid", gridTemplateColumns: "1fr 340px", gap: "40px", alignItems: "start" }}>
 
-        {/* Left column */}
         <div>
-
-          {/* Tag */}
           <span style={{ fontSize: "13px", fontWeight: 700, padding: "6px 14px", borderRadius: "8px", backgroundColor: session.tagColor, color: session.tagText, letterSpacing: "0.03em", textTransform: "uppercase", display: "inline-block", marginBottom: "20px" }}>
             {session.tag}
           </span>
 
-          {/* Title */}
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "36px", fontWeight: 300, color: "#1e1b2e", lineHeight: 1.3, marginBottom: "12px" }}>
             {session.title}
           </h1>
 
-          {/* Facilitator */}
           <p style={{ fontSize: "15px", color: "#6b6880", marginBottom: "32px" }}>
             Led by {session.facilitator}
           </p>
 
-          {/* Description */}
           <p style={{ fontSize: "16px", color: "#1e1b2e", lineHeight: 1.8, marginBottom: "40px", fontWeight: 300 }}>
             {session.description}
           </p>
 
-          {/* What you'll learn */}
           <div style={{ marginBottom: "40px" }}>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "24px", fontWeight: 300, color: "#1e1b2e", marginBottom: "20px" }}>
               What you will learn
@@ -272,7 +262,6 @@ export default function SessionDetailPage({
             </div>
           </div>
 
-          {/* Who is this for */}
           <div style={{ backgroundColor: session.cardBackground, border: `1.5px solid ${session.borderColor}`, borderRadius: "16px", padding: "24px" }}>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: 300, color: "#1e1b2e", marginBottom: "12px" }}>
               Who is this for?
@@ -281,14 +270,11 @@ export default function SessionDetailPage({
               {session.whoIsThisFor}
             </p>
           </div>
-
         </div>
 
-        {/* Right column — booking card */}
         <div style={{ position: "sticky", top: "88px" }}>
           <div style={{ backgroundColor: "white", borderRadius: "20px", border: "1px solid #e8e4de", padding: "28px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
 
-            {/* Price */}
             <div style={{ marginBottom: "20px" }}>
               <span style={{ fontFamily: "var(--font-display)", fontSize: "36px", fontWeight: 300, color: "#1e1b2e" }}>
                 ${session.price}
@@ -296,7 +282,6 @@ export default function SessionDetailPage({
               <span style={{ fontSize: "13px", color: "#6b6880", marginLeft: "6px" }}>per family</span>
             </div>
 
-            {/* Session details */}
             <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "24px", paddingBottom: "24px", borderBottom: "1px solid #f0eee9" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "#1e1b2e" }}>
                 <svg width="16" height="16" fill="none" stroke="#6b6880" strokeWidth="1.8">
@@ -329,11 +314,26 @@ export default function SessionDetailPage({
               </div>
             </div>
 
-            {/* Book button */}
             <Link
               href="/signup"
               style={{ display: "block", width: "100%", backgroundColor: session.tagColor, color: "white", padding: "14px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none", textAlign: "center", boxSizing: "border-box" }}
             >
               Book this session
             </Link>
-            <p style={{ fontSize: "12px", color: "#6b6880", textAlign: "c
+            <p style={{ fontSize: "12px", color: "#6b6880", textAlign: "center", marginTop: "12px" }}>
+              You will need an account to complete your booking.
+            </p>
+
+            <div style={{ marginTop: "16px", backgroundColor: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "12px", padding: "12px 14px" }}>
+              <p style={{ fontSize: "12px", color: "#166534", margin: 0, lineHeight: 1.6 }}>
+                Full refund if the session does not reach its minimum attendance 24 hours before the start time.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+  );
+}
