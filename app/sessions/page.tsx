@@ -1,5 +1,9 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 const placeholderSessions = [
   {
@@ -106,7 +110,21 @@ const placeholderSessions = [
   },
 ];
 
-export default function SessionsPage() {
+const tabs = [
+  { label: "All sessions", type: null },
+  { label: "Small groups", type: "group" },
+  { label: "Webinars", type: "webinar-owner" },
+  { label: "Specialist webinars", type: "webinar-facilitator" },
+];
+
+function SessionsContent() {
+  const searchParams = useSearchParams();
+  const activeType = searchParams.get("type");
+
+  const filteredSessions = activeType
+    ? placeholderSessions.filter((s) => s.type === activeType)
+    : placeholderSessions;
+
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
       <Navbar />
@@ -143,89 +161,104 @@ export default function SessionsPage() {
       {/* Filter tabs */}
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 32px" }}>
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-          {[
-            { label: "All sessions", href: "/sessions" },
-            { label: "Small groups", href: "/sessions?type=group" },
-            { label: "Webinars", href: "/sessions?type=webinar-owner" },
-            { label: "Specialist webinars", href: "/sessions?type=webinar-facilitator" },
-          ].map((tab) => (
-            <Link
-              key={tab.label}
-              href={tab.href}
-              style={{ fontSize: "13px", fontWeight: 500, padding: "8px 16px", borderRadius: "999px", border: "1px solid #e8e4de", color: "#6b6880", textDecoration: "none", backgroundColor: "white" }}
-            >
-              {tab.label}
-            </Link>
-          ))}
+          {tabs.map((tab) => {
+            const isActive = tab.type === activeType;
+            return (
+              <Link
+                key={tab.label}
+                href={tab.type ? `/sessions?type=${tab.type}` : "/sessions"}
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  padding: "8px 16px",
+                  borderRadius: "999px",
+                  border: isActive ? "1.5px solid #3730a3" : "1px solid #e8e4de",
+                  color: isActive ? "#3730a3" : "#6b6880",
+                  textDecoration: "none",
+                  backgroundColor: isActive ? "#eef2ff" : "white",
+                }}
+              >
+                {tab.label}
+              </Link>
+            );
+          })}
         </div>
       </section>
 
       {/* Sessions grid */}
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 80px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
-          {placeholderSessions.map((session) => (
-            <div
-              key={session.id}
-              style={{ backgroundColor: session.cardBackground, borderRadius: "16px", border: `1.5px solid ${session.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
-            >
-              {/* Tag + spots */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <span style={{ fontSize: "13px", fontWeight: 700, padding: "6px 14px", borderRadius: "8px", backgroundColor: session.tagColor, color: session.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
-                  {session.tag}
-                </span>
-                <span style={{ fontSize: "11px", color: session.spotsLeft <= 3 ? "#dc2626" : "#6b6880", fontWeight: session.spotsLeft <= 3 ? 600 : 400 }}>
-                  {session.spotsLeft} spot{session.spotsLeft !== 1 ? "s" : ""} left
-                </span>
-              </div>
-
-              {/* Title */}
-              <h3 style={{ fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: 400, color: "#1e1b2e", lineHeight: 1.4, margin: 0 }}>
-                {session.title}
-              </h3>
-
-              {/* Facilitator */}
-              <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>
-                {session.facilitator}
-              </p>
-
-              {/* Date/time/duration */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#1e1b2e" }}>
-                  <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
-                    <rect x="1" y="2" width="12" height="11" rx="2"/>
-                    <path d="M1 6h12M5 1v2M9 1v2" strokeLinecap="round"/>
-                  </svg>
-                  {session.date} · {session.time}
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#6b6880" }}>
-                  <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
-                    <circle cx="7" cy="7" r="5.5"/>
-                    <path d="M7 4.5V7l1.5 1.5" strokeLinecap="round"/>
-                  </svg>
-                  {session.duration}
-                </div>
-              </div>
-
-              {/* Price + CTA */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "12px", borderTop: `1px solid ${session.borderColor}40`, marginTop: "auto" }}>
-                <div>
-                  <span style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#1e1b2e" }}>
-                    ${session.price}
+        {filteredSessions.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "60px 24px" }}>
+            <p style={{ fontSize: "16px", color: "#6b6880" }}>No sessions found for this category.</p>
+          </div>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
+            {filteredSessions.map((session) => (
+              <div
+                key={session.id}
+                style={{ backgroundColor: session.cardBackground, borderRadius: "16px", border: `1.5px solid ${session.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
+              >
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "13px", fontWeight: 700, padding: "6px 14px", borderRadius: "8px", backgroundColor: session.tagColor, color: session.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
+                    {session.tag}
                   </span>
-                  <span style={{ fontSize: "11px", color: "#6b6880", marginLeft: "4px" }}>per family</span>
+                  <span style={{ fontSize: "11px", color: session.spotsLeft <= 3 ? "#dc2626" : "#6b6880", fontWeight: session.spotsLeft <= 3 ? 600 : 400 }}>
+                    {session.spotsLeft} spot{session.spotsLeft !== 1 ? "s" : ""} left
+                  </span>
                 </div>
-                <Link
-                  href={`/sessions/${session.id}`}
-                  style={{ backgroundColor: session.tagColor, color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
-                >
-                  Book now
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: 400, color: "#1e1b2e", lineHeight: 1.4, margin: 0 }}>
+                  {session.title}
+                </h3>
+
+                <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>
+                  {session.facilitator}
+                </p>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#1e1b2e" }}>
+                    <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
+                      <rect x="1" y="2" width="12" height="11" rx="2"/>
+                      <path d="M1 6h12M5 1v2M9 1v2" strokeLinecap="round"/>
+                    </svg>
+                    {session.date} · {session.time}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#6b6880" }}>
+                    <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
+                      <circle cx="7" cy="7" r="5.5"/>
+                      <path d="M7 4.5V7l1.5 1.5" strokeLinecap="round"/>
+                    </svg>
+                    {session.duration}
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "12px", borderTop: `1px solid ${session.borderColor}40`, marginTop: "auto" }}>
+                  <div>
+                    <span style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#1e1b2e" }}>
+                      ${session.price}
+                    </span>
+                    <span style={{ fontSize: "11px", color: "#6b6880", marginLeft: "4px" }}>per family</span>
+                  </div>
+                  <Link
+                    href={`/sessions/${session.id}`}
+                    style={{ backgroundColor: session.tagColor, color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
+                  >
+                    Book now
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </main>
+  );
+}
+
+export default function SessionsPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }} />}>
+      <SessionsContent />
+    </Suspense>
   );
 }
