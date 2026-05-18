@@ -178,12 +178,14 @@ const sessionData: Record<string, {
     whoIsThisFor: "Parents and carers of children aged 2 to 8 who want to build fine motor foundations at home.",
   },
 };
-export default function SessionDetailPage({
+
+export default async function SessionDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const session = sessionData[params.id];
+  const { id } = await params;
+  const session = sessionData[id];
 
   if (!session) {
     return (
