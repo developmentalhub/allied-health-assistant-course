@@ -15,8 +15,37 @@ export default function AboutPage() {
           Expert support, built around how families actually live
         </h1>
         <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300 }}>
-          Developmental Hub was created because families navigating childhood developmental challenges deserve more than a waitlist. We bring together vetted specialists and the families who need them — in affordable, accessible group sessions that fit real life.
+          Developmental Hub was created because families navigating childhood developmental challenges deserve more than a waitlist — wherever in the world they live. We bring together vetted specialists and the families who need them, in affordable, accessible group sessions that fit real life.
         </p>
+      </section>
+
+      {/* Founder's note */}
+      <section style={{ backgroundColor: "#3730a3", padding: "64px 24px" }}>
+        <div style={{ maxWidth: "720px", margin: "0 auto" }}>
+          <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#c7d2fe", marginBottom: "24px", textAlign: "center" }}>
+            A note from our founder
+          </p>
+          <blockquote style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "white", lineHeight: 1.7, textAlign: "center", margin: "0 0 32px 0", fontStyle: "italic" }}>
+            "I've seen firsthand what it means for a family to finally get the support they've been waiting for — and I've seen what it costs them when they can't."
+          </blockquote>
+          <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, marginBottom: "20px", textAlign: "center", fontWeight: 300 }}>
+            I'm Robyn — a Masters-qualified Developmental Educator and Exercise Physiologist based in Victoria, Australia. I've spent years working with families who live far from the allied health services their children need. Rural families. Isolated families. Families who are doing everything right, but can't access the right support.
+          </p>
+          <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, marginBottom: "20px", textAlign: "center", fontWeight: 300 }}>
+            That's what drove me to build Developmental Hub — and I wouldn't have done it without my incredible partner Jess, an allied health business owner whose vision and passion made this real. Together with a team of occupational therapists, early childhood and primary education teachers, and specialist practitioners, we've built something I'm deeply proud of.
+          </p>
+          <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, textAlign: "center", fontWeight: 300 }}>
+            Today we support families across Australia and around the world — including a beautiful family I've had the privilege of working with from my home in Victoria, all the way to India. Distance is no longer a reason a child misses out.
+          </p>
+          <div style={{ textAlign: "center", marginTop: "32px" }}>
+            <p style={{ fontFamily: "var(--font-display)", fontSize: "20px", color: "white", fontStyle: "italic" }}>
+              — Robyn Papworth
+            </p>
+            <p style={{ fontSize: "13px", color: "#c7d2fe", marginTop: "4px" }}>
+              Founder, Developmental Hub
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Why we exist */}
