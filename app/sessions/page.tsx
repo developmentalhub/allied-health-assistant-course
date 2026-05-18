@@ -5,7 +5,7 @@ const placeholderSessions = [
   {
     id: "1",
     type: "group",
-    title: "Teen Anxiety — Practical Strategies for Parents",
+    title: "Sensory Play at Home — Practical Ideas for Everyday Life",
     facilitator: "Dr. Sarah Mitchell",
     date: "Saturday 7 June 2025",
     time: "10:00am AEST",
@@ -14,14 +14,15 @@ const placeholderSessions = [
     spotsLeft: 4,
     duration: "45 min",
     tag: "Small Group",
-    tagColor: "#ede9fe",
-    tagText: "#6d28d9",
+    tagColor: "#7c3aed",
+    tagText: "#ffffff",
+    cardBackground: "#faf5ff",
     borderColor: "#7c3aed",
   },
   {
     id: "2",
     type: "group",
-    title: "Screen Time Boundaries That Actually Work",
+    title: "Building Early Literacy Skills Through Play",
     facilitator: "Dr. James Okafor",
     date: "Wednesday 11 June 2025",
     time: "7:30pm AEST",
@@ -30,8 +31,9 @@ const placeholderSessions = [
     spotsLeft: 6,
     duration: "45 min",
     tag: "Small Group",
-    tagColor: "#ede9fe",
-    tagText: "#6d28d9",
+    tagColor: "#7c3aed",
+    tagText: "#ffffff",
+    cardBackground: "#faf5ff",
     borderColor: "#7c3aed",
   },
   {
@@ -46,14 +48,15 @@ const placeholderSessions = [
     spotsLeft: 67,
     duration: "60 min",
     tag: "Webinar",
-    tagColor: "#e0e7ff",
-    tagText: "#4338ca",
+    tagColor: "#4338ca",
+    tagText: "#ffffff",
+    cardBackground: "#eef2ff",
     borderColor: "#4338ca",
   },
   {
     id: "4",
     type: "group",
-    title: "Navigating Divorce With Your Kids",
+    title: "Motor Development — Supporting Your Child's Physical Growth",
     facilitator: "Dr. Priya Sharma",
     date: "Thursday 19 June 2025",
     time: "7:00pm AEST",
@@ -62,14 +65,15 @@ const placeholderSessions = [
     spotsLeft: 3,
     duration: "45 min",
     tag: "Small Group",
-    tagColor: "#ede9fe",
-    tagText: "#6d28d9",
+    tagColor: "#7c3aed",
+    tagText: "#ffffff",
+    cardBackground: "#faf5ff",
     borderColor: "#7c3aed",
   },
   {
     id: "5",
     type: "webinar-facilitator",
-    title: "ADHD at Home — Building Structure Without Conflict",
+    title: "Play Skills That Support Social Development",
     facilitator: "Dr. Lena Kovacs",
     date: "Monday 23 June 2025",
     time: "11:00am AEST",
@@ -78,14 +82,15 @@ const placeholderSessions = [
     spotsLeft: 44,
     duration: "60 min",
     tag: "Specialist Webinar",
-    tagColor: "#dbeafe",
-    tagText: "#1d4ed8",
+    tagColor: "#1d4ed8",
+    tagText: "#ffffff",
+    cardBackground: "#eff6ff",
     borderColor: "#1d4ed8",
   },
   {
     id: "6",
     type: "webinar-facilitator",
-    title: "Sleep Solutions for Children With Developmental Needs",
+    title: "Fine Motor Skills — Activities to Build Strength and Coordination",
     facilitator: "Dr. Marcus Webb",
     date: "Saturday 28 June 2025",
     time: "9:00am AEST",
@@ -94,8 +99,9 @@ const placeholderSessions = [
     spotsLeft: 81,
     duration: "60 min",
     tag: "Specialist Webinar",
-    tagColor: "#dbeafe",
-    tagText: "#1d4ed8",
+    tagColor: "#1d4ed8",
+    tagText: "#ffffff",
+    cardBackground: "#eff6ff",
     borderColor: "#1d4ed8",
   },
 ];
@@ -122,13 +128,13 @@ export default function SessionsPage() {
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 24px" }}>
         <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
           {[
-            { label: "Small Group", color: "#7c3aed", bg: "#ede9fe", text: "#6d28d9" },
-            { label: "Webinar", color: "#4338ca", bg: "#e0e7ff", text: "#4338ca" },
-            { label: "Specialist Webinar", color: "#1d4ed8", bg: "#dbeafe", text: "#1d4ed8" },
+            { label: "Small Group", color: "#7c3aed", background: "#faf5ff" },
+            { label: "Webinar", color: "#4338ca", background: "#eef2ff" },
+            { label: "Specialist Webinar", color: "#1d4ed8", background: "#eff6ff" },
           ].map((item) => (
-            <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <div style={{ width: "12px", height: "12px", borderRadius: "3px", backgroundColor: item.color }} />
-              <span style={{ fontSize: "13px", color: "#6b6880" }}>{item.label}</span>
+            <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: item.background, border: `1.5px solid ${item.color}`, padding: "6px 14px", borderRadius: "8px" }}>
+              <div style={{ width: "10px", height: "10px", borderRadius: "2px", backgroundColor: item.color }} />
+              <span style={{ fontSize: "13px", color: item.color, fontWeight: 600 }}>{item.label}</span>
             </div>
           ))}
         </div>
@@ -160,11 +166,11 @@ export default function SessionsPage() {
           {placeholderSessions.map((session) => (
             <div
               key={session.id}
-              style={{ backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de", borderLeft: `4px solid ${session.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
+              style={{ backgroundColor: session.cardBackground, borderRadius: "16px", border: `1.5px solid ${session.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
             >
               {/* Tag + spots */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <span style={{ fontSize: "12px", fontWeight: 700, padding: "5px 12px", borderRadius: "999px", backgroundColor: session.tagColor, color: session.tagText, letterSpacing: "0.02em" }}>
+                <span style={{ fontSize: "13px", fontWeight: 700, padding: "6px 14px", borderRadius: "8px", backgroundColor: session.tagColor, color: session.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
                   {session.tag}
                 </span>
                 <span style={{ fontSize: "11px", color: session.spotsLeft <= 3 ? "#dc2626" : "#6b6880", fontWeight: session.spotsLeft <= 3 ? 600 : 400 }}>
@@ -201,7 +207,7 @@ export default function SessionsPage() {
               </div>
 
               {/* Price + CTA */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "12px", borderTop: "1px solid #f0eee9", marginTop: "auto" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "12px", borderTop: `1px solid ${session.borderColor}30`, marginTop: "auto" }}>
                 <div>
                   <span style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#1e1b2e" }}>
                     ${session.price}
@@ -210,7 +216,7 @@ export default function SessionsPage() {
                 </div>
                 <Link
                   href={`/sessions/${session.id}`}
-                  style={{ backgroundColor: "#3730a3", color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
+                  style={{ backgroundColor: session.borderColor, color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
                 >
                   Book now
                 </Link>
