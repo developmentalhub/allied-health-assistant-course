@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Navbar from "@/components/Navbar";
 
-export default function TeamSelection() {
+export default function TeamPage() {
   const [team] = useState([
     {
       name: "Robyn Papworth",
@@ -11,10 +11,8 @@ export default function TeamSelection() {
       credentials: ["Masters of Developmental Education", "Exercise Physiologist"],
       bio: "Robyn Papworth is a confident professional working as an educator, specialising in neurodevelopmental coaching.",
       specialties: ["Literacy", "Vagus Nerve", "Regulation"],
-      availability: "Tuesday & Wednesday",
-      spotsRemaining: 3,
-      color: "#6b4a8e", // Soft purple from your screenshot
-      image: "/team/robyn.jpg" 
+      color: "#3730a3",
+      image: "/team/robyn.jpg"
     },
     {
       name: "Suzy",
@@ -22,9 +20,7 @@ export default function TeamSelection() {
       credentials: ["Specialised Movement Coach"],
       bio: "Suzy is an energetic essential member of the team, known for her approachable and supportive coaching style.",
       specialties: ["Gross Motor Skills", "Fine Motor Skills", "Sensory"],
-      availability: "Monday & Thursday",
-      spotsRemaining: 8,
-      color: "#4a7c59", // Sage green
+      color: "#0f766e",
       image: "/team/suzy.jpg"
     },
     {
@@ -33,123 +29,89 @@ export default function TeamSelection() {
       credentials: ["Early Childhood Specialist"],
       bio: "Jess is a dedicated guide for finding and embracing learning opportunities worldwide, focusing on play skills.",
       specialties: ["Play Skills", "Regulation", "Literacy"],
-      availability: "Tuesday & Friday",
-      spotsRemaining: 0,
-      color: "#d97706", // Warm orange
+      color: "#c2410c",
       image: "/team/jess.jpg"
     }
   ]);
 
   return (
-    <div style={{ backgroundColor: "#fdfbf7", minHeight: "100vh", padding: "60px 20px", fontFamily: "var(--font-sans)" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        
-        <header style={{ textAlign: "center", marginBottom: "60px" }}>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "2.8rem", color: "#2d1a47", marginBottom: "15px" }}>
-            Meet Your Team
-          </h1>
-          <p style={{ color: "#64748b", fontSize: "1.1rem" }}>
-            Select a professional who specialises in the area your child is currently focusing on.
-          </p>
-        </header>
+    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
+      <Navbar />
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))", gap: "30px" }}>
+      <section style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px 48px", textAlign: "center" }}>
+        <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", marginBottom: "16px" }}>
+          Our team
+        </p>
+        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "42px", fontWeight: 300, color: "#1e1b2e", lineHeight: 1.2, marginBottom: "16px" }}>
+          The people behind Developmental Hub
+        </h1>
+        <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300 }}>
+          Our team brings together expertise in developmental education, movement coaching, and early childhood — all united by a passion for supporting families.
+        </p>
+      </section>
+
+      <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 80px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "28px" }}>
           {team.map((member) => (
-            <div key={member.name} style={{ 
-              backgroundColor: "white", 
-              borderRadius: "20px", 
-              padding: "40px", 
-              boxShadow: "0 10px 30px rgba(0,0,0,0.04)",
-              borderTop: `8px solid ${member.color}`,
-              display: "flex",
-              flexDirection: "column",
-              textAlign: "center"
-            }}>
-              
-              {/* Real Person Image Container */}
-              <div style={{ 
-                width: "160px", 
-                height: "160px", 
-                borderRadius: "50%", 
-                margin: "0 auto 25px auto",
-                overflow: "hidden",
-                border: "4px solid white",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
-              }}>
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
+            <div key={member.name} style={{ backgroundColor: "white", borderRadius: "20px", padding: "36px 32px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", borderTop: `6px solid ${member.color}`, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+
+              {/* Photo */}
+              <div style={{ width: "120px", height: "120px", borderRadius: "50%", overflow: "hidden", marginBottom: "20px", border: "3px solid #f0eee9" }}>
+                <img
+                  src={member.image}
+                  alt={member.name}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   onError={(e) => {
-                    // Fallback to a placeholder if the image isn't in the folder yet
-                    e.currentTarget.src = `https://ui-avatars.com/api/?name=${member.name}&background=f1f5f9&color=64748b`;
+                    e.currentTarget.src = `https://ui-avatars.com/api/?name=${member.name}&background=e0e7ff&color=3730a3&size=120`;
                   }}
                 />
               </div>
 
-              <h2 style={{ fontSize: "1.6rem", color: "#1e1b2e", marginBottom: "5px", fontWeight: "700" }}>{member.name}</h2>
-              <p style={{ color: "#64748b", fontSize: "0.95rem", marginBottom: "15px" }}>{member.role}</p>
-              
-              <p style={{ fontSize: "0.9rem", color: "#475569", lineHeight: "1.6", marginBottom: "20px", height: "60px", overflow: "hidden" }}>
+              {/* Name + role */}
+              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", marginBottom: "4px" }}>
+                {member.name}
+              </h2>
+              <p style={{ fontSize: "14px", color: "#6b6880", marginBottom: "16px" }}>
+                {member.role}
+              </p>
+
+              {/* Bio */}
+              <p style={{ fontSize: "14px", color: "#6b6880", lineHeight: 1.7, marginBottom: "20px" }}>
                 {member.bio}
               </p>
 
-              <div style={{ marginBottom: "25px", textAlign: "left" }}>
-                <p style={{ fontSize: "0.75rem", fontWeight: "bold", color: "#94a3b8", textTransform: "uppercase", marginBottom: "10px" }}>Credentials</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+              {/* Credentials */}
+              <div style={{ marginBottom: "16px", width: "100%" }}>
+                <p style={{ fontSize: "11px", fontWeight: 700, color: "#b0acbf", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+                  Credentials
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center" }}>
                   {member.credentials.map(cred => (
-                    <span key={cred} style={{ fontSize: "0.7rem", backgroundColor: "#f5f3ff", color: "#5b21b6", padding: "4px 10px", borderRadius: "6px", fontWeight: "600" }}>
+                    <span key={cred} style={{ fontSize: "12px", backgroundColor: "#f5f3ff", color: "#3730a3", padding: "4px 10px", borderRadius: "6px", fontWeight: 600 }}>
                       {cred}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div style={{ marginTop: "auto" }}>
-                {member.spotsRemaining > 0 ? (
-                  <>
-                    <button style={{ 
-                      width: "100%", 
-                      backgroundColor: member.color, 
-                      color: "white", 
-                      border: "none", 
-                      padding: "16px", 
-                      borderRadius: "30px", 
-                      fontWeight: "bold", 
-                      fontSize: "1rem",
-                      cursor: "pointer",
-                      marginBottom: "15px"
-                    }}>
-                      Book Session
-                    </button>
-                    <p style={{ fontSize: "0.85rem", color: "#64748b" }}>
-                      Available: <strong>{member.availability}</strong><br/>
-                      Spots remaining: {member.spotsRemaining} spots
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p style={{ color: "#d97706", fontWeight: "bold", marginBottom: "15px" }}>Group Full</p>
-                    <button style={{ 
-                      width: "100%", 
-                      backgroundColor: "#e2e8f0", 
-                      color: "#64748b", 
-                      border: "none", 
-                      padding: "16px", 
-                      borderRadius: "30px", 
-                      fontWeight: "bold", 
-                      fontSize: "1rem",
-                      cursor: "not-allowed"
-                    }}>
-                      Join Waitlist
-                    </button>
-                  </>
-                )}
+              {/* Specialties */}
+              <div style={{ width: "100%" }}>
+                <p style={{ fontSize: "11px", fontWeight: 700, color: "#b0acbf", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+                  Specialties
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center" }}>
+                  {member.specialties.map(s => (
+                    <span key={s} style={{ fontSize: "12px", backgroundColor: "#faf8f5", color: "#6b6880", padding: "4px 10px", borderRadius: "6px", border: "1px solid #e8e4de" }}>
+                      {s}
+                    </span>
+                  ))}
+                </div>
               </div>
+
             </div>
           ))}
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

@@ -58,7 +58,7 @@ export default function AboutPage() {
             {
               step: "01",
               title: "Browse upcoming sessions",
-              body: "Find a small group session or webinar on a topic that's relevant to your family right now — from screen time to anxiety to navigating school transitions."
+              body: "Find a small group session or webinar on a topic that's relevant to your family right now — from sensory play to literacy support to motor development."
             },
             {
               step: "02",
@@ -91,6 +91,22 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Meet the team */}
+      <section style={{ backgroundColor: "#f5f3ff", borderTop: "1px solid #e0e7ff", borderBottom: "1px solid #e0e7ff", padding: "64px 24px", textAlign: "center" }}>
+        <h2 style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#1e1b2e", marginBottom: "16px" }}>
+          Meet the team
+        </h2>
+        <p style={{ fontSize: "16px", color: "#6b6880", marginBottom: "32px", fontWeight: 300 }}>
+          Get to know the people behind Developmental Hub.
+        </p>
+        <Link
+          href="/team"
+          style={{ backgroundColor: "#3730a3", color: "white", padding: "14px 32px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}
+        >
+          Meet our team
+        </Link>
       </section>
 
       {/* CTA */}
