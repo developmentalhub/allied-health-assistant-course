@@ -1,0 +1,32 @@
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Developmental Hub — Expert Group Support for Families",
+  description:
+    "Join small group sessions and webinars led by developmental specialists. Affordable, evidence-based support for families navigating childhood developmental needs.",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body style={{ fontFamily: "var(--font-sans)", color: "#1e1b2e", backgroundColor: "#faf8f5" }} className="antialiased">{children}</body>
+    </html>
+  );
+}
