@@ -15,7 +15,7 @@ export default function AboutPage() {
           Expert support, built around how families actually live
         </h1>
         <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300 }}>
-          Developmental Hub was created because families navigating childhood developmental challenges deserve more than a waitlist — wherever in the world they live. We bring together vetted specialists and the families who need them, in affordable, accessible group sessions that fit real life.
+          Developmental Hub was created because families navigating childhood developmental challenges deserve more than a waitlist, wherever in the world they live. We bring together vetted specialists and the families who need them, in affordable, accessible group sessions that fit real life.
         </p>
       </section>
 
@@ -26,20 +26,20 @@ export default function AboutPage() {
             A note from our founder
           </p>
           <blockquote style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "white", lineHeight: 1.7, textAlign: "center", margin: "0 0 32px 0", fontStyle: "italic" }}>
-            "I've seen firsthand what it means for a family to finally get the support they've been waiting for — and I've seen what it costs them when they can't."
+            "I have seen firsthand what it means for a family to finally get the support they have been waiting for. And I have seen what happens when they can't access it at all."
           </blockquote>
           <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, marginBottom: "20px", textAlign: "center", fontWeight: 300 }}>
-            I'm Robyn — a Masters-qualified Developmental Educator and Exercise Physiologist based in Victoria, Australia. I've spent years working with families who live far from the allied health services their children need. Rural families. Isolated families. Families who are doing everything right, but can't access the right support.
+            I'm Robyn, a Masters-qualified Developmental Educator and Exercise Physiologist based in Victoria, Australia. I have spent years working with families who live far from the allied health services their children need. Rural families. Isolated families. Families who are doing everything right but simply cannot access the right support.
           </p>
           <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, marginBottom: "20px", textAlign: "center", fontWeight: 300 }}>
-            That's what drove me to build Developmental Hub — and I wouldn't have done it without my incredible partner Jess, an allied health business owner whose vision and passion made this real. Together with a team of occupational therapists, early childhood and primary education teachers, and specialist practitioners, we've built something I'm deeply proud of.
+            That is what drove me to build Developmental Hub. I would not have done it without my incredible partner Jess, an allied health business owner whose vision and passion made this real. Together with a team of occupational therapists, early childhood and primary education teachers, and specialist practitioners, we have built something I am deeply proud of.
           </p>
           <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, textAlign: "center", fontWeight: 300 }}>
-            Today we support families across Australia and around the world — including a beautiful family I've had the privilege of working with from my home in Victoria, all the way to India. Distance is no longer a reason a child misses out.
+            Today we support families across Australia and around the world, including a beautiful family I have had the privilege of working with from my home in Victoria, all the way to India. Distance is no longer a reason a child misses out.
           </p>
           <div style={{ textAlign: "center", marginTop: "32px" }}>
             <p style={{ fontFamily: "var(--font-display)", fontSize: "20px", color: "white", fontStyle: "italic" }}>
-              — Robyn Papworth
+              Robyn Papworth
             </p>
             <p style={{ fontSize: "13px", color: "#c7d2fe", marginTop: "4px" }}>
               Founder, Developmental Hub
@@ -54,7 +54,7 @@ export default function AboutPage() {
           {[
             {
               title: "Affordable by design",
-              body: "By bringing families together in small groups, we make specialist knowledge accessible at a fraction of the cost of 1:1 therapy — without sacrificing quality."
+              body: "By bringing families together in small groups, we make specialist knowledge accessible at a fraction of the cost of individual therapy, without sacrificing quality."
             },
             {
               title: "Vetted practitioners",
@@ -62,7 +62,7 @@ export default function AboutPage() {
             },
             {
               title: "Community over isolation",
-              body: "Parenting a child with developmental needs can feel lonely. Our group format means you're learning alongside other families who truly understand."
+              body: "Parenting a child with developmental needs can feel lonely. Our group format means you are learning alongside other families who truly understand."
             },
           ].map((item) => (
             <div key={item.title}>
@@ -87,17 +87,17 @@ export default function AboutPage() {
             {
               step: "01",
               title: "Browse upcoming sessions",
-              body: "Find a small group session or webinar on a topic that's relevant to your family right now — from sensory play to literacy support to motor development."
+              body: "Find a small group session or webinar on a topic that is relevant to your family right now. From sensory play to literacy support to motor development, there is something for every stage."
             },
             {
               step: "02",
               title: "Book and pay securely",
-              body: "Reserve your spot with a simple, secure payment via Stripe. If the session doesn't reach its minimum attendance, you receive a full automatic refund."
+              body: "Reserve your spot with a simple, secure payment via Stripe. If the session does not reach its minimum attendance, you receive a full automatic refund."
             },
             {
               step: "03",
               title: "Join your session",
-              body: "At the scheduled time, join your live video session from any device. No downloads required — just show up and connect."
+              body: "At the scheduled time, join your live video session from any device. No downloads required. Just show up and connect."
             },
             {
               step: "04",
