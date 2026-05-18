@@ -14,10 +14,10 @@ const placeholderSessions = [
     spotsLeft: 4,
     duration: "45 min",
     tag: "Small Group",
-    tagColor: "#7c3aed",
+    tagColor: "#b45309",
     tagText: "#ffffff",
-    cardBackground: "#faf5ff",
-    borderColor: "#7c3aed",
+    cardBackground: "#fffbeb",
+    borderColor: "#d97706",
   },
   {
     id: "2",
@@ -31,10 +31,10 @@ const placeholderSessions = [
     spotsLeft: 6,
     duration: "45 min",
     tag: "Small Group",
-    tagColor: "#7c3aed",
+    tagColor: "#b45309",
     tagText: "#ffffff",
-    cardBackground: "#faf5ff",
-    borderColor: "#7c3aed",
+    cardBackground: "#fffbeb",
+    borderColor: "#d97706",
   },
   {
     id: "3",
@@ -48,10 +48,10 @@ const placeholderSessions = [
     spotsLeft: 67,
     duration: "60 min",
     tag: "Webinar",
-    tagColor: "#4338ca",
+    tagColor: "#3730a3",
     tagText: "#ffffff",
     cardBackground: "#eef2ff",
-    borderColor: "#4338ca",
+    borderColor: "#3730a3",
   },
   {
     id: "4",
@@ -65,10 +65,10 @@ const placeholderSessions = [
     spotsLeft: 3,
     duration: "45 min",
     tag: "Small Group",
-    tagColor: "#7c3aed",
+    tagColor: "#b45309",
     tagText: "#ffffff",
-    cardBackground: "#faf5ff",
-    borderColor: "#7c3aed",
+    cardBackground: "#fffbeb",
+    borderColor: "#d97706",
   },
   {
     id: "5",
@@ -82,10 +82,10 @@ const placeholderSessions = [
     spotsLeft: 44,
     duration: "60 min",
     tag: "Specialist Webinar",
-    tagColor: "#1d4ed8",
+    tagColor: "#0f766e",
     tagText: "#ffffff",
-    cardBackground: "#eff6ff",
-    borderColor: "#1d4ed8",
+    cardBackground: "#f0fdfa",
+    borderColor: "#0f766e",
   },
   {
     id: "6",
@@ -99,10 +99,10 @@ const placeholderSessions = [
     spotsLeft: 81,
     duration: "60 min",
     tag: "Specialist Webinar",
-    tagColor: "#1d4ed8",
+    tagColor: "#0f766e",
     tagText: "#ffffff",
-    cardBackground: "#eff6ff",
-    borderColor: "#1d4ed8",
+    cardBackground: "#f0fdfa",
+    borderColor: "#0f766e",
   },
 ];
 
@@ -126,15 +126,15 @@ export default function SessionsPage() {
 
       {/* Legend */}
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 24px" }}>
-        <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
           {[
-            { label: "Small Group", color: "#7c3aed", background: "#faf5ff" },
-            { label: "Webinar", color: "#4338ca", background: "#eef2ff" },
-            { label: "Specialist Webinar", color: "#1d4ed8", background: "#eff6ff" },
+            { label: "Small Group", tagColor: "#b45309", background: "#fffbeb", borderColor: "#d97706" },
+            { label: "Webinar", tagColor: "#3730a3", background: "#eef2ff", borderColor: "#3730a3" },
+            { label: "Specialist Webinar", tagColor: "#0f766e", background: "#f0fdfa", borderColor: "#0f766e" },
           ].map((item) => (
-            <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: item.background, border: `1.5px solid ${item.color}`, padding: "6px 14px", borderRadius: "8px" }}>
-              <div style={{ width: "10px", height: "10px", borderRadius: "2px", backgroundColor: item.color }} />
-              <span style={{ fontSize: "13px", color: item.color, fontWeight: 600 }}>{item.label}</span>
+            <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: item.background, border: `1.5px solid ${item.borderColor}`, padding: "6px 14px", borderRadius: "8px" }}>
+              <div style={{ width: "10px", height: "10px", borderRadius: "2px", backgroundColor: item.tagColor }} />
+              <span style={{ fontSize: "13px", color: item.tagColor, fontWeight: 600 }}>{item.label}</span>
             </div>
           ))}
         </div>
@@ -207,7 +207,7 @@ export default function SessionsPage() {
               </div>
 
               {/* Price + CTA */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "12px", borderTop: `1px solid ${session.borderColor}30`, marginTop: "auto" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "12px", borderTop: `1px solid ${session.borderColor}40`, marginTop: "auto" }}>
                 <div>
                   <span style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#1e1b2e" }}>
                     ${session.price}
@@ -216,7 +216,7 @@ export default function SessionsPage() {
                 </div>
                 <Link
                   href={`/sessions/${session.id}`}
-                  style={{ backgroundColor: session.borderColor, color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
+                  style={{ backgroundColor: session.tagColor, color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
                 >
                   Book now
                 </Link>
