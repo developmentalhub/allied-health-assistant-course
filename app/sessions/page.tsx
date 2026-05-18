@@ -14,10 +14,10 @@ const placeholderSessions = [
     spotsLeft: 4,
     duration: "45 min",
     tag: "Small Group",
-    tagColor: "#b45309",
+    tagColor: "#c2410c",
     tagText: "#ffffff",
-    cardBackground: "#fffbeb",
-    borderColor: "#d97706",
+    cardBackground: "#fff7ed",
+    borderColor: "#ea580c",
   },
   {
     id: "2",
@@ -31,10 +31,10 @@ const placeholderSessions = [
     spotsLeft: 6,
     duration: "45 min",
     tag: "Small Group",
-    tagColor: "#b45309",
+    tagColor: "#c2410c",
     tagText: "#ffffff",
-    cardBackground: "#fffbeb",
-    borderColor: "#d97706",
+    cardBackground: "#fff7ed",
+    borderColor: "#ea580c",
   },
   {
     id: "3",
@@ -65,10 +65,10 @@ const placeholderSessions = [
     spotsLeft: 3,
     duration: "45 min",
     tag: "Small Group",
-    tagColor: "#b45309",
+    tagColor: "#c2410c",
     tagText: "#ffffff",
-    cardBackground: "#fffbeb",
-    borderColor: "#d97706",
+    cardBackground: "#fff7ed",
+    borderColor: "#ea580c",
   },
   {
     id: "5",
@@ -82,10 +82,10 @@ const placeholderSessions = [
     spotsLeft: 44,
     duration: "60 min",
     tag: "Specialist Webinar",
-    tagColor: "#0f766e",
+    tagColor: "#166534",
     tagText: "#ffffff",
-    cardBackground: "#f0fdfa",
-    borderColor: "#0f766e",
+    cardBackground: "#f0fdf4",
+    borderColor: "#16a34a",
   },
   {
     id: "6",
@@ -99,10 +99,10 @@ const placeholderSessions = [
     spotsLeft: 81,
     duration: "60 min",
     tag: "Specialist Webinar",
-    tagColor: "#0f766e",
+    tagColor: "#166534",
     tagText: "#ffffff",
-    cardBackground: "#f0fdfa",
-    borderColor: "#0f766e",
+    cardBackground: "#f0fdf4",
+    borderColor: "#16a34a",
   },
 ];
 
@@ -128,9 +128,9 @@ export default function SessionsPage() {
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 24px" }}>
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
           {[
-            { label: "Small Group", tagColor: "#b45309", background: "#fffbeb", borderColor: "#d97706" },
+            { label: "Small Group", tagColor: "#c2410c", background: "#fff7ed", borderColor: "#ea580c" },
             { label: "Webinar", tagColor: "#3730a3", background: "#eef2ff", borderColor: "#3730a3" },
-            { label: "Specialist Webinar", tagColor: "#0f766e", background: "#f0fdfa", borderColor: "#0f766e" },
+            { label: "Specialist Webinar", tagColor: "#166534", background: "#f0fdf4", borderColor: "#16a34a" },
           ].map((item) => (
             <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: item.background, border: `1.5px solid ${item.borderColor}`, padding: "6px 14px", borderRadius: "8px" }}>
               <div style={{ width: "10px", height: "10px", borderRadius: "2px", backgroundColor: item.tagColor }} />
