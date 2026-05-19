@@ -7,7 +7,6 @@ export default async function AdminPage() {
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
-  console.log("ADMIN PAGE - USER:", user?.email, user?.id);
   if (!user) redirect("/login?redirect=/admin");
 
   const { data: profile } = await supabase
@@ -16,7 +15,6 @@ export default async function AdminPage() {
     .eq("id", user.id)
     .single();
 
-  console.log("ADMIN PAGE - PROFILE:", profile);
   if (profile?.role !== "admin") redirect("/dashboard");
 
   const { data: sessions } = await supabase
