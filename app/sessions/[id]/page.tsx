@@ -159,6 +159,32 @@ export default async function SessionDetailPage({ params }: PageProps) {
         </div>
       </section>
 
+      {/* Small Group Reassurance Text */}
+      <section style={{
+        backgroundColor: "#f0fdf4", 
+        borderLeft: "4px solid #16a34a", 
+        padding: "16px 20px", 
+        borderRadius: "0 8px 8px 0", 
+        marginBottom: "24px"
+      }}>
+        <h3 style={{ 
+          margin: "0 0 6px 0", 
+          color: "#14532d", 
+          fontSize: "16px", 
+          fontWeight: "600" 
+        }}>
+          Our Small Group Guarantee
+        </h3>
+        <p style={{ 
+          margin: 0, 
+          color: "#166534", 
+          fontSize: "14px", 
+          lineHeight: "1.5" 
+        }}>
+          To ensure a high,quality experience, our small group programs require a minimum number of families to go ahead. When you register, your payment details are securely processed via Stripe and placed on a temporary hold. We only finalize the payment once the minimum group size is reached. If the program cannot go ahead, your hold is released automatically, and you will not be charged a cent.
+        </p>
+      </section>
+
       <div style={styles.btnContainer}>
         <Link href={`/checkout?session_id=${session.id}`} style={styles.button}>
           Book Now
