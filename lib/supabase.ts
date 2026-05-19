@@ -1,6 +1,14 @@
-import { createBrowserClient } from "@supabase/ssr";
+import { createBrowserClient } from '@supabase/ssr'
 
-export const supabase = createBrowserClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// Singleton — prevents re-creating the client on every render,
+// which breaks onAuthStateChange listeners
+let client: ReturnType<typeof createBrowserClient> | null = null
+
+export function createClient() {
+  if (client) return client
+  client = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+  return client
+}

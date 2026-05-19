@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-
+const supabase = createClient();
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
