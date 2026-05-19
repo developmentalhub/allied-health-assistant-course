@@ -12,3 +12,6 @@ export function createClient() {
   )
   return client
 }
+
+// Named export for backward compatibility with existing files
+export const supabase = createClient()
