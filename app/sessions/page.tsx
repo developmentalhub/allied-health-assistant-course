@@ -1,129 +1,47 @@
-"use client";
-
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { createClient } from "@/lib/supabase-server";
 
-const placeholderSessions = [
-  {
-    id: "1",
-    type: "group",
-    title: "Sensory Play at Home — Practical Ideas for Everyday Life",
-    facilitator: "Dr. Sarah Mitchell",
-    date: "Saturday 7 June 2025",
-    time: "10:00am AEST",
-    price: 39,
-    spots: 8,
-    spotsLeft: 4,
-    duration: "45 min",
-    tag: "Small Group",
-    tagColor: "#c2410c",
-    tagText: "#ffffff",
-    cardBackground: "#fff7ed",
-    borderColor: "#ea580c",
-  },
-  {
-    id: "2",
-    type: "group",
-    title: "Building Early Literacy Skills Through Play",
-    facilitator: "Dr. James Okafor",
-    date: "Wednesday 11 June 2025",
-    time: "7:30pm AEST",
-    price: 39,
-    spots: 8,
-    spotsLeft: 6,
-    duration: "45 min",
-    tag: "Small Group",
-    tagColor: "#c2410c",
-    tagText: "#ffffff",
-    cardBackground: "#fff7ed",
-    borderColor: "#ea580c",
-  },
-  {
-    id: "3",
-    type: "webinar-owner",
-    title: "Understanding Sensory Processing in Young Children",
-    facilitator: "Developmental Hub Team",
-    date: "Tuesday 17 June 2025",
-    time: "12:00pm AEST",
-    price: 25,
-    spots: 100,
-    spotsLeft: 67,
-    duration: "60 min",
-    tag: "Webinar",
-    tagColor: "#3730a3",
-    tagText: "#ffffff",
-    cardBackground: "#eef2ff",
-    borderColor: "#3730a3",
-  },
-  {
-    id: "4",
-    type: "group",
-    title: "Motor Development — Supporting Your Child's Physical Growth",
-    facilitator: "Dr. Priya Sharma",
-    date: "Thursday 19 June 2025",
-    time: "7:00pm AEST",
-    price: 39,
-    spots: 8,
-    spotsLeft: 3,
-    duration: "45 min",
-    tag: "Small Group",
-    tagColor: "#c2410c",
-    tagText: "#ffffff",
-    cardBackground: "#fff7ed",
-    borderColor: "#ea580c",
-  },
-  {
-    id: "5",
-    type: "webinar-facilitator",
-    title: "Play Skills That Support Social Development",
-    facilitator: "Dr. Lena Kovacs",
-    date: "Monday 23 June 2025",
-    time: "11:00am AEST",
-    price: 79,
-    spots: 100,
-    spotsLeft: 44,
-    duration: "60 min",
-    tag: "Specialist Webinar",
-    tagColor: "#166534",
-    tagText: "#ffffff",
-    cardBackground: "#f0fdf4",
-    borderColor: "#16a34a",
-  },
-  {
-    id: "6",
-    type: "webinar-facilitator",
-    title: "Fine Motor Skills — Activities to Build Strength and Coordination",
-    facilitator: "Dr. Marcus Webb",
-    date: "Saturday 28 June 2025",
-    time: "9:00am AEST",
-    price: 79,
-    spots: 100,
-    spotsLeft: 81,
-    duration: "60 min",
-    tag: "Specialist Webinar",
-    tagColor: "#166534",
-    tagText: "#ffffff",
-    cardBackground: "#f0fdf4",
-    borderColor: "#16a34a",
-  },
-];
+export default async function SessionsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ type?: string }>;
+}) {
+  const { type } = await searchParams;
+  const supabase = await createClient();
 
-const tabs = [
-  { label: "All sessions", type: null },
-  { label: "Small groups", type: "group" },
-  { label: "Webinars", type: "webinar-owner" },
-  { label: "Specialist webinars", type: "webinar-facilitator" },
-];
+  let query = supabase
+    .from("sessions")
+    .select("*")
+    .eq("status", "scheduled")
+    .gte("scheduled_at", new Date().toISOString())
+    .order("scheduled_at", { ascending: true });
 
-function SessionsContent() {
-  const searchParams = useSearchParams();
-  const activeType = searchParams.get("type");
+  if (type) {
+    query = query.eq("session_type", type);
+  }
 
-  const filteredSessions = activeType
-    ? placeholderSessions.filter((s) => s.type === activeType)
-    : placeholderSessions;
+  const { data: sessions } = await query;
+
+  function getSessionStyle(sessionType: string) {
+    switch (sessionType) {
+      case "group":
+        return { tag: "Small Group", tagColor: "#c2410c", tagText: "#ffffff", cardBackground: "#fff7ed", borderColor: "#ea580c" };
+      case "webinar-owner":
+        return { tag: "Webinar", tagColor: "#3730a3", tagText: "#ffffff", cardBackground: "#eef2ff", borderColor: "#3730a3" };
+      case "webinar-facilitator":
+        return { tag: "Specialist Webinar", tagColor: "#166534", tagText: "#ffffff", cardBackground: "#f0fdf4", borderColor: "#16a34a" };
+      default:
+        return { tag: sessionType, tagColor: "#6b6880", tagText: "#ffffff", cardBackground: "#faf8f5", borderColor: "#e8e4de" };
+    }
+  }
+
+  const tabs = [
+    { label: "All sessions", type: null },
+    { label: "Small groups", type: "group" },
+    { label: "Webinars", type: "webinar-owner" },
+    { label: "Specialist webinars", type: "webinar-facilitator" },
+  ];
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
@@ -148,7 +66,7 @@ function SessionsContent() {
           {[
             { label: "Small Group", tagColor: "#c2410c", background: "#fff7ed", borderColor: "#ea580c" },
             { label: "Webinar", tagColor: "#3730a3", background: "#eef2ff", borderColor: "#3730a3" },
-            { label: "Specialist Webinar", tagColor: "#166534", background: "#f0fdf4", borderColor: "#16a34a" },
+            { label: "Specialist Webinar", tagColor: "#166634", background: "#f0fdf4", borderColor: "#16a34a" },
           ].map((item) => (
             <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: item.background, border: `1.5px solid ${item.borderColor}`, padding: "6px 14px", borderRadius: "8px" }}>
               <div style={{ width: "10px", height: "10px", borderRadius: "2px", backgroundColor: item.tagColor }} />
@@ -162,7 +80,7 @@ function SessionsContent() {
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 32px" }}>
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
           {tabs.map((tab) => {
-            const isActive = tab.type === activeType;
+            const isActive = tab.type === (type || null);
             return (
               <Link
                 key={tab.label}
@@ -187,78 +105,78 @@ function SessionsContent() {
 
       {/* Sessions grid */}
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 80px" }}>
-        {filteredSessions.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "60px 24px" }}>
-            <p style={{ fontSize: "16px", color: "#6b6880" }}>No sessions found for this category.</p>
+        {!sessions || sessions.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "60px 24px", backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de" }}>
+            <p style={{ fontSize: "16px", color: "#6b6880", marginBottom: "8px" }}>No upcoming sessions found.</p>
+            <p style={{ fontSize: "14px", color: "#b0acbf" }}>Check back soon — new sessions are added regularly.</p>
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
-            {filteredSessions.map((session) => (
-              <div
-                key={session.id}
-                style={{ backgroundColor: session.cardBackground, borderRadius: "16px", border: `1.5px solid ${session.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
-              >
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: "13px", fontWeight: 700, padding: "6px 14px", borderRadius: "8px", backgroundColor: session.tagColor, color: session.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
-                    {session.tag}
-                  </span>
-                  <span style={{ fontSize: "11px", color: session.spotsLeft <= 3 ? "#dc2626" : "#6b6880", fontWeight: session.spotsLeft <= 3 ? 600 : 400 }}>
-                    {session.spotsLeft} spot{session.spotsLeft !== 1 ? "s" : ""} left
-                  </span>
-                </div>
-
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: 400, color: "#1e1b2e", lineHeight: 1.4, margin: 0 }}>
-                  {session.title}
-                </h3>
-
-                <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>
-                  {session.facilitator}
-                </p>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#1e1b2e" }}>
-                    <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
-                      <rect x="1" y="2" width="12" height="11" rx="2"/>
-                      <path d="M1 6h12M5 1v2M9 1v2" strokeLinecap="round"/>
-                    </svg>
-                    {session.date} · {session.time}
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#6b6880" }}>
-                    <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
-                      <circle cx="7" cy="7" r="5.5"/>
-                      <path d="M7 4.5V7l1.5 1.5" strokeLinecap="round"/>
-                    </svg>
-                    {session.duration}
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "12px", borderTop: `1px solid ${session.borderColor}40`, marginTop: "auto" }}>
-                  <div>
-                    <span style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#1e1b2e" }}>
-                      ${session.price}
+            {sessions.map((session: any) => {
+              const style = getSessionStyle(session.session_type);
+              const spotsLeft = session.capacity;
+              return (
+                <div
+                  key={session.id}
+                  style={{ backgroundColor: style.cardBackground, borderRadius: "16px", border: `1.5px solid ${style.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span style={{ fontSize: "13px", fontWeight: 700, padding: "6px 14px", borderRadius: "8px", backgroundColor: style.tagColor, color: style.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
+                      {style.tag}
                     </span>
-                    <span style={{ fontSize: "11px", color: "#6b6880", marginLeft: "4px" }}>per family</span>
+                    <span style={{ fontSize: "11px", color: "#6b6880" }}>
+                      {spotsLeft} spots
+                    </span>
                   </div>
-                  <Link
-                    href={`/sessions/${session.id}`}
-                    style={{ backgroundColor: session.tagColor, color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
-                  >
-                    Book now
-                  </Link>
+
+                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: 400, color: "#1e1b2e", lineHeight: 1.4, margin: 0 }}>
+                    {session.title}
+                  </h3>
+
+                  {session.description && (
+                    <p style={{ fontSize: "13px", color: "#6b6880", margin: 0, lineHeight: 1.6 }}>
+                      {session.description.length > 100 ? session.description.substring(0, 100) + "..." : session.description}
+                    </p>
+                  )}
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#1e1b2e" }}>
+                      <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
+                        <rect x="1" y="2" width="12" height="11" rx="2"/>
+                        <path d="M1 6h12M5 1v2M9 1v2" strokeLinecap="round"/>
+                      </svg>
+                      {new Date(session.scheduled_at).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "long", year: "numeric" })}
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#6b6880" }}>
+                      <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
+                        <circle cx="7" cy="7" r="5.5"/>
+                        <path d="M7 4.5V7l1.5 1.5" strokeLinecap="round"/>
+                      </svg>
+                      {new Date(session.scheduled_at).toLocaleTimeString("en-AU", { hour: "2-digit", minute: "2-digit" })} · {session.duration_minutes} min
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "12px", borderTop: `1px solid ${style.borderColor}40`, marginTop: "auto" }}>
+                    <div>
+                      <span style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#1e1b2e" }}>
+                        ${(session.price_cents / 100).toFixed(0)}
+                      </span>
+                      <span style={{ fontSize: "11px", color: "#6b6880", marginLeft: "4px" }}>per family</span>
+                    </div>
+                    <Link
+                      href={`/sessions/${session.id}`}
+                      style={{ backgroundColor: style.tagColor, color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none" }}
+                    >
+                      Book now
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
-    </main>
-  );
-}
 
-export default function SessionsPage() {
-  return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }} />}>
-      <SessionsContent />
-    </Suspense>
+    </main>
   );
 }
