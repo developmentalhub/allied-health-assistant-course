@@ -1,82 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
-import { useRouter, usePathname } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Navbar() {
-  const [user, setUser] = useState<any>(null);
-  const [role, setRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, role, loading, signOut } = useAuth();
   const router = useRouter();
-  const pathname = usePathname();
-
-  async function loadUserAndRole() {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        setUser(session.user);
-        const storedRole = localStorage.getItem(`role_${session.user.id}`);
-        if (storedRole) {
-          setRole(storedRole);
-          setLoading(false);
-        }
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", session.user.id)
-          .single();
-        if (profile?.role) {
-          setRole(profile.role);
-          localStorage.setItem(`role_${session.user.id}`, profile.role);
-        }
-      } else {
-        setUser(null);
-        setRole(null);
-      }
-    } catch {
-      setUser(null);
-      setRole(null);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadUserAndRole();
-  }, [pathname]);
-
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", session.user.id)
-          .single();
-        if (profile?.role) {
-          setRole(profile.role);
-          localStorage.setItem(`role_${session.user.id}`, profile.role);
-        }
-      } else {
-        setUser(null);
-        setRole(null);
-      }
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   async function handleSignOut() {
-    if (user) {
-      localStorage.removeItem(`role_${user.id}`);
-    }
-    await supabase.auth.signOut();
-    setUser(null);
-    setRole(null);
+    await signOut();
     router.push("/");
   }
 
