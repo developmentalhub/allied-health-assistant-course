@@ -6,7 +6,6 @@ import { supabase } from "@/lib/supabase";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -15,15 +14,23 @@ export default function Navbar() {
 
   async function loadUserAndRole() {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setUser(user);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setUser(session.user);
+        const storedRole = localStorage.getItem(`role_${session.user.id}`);
+        if (storedRole) {
+          setRole(storedRole);
+          setLoading(false);
+        }
         const { data: profile } = await supabase
           .from("profiles")
           .select("role")
-          .eq("id", user.id)
+          .eq("id", session.user.id)
           .single();
-        setRole(profile?.role || "parent");
+        if (profile?.role) {
+          setRole(profile.role);
+          localStorage.setItem(`role_${session.user.id}`, profile.role);
+        }
       } else {
         setUser(null);
         setRole(null);
@@ -49,7 +56,10 @@ export default function Navbar() {
           .select("role")
           .eq("id", session.user.id)
           .single();
-        setRole(profile?.role || "parent");
+        if (profile?.role) {
+          setRole(profile.role);
+          localStorage.setItem(`role_${session.user.id}`, profile.role);
+        }
       } else {
         setUser(null);
         setRole(null);
@@ -61,6 +71,9 @@ export default function Navbar() {
   }, []);
 
   async function handleSignOut() {
+    if (user) {
+      localStorage.removeItem(`role_${user.id}`);
+    }
     await supabase.auth.signOut();
     setUser(null);
     setRole(null);
