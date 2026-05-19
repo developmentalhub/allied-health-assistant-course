@@ -7,6 +7,7 @@ export default async function AdminPage() {
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
+  console.log("ADMIN PAGE - USER:", user?.email, user?.id);
   if (!user) redirect("/login?redirect=/admin");
 
   const { data: profile } = await supabase
@@ -15,6 +16,7 @@ export default async function AdminPage() {
     .eq("id", user.id)
     .single();
 
+  console.log("ADMIN PAGE - PROFILE:", profile);
   if (profile?.role !== "admin") redirect("/dashboard");
 
   const { data: sessions } = await supabase
@@ -45,7 +47,6 @@ export default async function AdminPage() {
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 24px 80px" }}>
 
-        {/* Header */}
         <div style={{ marginBottom: "40px" }}>
           <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", marginBottom: "8px" }}>
             Admin Dashboard
@@ -58,7 +59,6 @@ export default async function AdminPage() {
           </p>
         </div>
 
-        {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "48px" }}>
           {[
             { label: "Total sessions", value: sessions?.length || 0, color: "#3730a3", bg: "#eef2ff" },
@@ -75,12 +75,11 @@ export default async function AdminPage() {
           ))}
         </div>
 
-        {/* Quick actions */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "48px" }}>
           {[
-            { label: "Create new session", href: "/admin/sessions/new", color: "#3730a3", bg: "#3730a3" },
-            { label: "Manage facilitators", href: "/admin/facilitators", color: "#0f766e", bg: "#0f766e" },
-            { label: "View all bookings", href: "/admin/bookings", color: "#c2410c", bg: "#c2410c" },
+            { label: "Create new session", href: "/admin/sessions/new", bg: "#3730a3" },
+            { label: "Manage facilitators", href: "/admin/facilitators", bg: "#0f766e" },
+            { label: "View all bookings", href: "/admin/bookings", bg: "#c2410c" },
           ].map((action) => (
             <Link
               key={action.label}
@@ -97,7 +96,6 @@ export default async function AdminPage() {
           ))}
         </div>
 
-        {/* Sessions list */}
         <div style={{ marginBottom: "48px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "24px", fontWeight: 300, color: "#1e1b2e", margin: 0 }}>
@@ -158,7 +156,6 @@ export default async function AdminPage() {
           )}
         </div>
 
-        {/* Pending facilitator approvals */}
         {pendingFacilitators && pendingFacilitators.length > 0 && (
           <div>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "24px", fontWeight: 300, color: "#1e1b2e", marginBottom: "20px" }}>
