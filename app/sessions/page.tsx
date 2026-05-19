@@ -14,7 +14,6 @@ export default async function SessionsPage({
     .from("sessions")
     .select("*")
     .eq("status", "scheduled")
-    .gte("scheduled_at", new Date().toISOString())
     .order("scheduled_at", { ascending: true });
 
   if (type) {
@@ -34,6 +33,29 @@ export default async function SessionsPage({
       default:
         return { tag: sessionType, tagColor: "#6b6880", tagText: "#ffffff", cardBackground: "#faf8f5", borderColor: "#e8e4de" };
     }
+  }
+
+  function formatSessionDate(dateString: string) {
+    const date = new Date(dateString);
+    // Add 10 hours to convert UTC to AEST
+    const aestDate = new Date(date.getTime() + 10 * 60 * 60 * 1000);
+    return aestDate.toLocaleDateString("en-AU", {
+      weekday: "short",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  }
+
+  function formatSessionTime(dateString: string) {
+    const date = new Date(dateString);
+    // Add 10 hours to convert UTC to AEST
+    const aestDate = new Date(date.getTime() + 10 * 60 * 60 * 1000);
+    return aestDate.toLocaleTimeString("en-AU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }) + " AEST";
   }
 
   const tabs = [
@@ -66,7 +88,7 @@ export default async function SessionsPage({
           {[
             { label: "Small Group", tagColor: "#c2410c", background: "#fff7ed", borderColor: "#ea580c" },
             { label: "Webinar", tagColor: "#3730a3", background: "#eef2ff", borderColor: "#3730a3" },
-            { label: "Specialist Webinar", tagColor: "#166634", background: "#f0fdf4", borderColor: "#16a34a" },
+            { label: "Specialist Webinar", tagColor: "#166534", background: "#f0fdf4", borderColor: "#16a34a" },
           ].map((item) => (
             <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: item.background, border: `1.5px solid ${item.borderColor}`, padding: "6px 14px", borderRadius: "8px" }}>
               <div style={{ width: "10px", height: "10px", borderRadius: "2px", backgroundColor: item.tagColor }} />
@@ -80,7 +102,7 @@ export default async function SessionsPage({
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 32px" }}>
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
           {tabs.map((tab) => {
-            const isActive = tab.type === (type || null);
+            const isActive = (!type && !tab.type) || tab.type === type;
             return (
               <Link
                 key={tab.label}
@@ -114,7 +136,6 @@ export default async function SessionsPage({
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
             {sessions.map((session: any) => {
               const style = getSessionStyle(session.session_type);
-              const spotsLeft = session.capacity;
               return (
                 <div
                   key={session.id}
@@ -125,7 +146,7 @@ export default async function SessionsPage({
                       {style.tag}
                     </span>
                     <span style={{ fontSize: "11px", color: "#6b6880" }}>
-                      {spotsLeft} spots
+                      {session.capacity} spots
                     </span>
                   </div>
 
@@ -145,14 +166,14 @@ export default async function SessionsPage({
                         <rect x="1" y="2" width="12" height="11" rx="2"/>
                         <path d="M1 6h12M5 1v2M9 1v2" strokeLinecap="round"/>
                       </svg>
-                      {new Date(session.scheduled_at).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "long", year: "numeric" })}
+                      {formatSessionDate(session.scheduled_at)}
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#6b6880" }}>
                       <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
                         <circle cx="7" cy="7" r="5.5"/>
                         <path d="M7 4.5V7l1.5 1.5" strokeLinecap="round"/>
                       </svg>
-                      {new Date(session.scheduled_at).toLocaleTimeString("en-AU", { hour: "2-digit", minute: "2-digit" })} · {session.duration_minutes} min
+                      {formatSessionTime(session.scheduled_at)} · {session.duration_minutes} min
                     </div>
                   </div>
 
