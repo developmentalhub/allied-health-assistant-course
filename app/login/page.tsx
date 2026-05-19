@@ -9,7 +9,7 @@ import { Suspense } from "react";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/dashboard";
+  const redirectTo = searchParams.get("redirect");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,8 +32,33 @@ function LoginForm() {
       return;
     }
 
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
+      return;
+    }
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    const role = profile?.role || "parent";
+
     router.refresh();
-    router.push(redirectTo);
+
+    if (redirectTo) {
+      router.push(redirectTo);
+    } else if (role === "admin") {
+      router.push("/admin");
+    } else if (role === "facilitator") {
+      router.push("/facilitator-hub");
+    } else {
+      router.push("/dashboard");
+    }
   }
 
   return (
@@ -113,7 +138,7 @@ function LoginForm() {
 
           <p style={{ textAlign: "center", fontSize: "14px", color: "#6b6880", marginTop: "24px" }}>
             Don't have an account?{" "}
-            <Link href={`/signup?redirect=${redirectTo}`} style={{ color: "#3730a3", fontWeight: 500 }}>
+            <Link href={`/signup${redirectTo ? `?redirect=${redirectTo}` : ""}`} style={{ color: "#3730a3", fontWeight: 500 }}>
               Join free
             </Link>
           </p>
