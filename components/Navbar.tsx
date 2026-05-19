@@ -14,25 +14,33 @@ export default function Navbar() {
   const pathname = usePathname();
 
   async function loadUserAndRole() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      setUser(user);
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-      setRole(profile?.role || "parent");
-    } else {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUser(user);
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+        setRole(profile?.role || "parent");
+      } else {
+        setUser(null);
+        setRole(null);
+      }
+    } catch {
       setUser(null);
       setRole(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
     loadUserAndRole();
+  }, [pathname]);
 
+  useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
         setUser(session.user);
@@ -50,7 +58,7 @@ export default function Navbar() {
     });
 
     return () => subscription.unsubscribe();
-  }, [pathname]);
+  }, []);
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -61,7 +69,7 @@ export default function Navbar() {
 
   return (
     <nav style={{ position: "sticky", top: 0, zIndex: 50, backgroundColor: "rgba(250,248,245,0.9)", backdropFilter: "blur(8px)", borderBottom: "1px solid #e8e4de" }}>
-      <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "64px" }}>
+      <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "64px" }}>
 
         {/* Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
@@ -95,7 +103,7 @@ export default function Navbar() {
         {/* Desktop auth buttons */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           {loading ? (
-            <div style={{ width: "80px", height: "32px" }} />
+            <div style={{ width: "120px", height: "32px" }} />
           ) : user ? (
             <>
               {role === "admin" && (
