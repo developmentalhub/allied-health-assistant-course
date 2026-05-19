@@ -46,9 +46,7 @@ function LoginForm() {
       .eq("id", user.id)
       .single();
 
-    const role = profile?.role || "parent";
-
-    router.refresh();
+   const role = profile?.role || "parent";
 
     if (redirectTo) {
       router.push(redirectTo);
