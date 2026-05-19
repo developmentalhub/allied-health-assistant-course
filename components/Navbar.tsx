@@ -8,15 +8,38 @@ import { useRouter } from "next/navigation";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [role, setRole] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
+    async function loadUser() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setUser(session.user);
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .single();
+        setRole(profile?.role || "parent");
+      }
+    }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    loadUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        setUser(session.user);
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .single();
+        setRole(profile?.role || "parent");
+      } else {
+        setUser(null);
+        setRole(null);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -64,12 +87,30 @@ export default function Navbar() {
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           {user ? (
             <>
-              <Link
-                href="/dashboard"
-                style={{ fontSize: "14px", fontWeight: 500, color: "#3730a3", textDecoration: "none" }}
-              >
-                My dashboard
-              </Link>
+              {role === "admin" && (
+                <Link
+                  href="/admin"
+                  style={{ fontSize: "14px", fontWeight: 500, color: "#c2410c", textDecoration: "none" }}
+                >
+                  Admin
+                </Link>
+              )}
+              {(role === "facilitator" || role === "admin") && (
+                <Link
+                  href="/facilitator-hub"
+                  style={{ fontSize: "14px", fontWeight: 500, color: "#0f766e", textDecoration: "none" }}
+                >
+                  Facilitator Hub
+                </Link>
+              )}
+              {role === "parent" && (
+                <Link
+                  href="/dashboard"
+                  style={{ fontSize: "14px", fontWeight: 500, color: "#3730a3", textDecoration: "none" }}
+                >
+                  My dashboard
+                </Link>
+              )}
               <button
                 onClick={handleSignOut}
                 style={{ fontSize: "14px", fontWeight: 500, backgroundColor: "#3730a3", color: "white", padding: "8px 16px", borderRadius: "999px", border: "none", cursor: "pointer" }}
@@ -96,6 +137,27 @@ export default function Navbar() {
         </div>
 
       </div>
+
+      {/* Mobile menu button */}
+      <div style={{ position: "absolute", right: "16px", top: "16px" }}>
+        <button
+          className="md:hidden"
+          onClick={() => setMenuOpen(!menuOpen)}
+          style={{ background: "none", border: "none", cursor: "pointer", padding: "4px" }}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? (
+            <svg width="20" height="20" fill="none" stroke="#6b6880" strokeWidth="2">
+              <path d="M4 4l12 12M16 4L4 16" strokeLinecap="round" />
+            </svg>
+          ) : (
+            <svg width="20" height="20" fill="none" stroke="#6b6880" strokeWidth="2">
+              <path d="M3 6h14M3 10h14M3 14h14" strokeLinecap="round" />
+            </svg>
+          )}
+        </button>
+      </div>
+
     </nav>
   );
 }
