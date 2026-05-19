@@ -3,31 +3,37 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const pathname = usePathname();
+
+  async function loadUserAndRole() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      setUser(user);
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+      setRole(profile?.role || "parent");
+    } else {
+      setUser(null);
+      setRole(null);
+    }
+    setLoading(false);
+  }
 
   useEffect(() => {
-    async function loadUser() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        setUser(session.user);
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", session.user.id)
-          .single();
-        setRole(profile?.role || "parent");
-      }
-    }
+    loadUserAndRole();
 
-    loadUser();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
         setUser(session.user);
         const { data: profile } = await supabase
@@ -40,13 +46,16 @@ export default function Navbar() {
         setUser(null);
         setRole(null);
       }
+      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [pathname]);
 
   async function handleSignOut() {
     await supabase.auth.signOut();
+    setUser(null);
+    setRole(null);
     router.push("/");
   }
 
@@ -85,12 +94,14 @@ export default function Navbar() {
 
         {/* Desktop auth buttons */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          {user ? (
+          {loading ? (
+            <div style={{ width: "80px", height: "32px" }} />
+          ) : user ? (
             <>
               {role === "admin" && (
                 <Link
                   href="/admin"
-                  style={{ fontSize: "14px", fontWeight: 500, color: "#c2410c", textDecoration: "none" }}
+                  style={{ fontSize: "14px", fontWeight: 600, color: "#c2410c", textDecoration: "none", backgroundColor: "#fff7ed", padding: "6px 14px", borderRadius: "999px", border: "1px solid #fed7aa" }}
                 >
                   Admin
                 </Link>
@@ -137,27 +148,6 @@ export default function Navbar() {
         </div>
 
       </div>
-
-      {/* Mobile menu button */}
-      <div style={{ position: "absolute", right: "16px", top: "16px" }}>
-        <button
-          className="md:hidden"
-          onClick={() => setMenuOpen(!menuOpen)}
-          style={{ background: "none", border: "none", cursor: "pointer", padding: "4px" }}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? (
-            <svg width="20" height="20" fill="none" stroke="#6b6880" strokeWidth="2">
-              <path d="M4 4l12 12M16 4L4 16" strokeLinecap="round" />
-            </svg>
-          ) : (
-            <svg width="20" height="20" fill="none" stroke="#6b6880" strokeWidth="2">
-              <path d="M3 6h14M3 10h14M3 14h14" strokeLinecap="round" />
-            </svg>
-          )}
-        </button>
-      </div>
-
     </nav>
   );
 }
