@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+
 const supabase = createClient();
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -21,10 +22,14 @@ function LoginForm() {
     setLoading(true);
     setError("");
 
+    console.log('Attempting sign in...')
+
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
+    console.log('Sign in result:', signInError)
 
     if (signInError) {
       setError(signInError.message);
@@ -32,7 +37,11 @@ function LoginForm() {
       return;
     }
 
+    console.log('Getting user...')
+
     const { data: { user } } = await supabase.auth.getUser();
+
+    console.log('User:', user?.email)
 
     if (!user) {
       setError("Something went wrong. Please try again.");
@@ -46,7 +55,9 @@ function LoginForm() {
       .eq("id", user.id)
       .single();
 
-   const role = profile?.role || "parent";
+    const role = profile?.role || "parent";
+
+    console.log('Role:', role)
 
     if (redirectTo) {
       router.push(redirectTo);
@@ -83,9 +94,9 @@ function LoginForm() {
         </div>
 
         <div style={{ background: "white", borderRadius: "16px", border: "1px solid #e8e4de", padding: "40px 48px", boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
-          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: "24px" }}>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
               <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>
                 Email address
               </label>
@@ -94,12 +105,11 @@ function LoginForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="jane@example.com"
-                required
-                style={{ width: "100%", padding: "10px 16px", borderRadius: "12px", border: "1px solid #e8e4de", fontSize: "14px", color: "#1e1b2e", outline: "none", boxSizing: "border-box" }}
+                style={{ width: "100%", padding: "10px 16px", borderRadius: "12px", border: "1px solid #e8e4de", fontSize: "14px", color: "#1e1b2e", outline: "none", boxSizing: "border-box" as const }}
               />
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>
                   Password
@@ -113,8 +123,7 @@ function LoginForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Your password"
-                required
-                style={{ width: "100%", padding: "10px 16px", borderRadius: "12px", border: "1px solid #e8e4de", fontSize: "14px", color: "#1e1b2e", outline: "none", boxSizing: "border-box" }}
+                style={{ width: "100%", padding: "10px 16px", borderRadius: "12px", border: "1px solid #e8e4de", fontSize: "14px", color: "#1e1b2e", outline: "none", boxSizing: "border-box" as const }}
               />
             </div>
 
@@ -125,14 +134,14 @@ function LoginForm() {
             )}
 
             <button
-              type="submit"
+              onClick={handleLogin}
               disabled={loading}
               style={{ marginTop: "8px", width: "100%", backgroundColor: "#3730a3", color: "white", padding: "12px", borderRadius: "999px", fontSize: "14px", fontWeight: 500, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.6 : 1 }}
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
 
-          </form>
+          </div>
 
           <p style={{ textAlign: "center", fontSize: "14px", color: "#6b6880", marginTop: "24px" }}>
             Don't have an account?{" "}
