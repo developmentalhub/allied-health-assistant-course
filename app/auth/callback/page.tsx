@@ -3,13 +3,13 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
 
   useEffect(() => {
     async function handleCallback() {
-      // This reads the token from the URL hash and creates a real session
       const { data: { session }, error } = await supabase.auth.getSession();
 
       if (session) {
@@ -29,8 +29,7 @@ export default function AuthCallbackPage() {
           router.push("/dashboard");
         }
       } else {
-        // If no session yet, listen for the auth state change
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session: Session | null) => {
           if (event === "SIGNED_IN" && session) {
             subscription.unsubscribe();
 
