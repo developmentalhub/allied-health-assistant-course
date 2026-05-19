@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/lib/auth-context";
 
 export const metadata: Metadata = {
   title: "Developmental Hub — Expert Group Support for Families",
@@ -26,7 +27,11 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body style={{ fontFamily: "var(--font-sans)", color: "#1e1b2e", backgroundColor: "#faf8f5" }} className="antialiased">{children}</body>
+      <body style={{ fontFamily: "var(--font-sans)", color: "#1e1b2e", backgroundColor: "#faf8f5" }} className="antialiased">
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }
