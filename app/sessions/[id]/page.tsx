@@ -30,15 +30,15 @@ export default async function SessionDetailPage({ params }: Props) {
   const { data, error } = await supabase
     .from('sessions')
     .select(`
-      *,
-      profiles (
-        id,
-        full_name,
-        avatar_url,
-        bio,
-        role
-      )
-    `)
+  *,
+  profiles!sessions_facilitator_id_fkey (
+    id,
+    full_name,
+    avatar_url,
+    bio,
+    role
+  )
+`)
     .eq('id', id)
     .single()
 
