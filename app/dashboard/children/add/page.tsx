@@ -52,7 +52,7 @@ export default function AddChildPage() {
     });
 
     if (insertError) {
-      setError("Something went wrong. Please try again.");
+      setError(insertError.message);
       setSaving(false);
       return;
     }
@@ -127,7 +127,7 @@ export default function AddChildPage() {
 
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>
-                    Date of birth
+                    Date of birth <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
                   </label>
                   <input
                     type="date"
@@ -166,7 +166,9 @@ export default function AddChildPage() {
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                  <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>Goal 1</label>
+                  <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>
+                    Goal 1 <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
+                  </label>
                   <input
                     type="text"
                     value={goalOne}
@@ -176,7 +178,9 @@ export default function AddChildPage() {
                   />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                  <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>Goal 2</label>
+                  <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>
+                    Goal 2 <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
+                  </label>
                   <input
                     type="text"
                     value={goalTwo}
