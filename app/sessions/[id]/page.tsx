@@ -24,14 +24,20 @@ export default async function SessionDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  // Query 2: Fetch the facilitator profile separately
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("name")
-    .eq("id", session.facilitator_id)
-    .single();
-
-  const facilitatorName = profile?.name || "Unknown Facilitator";
+  // Query 2: Fetch the facilitator profile separately only if an ID exists
+  let facilitatorName = "Our Developmental Team";
+  
+  if (session.facilitator_id) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("name")
+      .eq("id", session.facilitator_id)
+      .single();
+      
+    if (profile?.name) {
+      facilitatorName = profile.name;
+    }
+  }
 
   // Format price and date safely
   const priceInDollars = (session.price_cents / 100).toFixed(2);
