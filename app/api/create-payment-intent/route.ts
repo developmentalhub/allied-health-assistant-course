@@ -9,11 +9,8 @@ export async function POST(request: NextRequest) {
   try {
     const { sessionId } = await request.json();
 
-    // Log the received ID to check if it is being passed from the frontend
-    console.log("API received sessionId:", sessionId);
-
     if (!sessionId) {
-      return NextResponse.json({ error: "Session ID is missing" }, { status: 400 });
+      return NextResponse.json({ error: "Session ID is required" }, { status: 400 });
     }
 
     const supabase = await createClient();
@@ -23,16 +20,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    // Attempt to fetch the session
+    // Attempt to fetch the session using the primary ID
     const { data: session, error: sessionError } = await supabase
       .from("sessions")
       .select("*")
       .eq("id", sessionId)
       .single();
 
-    // If there is an error or no data, log the error for debugging
     if (sessionError || !session) {
-      console.error("Database lookup failed for ID:", sessionId, "Error:", sessionError);
+      console.error("Session lookup error:", sessionError);
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
     }
 
@@ -78,6 +74,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
     console.error("Payment intent error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Internal server error" }, { status: 500 });
   }
 }
