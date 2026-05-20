@@ -5,7 +5,6 @@ import { supabase } from "@/lib/supabase";
 import { useParams } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import MainLayout from "@/components/MainLayout";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -17,14 +16,7 @@ function CheckoutForm({ sessionId, price }: { sessionId: string, price: number }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    
-    // Debugging step
-    console.log("Stripe state:", { stripe: !!stripe, elements: !!elements });
-
-    if (!stripe || !elements) {
-      setError("Payment system is still loading. Please wait a moment.");
-      return;
-    }
+    if (!stripe || !elements) return;
 
     setLoading(true);
     setError("");
@@ -98,29 +90,25 @@ export default function BookingPage() {
       const paymentData = await res.json();
       if (paymentData.clientSecret) {
         setClientSecret(paymentData.clientSecret);
-      } else {
-        setError("Failed to start payment.");
       }
       setLoading(false);
     }
     init();
   }, [id]);
 
-  if (loading) return <MainLayout><div className="p-10 text-center">Loading...</div></MainLayout>;
-  if (error) return <MainLayout><div className="p-10 text-center text-red-600">{error}</div></MainLayout>;
+  if (loading) return <div className="p-10 text-center">Loading...</div>;
+  if (error) return <div className="p-10 text-center text-red-600">{error}</div>;
 
   return (
-    <MainLayout>
-      <main className="max-w-xl mx-auto py-12 px-6">
-        <h1 className="text-3xl font-bold mb-6">{session?.title}</h1>
-        {clientSecret ? (
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <CheckoutForm sessionId={id as string} price={session?.price_cents} />
-          </Elements>
-        ) : (
-          <p>Loading payment options...</p>
-        )}
-      </main>
-    </MainLayout>
+    <main className="max-w-xl mx-auto py-12 px-6">
+      <h1 className="text-3xl font-bold mb-6">{session?.title}</h1>
+      {clientSecret ? (
+        <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <CheckoutForm sessionId={id as string} price={session?.price_cents} />
+        </Elements>
+      ) : (
+        <p>Loading payment options...</p>
+      )}
+    </main>
   );
 }
