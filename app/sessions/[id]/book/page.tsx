@@ -50,20 +50,22 @@ function CheckoutForm({ sessionId, price }: { sessionId: string, price: number }
 }
 
 export default function BookingPage({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = use(params);
-  const id = resolvedParams.id;
+  // 1. Properly wait for params
+  const { id } = use(params);
   
-  const router = useRouter();
   const [session, setSession] = useState<any>(null);
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!id) return;
+    // 2. Stop if id is missing or not a proper UUID
+    if (!id || id === "undefined" || id.length < 10) {
+      return;
+    }
 
     async function setup() {
-      // 1. Fetch Session
+      // Fetch Session
       const { data: sessionData, error: sessionError } = await supabase
         .from("sessions")
         .select("*")
@@ -71,13 +73,15 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
         .single();
 
       if (sessionError || !sessionData) {
-        setError("Session not found. Please check the URL.");
+        console.error("Supabase fetch error for ID:", id, sessionError);
+        setError("Session not found in database.");
         setLoading(false);
         return;
       }
+      
       setSession(sessionData);
 
-      // 2. Create Payment Intent
+      // Create Payment Intent
       const response = await fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -95,7 +99,7 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
     setup();
   }, [id]);
 
-  if (loading) return <div>Loading booking details...</div>;
+  if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (
