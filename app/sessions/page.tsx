@@ -179,7 +179,7 @@ export default async function SessionsPage({
                   key={session.id}
                   style={{ backgroundColor: style.cardBackground, borderRadius: "16px", border: `1.5px solid ${style.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", justifyBetween: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "8px", backgroundColor: style.tagBg, color: style.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
                       {style.tag}
                     </span>
