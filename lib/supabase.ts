@@ -1,7 +1,5 @@
 import { createBrowserClient } from '@supabase/ssr'
 
-// Singleton — prevents re-creating the client on every render,
-// which breaks onAuthStateChange listeners
 let client: ReturnType<typeof createBrowserClient> | null = null
 
 export function createClient() {
@@ -13,5 +11,4 @@ export function createClient() {
   return client
 }
 
-// Named export for backward compatibility with existing files
 export const supabase = createClient()

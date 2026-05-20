@@ -1,8 +1,8 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
-import type { User, Session } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase";
+import type { User, Session, AuthChangeEvent } from "@supabase/supabase-js";
 
 type AuthContextType = {
   user: User | null;
@@ -24,6 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   async function fetchRole(userId: string) {
+    const supabase = createClient()
     const { data: profile } = await supabase
       .from("profiles")
       .select("role")
@@ -33,8 +34,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
+    const supabase = createClient()
+
     supabase.auth.getSession().then(async ({ data: { session } }: { data: { session: Session | null } }) => {
-      console.log('getSession result:', session)
       if (session?.user) {
         setUser(session.user);
         const r = await fetchRole(session.user.id);
@@ -43,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: import("@supabase/supabase-js").AuthChangeEvent, session: import("@supabase/supabase-js").Session | null) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session: Session | null) => {
       if (session?.user) {
         setUser(session.user);
         const r = await fetchRole(session.user.id);
@@ -59,9 +61,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function signOut() {
+    const supabase = createClient()
     await supabase.auth.signOut();
     setUser(null);
     setRole(null);
+    window.location.href = "/";
   }
 
   return (
