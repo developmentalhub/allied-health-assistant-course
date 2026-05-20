@@ -28,8 +28,9 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (sessionError || !session) {
-      console.error("Database lookup failed for ID:", sessionId);
-      return NextResponse.json({ error: `Session not found: ${sessionId}` }, { status: 404 });
+      return NextResponse.json({ 
+        error: `Session not found. Attempted to search for ID: ${sessionId}. Error details: ${JSON.stringify(sessionError)}` 
+      }, { status: 404 });
     }
 
     const { data: profile } = await supabase
