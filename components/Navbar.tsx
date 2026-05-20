@@ -43,13 +43,13 @@ export default function Navbar() {
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           {!loading && user ? (
             <>
-              {role === "admin" && (
+              {(role === "admin" || role === "superadmin") && (
                 <Link href="/admin" style={{ color: "#c2410c", fontWeight: 600, fontSize: "14px" }}>Admin</Link>
               )}
-              {role === "facilitator" && (
+              {(role === "facilitator" || role === "superadmin") && (
                 <Link href="/facilitator-hub" style={{ color: "#0f766e", fontWeight: 500, fontSize: "14px" }}>Facilitator Hub</Link>
               )}
-              {role === "parent" && (
+              {(role === "parent" || role === "superadmin") && (
                 <Link href="/dashboard" style={{ color: "#3730a3", fontWeight: 500, fontSize: "14px" }}>My dashboard</Link>
               )}
               <button
