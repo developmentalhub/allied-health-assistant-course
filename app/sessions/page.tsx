@@ -16,7 +16,7 @@ export default async function SessionsPage({
     .eq("status", "scheduled")
     .order("scheduled_at", { ascending: true });
 
-  // Map the URL filter parameters straight to your actual database string values
+  // Map the URL filter parameters to database strings
   if (currentType) {
     if (currentType === "group") {
       query = query.eq("session_type", "Small Group");
@@ -24,7 +24,7 @@ export default async function SessionsPage({
       query = query.eq("session_type", "Webinar");
     } else if (currentType === "webinar-facilitator") {
       query = query.eq("session_type", "Specialist Webinar");
-    } else if (currentType === "child-development") {
+    } else if (currentType === "parent-support") {
       query = query.eq("session_type", "Child Development");
     }
   }
@@ -40,7 +40,6 @@ export default async function SessionsPage({
     countMap[c.session_id] = parseInt(c.booking_count);
   });
 
-  // Mapped to match your exact database text entries
   function getSessionStyle(sessionType: string) {
     switch (sessionType) {
       case "Small Group":
@@ -72,7 +71,7 @@ export default async function SessionsPage({
         };
       case "Child Development":
         return { 
-          tag: "Child Development", 
+          tag: "Parent Support", 
           tagBg: "#fdf2f8", 
           tagText: "#9d174d", 
           cardBackground: "#ffffff", 
@@ -117,22 +116,15 @@ export default async function SessionsPage({
     { label: "Small groups", type: "group" },
     { label: "Webinars", type: "webinar-owner" },
     { label: "Specialist webinars", type: "webinar-facilitator" },
-    { label: "Child development", type: "child-development" },
+    { label: "Parent support", type: "parent-support" },
   ];
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "60px 24px 40px" }}>
-        <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", marginBottom: "12px" }}>
-          Upcoming sessions
-        </p>
         <h1 style={{ fontFamily: "var(--font-display)", fontSize: "40px", fontWeight: 300, color: "#1e1b2e", marginBottom: "16px" }}>
           Find your session
         </h1>
-        <p style={{ fontSize: "16px", color: "#6b6880", maxWidth: "520px", lineHeight: 1.7, fontWeight: 300 }}>
-          Browse upcoming small group sessions and webinars. All sessions are live, online, and led by vetted specialists.
-        </p>
       </section>
 
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 24px" }}>
@@ -141,7 +133,7 @@ export default async function SessionsPage({
             { label: "Small Group", tagColor: "#c2410c", background: "#fff7ed", borderColor: "#ea580c" },
             { label: "Webinar", tagColor: "#3730a3", background: "#eef2ff", borderColor: "#3730a3" },
             { label: "Specialist Webinar", tagColor: "#166534", background: "#f0fdf4", borderColor: "#16a34a" },
-            { label: "Child Development", tagColor: "#9d174d", background: "#fdf2f8", borderColor: "#db2777" },
+            { label: "Parent Support", tagColor: "#9d174d", background: "#fdf2f8", borderColor: "#db2777" },
           ].map((item) => (
             <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: item.background, border: `1.5px solid ${item.borderColor}`, padding: "6px 14px", borderRadius: "8px" }}>
               <div style={{ width: "10px", height: "10px", borderRadius: "2px", backgroundColor: item.tagColor }} />
@@ -160,13 +152,9 @@ export default async function SessionsPage({
                 key={tab.label}
                 href={tab.type ? `/sessions?type=${tab.type}` : "/sessions"}
                 style={{
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  padding: "8px 16px",
-                  borderRadius: "999px",
+                  fontSize: "13px", fontWeight: 500, padding: "8px 16px", borderRadius: "999px",
                   border: isActive ? "1.5px solid #3730a3" : "1px solid #e8e4de",
-                  color: isActive ? "#3730a3" : "#6b6880",
-                  textDecoration: "none",
+                  color: isActive ? "#3730a3" : "#6b6880", textDecoration: "none",
                   backgroundColor: isActive ? "#eef2ff" : "white",
                 }}
               >
@@ -180,8 +168,7 @@ export default async function SessionsPage({
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 80px" }}>
         {!sessions || sessions.length === 0 ? (
           <div style={{ textAlign: "center", padding: "60px 24px", backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de" }}>
-            <p style={{ fontSize: "16px", color: "#6b6880", marginBottom: "8px" }}>No upcoming sessions found.</p>
-            <p style={{ fontSize: "14px", color: "#b0acbf" }}>Check back soon, new sessions are added regularly.</p>
+            <p style={{ fontSize: "16px", color: "#6b6880" }}>No upcoming sessions found.</p>
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
@@ -191,63 +178,18 @@ export default async function SessionsPage({
               const totalCapacity = session.capacity || style.capacityFallback;
               const spotsLeft = totalCapacity - booked;
               const isFull = spotsLeft <= 0;
-              const isAlmostFull = spotsLeft <= 3 && spotsLeft > 0;
 
               return (
-                <div
-                  key={session.id}
-                  style={{ backgroundColor: style.cardBackground, borderRadius: "16px", border: `1.5px solid ${style.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
-                >
+                <div key={session.id} style={{ backgroundColor: style.cardBackground, borderRadius: "16px", border: `1.5px solid ${style.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px" }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "8px", backgroundColor: style.tagBg, color: style.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "8px", backgroundColor: style.tagBg, color: style.tagText, textTransform: "uppercase" }}>
                       {style.tag}
                     </span>
-                    <span style={{ fontSize: "11px", color: isFull ? "#dc2626" : isAlmostFull ? "#d97706" : "#6b6880", fontWeight: isFull || isAlmostFull ? 600 : 400 }}>
-                      {isFull ? "Full" : `${spotsLeft} spot${spotsLeft !== 1 ? "s" : ""} left`}
-                    </span>
                   </div>
-
-                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: 400, color: "#1e1b2e", lineHeight: 1.4, margin: 0 }}>
-                    {session.title}
-                  </h3>
-
-                  {session.description && (
-                    <p style={{ fontSize: "13px", color: "#6b6880", margin: 0, lineHeight: 1.6 }}>
-                      {session.description.length > 100 ? session.description.substring(0, 100) + "..." : session.description}
-                    </p>
-                  )}
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#1e1b2e" }}>
-                      <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
-                        <rect x="1" y="2" width="12" height="11" rx="2"/>
-                        <path d="M1 6h12M5 1v2M9 1v2" strokeLinecap="round"/>
-                      </svg>
-                      {formatSessionDate(session.scheduled_at)}
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#6b6880" }}>
-                      <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
-                        <circle cx="7" cy="7" r="5.5"/>
-                        <path d="M7 4.5V7l1.5 1.5" strokeLinecap="round"/>
-                      </svg>
-                      {formatSessionTime(session.scheduled_at)} · {session.duration_minutes} min
-                    </div>
-                  </div>
-
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "12px", borderTop: `1px solid ${style.borderColor}40`, marginTop: "auto" }}>
-                    <div>
-                      <span style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#1e1b2e" }}>
-                        ${(session.price_cents / 100).toFixed(0)}
-                      </span>
-                      <span style={{ fontSize: "11px", color: "#6b6880", marginLeft: "4px" }}>per family</span>
-                    </div>
-                    <Link
-                      href={`/sessions/${session.id}`}
-                      style={{ backgroundColor: isFull ? "#e8e4de" : "#3730a3", color: isFull ? "#6b6880" : "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none", pointerEvents: isFull ? "none" : "auto" }}
-                    >
-                      {isFull ? "Full" : "Book now"}
-                    </Link>
-                  </div>
+                  <h3 style={{ fontSize: "17px", margin: 0 }}>{session.title}</h3>
+                  <Link href={`/sessions/${session.id}`} style={{ backgroundColor: isFull ? "#e8e4de" : "#3730a3", color: isFull ? "#6b6880" : "white", padding: "8px 18px", borderRadius: "999px", textDecoration: "none", textAlign: "center" }}>
+                    {isFull ? "Full" : "Book now"}
+                  </Link>
                 </div>
               );
             })}
