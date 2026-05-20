@@ -34,7 +34,12 @@ export default async function SessionDetailPage({ params }: PageProps) {
     }
   }
 
-  const priceInDollars = (session.price_cents / 100).toFixed(2);
+  // Dynamic price calculation based on your family-friendly tiers
+  let displayPrice = (session.price_cents / 100).toFixed(2);
+  if (session.session_type === "Small Group") displayPrice = "45.00";
+  else if (session.session_type === "Webinar") displayPrice = "25.00";
+  else if (session.session_type === "Specialist Webinar") displayPrice = "35.00";
+
   const formattedDate = new Date(session.scheduled_at).toLocaleDateString("en-AU", {
     weekday: "long",
     year: "numeric",
@@ -211,7 +216,7 @@ export default async function SessionDetailPage({ params }: PageProps) {
         </div>
         <div style={styles.metaItem}>
           <span style={styles.metaLabel}>Investment</span>
-          <span style={styles.metaValue}>${priceInDollars} AUD</span>
+          <span style={styles.metaValue}>${displayPrice} AUD</span>
         </div>
       </section>
 

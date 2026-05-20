@@ -54,7 +54,7 @@ const sessions: SessionCard[] = [
     title: "Small Group Sessions",
     description:
       "Intimate expert,led sessions exploring a specific topic together. Structured conversation, peer connection, and practical strategies — all in 60 minutes.",
-    price: "$55",
+    price: "$45",
     priceNote: "per family",
     capacity: "Up to 8 families",
     minimum: "Minimum 6 families to run",
@@ -71,7 +71,7 @@ const sessions: SessionCard[] = [
     title: "Webinars by Our Team",
     description:
       "Live webinars run directly by the Developmental Hub team. Deep,dive presentations on key topics, with live Q&A. Accessible and affordable for any family.",
-    price: "$45",
+    price: "$25",
     priceNote: "per family",
     capacity: "Up to 100 families",
     minimum: "Minimum 3 families to run",
@@ -88,7 +88,7 @@ const sessions: SessionCard[] = [
     title: "Specialist Webinars",
     description:
       "Webinars hosted by vetted external specialists and therapists. Expert voices on the topics your family needs most — from sleep to school transitions to anxiety.",
-    price: "$79",
+    price: "$35",
     priceNote: "per family",
     capacity: "Up to 100 families",
     minimum: "Minimum 30 families to run",
@@ -246,7 +246,7 @@ export default function SessionTypes() {
 
       <div style={styles.textCenter}>
         <p style={styles.subTitle}>How it works</p>
-        <h2 style={styles.mainTitle} className="font-display-fallback">
+        <h2 style={styles.mainTitle}>
           Three ways to get support
         </h2>
         <p style={styles.leadText}>
@@ -276,7 +276,7 @@ export default function SessionTypes() {
               </span>
             </div>
 
-            <h3 style={styles.cardTitle} className="font-display-fallback">
+            <h3 style={styles.cardTitle}>
               {session.title}
             </h3>
 
@@ -309,7 +309,7 @@ export default function SessionTypes() {
 
             <div style={styles.footerRow}>
               <div>
-                <span style={styles.priceMain} className="font-display-fallback">
+                <span style={styles.priceMain}>
                   {session.price}
                 </span>
                 <span style={styles.priceSub}>{session.priceNote}</span>
