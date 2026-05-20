@@ -51,7 +51,7 @@ export default function Navbar() {
         {/* Desktop auth buttons */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: "180px", justifyContent: "flex-end" }}>
           {loading ? (
-            <span style={{ fontSize: "14px", color: "#6b6880", fontWeight: 500 }}>Loading...</span>
+            <span style={{ fontSize: "14px", color: "#6b6880", fontWeight: 500 }}></span>
           ) : user ? (
             <>
               {role === "admin" && (
