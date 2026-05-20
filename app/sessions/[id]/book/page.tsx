@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
@@ -17,14 +16,10 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 
 function CheckoutForm({
   sessionId,
-  sessionTitle,
   price,
-  onSuccess,
 }: {
   sessionId: string;
-  sessionTitle: string;
   price: number;
-  onSuccess: () => void;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -92,13 +87,11 @@ function CheckoutForm({
   );
 }
 
-export default function BookingPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+export default function BookingPage() {
+  const params = useParams();
+  const id = params.id as string;
   const router = useRouter();
+
   const [session, setSession] = useState<any>(null);
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
@@ -106,6 +99,8 @@ export default function BookingPage({
   const [alreadyBooked, setAlreadyBooked] = useState(false);
 
   useEffect(() => {
+    if (!id) return;
+
     async function setup() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -163,57 +158,46 @@ export default function BookingPage({
 
   if (loading) {
     return (
-      <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
-        <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
-          <p style={{ color: "#6b6880" }}>Setting up your booking...</p>
-        </div>
-      </main>
-    );
-  }
-
-  if (error) {
-    return (
-      <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
-        <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
-          <p style={{ color: "#b91c1c", marginBottom: "16px" }}>{error}</p>
-          <Link href="/sessions" style={{ color: "#3730a3", fontWeight: 500, textDecoration: "none" }}>
-            Back to sessions
-          </Link>
-        </div>
-      </main>
+      <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
+        <p style={{ color: "#6b6880" }}>Setting up your booking...</p>
+      </div>
     );
   }
 
   if (alreadyBooked) {
     return (
-      <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
-        <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
-          <div style={{ width: "48px", height: "48px", backgroundColor: "#f0fdf4", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-            <svg width="24" height="24" fill="none" stroke="#166534" strokeWidth="2">
-              <path d="M4 12l6 6L20 6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 300, color: "#1e1b2e", marginBottom: "12px" }}>
-            You are already booked
-          </h1>
-          <p style={{ color: "#6b6880", marginBottom: "24px" }}>
-            You have already reserved a spot in this session.
-          </p>
-          <Link href="/dashboard" style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none" }}>
-            Go to dashboard
-          </Link>
+      <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
+        <div style={{ width: "48px", height: "48px", backgroundColor: "#f0fdf4", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+          <svg width="24" height="24" fill="none" stroke="#166534" strokeWidth="2">
+            <path d="M4 12l6 6L20 6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </div>
-      </main>
+        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 300, color: "#1e1b2e", marginBottom: "12px" }}>
+          You are already booked
+        </h1>
+        <p style={{ color: "#6b6880", marginBottom: "24px" }}>
+          You have already reserved a spot in this session.
+        </p>
+        <Link href="/dashboard" style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none" }}>
+          Go to dashboard
+        </Link>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
+        <p style={{ color: "#b91c1c", marginBottom: "16px" }}>{error}</p>
+        <Link href="/sessions" style={{ color: "#3730a3", fontWeight: 500, textDecoration: "none" }}>
+          Back to sessions
+        </Link>
+      </div>
     );
   }
 
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
-
+    <div style={{ backgroundColor: "#faf8f5", minHeight: "100vh" }}>
       <div style={{ maxWidth: "640px", margin: "0 auto", padding: "40px 24px 80px" }}>
 
         <Link
@@ -251,15 +235,13 @@ export default function BookingPage({
             >
               <CheckoutForm
                 sessionId={id}
-                sessionTitle={session?.title}
                 price={session?.price_cents}
-                onSuccess={() => router.push(`/sessions/${id}/booking-confirmed`)}
               />
             </Elements>
           )}
         </div>
 
       </div>
-    </main>
+    </div>
   );
 }
