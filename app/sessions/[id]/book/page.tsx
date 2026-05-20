@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,7 @@ import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-function CheckoutForm({ sessionId, sessionTitle, price }: { sessionId: string, sessionTitle: string, price: number }) {
+function CheckoutForm({ sessionId, price }: { sessionId: string, price: number }) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -42,16 +42,17 @@ function CheckoutForm({ sessionId, sessionTitle, price }: { sessionId: string, s
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       <PaymentElement />
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      <button type="submit" disabled={loading || !stripe} style={{ padding: "14px", borderRadius: "999px", backgroundColor: "#3730a3", color: "white", border: "none" }}>
+      {error && <div style={{ color: "red", fontSize: "14px" }}>{error}</div>}
+      <button type="submit" disabled={loading || !stripe} style={{ padding: "14px", borderRadius: "999px", backgroundColor: "#3730a3", color: "white", border: "none", cursor: "pointer" }}>
         {loading ? "Processing..." : `Authorise $${(price / 100).toFixed(0)} AUD`}
       </button>
     </form>
   );
 }
 
-export default function BookingPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function BookingPage({ params }: { params: Promise<{ id: string }> }) {
+  // Properly resolving params as a Promise
+  const { id } = use(params);
   const router = useRouter();
   const [session, setSession] = useState<any>(null);
   const [clientSecret, setClientSecret] = useState("");
@@ -59,12 +60,12 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    if (!id) return;
+
     async function setup() {
-      // 1. Verify User
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push(`/login?redirect=/sessions/${id}/book`); return; }
 
-      // 2. Fetch Session
       const { data: sessionData, error: sessionError } = await supabase
         .from("sessions")
         .select("*")
@@ -72,14 +73,12 @@ export default function BookingPage({ params }: { params: { id: string } }) {
         .single();
 
       if (sessionError || !sessionData) {
-        console.error("Supabase Error:", sessionError);
         setError("Could not find this session. Please check the URL.");
         setLoading(false);
         return;
       }
       setSession(sessionData);
 
-      // 3. Create Payment Intent
       const response = await fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -88,7 +87,6 @@ export default function BookingPage({ params }: { params: { id: string } }) {
 
       const data = await response.json();
       if (data.error) {
-        console.error("API Error:", data.error);
         setError(data.error);
       } else {
         setClientSecret(data.clientSecret);
@@ -98,15 +96,15 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     setup();
   }, [id, router]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <div>Loading booking details...</div>;
+  if (error) return <div style={{ padding: "40px", textAlign: "center" }}>{error}</div>;
 
   return (
-    <main style={{ padding: "40px 24px" }}>
-      <h1>{session?.title}</h1>
+    <main style={{ padding: "40px 24px", maxWidth: "600px", margin: "0 auto" }}>
+      <h1 style={{ marginBottom: "20px" }}>{session?.title}</h1>
       {clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <CheckoutForm sessionId={id} sessionTitle={session?.title} price={session?.price_cents} />
+          <CheckoutForm sessionId={id} price={session?.price_cents} />
         </Elements>
       )}
     </main>
