@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -70,10 +69,10 @@ function CheckoutForm({
 
       <div style={{ backgroundColor: "#fffbeb", border: "1px solid #fcd34d", borderRadius: "12px", padding: "16px" }}>
         <p style={{ fontSize: "13px", fontWeight: 600, color: "#92400e", margin: "0 0 8px 0" }}>
-          Important — how this works
+          Important, how this works
         </p>
         <p style={{ fontSize: "12px", color: "#92400e", margin: 0, lineHeight: 1.6 }}>
-          Your card will be authorised but not charged today. Payment is only captured once the session reaches its minimum number of families, 24 hours before it starts. If the session does not run, you will never be charged.
+          Your card will be authorised but not charged today. To ensure sustainable, high,quality delivery, we only process the payment once enough families have signed up to cover the cost of the professional. This capture happens 24 hours before the session starts. If minimum numbers are not met, the temporary hold is automatically released and you will never be charged a single cent.
         </p>
       </div>
 
@@ -159,12 +158,11 @@ export default function BookingPage({
     }
 
     setup();
-  }, [id]);
+  }, [id, router]);
 
   if (loading) {
     return (
       <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
         <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
           <p style={{ color: "#6b6880" }}>Setting up your booking...</p>
         </div>
@@ -175,7 +173,6 @@ export default function BookingPage({
   if (error) {
     return (
       <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
         <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
           <p style={{ color: "#b91c1c", marginBottom: "16px" }}>{error}</p>
           <Link href="/sessions" style={{ color: "#3730a3", fontWeight: 500, textDecoration: "none" }}>
@@ -189,7 +186,6 @@ export default function BookingPage({
   if (alreadyBooked) {
     return (
       <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
         <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
           <div style={{ width: "48px", height: "48px", backgroundColor: "#f0fdf4", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
             <svg width="24" height="24" fill="none" stroke="#166534" strokeWidth="2">
@@ -212,7 +208,6 @@ export default function BookingPage({
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
 
       <div style={{ maxWidth: "640px", margin: "0 auto", padding: "40px 24px 80px" }}>
 

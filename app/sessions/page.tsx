@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase-server";
-import Navbar from "@/components/Navbar";
 
 export default async function SessionsPage({
   searchParams,
@@ -16,8 +15,11 @@ export default async function SessionsPage({
     .eq("status", "scheduled")
     .order("scheduled_at", { ascending: true });
 
+  // Map incoming parameters directly to your official database technical keys
   if (type) {
-    query = query.eq("session_type", type);
+    if (type === "group" || type === "webinar-owner" || type === "webinar-facilitator") {
+      query = query.eq("session_type", type);
+    }
   }
 
   const { data: sessions } = await query;
@@ -31,16 +33,45 @@ export default async function SessionsPage({
     countMap[c.session_id] = parseInt(c.booking_count);
   });
 
+  // Standardised mapping matching database technical values and your design rules
   function getSessionStyle(sessionType: string) {
     switch (sessionType) {
       case "group":
-        return { tag: "Small Group", tagColor: "#c2410c", tagText: "#ffffff", tagBg: "#c2410c", cardBackground: "#fff7ed", borderColor: "#ea580c" };
+        return { 
+          tag: "Small Group", 
+          tagBg: "#fff7ed", 
+          tagText: "#c2410c", 
+          cardBackground: "#ffffff", 
+          borderColor: "#ea580c",
+          capacityFallback: 8
+        };
       case "webinar-owner":
-        return { tag: "Webinar", tagColor: "#3730a3", tagText: "#ffffff", tagBg: "#3730a3", cardBackground: "#eef2ff", borderColor: "#3730a3" };
+        return { 
+          tag: "Webinar", 
+          tagBg: "#eef2ff", 
+          tagText: "#3730a3", 
+          cardBackground: "#ffffff", 
+          borderColor: "#3730a3",
+          capacityFallback: 100
+        };
       case "webinar-facilitator":
-        return { tag: "Specialist Webinar", tagColor: "#166534", tagText: "#ffffff", tagBg: "#166534", cardBackground: "#f0fdf4", borderColor: "#16a34a" };
+        return { 
+          tag: "Specialist Webinar", 
+          tagBg: "#f0fdf4", 
+          tagText: "#166534", 
+          cardBackground: "#ffffff", 
+          borderColor: "#16a34a",
+          capacityFallback: 100
+        };
       default:
-        return { tag: sessionType, tagColor: "#6b6880", tagText: "#ffffff", tagBg: "#6b6880", cardBackground: "#faf8f5", borderColor: "#e8e4de" };
+        return { 
+          tag: sessionType, 
+          tagBg: "#faf8f5", 
+          tagText: "#6b6880", 
+          cardBackground: "#ffffff", 
+          borderColor: "#e8e4de",
+          capacityFallback: 100
+        };
     }
   }
 
@@ -74,7 +105,6 @@ export default async function SessionsPage({
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
 
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "60px 24px 40px" }}>
         <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", marginBottom: "12px" }}>
@@ -133,14 +163,15 @@ export default async function SessionsPage({
         {!sessions || sessions.length === 0 ? (
           <div style={{ textAlign: "center", padding: "60px 24px", backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de" }}>
             <p style={{ fontSize: "16px", color: "#6b6880", marginBottom: "8px" }}>No upcoming sessions found.</p>
-            <p style={{ fontSize: "14px", color: "#b0acbf" }}>Check back soon — new sessions are added regularly.</p>
+            <p style={{ fontSize: "14px", color: "#b0acbf" }}>Check back soon, new sessions are added regularly.</p>
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
             {sessions.map((session: any) => {
               const style = getSessionStyle(session.session_type);
               const booked = countMap[session.id] || 0;
-              const spotsLeft = session.capacity - booked;
+              const totalCapacity = session.capacity || style.capacityFallback;
+              const spotsLeft = totalCapacity - booked;
               const isFull = spotsLeft <= 0;
               const isAlmostFull = spotsLeft <= 3 && spotsLeft > 0;
 
@@ -150,7 +181,7 @@ export default async function SessionsPage({
                   style={{ backgroundColor: style.cardBackground, borderRadius: "16px", border: `1.5px solid ${style.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ fontSize: "13px", fontWeight: 700, padding: "6px 14px", borderRadius: "8px", backgroundColor: style.tagBg, color: style.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "8px", backgroundColor: style.tagBg, color: style.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
                       {style.tag}
                     </span>
                     <span style={{ fontSize: "11px", color: isFull ? "#dc2626" : isAlmostFull ? "#d97706" : "#6b6880", fontWeight: isFull || isAlmostFull ? 600 : 400 }}>
@@ -194,7 +225,7 @@ export default async function SessionsPage({
                     </div>
                     <Link
                       href={`/sessions/${session.id}`}
-                      style={{ backgroundColor: isFull ? "#e8e4de" : style.tagBg, color: isFull ? "#6b6880" : "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none", pointerEvents: isFull ? "none" : "auto" }}
+                      style={{ backgroundColor: isFull ? "#e8e4de" : "#3730a3", color: isFull ? "#6b6880" : "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none", pointerEvents: isFull ? "none" : "auto" }}
                     >
                       {isFull ? "Full" : "Book now"}
                     </Link>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
@@ -71,7 +70,6 @@ export default function SessionDetailPage({
   if (loading) {
     return (
       <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
         <div style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
           <p style={{ color: "#6b6880" }}>Loading session...</p>
         </div>
@@ -82,7 +80,6 @@ export default function SessionDetailPage({
   if (notFound || !session) {
     return (
       <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
         <div style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#1e1b2e", marginBottom: "16px" }}>
             Session not found
@@ -107,7 +104,6 @@ export default function SessionDetailPage({
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
 
       <div style={{ maxWidth: "960px", margin: "0 auto", padding: "32px 24px 0" }}>
         <Link
