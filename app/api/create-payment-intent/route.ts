@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@/lib/supabase-server";
+import { sendBookingAlert } from "@/lib/resend";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -52,6 +53,15 @@ export async function POST(request: NextRequest) {
       stripe_payment_intent_id: paymentIntent.id,
       attributed_to: profile?.referred_by || null,
     });
+
+    // Get updated count for the notification
+    const { count } = await supabase
+      .from("bookings")
+      .select("*", { count: 'exact', head: true })
+      .eq("session_id", sessionId);
+
+    // Send email alert to you
+    await sendBookingAlert(session.title, count || 0, session.min_participants);
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
