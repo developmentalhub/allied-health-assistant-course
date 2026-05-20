@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
@@ -85,34 +84,28 @@ export default function SessionDetailPage({
 
   if (loading) {
     return (
-      <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
-        <div style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
-          <p style={{ color: "#6b6880" }}>Loading session...</p>
-        </div>
-      </main>
+      <div style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
+        <p style={{ color: "#6b6880" }}>Loading session...</p>
+      </div>
     );
   }
 
   if (notFound || !session) {
     return (
-      <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
-        <div style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#1e1b2e", marginBottom: "16px" }}>
-            Session not found
-          </h1>
-          <p style={{ color: "#6b6880", marginBottom: "32px" }}>
-            This session may have been removed or the link is incorrect.
-          </p>
-          <Link
-            href="/sessions"
-            style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none" }}
-          >
-            Browse all sessions
-          </Link>
-        </div>
-      </main>
+      <div style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
+        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#1e1b2e", marginBottom: "16px" }}>
+          Session not found
+        </h1>
+        <p style={{ color: "#6b6880", marginBottom: "32px" }}>
+          This session may have been removed or the link is incorrect.
+        </p>
+        <Link
+          href="/sessions"
+          style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none" }}
+        >
+          Browse all sessions
+        </Link>
+      </div>
     );
   }
 
@@ -120,9 +113,7 @@ export default function SessionDetailPage({
   const price = (session.price_cents / 100).toFixed(0);
 
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
-
+    <div style={{ backgroundColor: "#faf8f5", minHeight: "100vh" }}>
       <div style={{ maxWidth: "960px", margin: "0 auto", padding: "32px 24px 0" }}>
         <Link
           href="/sessions"
@@ -292,6 +283,6 @@ export default function SessionDetailPage({
         </div>
 
       </div>
-    </main>
+    </div>
   );
 }
