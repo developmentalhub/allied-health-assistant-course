@@ -9,6 +9,13 @@ export async function POST(request: NextRequest) {
   try {
     const { sessionId } = await request.json();
 
+    // Log the received ID to check if it is being passed from the frontend
+    console.log("API received sessionId:", sessionId);
+
+    if (!sessionId) {
+      return NextResponse.json({ error: "Session ID is missing" }, { status: 400 });
+    }
+
     const supabase = await createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
@@ -16,13 +23,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    const { data: session } = await supabase
+    // Attempt to fetch the session
+    const { data: session, error: sessionError } = await supabase
       .from("sessions")
       .select("*")
       .eq("id", sessionId)
       .single();
 
-    if (!session) {
+    // If there is an error or no data, log the error for debugging
+    if (sessionError || !session) {
+      console.error("Database lookup failed for ID:", sessionId, "Error:", sessionError);
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
     }
 
@@ -54,13 +64,11 @@ export async function POST(request: NextRequest) {
       attributed_to: profile?.referred_by || null,
     });
 
-    // Get updated count for the notification
     const { count } = await supabase
       .from("bookings")
       .select("*", { count: 'exact', head: true })
       .eq("session_id", sessionId);
 
-    // Send email alert to you
     await sendBookingAlert(session.title, count || 0, session.min_participants);
 
     return NextResponse.json({
