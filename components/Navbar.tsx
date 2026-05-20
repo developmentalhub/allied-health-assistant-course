@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Navbar() {
-  const { user, role, loading, signOut } = useAuth();
+  const { user, role, signOut } = useAuth();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -31,57 +31,70 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Combined Desktop Navigation Links */}
+        {/* Desktop nav links */}
         <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
-          <Link href="/sessions" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", fontWeight: 500 }}>
-            Sessions
-          </Link>
-          <Link href="/about" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", fontWeight: 500 }}>
-            About
-          </Link>
-          <Link href="/practitioners" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", fontWeight: 500 }}>
-            For Practitioners
-          </Link>
+          {[
+            { label: "Sessions", href: "/sessions" },
+            { label: "About", href: "/about" },
+            { label: "For Practitioners", href: "/practitioners" },
+          ].map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", fontWeight: 500 }}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
 
-          {/* Dynamic User Links linked within the main text run */}
-          {!loading && user && (
+        {/* Desktop auth buttons */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {user ? (
             <>
-              {role === "parent" && (
-                <Link href="/dashboard" style={{ fontSize: "14px", fontWeight: 500, color: "#3730a3", textDecoration: "none" }}>
-                  Dashboard
-                </Link>
-              )}
-              {(role === "facilitator" || role === "admin") && (
-                <Link href="/facilitator-hub" style={{ fontSize: "14px", fontWeight: 500, color: "#0f766e", textDecoration: "none" }}>
-                  Facilitator Hub
-                </Link>
-              )}
               {role === "admin" && (
-                <Link href="/admin" style={{ fontSize: "14px", fontWeight: 600, color: "#c2410c", textDecoration: "none", backgroundColor: "#fff7ed", padding: "4px 12px", borderRadius: "999px", border: "1px solid #fed7aa" }}>
+                <Link
+                  href="/admin"
+                  style={{ fontSize: "14px", fontWeight: 600, color: "#c2410c", textDecoration: "none", backgroundColor: "#fff7ed", padding: "6px 14px", borderRadius: "999px", border: "1px solid #fed7aa" }}
+                >
                   Admin
                 </Link>
               )}
+              {(role === "facilitator" || role === "admin") && (
+                <Link
+                  href="/facilitator-hub"
+                  style={{ fontSize: "14px", fontWeight: 500, color: "#0f766e", textDecoration: "none" }}
+                >
+                  Facilitator Hub
+                </Link>
+              )}
+              {role === "parent" && (
+                <Link
+                  href="/dashboard"
+                  style={{ fontSize: "14px", fontWeight: 500, color: "#3730a3", textDecoration: "none" }}
+                >
+                  My dashboard
+                </Link>
+              )}
+              <button
+                onClick={handleSignOut}
+                style={{ fontSize: "14px", fontWeight: 500, backgroundColor: "#3730a3", color: "white", padding: "8px 16px", borderRadius: "999px", border: "none", cursor: "pointer" }}
+              >
+                Sign out
+              </button>
             </>
-          )}
-        </div>
-
-        {/* Desktop Authorization Action Controls */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          {loading ? (
-            <div style={{ width: "80px", height: "32px", backgroundColor: "#f3f4f6", borderRadius: "999px" }} />
-          ) : user ? (
-            <button
-              onClick={handleSignOut}
-              style={{ fontSize: "14px", fontWeight: 500, backgroundColor: "#3730a3", color: "white", padding: "8px 16px", borderRadius: "999px", border: "none", cursor: "pointer" }}
-            >
-              Sign out
-            </button>
           ) : (
             <>
-              <Link href="/login" style={{ fontSize: "14px", fontWeight: 500, color: "#3730a3", textDecoration: "none" }}>
+              <Link
+                href="/login"
+                style={{ fontSize: "14px", fontWeight: 500, color: "#3730a3", textDecoration: "none" }}
+              >
                 Sign in
               </Link>
-              <Link href="/signup" style={{ fontSize: "14px", fontWeight: 500, backgroundColor: "#3730a3", color: "white", padding: "8px 16px", borderRadius: "999px", textDecoration: "none" }}>
+              <Link
+                href="/signup"
+                style={{ fontSize: "14px", fontWeight: 500, backgroundColor: "#3730a3", color: "white", padding: "8px 16px", borderRadius: "999px", textDecoration: "none" }}
+              >
                 Join free
               </Link>
             </>
