@@ -23,8 +23,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const supabase = createClient();
 
-    // Initial check
-    supabase.auth.getSession().then(async ({ data: { session } }: { data: { session: Session | null } }) => {
+    // Initial check: Keep loading true, then set to false once done
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
         setUser(session.user);
         const { data: profile } = await supabase.from("profiles").select("role").eq("id", session.user.id).single();
@@ -33,9 +33,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     });
 
-    // Subscription
+    // Subscription: Handle changes without resetting the loading state
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session: Session | null) => {
-      setLoading(true);
       if (session?.user) {
         setUser(session.user);
         const { data: profile } = await supabase.from("profiles").select("role").eq("id", session.user.id).single();
@@ -44,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(null);
         setRole(null);
       }
-      setLoading(false);
+      // No setLoading(true) here!
     });
 
     return () => subscription.unsubscribe();
