@@ -7,13 +7,9 @@ interface PageProps {
 }
 
 export default async function SessionDetailPage({ params }: PageProps) {
-  // Await params per Next.js 16 requirements
   const { id } = await params;
-
-  // Initialize the Supabase client
   const supabase = await createClient();
 
-  // Query 1: Fetch the session details
   const { data: session, error: sessionError } = await supabase
     .from("sessions")
     .select("id, title, description, session_type, price_cents, capacity, duration_minutes, facilitator_id, scheduled_at")
@@ -24,7 +20,6 @@ export default async function SessionDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  // Query 2: Fetch the facilitator profile separately only if an ID exists
   let facilitatorName = "Our Developmental Team";
   
   if (session.facilitator_id) {
@@ -39,7 +34,6 @@ export default async function SessionDetailPage({ params }: PageProps) {
     }
   }
 
-  // Format price and date safely
   const priceInDollars = (session.price_cents / 100).toFixed(2);
   const formattedDate = new Date(session.scheduled_at).toLocaleDateString("en-AU", {
     weekday: "long",
@@ -50,88 +44,100 @@ export default async function SessionDetailPage({ params }: PageProps) {
     minute: "2-digit",
   });
 
-  // Dynamic color coding function based on category code
-  const getBadgeStyles = (type: string) => {
-    const baseBadge = {
-      display: "inline-block",
-      padding: "6px 12px",
-      borderRadius: "20px",
-      fontSize: "14px",
-      fontWeight: "600",
-      textTransform: "uppercase" as const,
-      marginBottom: "12px",
+  // Dynamic color coding system for borders, text, and badges
+  const getThemeStyles = (type: string) => {
+    const base = {
+      badgeBg: "#f3f4f6",
+      badgeText: "#4b5563",
+      border: "1px solid #e8e4de",
+      accent: "#3730a3",
     };
 
     if (type === "Small Group") {
       return {
-        ...baseBadge,
-        backgroundColor: "#e0f2fe", // Light Blue
-        color: "#0369a1",           // Dark Blue Text
+        badgeBg: "#e0f2fe", // Light Blue
+        badgeText: "#0369a1",
+        border: "1px solid #bae6fd",
+        accent: "#0369a1",
       };
     }
     
     if (type === "Webinar") {
       return {
-        ...baseBadge,
-        backgroundColor: "#fef3c7", // Light Amber/Orange
-        color: "#b45309",           // Dark Amber Text
+        badgeBg: "#fef3c7", // Light Amber
+        badgeText: "#b45309",
+        border: "1px solid #fde68a",
+        accent: "#b45309",
       };
     }
 
     if (type === "Specialist Webinar") {
       return {
-        ...baseBadge,
-        backgroundColor: "#f3e8ff", // Light Purple
-        color: "#6b21a8",           // Dark Purple Text
+        badgeBg: "#f3e8ff", // Light Purple
+        badgeText: "#6b21a8",
+        border: "1px solid #e9d5ff",
+        accent: "#6b21a8",
       };
     }
 
-    // Default Fallback
-    return {
-      ...baseBadge,
-      backgroundColor: "#f3f4f6",   // Grey
-      color: "#4b5563",
-    };
+    return base;
   };
 
-  const badgeStyle = getBadgeStyles(session.session_type);
+  const theme = getThemeStyles(session.session_type);
 
-  // Inline styles object container
+  // Enforce consistent operational display metrics
+  const expectedCapacity = session.session_type === "Small Group" ? 8 : 100;
+
   const styles = {
     container: {
-      maxWidth: "800px",
+      maxWidth: "850px",
       margin: "40px auto",
-      padding: "24px",
+      padding: "32px",
+      backgroundColor: "#ffffff",
+      borderRadius: "16px",
+      border: theme.border,
+      boxShadow: "0 4px 20px rgba(30, 27, 46, 0.04)",
       fontFamily: "system-ui, -apple-system, sans-serif",
-      color: "#333",
-      backgroundColor: "#fff",
-      borderRadius: "12px",
-      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
     },
     header: {
-      borderBottom: "1px solid #eaeaea",
-      paddingBottom: "16px",
-      marginBottom: "24px",
+      borderBottom: "1px solid #f0eee9",
+      paddingBottom: "20px",
+      marginBottom: "28px",
+    },
+    badge: {
+      display: "inline-block",
+      padding: "6px 14px",
+      borderRadius: "999px",
+      fontSize: "12px",
+      fontWeight: "600",
+      letterSpacing: "0.05em",
+      textTransform: "uppercase" as const,
+      backgroundColor: theme.badgeBg,
+      color: theme.badgeText,
+      marginBottom: "16px",
     },
     title: {
       fontSize: "32px",
-      fontWeight: "700",
+      fontWeight: "500",
       margin: "0 0 12px 0",
-      color: "#111",
+      color: "#1e1b2e",
+      fontFamily: "var(--font-display), serif",
+      letterSpacing: "-0.01em",
     },
     description: {
-      fontSize: "16px",
-      lineHeight: "1.6",
-      color: "#555",
-      marginBottom: "24px",
+      fontSize: "15px",
+      lineHeight: "1.7",
+      color: "#6b6880",
+      marginBottom: "32px",
     },
     metaGrid: {
       display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-      gap: "16px",
-      backgroundColor: "#f9fafb",
-      padding: "20px",
-      borderRadius: "8px",
+      gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+      gap: "20px",
+      backgroundColor: "#faf8f5",
+      padding: "24px",
+      borderRadius: "12px",
+      border: "1px solid #f0eee9",
       marginBottom: "32px",
     },
     metaItem: {
@@ -139,16 +145,17 @@ export default async function SessionDetailPage({ params }: PageProps) {
       flexDirection: "column" as const,
     },
     metaLabel: {
-      fontSize: "12px",
+      fontSize: "11px",
       textTransform: "uppercase" as const,
-      color: "#666",
+      color: "#6b6880",
       fontWeight: "600",
-      marginBottom: "4px",
+      letterSpacing: "0.05em",
+      marginBottom: "6px",
     },
     metaValue: {
-      fontSize: "16px",
+      fontSize: "15px",
       fontWeight: "500",
-      color: "#222",
+      color: "#1e1b2e",
     },
     btnContainer: {
       display: "flex",
@@ -156,26 +163,32 @@ export default async function SessionDetailPage({ params }: PageProps) {
     },
     button: {
       display: "inline-block",
-      backgroundColor: "#0070f3",
-      color: "#fff",
-      padding: "14px 28px",
-      borderRadius: "8px",
-      fontWeight: "600",
-      fontSize: "16px",
+      backgroundColor: "#3730a3",
+      color: "#ffffff",
+      padding: "14px 32px",
+      borderRadius: "999px",
+      fontWeight: "500",
+      fontSize: "15px",
       textDecoration: "none",
       textAlign: "center" as const,
-      transition: "background-color 0.2s",
+      boxShadow: "0 2px 8px rgba(55, 48, 163, 0.15)",
+    },
+    guaranteeBox: {
+      backgroundColor: "#f0fdf4", 
+      borderLeft: "4px solid #16a34a", 
+      padding: "20px", 
+      borderRadius: "0 12px 12px 0", 
+      marginBottom: "32px",
     },
   };
 
   return (
     <main style={styles.container}>
       <header style={styles.header}>
-        {/* Dynamic Category Badge */}
-        <div style={badgeStyle}>{session.session_type}</div>
+        <div style={styles.badge}>{session.session_type}</div>
         <h1 style={styles.title}>{session.title}</h1>
-        <p style={{ margin: 0, color: "#666", fontSize: "14px" }}>
-          Led by <span style={{ fontWeight: "600" }}>{facilitatorName}</span>
+        <p style={{ margin: 0, color: "#6b6880", fontSize: "14px" }}>
+          Led by <span style={{ fontWeight: "500", color: "#1e1b2e" }}>{facilitatorName}</span>
         </p>
       </header>
 
@@ -194,7 +207,7 @@ export default async function SessionDetailPage({ params }: PageProps) {
         </div>
         <div style={styles.metaItem}>
           <span style={styles.metaLabel}>Capacity</span>
-          <span style={styles.metaValue}>{session.capacity} spots available</span>
+          <span style={styles.metaValue}>{expectedCapacity} spots available</span>
         </div>
         <div style={styles.metaItem}>
           <span style={styles.metaLabel}>Investment</span>
@@ -202,31 +215,17 @@ export default async function SessionDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Small Group Reassurance Text */}
-      <section style={{
-        backgroundColor: "#f0fdf4", 
-        borderLeft: "4px solid #16a34a", 
-        padding: "16px 20px", 
-        borderRadius: "0 8px 8px 0", 
-        marginBottom: "24px"
-      }}>
-        <h3 style={{ 
-          margin: "0 0 6px 0", 
-          color: "#14532d", 
-          fontSize: "16px", 
-          fontWeight: "600" 
-        }}>
-          Our Small Group Guarantee
-        </h3>
-        <p style={{ 
-          margin: 0, 
-          color: "#166534", 
-          fontSize: "14px", 
-          lineHeight: "1.5" 
-        }}>
-          To ensure a high,quality experience, our small group programs require a minimum number of families to go ahead. When you register, your payment details are securely processed via Stripe and placed on a temporary hold. We only finalize the payment once the minimum group size is reached. If the program cannot go ahead, your hold is released automatically, and you will not be charged a cent.
-        </p>
-      </section>
+      {/* Conditionally displays the Guarantee text block ONLY for small group sessions */}
+      {session.session_type === "Small Group" && (
+        <section style={styles.guaranteeBox}>
+          <h3 style={{ margin: "0 0 6px 0", color: "#14532d", fontSize: "15px", fontWeight: "600" }}>
+            Our Small Group Guarantee
+          </h3>
+          <p style={{ margin: 0, color: "#166534", fontSize: "14px", lineHeight: "1.6" }}>
+            To ensure a high,quality experience, our small group programs require a minimum of 6 families to go ahead. When you register, your payment details are securely processed via Stripe and placed on a temporary hold. We only finalize the payment once 6 families have signed up. If the program cannot go ahead, your hold is released automatically, and you will not be charged a single cent.
+          </p>
+        </section>
+      )}
 
       <div style={styles.btnContainer}>
         <Link href={`/checkout?session_id=${session.id}`} style={styles.button}>

@@ -160,6 +160,10 @@ export default async function SessionsPage({
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "24px" }}>
             {sessions.map((session: any) => {
               const style = getSessionStyle(session.session_type);
+              
+              // Enforce operational capacities strictly based on type
+              const expectedCapacity = session.session_type === "Small Group" ? 8 : 100;
+
               return (
                 <div
                   key={session.id}
@@ -170,7 +174,7 @@ export default async function SessionsPage({
                       {style.tag}
                     </span>
                     <span style={{ fontSize: "12px", color: "#6b6880" }}>
-                      {session.capacity} spots
+                      {expectedCapacity} spots available
                     </span>
                   </div>
 

@@ -49,15 +49,15 @@ function WebinarFacilitatorIcon() {
 const sessions: SessionCard[] = [
   {
     tag: "Small Group",
-    badgeStyle: { backgroundColor: "#e0f2fe", color: "#0369a1" }, // Soft blue branding
+    badgeStyle: { backgroundColor: "#e0f2fe", color: "#0369a1" },
     icon: <GroupIcon />,
     title: "Small Group Sessions",
     description:
       "Intimate expert,led sessions exploring a specific topic together. Structured conversation, peer connection, and practical strategies — all in 60 minutes.",
     price: "$55",
     priceNote: "per family",
-    capacity: "Up to 10 families",
-    minimum: "Minimum 4 families to run",
+    capacity: "Up to 8 families",
+    minimum: "Minimum 6 families to run",
     duration: "60 minutes",
     highlight: "Most intimate",
     cta: "See group sessions",
@@ -66,14 +66,14 @@ const sessions: SessionCard[] = [
   },
   {
     tag: "Webinar",
-    badgeStyle: { backgroundColor: "#fef3c7", color: "#b45309" }, // Soft amber branding
+    badgeStyle: { backgroundColor: "#fef3c7", color: "#b45309" },
     icon: <WebinarOwnerIcon />,
     title: "Webinars by Our Team",
     description:
       "Live webinars run directly by the Developmental Hub team. Deep,dive presentations on key topics, with live Q&A. Accessible and affordable for any family.",
     price: "$45",
     priceNote: "per family",
-    capacity: "Up to 15 families",
+    capacity: "Up to 100 families",
     minimum: "Minimum 3 families to run",
     duration: "45 minutes",
     highlight: "Best value",
@@ -83,7 +83,7 @@ const sessions: SessionCard[] = [
   },
   {
     tag: "Specialist Webinar",
-    badgeStyle: { backgroundColor: "#f3e8ff", color: "#6b21a8" }, // Soft purple branding
+    badgeStyle: { backgroundColor: "#f3e8ff", color: "#6b21a8" },
     icon: <WebinarFacilitatorIcon />,
     title: "Specialist Webinars",
     description:
@@ -198,7 +198,7 @@ export default function SessionTypes() {
       display: "flex",
       flexDirection: "column" as const,
       gap: "8px",
-      get fontSize() { return "12px"; },
+      fontSize: "12px",
       color: "#6b6880",
       marginBottom: "20px",
     },
