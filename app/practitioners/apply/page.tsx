@@ -1,10 +1,10 @@
-import Navbar from "@/components/Navbar";
+
 import Link from "next/link";
 
 export default function ApplyPage() {
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
+      
 
       <section style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px 40px", textAlign: "center" }}>
         <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", marginBottom: "16px" }}>

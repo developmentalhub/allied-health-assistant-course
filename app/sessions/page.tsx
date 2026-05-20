@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+
 import Link from "next/link";
 import { createClient } from "@/lib/supabase-server";
 
@@ -67,7 +67,7 @@ export default async function SessionsPage({
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
+      
 
       {/* Header */}
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "60px 24px 40px" }}>

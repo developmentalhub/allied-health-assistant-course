@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+
 import Link from "next/link";
 import { createClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
@@ -70,7 +70,7 @@ export default async function FacilitatorSessionsPage() {
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
+      
 
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "40px 24px 80px" }}>
 

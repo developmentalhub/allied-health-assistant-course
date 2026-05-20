@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
+
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -85,7 +85,7 @@ export default function FacilitatorProfilePage() {
   if (loading) {
     return (
       <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
+        
         <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
           <p style={{ color: "#6b6880" }}>Loading your profile...</p>
         </div>
@@ -95,7 +95,7 @@ export default function FacilitatorProfilePage() {
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
+      
 
       <div style={{ maxWidth: "640px", margin: "0 auto", padding: "40px 24px 80px" }}>
 

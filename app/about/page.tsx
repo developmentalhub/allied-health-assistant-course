@@ -1,10 +1,10 @@
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
+
 
 export default function AboutPage() {
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
+      
 
       {/* Hero */}
       <section style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px 60px", textAlign: "center" }}>

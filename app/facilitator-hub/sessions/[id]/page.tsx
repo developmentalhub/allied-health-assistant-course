@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+
 import { createClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 import FacilitatorSessionDetail from "./FacilitatorSessionDetail";
@@ -44,7 +44,7 @@ export default async function FacilitatorSessionDetailPage({ params }: Props) {
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
+      
       <FacilitatorSessionDetail
         session={session}
         bookings={bookings ?? []}

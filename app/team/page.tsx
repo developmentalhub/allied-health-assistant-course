@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Navbar from "@/components/Navbar";
+
 
 export default function TeamPage() {
   const [team] = useState([
@@ -36,7 +36,7 @@ export default function TeamPage() {
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
+      
 
       <section style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px 48px", textAlign: "center" }}>
         <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", marginBottom: "16px" }}>
