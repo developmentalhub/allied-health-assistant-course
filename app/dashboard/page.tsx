@@ -1,4 +1,4 @@
-
+import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
@@ -40,11 +40,63 @@ export default async function ParentDashboard() {
         .limit(5)
     : { data: [] };
 
+  const { data: bookings } = await supabase
+    .from("bookings")
+    .select("*, sessions(id, title, scheduled_at, session_type, duration_minutes)")
+    .eq("family_id", user.id)
+    .order("created_at", { ascending: false });
+
+  const now = new Date();
+
+  const upcomingBookings = (bookings || []).filter((b: any) => {
+    if (!b.sessions?.scheduled_at) return false;
+    return new Date(b.sessions.scheduled_at) >= now;
+  });
+
+  const pastBookings = (bookings || []).filter((b: any) => {
+    if (!b.sessions?.scheduled_at) return false;
+    return new Date(b.sessions.scheduled_at) < now;
+  });
+
+  function formatSessionDate(dateString: string) {
+    const date = new Date(dateString);
+    const aestDate = new Date(date.getTime() + 10 * 60 * 60 * 1000);
+    return aestDate.toLocaleDateString("en-AU", {
+      weekday: "short",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  }
+
+  function formatSessionTime(dateString: string) {
+    const date = new Date(dateString);
+    const aestDate = new Date(date.getTime() + 10 * 60 * 60 * 1000);
+    return aestDate.toLocaleTimeString("en-AU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }) + " AEST";
+  }
+
+  function getSessionTypeStyle(sessionType: string) {
+    switch (sessionType) {
+      case "group":
+        return { label: "Small Group", color: "#c2410c", bg: "#fff7ed" };
+      case "webinar-owner":
+        return { label: "Webinar", color: "#3730a3", bg: "#eef2ff" };
+      case "webinar-facilitator":
+        return { label: "Specialist Webinar", color: "#166534", bg: "#f0fdf4" };
+      default:
+        return { label: sessionType, color: "#6b6880", bg: "#faf8f5" };
+    }
+  }
+
   const displayName = profile?.full_name || user.email || "Family";
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      
+      <Navbar />
 
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "40px 24px 80px" }}>
 
@@ -56,6 +108,61 @@ export default async function ParentDashboard() {
           <p style={{ fontSize: "15px", color: "#6b6880" }}>
             Here is what is happening for your family.
           </p>
+        </div>
+
+        {/* Upcoming bookings */}
+        <div style={{ marginBottom: "40px" }}>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "24px", fontWeight: 300, color: "#1e1b2e", marginBottom: "20px" }}>
+            Upcoming Sessions
+          </h2>
+          {upcomingBookings.length === 0 ? (
+            <div style={{ backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de", padding: "40px 24px", textAlign: "center" }}>
+              <p style={{ fontSize: "15px", color: "#6b6880", marginBottom: "16px" }}>
+                You have no upcoming sessions booked.
+              </p>
+              <Link
+                href="/sessions"
+                style={{ backgroundColor: "#3730a3", color: "white", padding: "10px 24px", borderRadius: "999px", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}
+              >
+                Browse sessions
+              </Link>
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              {upcomingBookings.map((booking: any) => {
+                const typeStyle = getSessionTypeStyle(booking.sessions?.session_type);
+                return (
+                  <div
+                    key={booking.id}
+                    style={{ backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de", padding: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}
+                  >
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+                        <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 10px", borderRadius: "6px", backgroundColor: typeStyle.bg, color: typeStyle.color, textTransform: "uppercase" }}>
+                          {typeStyle.label}
+                        </span>
+                        <span style={{ fontSize: "12px", padding: "4px 10px", borderRadius: "6px", backgroundColor: booking.status === "confirmed" ? "#f0fdf4" : "#fffbeb", color: booking.status === "confirmed" ? "#166534" : "#92400e", fontWeight: 500 }}>
+                          {booking.status === "confirmed" ? "Confirmed" : "Pending — awaiting minimum numbers"}
+                        </span>
+                      </div>
+                      <h3 style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 6px 0" }}>
+                        {booking.sessions?.title}
+                      </h3>
+                      <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>
+                        {formatSessionDate(booking.sessions?.scheduled_at)} · {formatSessionTime(booking.sessions?.scheduled_at)}
+                      </p>
+                    </div>
+                    <Link
+                      href={`/sessions/${booking.sessions?.id}`}
+                      style={{ fontSize: "13px", fontWeight: 500, color: "#3730a3", textDecoration: "none", padding: "8px 16px", borderRadius: "999px", border: "1px solid #c7d2fe", whiteSpace: "nowrap" }}
+                    >
+                      View session
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "24px", marginBottom: "40px" }}>
@@ -71,7 +178,7 @@ export default async function ParentDashboard() {
               </p>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {actionItems.map((item: any) => (
+                {(actionItems as any[]).map((item: any) => (
                   <div key={item.id} style={{ backgroundColor: "#f5f3ff", borderRadius: "12px", padding: "14px 16px", borderLeft: "4px solid #3730a3" }}>
                     <p style={{ fontSize: "14px", fontWeight: 600, color: "#1e1b2e", margin: "0 0 4px 0" }}>
                       {item.title}
@@ -98,7 +205,7 @@ export default async function ParentDashboard() {
               </h2>
               <Link
                 href="/dashboard/children/add"
-                style={{ fontSize: "13px", fontWeight: 500, color: "#0f766e", textDecoration: "none", display: "flex", alignItems: "center", gap: "4px" }}
+                style={{ fontSize: "13px", fontWeight: 500, color: "#0f766e", textDecoration: "none" }}
               >
                 + Add child
               </Link>
@@ -117,11 +224,10 @@ export default async function ParentDashboard() {
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {children.map((child: any) => (
-                  <Link
+                {(children as any[]).map((child: any) => (
+                  <div
                     key={child.id}
-                    href={`/dashboard/children/${child.id}`}
-                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between", backgroundColor: "#f0fdfa", borderRadius: "12px", padding: "14px 16px", textDecoration: "none", border: "1px solid #99f6e4" }}
+                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between", backgroundColor: "#f0fdfa", borderRadius: "12px", padding: "14px 16px", border: "1px solid #99f6e4" }}
                   >
                     <div>
                       <p style={{ fontSize: "15px", fontWeight: 500, color: "#1e1b2e", margin: "0 0 2px 0" }}>
@@ -133,10 +239,7 @@ export default async function ParentDashboard() {
                         </p>
                       )}
                     </div>
-                    <svg width="14" height="14" fill="none" stroke="#0f766e" strokeWidth="2">
-                      <path d="M4 7h6M7 4l3 3-3 3" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </Link>
+                  </div>
                 ))}
               </div>
             )}
@@ -145,13 +248,13 @@ export default async function ParentDashboard() {
         </div>
 
         {/* Recent session notes */}
-        {sessionNotes && sessionNotes.length > 0 && (
+        {sessionNotes && (sessionNotes as any[]).length > 0 && (
           <div style={{ marginBottom: "40px" }}>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#1e1b2e", marginBottom: "20px" }}>
               Recent Session Notes
             </h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {sessionNotes.map((note: any) => (
+              {(sessionNotes as any[]).map((note: any) => (
                 <div key={note.id} style={{ backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de", padding: "20px 24px" }}>
                   <p style={{ fontSize: "14px", color: "#1e1b2e", lineHeight: 1.7, margin: "0 0 8px 0" }}>
                     {note.note}
@@ -171,9 +274,6 @@ export default async function ParentDashboard() {
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#1e1b2e" }}>
               Resource Library
             </h2>
-            <Link href="/resources" style={{ color: "#3730a3", fontWeight: 500, textDecoration: "none", fontSize: "14px" }}>
-              View all resources
-            </Link>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "16px" }}>
             {["Gross Motor", "Sensory", "Literacy"].map(cat => (
