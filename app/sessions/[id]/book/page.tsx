@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, use, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
@@ -49,25 +49,34 @@ function CheckoutForm({ sessionId, price }: { sessionId: string, price: number }
   );
 }
 
-// Separate component for the booking logic to handle suspense properly
-function BookingContent({ id }: { id: string }) {
+export default function BookingPage() {
+  const pathname = usePathname();
   const [session, setSession] = useState<any>(null);
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!id) return;
+    // Brute force: extract ID from /sessions/[id]/book
+    const pathParts = pathname.split("/");
+    const idFromPath = pathParts[2];
+
+    if (!idFromPath || idFromPath === "undefined") {
+      setError("Could not detect session ID in URL.");
+      setLoading(false);
+      return;
+    }
 
     async function fetchData() {
       const { data, error: sessionError } = await supabase
         .from("sessions")
         .select("*")
-        .eq("id", id)
+        .eq("id", idFromPath)
         .single();
 
       if (sessionError || !data) {
-        setError("Session not found.");
+        console.error("Supabase Error:", sessionError);
+        setError("Session not found in database.");
         setLoading(false);
         return;
       }
@@ -77,7 +86,7 @@ function BookingContent({ id }: { id: string }) {
       const response = await fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId: id }),
+        body: JSON.stringify({ sessionId: idFromPath }),
       });
 
       const paymentData = await response.json();
@@ -90,28 +99,19 @@ function BookingContent({ id }: { id: string }) {
     }
 
     fetchData();
-  }, [id]);
+  }, [pathname]);
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (error) return <div style={{ padding: "40px", textAlign: "center" }}>{error}</div>;
 
   return (
-    <main style={{ padding: "40px 24px" }}>
+    <main style={{ padding: "40px 24px", maxWidth: "600px", margin: "0 auto" }}>
       <h1>{session?.title}</h1>
       {clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <CheckoutForm sessionId={id} price={session?.price_cents} />
+          <CheckoutForm sessionId={session.id} price={session?.price_cents} />
         </Elements>
       )}
     </main>
-  );
-}
-
-export default function BookingPage({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = use(params);
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <BookingContent id={resolvedParams.id} />
-    </Suspense>
   );
 }
