@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
@@ -45,6 +46,7 @@ export default function SessionDetailPage({
 }) {
   const { id } = params;
   const [session, setSession] = useState<any>(null);
+  const [facilitatorName, setFacilitatorName] = useState("Developmental Hub Team");
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -52,15 +54,29 @@ export default function SessionDetailPage({
     async function loadSession() {
       const { data, error } = await supabase
         .from("sessions")
-        .select("*, profiles(full_name)")
+        .select("*")
         .eq("id", id)
         .single();
 
       if (error || !data) {
         setNotFound(true);
-      } else {
-        setSession(data);
+        setLoading(false);
+        return;
       }
+
+      setSession(data);
+
+      if (data.facilitator_id) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .eq("id", data.facilitator_id)
+          .single();
+        if (profile?.full_name) {
+          setFacilitatorName(profile.full_name);
+        }
+      }
+
       setLoading(false);
     }
 
@@ -70,6 +86,7 @@ export default function SessionDetailPage({
   if (loading) {
     return (
       <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
+        <Navbar />
         <div style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
           <p style={{ color: "#6b6880" }}>Loading session...</p>
         </div>
@@ -80,6 +97,7 @@ export default function SessionDetailPage({
   if (notFound || !session) {
     return (
       <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
+        <Navbar />
         <div style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#1e1b2e", marginBottom: "16px" }}>
             Session not found
@@ -99,11 +117,11 @@ export default function SessionDetailPage({
   }
 
   const style = getSessionStyle(session.session_type);
-  const facilitatorName = session.profiles?.full_name || "Developmental Hub Team";
   const price = (session.price_cents / 100).toFixed(0);
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
+      <Navbar />
 
       <div style={{ maxWidth: "960px", margin: "0 auto", padding: "32px 24px 0" }}>
         <Link
