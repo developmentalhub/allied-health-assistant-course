@@ -50,6 +50,52 @@ export default async function SessionDetailPage({ params }: PageProps) {
     minute: "2-digit",
   });
 
+  // Dynamic color coding function based on category code
+  const getBadgeStyles = (type: string) => {
+    const baseBadge = {
+      display: "inline-block",
+      padding: "6px 12px",
+      borderRadius: "20px",
+      fontSize: "14px",
+      fontWeight: "600",
+      textTransform: "uppercase" as const,
+      marginBottom: "12px",
+    };
+
+    if (type === "Small Group") {
+      return {
+        ...baseBadge,
+        backgroundColor: "#e0f2fe", // Light Blue
+        color: "#0369a1",           // Dark Blue Text
+      };
+    }
+    
+    if (type === "Webinar") {
+      return {
+        ...baseBadge,
+        backgroundColor: "#fef3c7", // Light Amber/Orange
+        color: "#b45309",           // Dark Amber Text
+      };
+    }
+
+    if (type === "Specialist Webinar") {
+      return {
+        ...baseBadge,
+        backgroundColor: "#f3e8ff", // Light Purple
+        color: "#6b21a8",           // Dark Purple Text
+      };
+    }
+
+    // Default Fallback
+    return {
+      ...baseBadge,
+      backgroundColor: "#f3f4f6",   // Grey
+      color: "#4b5563",
+    };
+  };
+
+  const badgeStyle = getBadgeStyles(session.session_type);
+
   // Inline styles object container
   const styles = {
     container: {
@@ -72,16 +118,6 @@ export default async function SessionDetailPage({ params }: PageProps) {
       fontWeight: "700",
       margin: "0 0 12px 0",
       color: "#111",
-    },
-    badge: {
-      display: "inline-block",
-      backgroundColor: "#e0f2fe",
-      color: "#0369a1",
-      padding: "6px 12px",
-      borderRadius: "20px",
-      fontSize: "14px",
-      fontWeight: "600",
-      textTransform: "uppercase" as const,
     },
     description: {
       fontSize: "16px",
@@ -135,7 +171,8 @@ export default async function SessionDetailPage({ params }: PageProps) {
   return (
     <main style={styles.container}>
       <header style={styles.header}>
-        <div style={styles.badge}>{session.session_type}</div>
+        {/* Dynamic Category Badge */}
+        <div style={badgeStyle}>{session.session_type}</div>
         <h1 style={styles.title}>{session.title}</h1>
         <p style={{ margin: 0, color: "#666", fontSize: "14px" }}>
           Led by <span style={{ fontWeight: "600" }}>{facilitatorName}</span>
