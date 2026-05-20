@@ -4,41 +4,25 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useParams } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  PaymentElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
+import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import MainLayout from "@/components/MainLayout";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-type Session = {
-  id: string;
-  title: string;
-  price_cents: number;
-};
-
-function CheckoutForm({
-  sessionId,
-  price,
-}: {
-  sessionId: string;
-  price: number;
-}) {
+function CheckoutForm({ sessionId, price }: { sessionId: string, price: number }) {
   const stripe = useStripe();
   const elements = useElements();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    
+    // Debugging step
+    console.log("Stripe state:", { stripe: !!stripe, elements: !!elements });
 
     if (!stripe || !elements) {
-      setError("Payment system is still loading. Please try again.");
+      setError("Payment system is still loading. Please wait a moment.");
       return;
     }
 
@@ -46,7 +30,6 @@ function CheckoutForm({
     setError("");
 
     const { error: submitError } = await elements.submit();
-
     if (submitError) {
       setError(submitError.message || "Payment failed.");
       setLoading(false);
@@ -55,9 +38,7 @@ function CheckoutForm({
 
     const { error: confirmError } = await stripe.confirmPayment({
       elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/sessions/${sessionId}/booking-confirmed`,
-      },
+      confirmParams: { return_url: `${window.location.origin}/sessions/${sessionId}/booking-confirmed` },
     });
 
     if (confirmError) {
@@ -67,213 +48,79 @@ function CheckoutForm({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "24px",
-        marginTop: "24px",
-      }}
-    >
-      <PaymentElement />
-
-      {error && (
-        <div
-          style={{
-            color: "#b91c1c",
-            backgroundColor: "#fee2e2",
-            padding: "12px",
-            borderRadius: "8px",
-          }}
-        >
-          {error}
-        </div>
-      )}
-
-      <button
-        type="submit"
-        disabled={loading || !stripe}
-        style={{
-          padding: "14px 20px",
-          borderRadius: "999px",
-          backgroundColor: loading ? "#9ca3af" : "#3730a3",
-          color: "white",
-          border: "none",
-          fontSize: "16px",
-          fontWeight: 600,
-          cursor: loading || !stripe ? "not-allowed" : "pointer",
-        }}
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="p-4 border rounded-lg bg-white shadow-sm">
+        <PaymentElement />
+      </div>
+      {error && <p className="text-red-600 text-sm">{error}</p>}
+      <button 
+        type="submit" 
+        disabled={loading || !stripe} 
+        className="w-full py-3 px-4 bg-indigo-700 text-white rounded-full font-semibold hover:bg-indigo-800 disabled:opacity-50"
       >
-        {loading
-          ? "Processing..."
-          : `Authorise $${((price || 0) / 100).toFixed(0)} AUD`}
+        {loading ? "Processing..." : `Authorise $${(price / 100).toFixed(0)} AUD`}
       </button>
     </form>
   );
 }
 
 export default function BookingPage() {
-  const params = useParams();
-
-  const sessionId = params.id as string;
-
-  const [session, setSession] = useState<Session | null>(null);
+  const { id } = useParams();
+  const [session, setSession] = useState<any>(null);
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function fetchBookingData() {
-      setLoading(true);
-      setError("");
+    if (!id || typeof id !== "string") return;
 
-      if (!sessionId || sessionId === "undefined") {
-        setError("Could not detect a valid session ID in the URL.");
-        setLoading(false);
-        return;
-      }
-
-      const { data, error: sessionError } = await supabase
+    async function init() {
+      const { data, error: err } = await supabase
         .from("sessions")
-        .select("id, title, price_cents")
-        .eq("id", sessionId)
+        .select("*")
+        .eq("id", id)
         .single();
 
-      if (sessionError || !data) {
-        console.error("Supabase session error:", sessionError);
-        setError("Session not found. This session may have been removed or the link is incorrect.");
+      if (err || !data) {
+        setError("Session not found.");
         setLoading(false);
         return;
       }
 
       setSession(data);
 
-      try {
-        const response = await fetch("/api/create-payment-intent", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            sessionId: data.id,
-          }),
-        });
+      const res = await fetch("/api/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId: id }),
+      });
 
-        const paymentData = await response.json();
-
-        if (!response.ok) {
-          throw new Error(paymentData.error || "Could not create payment intent.");
-        }
-
-        if (!paymentData.clientSecret) {
-          throw new Error("No client secret was returned from the payment API.");
-        }
-
+      const paymentData = await res.json();
+      if (paymentData.clientSecret) {
         setClientSecret(paymentData.clientSecret);
-      } catch (paymentError: any) {
-        console.error("Payment intent error:", paymentError);
-        setError(paymentError.message || "Could not initiate payment.");
+      } else {
+        setError("Failed to start payment.");
       }
-
       setLoading(false);
     }
+    init();
+  }, [id]);
 
-    fetchBookingData();
-  }, [sessionId]);
-
-  if (loading) {
-    return (
-      <main
-        style={{
-          padding: "40px 24px",
-          maxWidth: "600px",
-          margin: "0 auto",
-          textAlign: "center",
-        }}
-      >
-        <p>Loading booking...</p>
-      </main>
-    );
-  }
-
-  if (error) {
-    return (
-      <main
-        style={{
-          padding: "40px 24px",
-          maxWidth: "600px",
-          margin: "0 auto",
-          textAlign: "center",
-        }}
-      >
-        <h1>Session not found</h1>
-        <p>{error}</p>
-
-        <a
-          href="/sessions"
-          style={{
-            display: "inline-block",
-            marginTop: "20px",
-            padding: "12px 20px",
-            borderRadius: "999px",
-            backgroundColor: "#3730a3",
-            color: "white",
-            textDecoration: "none",
-            fontWeight: 600,
-          }}
-        >
-          Browse all sessions
-        </a>
-      </main>
-    );
-  }
-
-  if (!session || !clientSecret) {
-    return (
-      <main
-        style={{
-          padding: "40px 24px",
-          maxWidth: "600px",
-          margin: "0 auto",
-          textAlign: "center",
-        }}
-      >
-        <h1>Booking unavailable</h1>
-        <p>We could not prepare the payment form for this session.</p>
-      </main>
-    );
-  }
+  if (loading) return <MainLayout><div className="p-10 text-center">Loading...</div></MainLayout>;
+  if (error) return <MainLayout><div className="p-10 text-center text-red-600">{error}</div></MainLayout>;
 
   return (
-    <main
-      style={{
-        padding: "40px 24px",
-        maxWidth: "600px",
-        margin: "0 auto",
-      }}
-    >
-      <h1
-        style={{
-          fontSize: "32px",
-          marginBottom: "8px",
-        }}
-      >
-        {session.title}
-      </h1>
-
-      <p
-        style={{
-          fontSize: "18px",
-          marginBottom: "24px",
-        }}
-      >
-        Total: ${(session.price_cents / 100).toFixed(0)} AUD
-      </p>
-
-      <Elements stripe={stripePromise} options={{ clientSecret }}>
-        <CheckoutForm sessionId={session.id} price={session.price_cents} />
-      </Elements>
-    </main>
+    <MainLayout>
+      <main className="max-w-xl mx-auto py-12 px-6">
+        <h1 className="text-3xl font-bold mb-6">{session?.title}</h1>
+        {clientSecret ? (
+          <Elements stripe={stripePromise} options={{ clientSecret }}>
+            <CheckoutForm sessionId={id as string} price={session?.price_cents} />
+          </Elements>
+        ) : (
+          <p>Loading payment options...</p>
+        )}
+      </main>
+    </MainLayout>
   );
 }
