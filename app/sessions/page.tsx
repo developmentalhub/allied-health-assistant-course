@@ -6,7 +6,8 @@ export default async function SessionsPage({
 }: {
   searchParams: Promise<{ type?: string }>;
 }) {
-  const { type } = await searchParams;
+  const resolvedParams = await searchParams;
+  const currentType = resolvedParams?.type || "";
   const supabase = await createClient();
 
   let query = supabase
@@ -15,11 +16,9 @@ export default async function SessionsPage({
     .eq("status", "scheduled")
     .order("scheduled_at", { ascending: true });
 
-  // Map incoming parameters directly to your official database technical keys
-  if (type) {
-    if (type === "group" || type === "webinar-owner" || type === "webinar-facilitator") {
-      query = query.eq("session_type", type);
-    }
+  // Dynamically filter sessions based on the active tab configuration
+  if (currentType === "group" || currentType === "webinar-owner" || currentType === "webinar-facilitator") {
+    query = query.eq("session_type", currentType);
   }
 
   const { data: sessions } = await query;
@@ -33,7 +32,7 @@ export default async function SessionsPage({
     countMap[c.session_id] = parseInt(c.booking_count);
   });
 
-  // Standardised mapping matching database technical values and your design rules
+  // Standardised mapping matching database technical values and design rules
   function getSessionStyle(sessionType: string) {
     switch (sessionType) {
       case "group":
@@ -97,7 +96,7 @@ export default async function SessionsPage({
   }
 
   const tabs = [
-    { label: "All sessions", type: null },
+    { label: "All sessions", type: "" },
     { label: "Small groups", type: "group" },
     { label: "Webinars", type: "webinar-owner" },
     { label: "Specialist webinars", type: "webinar-facilitator" },
@@ -136,7 +135,7 @@ export default async function SessionsPage({
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 32px" }}>
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
           {tabs.map((tab) => {
-            const isActive = (!type && !tab.type) || tab.type === type;
+            const isActive = currentType === tab.type;
             return (
               <Link
                 key={tab.label}
@@ -180,7 +179,7 @@ export default async function SessionsPage({
                   key={session.id}
                   style={{ backgroundColor: style.cardBackground, borderRadius: "16px", border: `1.5px solid ${style.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyBetween: "space-between" }}>
                     <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "8px", backgroundColor: style.tagBg, color: style.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
                       {style.tag}
                     </span>

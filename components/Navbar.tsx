@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Navbar() {
-  const { user, role, signOut } = useAuth();
+  const { user, role, loading, signOut } = useAuth();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -49,8 +49,10 @@ export default function Navbar() {
         </div>
 
         {/* Desktop auth buttons */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          {user ? (
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: "180px", justifyContent: "flex-end" }}>
+          {loading ? (
+            <span style={{ fontSize: "14px", color: "#6b6880", fontWeight: 500 }}>Loading...</span>
+          ) : user ? (
             <>
               {role === "admin" && (
                 <Link
