@@ -38,12 +38,11 @@ function formatSessionTime(dateString: string) {
   }) + " AEST";
 }
 
-export default function SessionDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+import { useParams } from "next/navigation";
+
+export default function SessionDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
   const [session, setSession] = useState<any>(null);
   const [facilitatorName, setFacilitatorName] = useState("Developmental Hub Team");
   const [loading, setLoading] = useState(true);
