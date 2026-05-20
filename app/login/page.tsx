@@ -22,14 +22,14 @@ function LoginForm() {
     setLoading(true);
     setError("");
 
-    console.log('Attempting sign in...')
+    console.log('Attempting sign in...');
 
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    console.log('Sign in result:', signInError)
+    console.log('Sign in result:', signInError);
 
     if (signInError) {
       setError(signInError.message);
@@ -37,11 +37,11 @@ function LoginForm() {
       return;
     }
 
-    console.log('Getting user...')
+    console.log('Getting user...');
 
     const { data: { user } } = await supabase.auth.getUser();
 
-    console.log('User:', user?.email)
+    console.log('User:', user?.email);
 
     if (!user) {
       setError("Something went wrong. Please try again.");
@@ -57,7 +57,7 @@ function LoginForm() {
 
     const role = profile?.role || "parent";
 
-    console.log('Role:', role)
+    console.log('Role:', role);
 
     if (redirectTo) {
       router.push(redirectTo);
@@ -93,7 +93,11 @@ function LoginForm() {
           </p>
         </div>
 
-        <div style={{ background: "white", borderRadius: "16px", border: "1px solid #e8e4de", padding: "40px 48px", boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+        {/* Changed container to an HTML form element with onSubmit */}
+        <form 
+          onSubmit={handleLogin} 
+          style={{ background: "white", borderRadius: "16px", border: "1px solid #e8e4de", padding: "40px 48px", boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}
+        >
           <div style={{ display: "flex", flexDirection: "column" as const, gap: "24px" }}>
 
             <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
@@ -105,6 +109,7 @@ function LoginForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="jane@example.com"
+                required
                 style={{ width: "100%", padding: "10px 16px", borderRadius: "12px", border: "1px solid #e8e4de", fontSize: "14px", color: "#1e1b2e", outline: "none", boxSizing: "border-box" as const }}
               />
             </div>
@@ -123,6 +128,7 @@ function LoginForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Your password"
+                required
                 style={{ width: "100%", padding: "10px 16px", borderRadius: "12px", border: "1px solid #e8e4de", fontSize: "14px", color: "#1e1b2e", outline: "none", boxSizing: "border-box" as const }}
               />
             </div>
@@ -133,8 +139,9 @@ function LoginForm() {
               </div>
             )}
 
+            {/* Changed to type="submit" and removed explicit onClick */}
             <button
-              onClick={handleLogin}
+              type="submit"
               disabled={loading}
               style={{ marginTop: "8px", width: "100%", backgroundColor: "#3730a3", color: "white", padding: "12px", borderRadius: "999px", fontSize: "14px", fontWeight: 500, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.6 : 1 }}
             >
@@ -149,7 +156,7 @@ function LoginForm() {
               Join free
             </Link>
           </p>
-        </div>
+        </form>
 
       </div>
     </div>
