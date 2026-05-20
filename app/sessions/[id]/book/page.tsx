@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, Suspense } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
@@ -49,10 +49,8 @@ function CheckoutForm({ sessionId, price }: { sessionId: string, price: number }
   );
 }
 
-export default function BookingPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
-  const router = useRouter();
-  
+// Separate component for the booking logic to handle suspense properly
+function BookingContent({ id }: { id: string }) {
   const [session, setSession] = useState<any>(null);
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
@@ -61,8 +59,7 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
   useEffect(() => {
     if (!id) return;
 
-    async function fetchSession() {
-      // Use browser-safe supabase client
+    async function fetchData() {
       const { data, error: sessionError } = await supabase
         .from("sessions")
         .select("*")
@@ -92,7 +89,7 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
       setLoading(false);
     }
 
-    fetchSession();
+    fetchData();
   }, [id]);
 
   if (loading) return <div>Loading...</div>;
@@ -107,5 +104,14 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
         </Elements>
       )}
     </main>
+  );
+}
+
+export default function BookingPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BookingContent id={resolvedParams.id} />
+    </Suspense>
   );
 }
