@@ -16,9 +16,17 @@ export default async function SessionsPage({
     .eq("status", "scheduled")
     .order("scheduled_at", { ascending: true });
 
-  // Dynamically filter sessions based on the active tab configuration
-  if (currentType === "group" || currentType === "webinar-owner" || currentType === "webinar-facilitator") {
-    query = query.eq("session_type", currentType);
+  // Map the URL filter parameters straight to your actual database string values
+  if (currentType) {
+    if (currentType === "group") {
+      query = query.eq("session_type", "Small Group");
+    } else if (currentType === "webinar-owner") {
+      query = query.eq("session_type", "Webinar");
+    } else if (currentType === "webinar-facilitator") {
+      query = query.eq("session_type", "Specialist Webinar");
+    } else if (currentType === "child-development") {
+      query = query.eq("session_type", "Child Development");
+    }
   }
 
   const { data: sessions } = await query;
@@ -32,10 +40,10 @@ export default async function SessionsPage({
     countMap[c.session_id] = parseInt(c.booking_count);
   });
 
-  // Standardised mapping matching database technical values and design rules
+  // Mapped to match your exact database text entries
   function getSessionStyle(sessionType: string) {
     switch (sessionType) {
-      case "group":
+      case "Small Group":
         return { 
           tag: "Small Group", 
           tagBg: "#fff7ed", 
@@ -44,7 +52,7 @@ export default async function SessionsPage({
           borderColor: "#ea580c",
           capacityFallback: 8
         };
-      case "webinar-owner":
+      case "Webinar":
         return { 
           tag: "Webinar", 
           tagBg: "#eef2ff", 
@@ -53,7 +61,7 @@ export default async function SessionsPage({
           borderColor: "#3730a3",
           capacityFallback: 100
         };
-      case "webinar-facilitator":
+      case "Specialist Webinar":
         return { 
           tag: "Specialist Webinar", 
           tagBg: "#f0fdf4", 
@@ -61,6 +69,15 @@ export default async function SessionsPage({
           cardBackground: "#ffffff", 
           borderColor: "#16a34a",
           capacityFallback: 100
+        };
+      case "Child Development":
+        return { 
+          tag: "Child Development", 
+          tagBg: "#fdf2f8", 
+          tagText: "#9d174d", 
+          cardBackground: "#ffffff", 
+          borderColor: "#db2777",
+          capacityFallback: 15
         };
       default:
         return { 
@@ -100,6 +117,7 @@ export default async function SessionsPage({
     { label: "Small groups", type: "group" },
     { label: "Webinars", type: "webinar-owner" },
     { label: "Specialist webinars", type: "webinar-facilitator" },
+    { label: "Child development", type: "child-development" },
   ];
 
   return (
@@ -123,6 +141,7 @@ export default async function SessionsPage({
             { label: "Small Group", tagColor: "#c2410c", background: "#fff7ed", borderColor: "#ea580c" },
             { label: "Webinar", tagColor: "#3730a3", background: "#eef2ff", borderColor: "#3730a3" },
             { label: "Specialist Webinar", tagColor: "#166534", background: "#f0fdf4", borderColor: "#16a34a" },
+            { label: "Child Development", tagColor: "#9d174d", background: "#fdf2f8", borderColor: "#db2777" },
           ].map((item) => (
             <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: item.background, border: `1.5px solid ${item.borderColor}`, padding: "6px 14px", borderRadius: "8px" }}>
               <div style={{ width: "10px", height: "10px", borderRadius: "2px", backgroundColor: item.tagColor }} />
