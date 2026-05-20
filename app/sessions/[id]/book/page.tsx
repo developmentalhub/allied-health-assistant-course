@@ -50,8 +50,8 @@ function CheckoutForm({ sessionId, price }: { sessionId: string, price: number }
 }
 
 export default function BookingPage({ params }: { params: Promise<{ id: string }> }) {
-  // 1. Properly wait for params
   const { id } = use(params);
+  const router = useRouter();
   
   const [session, setSession] = useState<any>(null);
   const [clientSecret, setClientSecret] = useState("");
@@ -59,51 +59,47 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // 2. Stop if id is missing or not a proper UUID
-    if (!id || id === "undefined" || id.length < 10) {
-      return;
-    }
+    if (!id) return;
 
-    async function setup() {
-      // Fetch Session
-      const { data: sessionData, error: sessionError } = await supabase
+    async function fetchSession() {
+      // Use browser-safe supabase client
+      const { data, error: sessionError } = await supabase
         .from("sessions")
         .select("*")
         .eq("id", id)
         .single();
 
-      if (sessionError || !sessionData) {
-        console.error("Supabase fetch error for ID:", id, sessionError);
-        setError("Session not found in database.");
+      if (sessionError || !data) {
+        setError("Session not found.");
         setLoading(false);
         return;
       }
-      
-      setSession(sessionData);
 
-      // Create Payment Intent
+      setSession(data);
+
       const response = await fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId: id }),
       });
 
-      const data = await response.json();
-      if (data.clientSecret) {
-        setClientSecret(data.clientSecret);
+      const paymentData = await response.json();
+      if (paymentData.clientSecret) {
+        setClientSecret(paymentData.clientSecret);
       } else {
-        setError(data.error || "Failed to initiate payment.");
+        setError(paymentData.error || "Could not initiate payment.");
       }
       setLoading(false);
     }
-    setup();
+
+    fetchSession();
   }, [id]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (
-    <main style={{ padding: "40px 24px", maxWidth: "600px", margin: "0 auto" }}>
+    <main style={{ padding: "40px 24px" }}>
       <h1>{session?.title}</h1>
       {clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
