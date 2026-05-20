@@ -16,7 +16,7 @@ export default function Navbar() {
   return (
     <nav style={{ position: "sticky", top: 0, zIndex: 50, backgroundColor: "#faf8f5", borderBottom: "1px solid #e8e4de" }}>
       <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "64px" }}>
-        
+
         {/* Logo */}
         <Link href="/" style={{ textDecoration: "none", color: "#1e1b2e", fontWeight: 600, fontSize: "18px" }}>
           Developmental Hub
@@ -46,13 +46,14 @@ export default function Navbar() {
               {role === "admin" && (
                 <Link href="/admin" style={{ color: "#c2410c", fontWeight: 600, fontSize: "14px" }}>Admin</Link>
               )}
-              {(role === "facilitator" || role === "admin") && (
-                <Link href="/facilitator-hub" style={{ color: "#0f766e", fontWeight: 500, fontSize: "14px" }}>Hub</Link>
+              {role === "facilitator" && (
+                <Link href="/facilitator-hub" style={{ color: "#0f766e", fontWeight: 500, fontSize: "14px" }}>Facilitator Hub</Link>
               )}
-              <Link href="/dashboard" style={{ color: "#3730a3", fontWeight: 500, fontSize: "14px" }}>Dashboard</Link>
-              
-              <button 
-                onClick={handleSignOut} 
+              {role === "parent" && (
+                <Link href="/dashboard" style={{ color: "#3730a3", fontWeight: 500, fontSize: "14px" }}>My dashboard</Link>
+              )}
+              <button
+                onClick={handleSignOut}
                 style={{ cursor: "pointer", border: "none", background: "none", color: "#6b6880", fontSize: "14px" }}
               >
                 Sign out
@@ -61,10 +62,11 @@ export default function Navbar() {
           ) : !loading ? (
             <>
               <Link href="/login" style={{ color: "#3730a3", fontSize: "14px", fontWeight: 500 }}>Sign in</Link>
-              <Link href="/signup" style={{ background: "#3730a3", color: "white", padding: "8px 16px", borderRadius: "999px", fontSize: "14px", fontWeight: 500 }}>Join free</Link>
+              <Link href="/signup" style={{ background: "#3730a3", color: "white", padding: "8px 16px", borderRadius: "999px", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>Join free</Link>
             </>
           ) : null}
         </div>
+
       </div>
     </nav>
   );
