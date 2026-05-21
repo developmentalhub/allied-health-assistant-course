@@ -4,10 +4,13 @@ import { createClient } from "@/lib/supabase-server";
 export default async function SessionsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ type?: string }>;
+  searchParams: Promise<{ age?: string; category?: string; type?: string }>;
 }) {
   const resolvedParams = await searchParams;
+  const currentAge = resolvedParams?.age || "";
+  const currentCategory = resolvedParams?.category || "";
   const currentType = resolvedParams?.type || "";
+
   const supabase = await createClient();
 
   let query = supabase
@@ -16,9 +19,9 @@ export default async function SessionsPage({
     .eq("status", "scheduled")
     .order("scheduled_at", { ascending: true });
 
-  if (currentType) {
-    query = query.eq("session_type", currentType);
-  }
+  if (currentAge) query = query.eq("age_group", currentAge);
+  if (currentCategory) query = query.eq("category", currentCategory);
+  if (currentType) query = query.eq("session_type", currentType);
 
   const { data: sessions } = await query;
 
@@ -31,51 +34,97 @@ export default async function SessionsPage({
     countMap[c.session_id] = parseInt(c.booking_count);
   });
 
+  // Build filter URL helper
+  function filterUrl(params: { age?: string; category?: string; type?: string }) {
+    const p = new URLSearchParams();
+    const age = params.age !== undefined ? params.age : currentAge;
+    const category = params.category !== undefined ? params.category : currentCategory;
+    const type = params.type !== undefined ? params.type : currentType;
+    if (age) p.set("age", age);
+    if (category) p.set("category", category);
+    if (type) p.set("type", type);
+    const str = p.toString();
+    return str ? `/sessions?${str}` : "/sessions";
+  }
+
+  const ageGroups = [
+    { value: "", label: "All ages" },
+    { value: "0-2", label: "0–2 years" },
+    { value: "3-5", label: "3–5 years" },
+    { value: "6-8", label: "6–8 years" },
+  ];
+
+  // Categories depend on selected age group
+  const allCategories = [
+    { value: "", label: "All categories" },
+    { value: "gross-motor", label: "Gross Motor" },
+    { value: "fine-motor", label: "Fine Motor" },
+    { value: "sensory", label: "Sensory" },
+    { value: "literacy", label: "Literacy" },
+    { value: "play", label: "Play" },
+    { value: "regulation", label: "Regulation" },
+    { value: "social-skills", label: "Social Skills" },
+  ];
+
+  const categoriesFor02 = ["", "gross-motor", "sensory", "play"];
+  const visibleCategories = currentAge === "0-2"
+    ? allCategories.filter((c) => categoriesFor02.includes(c.value))
+    : allCategories;
+
+  const sessionTypes = [
+    { value: "", label: "All types" },
+    { value: "group", label: "Small Group" },
+    { value: "webinar-owner", label: "Webinar" },
+    { value: "webinar-facilitator", label: "Specialist Webinar" },
+  ];
+
   function getSessionStyle(sessionType: string) {
     switch (sessionType) {
-      case "group":
-        return { tag: "Small Group", tagColor: "#c2410c", tagText: "#ffffff", tagBg: "#c2410c", cardBackground: "#fff7ed", borderColor: "#ea580c" };
-      case "webinar-owner":
-        return { tag: "Webinar", tagColor: "#3730a3", tagText: "#ffffff", tagBg: "#3730a3", cardBackground: "#eef2ff", borderColor: "#3730a3" };
-      case "webinar-facilitator":
-        return { tag: "Specialist Webinar", tagColor: "#166534", tagText: "#ffffff", tagBg: "#166534", cardBackground: "#f0fdf4", borderColor: "#16a34a" };
-      default:
-        return { tag: sessionType, tagColor: "#6b6880", tagText: "#ffffff", tagBg: "#6b6880", cardBackground: "#faf8f5", borderColor: "#e8e4de" };
+      case "group": return { tag: "Small Group", tagBg: "#c2410c", tagText: "#ffffff", cardBackground: "#fff7ed", borderColor: "#ea580c" };
+      case "webinar-owner": return { tag: "Webinar", tagBg: "#3730a3", tagText: "#ffffff", cardBackground: "#eef2ff", borderColor: "#3730a3" };
+      case "webinar-facilitator": return { tag: "Specialist Webinar", tagBg: "#166534", tagText: "#ffffff", cardBackground: "#f0fdf4", borderColor: "#16a34a" };
+      default: return { tag: sessionType, tagBg: "#6b6880", tagText: "#ffffff", cardBackground: "#faf8f5", borderColor: "#e8e4de" };
     }
   }
 
   function formatSessionDate(dateString: string) {
     const date = new Date(dateString);
-    const aestDate = new Date(date.getTime() + 10 * 60 * 60 * 1000);
-    return aestDate.toLocaleDateString("en-AU", {
-      weekday: "short",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
+    return date.toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Melbourne" });
   }
 
   function formatSessionTime(dateString: string) {
     const date = new Date(dateString);
-    const aestDate = new Date(date.getTime() + 10 * 60 * 60 * 1000);
-    return aestDate.toLocaleTimeString("en-AU", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    }) + " AEST";
+    return date.toLocaleTimeString("en-AU", { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: "Australia/Melbourne" }) + " AEST";
   }
 
-  const tabs = [
-    { label: "All sessions", type: "" },
-    { label: "Small groups", type: "group" },
-    { label: "Webinars", type: "webinar-owner" },
-    { label: "Specialist webinars", type: "webinar-facilitator" },
-  ];
+  function formatAgeGroup(ag: string) {
+    if (ag === "0-2") return "0–2 yrs";
+    if (ag === "3-5") return "3–5 yrs";
+    if (ag === "6-8") return "6–8 yrs";
+    return ag;
+  }
+
+  function formatCategory(cat: string) {
+    return cat.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  }
+
+  const tabStyle = (active: boolean): React.CSSProperties => ({
+    fontSize: "13px",
+    fontWeight: 500,
+    padding: "8px 16px",
+    borderRadius: "999px",
+    border: active ? "1.5px solid #3730a3" : "1px solid #e8e4de",
+    color: active ? "#3730a3" : "#6b6880",
+    textDecoration: "none",
+    backgroundColor: active ? "#eef2ff" : "white",
+    whiteSpace: "nowrap",
+  });
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
 
-      <section style={{ maxWidth: "960px", margin: "0 auto", padding: "60px 24px 40px" }}>
+      {/* Hero */}
+      <section style={{ maxWidth: "960px", margin: "0 auto", padding: "60px 24px 32px" }}>
         <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", marginBottom: "12px" }}>
           Upcoming sessions
         </p>
@@ -87,52 +136,48 @@ export default async function SessionsPage({
         </p>
       </section>
 
-      <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 24px" }}>
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-          {[
-            { label: "Small Group", tagColor: "#c2410c", background: "#fff7ed", borderColor: "#ea580c" },
-            { label: "Webinar", tagColor: "#3730a3", background: "#eef2ff", borderColor: "#3730a3" },
-            { label: "Specialist Webinar", tagColor: "#166534", background: "#f0fdf4", borderColor: "#16a34a" },
-          ].map((item) => (
-            <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px", backgroundColor: item.background, border: `1.5px solid ${item.borderColor}`, padding: "6px 14px", borderRadius: "8px" }}>
-              <div style={{ width: "10px", height: "10px", borderRadius: "2px", backgroundColor: item.tagColor }} />
-              <span style={{ fontSize: "13px", color: item.tagColor, fontWeight: 600 }}>{item.label}</span>
-            </div>
+      {/* Age group filter */}
+      <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 16px" }}>
+        <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#6b6880", marginBottom: "10px" }}>Age group</p>
+        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+          {ageGroups.map((ag) => (
+            <Link key={ag.value} href={filterUrl({ age: ag.value, category: "" })} style={tabStyle(currentAge === ag.value)}>
+              {ag.label}
+            </Link>
           ))}
         </div>
       </section>
 
-      <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 32px" }}>
+      {/* Category filter */}
+      <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 16px" }}>
+        <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#6b6880", marginBottom: "10px" }}>Category</p>
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-          {tabs.map((tab) => {
-            const isActive = currentType === tab.type;
-            return (
-              <Link
-                key={tab.label}
-                href={tab.type ? `/sessions?type=${tab.type}` : "/sessions"}
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  padding: "8px 16px",
-                  borderRadius: "999px",
-                  border: isActive ? "1.5px solid #3730a3" : "1px solid #e8e4de",
-                  color: isActive ? "#3730a3" : "#6b6880",
-                  textDecoration: "none",
-                  backgroundColor: isActive ? "#eef2ff" : "white",
-                }}
-              >
-                {tab.label}
-              </Link>
-            );
-          })}
+          {visibleCategories.map((cat) => (
+            <Link key={cat.value} href={filterUrl({ category: cat.value })} style={tabStyle(currentCategory === cat.value)}>
+              {cat.label}
+            </Link>
+          ))}
         </div>
       </section>
 
+      {/* Session type filter */}
+      <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 32px" }}>
+        <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#6b6880", marginBottom: "10px" }}>Session type</p>
+        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+          {sessionTypes.map((st) => (
+            <Link key={st.value} href={filterUrl({ type: st.value })} style={tabStyle(currentType === st.value)}>
+              {st.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Sessions grid */}
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 80px" }}>
         {!sessions || sessions.length === 0 ? (
           <div style={{ textAlign: "center", padding: "60px 24px", backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de" }}>
             <p style={{ fontSize: "16px", color: "#6b6880", marginBottom: "8px" }}>No upcoming sessions found.</p>
-            <p style={{ fontSize: "14px", color: "#b0acbf" }}>Check back soon — new sessions are added regularly.</p>
+            <p style={{ fontSize: "14px", color: "#b0acbf" }}>Try a different filter or check back soon.</p>
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
@@ -144,17 +189,25 @@ export default async function SessionsPage({
               const isAlmostFull = spotsLeft <= 3 && spotsLeft > 0;
 
               return (
-                <div
-                  key={session.id}
-                  style={{ backgroundColor: style.cardBackground, borderRadius: "16px", border: `1.5px solid ${style.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ fontSize: "13px", fontWeight: 700, padding: "6px 14px", borderRadius: "8px", backgroundColor: style.tagBg, color: style.tagText, letterSpacing: "0.03em", textTransform: "uppercase" }}>
+                <div key={session.id} style={{ backgroundColor: style.cardBackground, borderRadius: "16px", border: `1.5px solid ${style.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
+
+                  {/* Tags row */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "6px" }}>
+                    <span style={{ fontSize: "12px", fontWeight: 700, padding: "4px 12px", borderRadius: "8px", backgroundColor: style.tagBg, color: style.tagText, textTransform: "uppercase" }}>
                       {style.tag}
                     </span>
-                    <span style={{ fontSize: "11px", color: isFull ? "#dc2626" : isAlmostFull ? "#d97706" : "#6b6880", fontWeight: isFull || isAlmostFull ? 600 : 400 }}>
-                      {isFull ? "Full" : `${spotsLeft} spot${spotsLeft !== 1 ? "s" : ""} left`}
-                    </span>
+                    <div style={{ display: "flex", gap: "6px" }}>
+                      {session.age_group && (
+                        <span style={{ fontSize: "11px", fontWeight: 600, padding: "3px 8px", borderRadius: "6px", backgroundColor: "#f5f3ff", color: "#7c3aed" }}>
+                          {formatAgeGroup(session.age_group)}
+                        </span>
+                      )}
+                      {session.category && (
+                        <span style={{ fontSize: "11px", fontWeight: 600, padding: "3px 8px", borderRadius: "6px", backgroundColor: "#f0fdf4", color: "#166534" }}>
+                          {formatCategory(session.category)}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <h3 style={{ fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: 400, color: "#1e1b2e", lineHeight: 1.4, margin: 0 }}>
@@ -169,25 +222,18 @@ export default async function SessionsPage({
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#1e1b2e" }}>
-                      <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
-                        <rect x="1" y="2" width="12" height="11" rx="2"/>
-                        <path d="M1 6h12M5 1v2M9 1v2" strokeLinecap="round"/>
-                      </svg>
+                      <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8"><rect x="1" y="2" width="12" height="11" rx="2"/><path d="M1 6h12M5 1v2M9 1v2" strokeLinecap="round"/></svg>
                       {formatSessionDate(session.scheduled_at)}
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#6b6880" }}>
-                      <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
-                        <circle cx="7" cy="7" r="5.5"/>
-                        <path d="M7 4.5V7l1.5 1.5" strokeLinecap="round"/>
-                      </svg>
+                      <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8"><circle cx="7" cy="7" r="5.5"/><path d="M7 4.5V7l1.5 1.5" strokeLinecap="round"/></svg>
                       {formatSessionTime(session.scheduled_at)} · {session.duration_minutes} min
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#6b6880" }}>
-                      <svg width="14" height="14" fill="none" stroke="#6b6880" strokeWidth="1.8">
-                        <circle cx="7" cy="7" r="5.5"/>
-                        <path d="M7 4.5V7" strokeLinecap="round"/>
-                        <circle cx="7" cy="9.5" r="0.5" fill="#6b6880"/>
-                      </svg>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: isFull ? "#dc2626" : isAlmostFull ? "#d97706" : "#6b6880", fontWeight: isFull || isAlmostFull ? 600 : 400 }}>
+                      <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-9 8a6 6 0 0 1 12 0" strokeLinecap="round"/></svg>
+                      {isFull ? "Full" : `${spotsLeft} spot${spotsLeft !== 1 ? "s" : ""} left`}
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "#6b6880" }}>
                       Min {session.minimum_families} families to run
                     </div>
                   </div>
@@ -199,10 +245,7 @@ export default async function SessionsPage({
                       </span>
                       <span style={{ fontSize: "11px", color: "#6b6880", marginLeft: "4px" }}>per family</span>
                     </div>
-                    <Link
-                      href={`/sessions/${session.id}`}
-                      style={{ backgroundColor: isFull ? "#e8e4de" : style.tagBg, color: isFull ? "#6b6880" : "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none", pointerEvents: isFull ? "none" : "auto" }}
-                    >
+                    <Link href={`/sessions/${session.id}`} style={{ backgroundColor: isFull ? "#e8e4de" : style.tagBg, color: isFull ? "#6b6880" : "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none", pointerEvents: isFull ? "none" : "auto" }}>
                       {isFull ? "Full" : "Book now"}
                     </Link>
                   </div>
