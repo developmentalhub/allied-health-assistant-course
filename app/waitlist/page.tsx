@@ -49,9 +49,32 @@ export default function WaitlistPage() {
     setLoading(false);
   }
 
-  const inputStyle: React.CSSProperties = { width: "100%", padding: "10px 16px", borderRadius: "12px", border: "1.5px solid #e8e4de", fontSize: "15px", color: "#1e1b2e", outline: "none", boxSizing: "border-box", fontFamily: "inherit", backgroundColor: "#faf8f5" };
-  const labelStyle: React.CSSProperties = { display: "block", fontSize: "14px", fontWeight: 500, color: "#1e1b2e", marginBottom: "6px" };
-  const fieldStyle: React.CSSProperties = { display: "flex", flexDirection: "column", gap: "6px" };
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    padding: "10px 16px",
+    borderRadius: "12px",
+    border: "1.5px solid #e8e4de",
+    fontSize: "15px",
+    color: "#1e1b2e",
+    outline: "none",
+    boxSizing: "border-box",
+    fontFamily: "inherit",
+    backgroundColor: "#faf8f5",
+  };
+
+  const labelStyle: React.CSSProperties = {
+    display: "block",
+    fontSize: "14px",
+    fontWeight: 500,
+    color: "#1e1b2e",
+    marginBottom: "6px",
+  };
+
+  const fieldStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "6px",
+  };
 
   if (success) {
     return (
@@ -63,10 +86,10 @@ export default function WaitlistPage() {
             </svg>
           </div>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 12px" }}>
-            You're on the waitlist
+            Thank you — we heard you
           </h1>
           <p style={{ fontSize: "15px", color: "#6b6880", lineHeight: 1.7, margin: "0 0 32px" }}>
-            Thank you for letting us know what your family needs. We'll reach out as soon as a session matching your interest is ready to book.
+            Your response directly helps us decide which sessions to build next. We'll be in touch as soon as something matching your needs is ready to book.
           </p>
           <Link href="/" style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
             Back to home
@@ -85,13 +108,16 @@ export default function WaitlistPage() {
         </Link>
 
         <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3730a3", marginBottom: "12px" }}>
-          Session waitlist
+          Help us build what you need
         </p>
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "36px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 12px", lineHeight: 1.2 }}>
-          Tell us what your family needs
+        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "36px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 20px", lineHeight: 1.2 }}>
+          Your voice shapes what we build next
         </h1>
-        <p style={{ fontSize: "16px", color: "#6b6880", lineHeight: 1.7, margin: "0 0 48px", fontWeight: 300 }}>
-          We build our session schedule around demand. When enough families are interested in a topic, we bring in a specialist and make it happen. No interest, no session — and no charge until it runs.
+        <p style={{ fontSize: "16px", color: "#4a4660", lineHeight: 1.8, margin: "0 0 16px", fontWeight: 300 }}>
+          Developmental Hub is Play Move Improve's new telehealth platform — built so that busy families, and those in rural and regional areas, can finally access the expert support their child needs without the waitlists, the travel, or the cost of private appointments.
+        </p>
+        <p style={{ fontSize: "16px", color: "#6b6880", lineHeight: 1.8, margin: "0 0 48px", fontWeight: 300 }}>
+          We're in the early stages and we want to hear from real families before we hire practitioners and schedule sessions. Tell us your child's age and what you're struggling with most. When enough families need the same thing, we make it happen — and you'll be the first to know.
         </p>
 
         <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "40px" }}>
@@ -124,8 +150,21 @@ export default function WaitlistPage() {
             </div>
 
             <div style={fieldStyle}>
-              <label style={labelStyle}>Anything else you'd like us to know <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span></label>
-              <textarea name="message" value={form.message} onChange={handleChange} rows={3} placeholder="e.g. my child is 4 and really struggles with transitions..." style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }} />
+              <label style={labelStyle}>
+                Tell us more about what your family is finding hard{" "}
+                <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
+              </label>
+              <textarea
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                rows={4}
+                placeholder="e.g. My 4 year old really struggles with transitions and I can't find anyone in our area who can help..."
+                style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }}
+              />
+              <p style={{ fontSize: "12px", color: "#6b6880", margin: 0, lineHeight: 1.5 }}>
+                The more you share, the better we can tailor sessions to what families actually need.
+              </p>
             </div>
 
             {error && (
@@ -134,16 +173,21 @@ export default function WaitlistPage() {
               </div>
             )}
 
-            <button type="submit" disabled={loading} style={{ width: "100%", backgroundColor: "#3730a3", color: "white", border: "none", borderRadius: "999px", padding: "14px", fontSize: "15px", fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, fontFamily: "inherit" }}>
-              {loading ? "Submitting…" : "Join the waitlist"}
+            <button
+              type="submit"
+              disabled={loading}
+              style={{ width: "100%", backgroundColor: "#3730a3", color: "white", border: "none", borderRadius: "999px", padding: "14px", fontSize: "15px", fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, fontFamily: "inherit" }}
+            >
+              {loading ? "Submitting…" : "Share what your family needs"}
             </button>
 
           </form>
         </div>
 
         <p style={{ fontSize: "13px", color: "#6b6880", textAlign: "center", marginTop: "20px", lineHeight: 1.6 }}>
-          We'll only contact you about sessions matching your interest. No spam, ever.
+          Your response directly influences which sessions we create. We'll only contact you when a session matching your interest is ready to book.
         </p>
+
       </div>
     </div>
   );
