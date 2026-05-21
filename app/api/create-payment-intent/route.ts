@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@/lib/supabase-server";
 import { sendBookingAlert } from "@/lib/resend";
+import { sendBookingConfirmation } from "@/lib/email";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
     const referralCode = profile?.referred_by ?? null;
 
     // ── Revenue split calculation ─────────────────────────────────────────
-    let platformOwnerShareCents = session.price_cents; // default: owner gets 100%
+    let platformOwnerShareCents = session.price_cents;
     let partnerShareCents = 0;
 
     if (referralCode) {
@@ -55,7 +56,6 @@ export async function POST(request: NextRequest) {
         .single();
 
       if (codeData) {
-        // Split applies to profit after facilitator fee
         const profitAfterFee = Math.max(0, session.price_cents - FACILITATOR_FEE_CENTS);
         partnerShareCents = Math.round(profitAfterFee * (codeData.partner_share_percentage / 100));
         platformOwnerShareCents = session.price_cents - partnerShareCents;
@@ -94,6 +94,37 @@ export async function POST(request: NextRequest) {
       .eq("session_id", sessionId);
 
     await sendBookingAlert(session.title, count || 0, session.minimum_families);
+
+    // ── Send booking confirmation email ───────────────────────────────────
+    try {
+      const familyEmail = profile?.email ?? user.email;
+      if (familyEmail) {
+        const scheduledAt = new Date(session.scheduled_at);
+        await sendBookingConfirmation({
+          to: familyEmail,
+          familyName: profile?.full_name ?? "there",
+          sessionTitle: session.title,
+          sessionDate: scheduledAt.toLocaleDateString("en-AU", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            timeZone: "Australia/Melbourne",
+          }),
+          sessionTime: scheduledAt.toLocaleTimeString("en-AU", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+            timeZone: "Australia/Melbourne",
+          }) + " AEST",
+          sessionType: session.session_type ?? "session",
+          amount: `$${(session.price_cents / 100).toFixed(2)} AUD`,
+        });
+      }
+    } catch (emailError) {
+      // Non-fatal — booking is confirmed even if email fails
+      console.error("Failed to send booking confirmation email:", emailError);
+    }
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
