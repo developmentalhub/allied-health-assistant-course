@@ -26,6 +26,7 @@ export default function Navbar() {
         <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
           {[
             { label: "Sessions", href: "/sessions" },
+            { label: "Our specialists", href: "/practitioners/directory" },
             { label: "About", href: "/about" },
             { label: "For Practitioners", href: "/practitioners" },
           ].map((link) => (
