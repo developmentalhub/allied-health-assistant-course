@@ -68,7 +68,7 @@ export default function ApplyPage() {
             Application received!
           </h1>
           <p style={{ fontSize: "16px", color: "#6b6880", lineHeight: 1.7, marginBottom: "32px" }}>
-            Thank you for applying to join the Developmental Hub practitioner network. We will review your application and get back to you within 48 hours.
+            Thank you for applying to join the Developmental Hub practitioner network. We will review your application and be in touch soon.
           </p>
           <Link
             href="/"
