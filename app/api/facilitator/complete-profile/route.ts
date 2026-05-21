@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
       // Non-fatal — proceed without photo
     } else {
       const { data: urlData } = supabase.storage
-        .from("public-assets")
+        .from("facilitator-profiles")
         .getPublicUrl(filePath);
       photo_url = urlData.publicUrl;
     }
