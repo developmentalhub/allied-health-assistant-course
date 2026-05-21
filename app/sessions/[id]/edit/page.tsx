@@ -69,7 +69,7 @@ export default function EditSessionPage() {
       setTitle(session.title ?? "");
       setDescription(session.description ?? "");
       setSessionType(session.session_type ?? "group");
-      setScheduledAt(session.scheduled_at ? new Date(session.scheduled_at).toISOString().slice(0, 16) : "");
+      setScheduledAt(session.scheduled_at ? new Date(new Date(session.scheduled_at).toLocaleString("sv-SE", { timeZone: "Australia/Melbourne" })).toISOString().slice(0, 16) : "");
       setDurationMinutes(session.duration_minutes ?? 60);
       setCapacity(session.capacity ?? 10);
       setMinimumFamilies(session.minimum_families ?? 6);
