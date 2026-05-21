@@ -25,7 +25,6 @@ export async function GET(request: NextRequest) {
     .lte("scheduled_at", in25hrs.toISOString());
 
   if (sessionsError) {
-    console.error("Failed to fetch sessions:", sessionsError.message);
     return NextResponse.json({ error: sessionsError.message }, { status: 500 });
   }
 
@@ -62,6 +61,47 @@ export async function GET(request: NextRequest) {
 
       await supabase.from("sessions").update({ status: "confirmed" }).eq("id", session.id);
 
+      // ── Auto-create Daily.co room ────────────────────────────────────────
+      if (!session.daily_room_url) {
+        try {
+          const roomName = `dh-${session.id.slice(0, 8)}`;
+          const scheduledAt = new Date(session.scheduled_at);
+          const durationMs = (session.duration_minutes ?? 60) * 60 * 1000;
+          const expiryTime = new Date(scheduledAt.getTime() + durationMs + 30 * 60 * 1000);
+
+          const dailyRes = await fetch("https://api.daily.co/v1/rooms", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${process.env.DAILY_API_KEY}`,
+            },
+            body: JSON.stringify({
+              name: roomName,
+              privacy: "private",
+              properties: {
+                exp: Math.floor(expiryTime.getTime() / 1000),
+                max_participants: 110,
+                enable_chat: true,
+                enable_screenshare: true,
+                start_video_off: true,
+                start_audio_off: true,
+              },
+            }),
+          });
+
+          if (dailyRes.ok) {
+            const room = await dailyRes.json();
+            await supabase
+              .from("sessions")
+              .update({ daily_room_url: room.url, daily_room_name: roomName })
+              .eq("id", session.id);
+          }
+        } catch (roomErr) {
+          console.error(`Failed to create Daily.co room for session ${session.id}:`, roomErr);
+        }
+      }
+
+      // ── Send reminder emails ─────────────────────────────────────────────
       for (const booking of bookings ?? []) {
         try {
           const { data: profile } = await supabase
@@ -78,10 +118,12 @@ export async function GET(request: NextRequest) {
               sessionTitle: session.title,
               sessionDate: scheduledAt.toLocaleDateString("en-AU", {
                 weekday: "long", day: "numeric", month: "long", year: "numeric",
+                timeZone: "Australia/Melbourne",
               }),
               sessionTime: scheduledAt.toLocaleTimeString("en-AU", {
-                hour: "2-digit", minute: "2-digit", timeZone: "Australia/Sydney",
-              }),
+                hour: "2-digit", minute: "2-digit", hour12: true,
+                timeZone: "Australia/Melbourne",
+              }) + " AEST",
             });
           }
         } catch (emailErr) {
@@ -122,6 +164,7 @@ export async function GET(request: NextRequest) {
             const scheduledAt = new Date(session.scheduled_at);
             const formattedDate = scheduledAt.toLocaleDateString("en-AU", {
               weekday: "long", day: "numeric", month: "long",
+              timeZone: "Australia/Melbourne",
             });
 
             await resend.emails.send({
