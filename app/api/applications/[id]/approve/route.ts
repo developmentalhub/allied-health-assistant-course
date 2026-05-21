@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase-server";
 import { NextRequest, NextResponse } from "next/server";
+import { sendApplicationApproved } from "@/lib/email";
 
 export async function GET(
   request: NextRequest,
@@ -8,10 +9,9 @@ export async function GET(
   const { id } = await params;
   const supabase = await createClient();
 
-  // 1. Fetch the application to get the applicant's email
   const { data: application, error: fetchError } = await supabase
     .from("facilitator_applications")
-    .select("email")
+    .select("email, full_name")
     .eq("id", id)
     .single();
 
@@ -19,7 +19,6 @@ export async function GET(
     return NextResponse.json({ error: "Application not found" }, { status: 404 });
   }
 
-  // 2. Update application status to approved
   const { error: statusError } = await supabase
     .from("facilitator_applications")
     .update({ status: "approved" })
@@ -32,15 +31,23 @@ export async function GET(
     );
   }
 
-  // 3. Update matching profile role to facilitator
   const { error: profileError } = await supabase
     .from("profiles")
     .update({ role: "facilitator" })
     .eq("email", application.email);
 
   if (profileError) {
-    // Non-fatal — user may not have registered yet
     console.error("Failed to update profile role:", profileError.message);
+  }
+
+  // Send approval email
+  try {
+    await sendApplicationApproved({
+      to: application.email,
+      applicantName: application.full_name,
+    });
+  } catch (emailError) {
+    console.error("Failed to send approval email:", emailError);
   }
 
   return NextResponse.redirect(new URL("/admin/applications", request.url));
