@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
@@ -59,7 +58,6 @@ export default function ApplyPage() {
   if (submitted) {
     return (
       <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-        <Navbar />
         <div style={{ maxWidth: "640px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
           <div style={{ width: "72px", height: "72px", backgroundColor: "#f0fdf4", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px" }}>
             <svg width="36" height="36" fill="none" stroke="#166534" strokeWidth="2">
@@ -115,7 +113,6 @@ export default function ApplyPage() {
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      <Navbar />
 
       <section style={{ maxWidth: "640px", margin: "0 auto", padding: "60px 24px 40px", textAlign: "center" }}>
         <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", marginBottom: "16px" }}>
