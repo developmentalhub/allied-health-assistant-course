@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
     .upsert(
       {
         user_id: user.id,
-        email: profile.email ?? user.email,
+        email: profile?.email ?? user.email ?? "",
         bio,
         photo_url,
         wwc_number,
