@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
 
-  // Auth check
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -13,18 +12,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
   }
 
-  // Role check — must be a facilitator
   const { data: profile } = await supabase
     .from("profiles")
     .select("role, email")
     .eq("id", user.id)
     .single();
 
- if (!["facilitator", "superadmin", "admin"].includes(profile?.role)) {
+  if (!["facilitator", "admin", "superadmin"].includes(profile?.role ?? "")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  // Parse multipart form
   const formData = await request.formData();
 
   const bio = formData.get("bio") as string;
@@ -36,7 +33,6 @@ export async function POST(request: NextRequest) {
   const registration_expiry = formData.get("registration_expiry") as string;
   const photoFile = formData.get("photo") as File | null;
 
-  // Validate required fields
   if (
     !bio ||
     !wwc_number ||
@@ -46,23 +42,26 @@ export async function POST(request: NextRequest) {
     !registration_number ||
     !registration_expiry
   ) {
-    return NextResponse.json(
-      { error: "All fields are required." },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "All fields are required." }, { status: 400 });
   }
 
-  // Handle photo upload
-  let photo_url: string | null = null;
+  // Keep existing photo if no new one uploaded
+  const { data: existing } = await supabase
+    .from("facilitator_profiles")
+    .select("photo_url")
+    .eq("user_id", user.id)
+    .single();
+
+  let photo_url: string | null = existing?.photo_url ?? null;
 
   if (photoFile && photoFile.size > 0) {
     const fileExt = photoFile.name.split(".").pop();
-    const filePath = `facilitator-photos/${user.id}.${fileExt}`;
+    const filePath = `${user.id}.${fileExt}`;
     const arrayBuffer = await photoFile.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
 
     const { error: uploadError } = await supabase.storage
-      .from("public-assets")
+      .from("facilitator-profiles")
       .upload(filePath, buffer, {
         contentType: photoFile.type,
         upsert: true,
@@ -70,16 +69,19 @@ export async function POST(request: NextRequest) {
 
     if (uploadError) {
       console.error("Photo upload failed:", uploadError.message);
-      // Non-fatal — proceed without photo
-    } else {
-      const { data: urlData } = supabase.storage
-        .from("facilitator-profiles")
-        .getPublicUrl(filePath);
-      photo_url = urlData.publicUrl;
+      return NextResponse.json(
+        { error: `Photo upload failed: ${uploadError.message}` },
+        { status: 500 }
+      );
     }
+
+    const { data: urlData } = supabase.storage
+      .from("facilitator-profiles")
+      .getPublicUrl(filePath);
+
+    photo_url = urlData.publicUrl;
   }
 
-  // Upsert facilitator profile
   const { error: upsertError } = await supabase
     .from("facilitator_profiles")
     .upsert(
