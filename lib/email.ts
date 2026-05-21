@@ -1,7 +1,10 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -42,22 +45,16 @@ const base = (content: string) => `
     <tr>
       <td align="center">
         <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-
-          <!-- Logo -->
           <tr>
             <td style="padding-bottom:32px;">
               <p style="margin:0;font-size:18px;font-weight:700;color:#1e1b2e;">Developmental Hub</p>
             </td>
           </tr>
-
-          <!-- Card -->
           <tr>
             <td style="background:#ffffff;border-radius:16px;border:1px solid #e8e4de;padding:40px;">
               ${content}
             </td>
           </tr>
-
-          <!-- Footer -->
           <tr>
             <td style="padding-top:24px;text-align:center;">
               <p style="margin:0;font-size:12px;color:#6b6880;">
@@ -66,7 +63,6 @@ const base = (content: string) => `
               </p>
             </td>
           </tr>
-
         </table>
       </td>
     </tr>
@@ -122,7 +118,7 @@ export async function sendBookingConfirmation(props: BookingConfirmationProps) {
     ${btn("https://developmental-hub.vercel.app/dashboard", "View my bookings")}
   `);
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: `Booking confirmed: ${sessionTitle}`,
@@ -145,7 +141,7 @@ export async function sendSessionReminder(props: SessionReminderProps) {
     ${btn("https://developmental-hub.vercel.app/dashboard", "Go to my dashboard")}
   `);
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: `Reminder: ${sessionTitle} is tomorrow`,
@@ -163,7 +159,7 @@ export async function sendApplicationApproved(props: ApplicationDecisionProps) {
     ${btn("https://developmental-hub.vercel.app/facilitator/profile/complete", "Complete my profile")}
   `);
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: "Your Developmental Hub application has been approved",
@@ -181,7 +177,7 @@ export async function sendApplicationDeclined(props: ApplicationDecisionProps) {
     ${p("We appreciate your interest and encourage you to apply again in the future as our platform grows.")}
   `);
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: "Your Developmental Hub application",
