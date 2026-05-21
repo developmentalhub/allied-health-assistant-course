@@ -76,9 +76,10 @@ export default async function AdminPage() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "48px" }}>
           {[
             { label: "Create new session", href: "/admin/sessions/new", bg: "#3730a3" },
-            { label: "Manage facilitators", href: "/admin/facilitators", bg: "#0f766e" },
- { label: "View all bookings", href: "/admin/bookings", bg: "#c2410c" },
+{ label: "Manage facilitators", href: "/admin/facilitators", bg: "#0f766e" },
+{ label: "View all bookings", href: "/admin/bookings", bg: "#c2410c" },
 { label: "Facilitator applications", href: "/admin/applications", bg: "#7c3aed" },
+{ label: "Referral codes", href: "/admin/referral-codes", bg: "#0f766e" },
           ].map((action) => (
             <Link
               key={action.label}

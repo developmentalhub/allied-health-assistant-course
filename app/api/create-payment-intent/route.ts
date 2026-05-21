@@ -5,6 +5,8 @@ import { sendBookingAlert } from "@/lib/resend";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
+const FACILITATOR_FEE_CENTS = 17500; // $175 flat fee
+
 export async function POST(request: NextRequest) {
   try {
     const { sessionId } = await request.json();
@@ -20,7 +22,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    // Attempt to fetch the session using the primary ID
     const { data: session, error: sessionError } = await supabase
       .from("sessions")
       .select("*")
@@ -28,8 +29,8 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (sessionError || !session) {
-      return NextResponse.json({ 
-        error: `Session not found. Attempted to search for ID: ${sessionId}. Error details: ${JSON.stringify(sessionError)}` 
+      return NextResponse.json({
+        error: `Session not found. ID: ${sessionId}. Error: ${JSON.stringify(sessionError)}`
       }, { status: 404 });
     }
 
@@ -39,6 +40,28 @@ export async function POST(request: NextRequest) {
       .eq("id", user.id)
       .single();
 
+    const referralCode = profile?.referred_by ?? null;
+
+    // ── Revenue split calculation ─────────────────────────────────────────
+    let platformOwnerShareCents = session.price_cents; // default: owner gets 100%
+    let partnerShareCents = 0;
+
+    if (referralCode) {
+      const { data: codeData } = await supabase
+        .from("referral_codes")
+        .select("partner_share_percentage, owner_share_percentage, active")
+        .eq("code", referralCode)
+        .eq("active", true)
+        .single();
+
+      if (codeData) {
+        // Split applies to profit after facilitator fee
+        const profitAfterFee = Math.max(0, session.price_cents - FACILITATOR_FEE_CENTS);
+        partnerShareCents = Math.round(profitAfterFee * (codeData.partner_share_percentage / 100));
+        platformOwnerShareCents = session.price_cents - partnerShareCents;
+      }
+    }
+
     const paymentIntent = await stripe.paymentIntents.create({
       amount: session.price_cents,
       currency: "aud",
@@ -46,9 +69,11 @@ export async function POST(request: NextRequest) {
       metadata: {
         session_id: sessionId,
         family_id: user.id,
-        referred_by: profile?.referred_by || "",
+        referred_by: referralCode || "",
         family_email: profile?.email || user.email || "",
         family_name: profile?.full_name || "",
+        platform_owner_share_cents: platformOwnerShareCents.toString(),
+        partner_share_cents: partnerShareCents.toString(),
       },
     });
 
@@ -58,15 +83,17 @@ export async function POST(request: NextRequest) {
       status: "pending",
       amount_cents: session.price_cents,
       stripe_payment_intent_id: paymentIntent.id,
-      attributed_to: profile?.referred_by || null,
+      attributed_to: referralCode || null,
+      platform_owner_share_cents: platformOwnerShareCents,
+      partner_share_cents: partnerShareCents,
     });
 
     const { count } = await supabase
       .from("bookings")
-      .select("*", { count: 'exact', head: true })
+      .select("*", { count: "exact", head: true })
       .eq("session_id", sessionId);
 
-    await sendBookingAlert(session.title, count || 0, session.min_participants);
+    await sendBookingAlert(session.title, count || 0, session.minimum_families);
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
