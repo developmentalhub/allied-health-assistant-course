@@ -4,13 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
-  }
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -31,17 +26,10 @@ export async function POST(request: NextRequest) {
   const insurance_expiry = formData.get("insurance_expiry") as string;
   const registration_number = formData.get("registration_number") as string;
   const registration_expiry = formData.get("registration_expiry") as string;
+  const abn = formData.get("abn") as string;
   const photoFile = formData.get("photo") as File | null;
 
-  if (
-    !bio ||
-    !wwc_number ||
-    !wwc_expiry ||
-    !insurance_provider ||
-    !insurance_expiry ||
-    !registration_number ||
-    !registration_expiry
-  ) {
+  if (!bio || !wwc_number || !wwc_expiry || !insurance_provider || !insurance_expiry || !registration_number || !registration_expiry || !abn) {
     return NextResponse.json({ error: "All fields are required." }, { status: 400 });
   }
 
@@ -62,17 +50,11 @@ export async function POST(request: NextRequest) {
 
     const { error: uploadError } = await supabase.storage
       .from("facilitator-profiles")
-      .upload(filePath, buffer, {
-        contentType: photoFile.type,
-        upsert: true,
-      });
+      .upload(filePath, buffer, { contentType: photoFile.type, upsert: true });
 
     if (uploadError) {
       console.error("Photo upload failed:", uploadError.message);
-      return NextResponse.json(
-        { error: `Photo upload failed: ${uploadError.message}` },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: `Photo upload failed: ${uploadError.message}` }, { status: 500 });
     }
 
     const { data: urlData } = supabase.storage
@@ -96,6 +78,7 @@ export async function POST(request: NextRequest) {
         insurance_expiry,
         registration_number,
         registration_expiry,
+        abn,
         profile_complete: true,
         updated_at: new Date().toISOString(),
       },
@@ -104,10 +87,7 @@ export async function POST(request: NextRequest) {
 
   if (upsertError) {
     console.error("Profile upsert failed:", upsertError.message);
-    return NextResponse.json(
-      { error: "Failed to save profile. Please try again." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to save profile. Please try again." }, { status: 500 });
   }
 
   return NextResponse.json({ success: true });
