@@ -298,22 +298,30 @@ export default async function HomePage() {
       </section>
 
       {/* ── Waitlist CTA ──────────────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#1e1b2e", padding: "80px 24px" }}>
-        <div style={{ maxWidth: "600px", margin: "0 auto", textAlign: "center" }}>
-          <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#a5b4fc", marginBottom: "16px" }}>
-            Coming soon
-          </p>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 300, color: "white", margin: "0 0 16px", lineHeight: 1.2 }}>
-            Don't see a session for your child yet?
-          </h2>
-          <p style={{ fontSize: "16px", color: "#a5b4fc", lineHeight: 1.7, fontWeight: 300, margin: "0 0 36px" }}>
-            We're building out our session library based on demand. Join the waitlist for a specific age group and topic — when enough families are interested, we'll make it happen.
-          </p>
-          <Link href="/waitlist" style={{ backgroundColor: "white", color: "#1e1b2e", padding: "14px 36px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
-            Join the waitlist
-          </Link>
-        </div>
-      </section>
+<section style={{ backgroundColor: "#1e1b2e", padding: "80px 24px" }}>
+  <div style={{ maxWidth: "680px", margin: "0 auto", textAlign: "center" }}>
+    <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#a5b4fc", marginBottom: "16px" }}>
+      Play Move Improve — now online
+    </p>
+    <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 300, color: "white", margin: "0 0 20px", lineHeight: 1.2 }}>
+      Bringing expert support to families wherever they are
+    </h2>
+    <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, fontWeight: 300, margin: "0 0 16px" }}>
+      Developmental Hub is the telehealth platform from Play Move Improve — built for busy families and those in rural and regional areas who have always found it hard to access the support their child needs.
+    </p>
+    <p style={{ fontSize: "16px", color: "#a5b4fc", lineHeight: 1.8, fontWeight: 300, margin: "0 0 36px" }}>
+      We're still building out our session library and we want to hear from you. Tell us what your family needs — when enough families express interest in a topic, we bring in a specialist and make it happen.
+    </p>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+      <Link href="/waitlist" style={{ backgroundColor: "white", color: "#1e1b2e", padding: "14px 36px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
+        Tell us what you need
+      </Link>
+      <p style={{ fontSize: "13px", color: "#6b7280", margin: 0 }}>
+        No commitment. No charge. Just your voice helping us build something better.
+      </p>
+    </div>
+  </div>
+</section>
 
       {/* ── Practitioners CTA ─────────────────────────────────────────────── */}
       <section style={{ maxWidth: "900px", margin: "0 auto", padding: "80px 24px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
