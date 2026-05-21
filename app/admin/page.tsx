@@ -80,6 +80,7 @@ export default async function AdminPage() {
 { label: "View all bookings", href: "/admin/bookings", bg: "#c2410c" },
 { label: "Facilitator applications", href: "/admin/applications", bg: "#7c3aed" },
 { label: "Referral codes", href: "/admin/referral-codes", bg: "#0f766e" },
+{ label: "Waitlist", href: "/admin/waitlist", bg: "#7c3aed" },
           ].map((action) => (
             <Link
               key={action.label}
@@ -144,7 +145,7 @@ export default async function AdminPage() {
                   </div>
                   <div style={{ display: "flex", gap: "10px" }}>
                     <Link
-                      href={`/admin/sessions/${session.id}/edit`}
+                      href={`/sessions/${session.id}/edit`}
                       style={{ fontSize: "13px", fontWeight: 500, color: "#3730a3", textDecoration: "none", padding: "6px 14px", borderRadius: "999px", border: "1px solid #c7d2fe" }}
                     >
                       Edit
