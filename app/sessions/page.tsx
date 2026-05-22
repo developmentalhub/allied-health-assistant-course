@@ -195,7 +195,7 @@ export default async function SessionsPage({
               const isFull = spotsLeft <= 0;
 
               // Build interest registration URL with prefilled params
-              const interestUrl = `/sessions/interest?age=${session.age_group}&topic=${encodeURIComponent(session.title)}`;
+              const interestUrl = `/register-interest?age=${session.age_group}&topic=${encodeURIComponent(session.title)}`;
 
               return (
                 <div key={session.id} style={{ backgroundColor: style.cardBackground, borderRadius: "16px", border: `1.5px solid ${style.borderColor}`, padding: "24px", display: "flex", flexDirection: "column", gap: "16px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
