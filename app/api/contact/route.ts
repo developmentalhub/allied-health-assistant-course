@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     await resend.emails.send({
       from: FROM,
       to: "robyn@playmoveimprove.com.au",
-      reply_to: email,
+   replyTo: email,
       subject: `New contact message: ${subject || "No subject"}`,
       html: `
         <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">
