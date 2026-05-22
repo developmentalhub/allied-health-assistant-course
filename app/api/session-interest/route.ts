@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
-  const { name, email, age_group, session_topic, preferred_time, preferred_days } = await request.json();
+  const { name, email, age_group, session_topic, preferred_time, preferred_days, other_details } = await request.json();
 
   if (!name || !email || !age_group || !session_topic || !preferred_time) {
     return NextResponse.json({ error: "All required fields must be filled." }, { status: 400 });
@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
     session_topic,
     preferred_time,
     preferred_days: preferred_days || null,
+    other_details: other_details || null,
   });
 
   if (error) {

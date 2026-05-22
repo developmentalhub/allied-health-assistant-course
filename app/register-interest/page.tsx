@@ -5,10 +5,10 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
-const timeSlotsByAge: Record<string, string> = {
-  "0-2": "12pm–3pm AEST",
-  "3-5": "9am–12pm AEST",
-  "6-8": "4pm–6pm AEST",
+const timeSlotsByAge: Record<string, string[]> = {
+  "0-2": ["12pm–3pm AEST (weekday)", "Other — I'll specify below"],
+  "3-5": ["9am–12pm AEST (weekday)", "Other — I'll specify below"],
+  "6-8": ["4pm–6pm AEST (weekday)", "7pm–8pm AEST (weekday)", "Weekend morning", "Other — I'll specify below"],
 };
 
 const topicsByAge: Record<string, string[]> = {
@@ -16,16 +16,19 @@ const topicsByAge: Record<string, string[]> = {
     "First Steps and First Words: The Movement Secret Behind Your Baby's Milestones",
     "Settled and Sleeping: Using Your Baby's Natural Rhythm to Build Calm",
     "Your Floor is Their Classroom: Building a Brain for Life Through Play",
+    "Other — I'll describe below",
   ],
   "3-5": [
     "Tuned In: Helping Your Child Focus, Listen and Follow Through",
     "Playgroup Ready: Raising a Child Who Connects, Cooperates and Belongs",
     "Moving Towards Reading: How Active Play Builds a School-Ready Brain",
+    "Other — I'll describe below",
   ],
   "6-8": [
     "Game On: Helping Your Child Move with Confidence on the Field and Court",
     "Reset and Regroup: Movement Strategies for Big Feelings and Hard Days",
     "Grit, Persistence and Teamwork: Building the Physical Foundation for Pro-Social Skills",
+    "Other — I'll describe below",
   ],
 };
 
@@ -45,15 +48,20 @@ function InterestForm() {
     email: "",
     age_group: prefilledAge,
     session_topic: prefilledTopic,
+    preferred_time: "",
     preferred_days: "",
+    other_details: "",
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  const showOtherTime = form.preferred_time === "Other — I'll specify below";
+  const showOtherTopic = form.session_topic === "Other — I'll describe below";
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     if (e.target.name === "age_group") {
-      setForm((prev) => ({ ...prev, age_group: e.target.value, session_topic: "" }));
+      setForm((prev) => ({ ...prev, age_group: e.target.value, session_topic: "", preferred_time: "" }));
     } else {
       setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }
@@ -64,12 +72,18 @@ function InterestForm() {
     setLoading(true);
     setError("");
 
-    const preferredTime = timeSlotsByAge[form.age_group] || "";
-
     const res = await fetch("/api/session-interest", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, preferred_time: preferredTime }),
+      body: JSON.stringify({
+        name: form.name,
+        email: form.email,
+        age_group: form.age_group,
+        session_topic: form.session_topic,
+        preferred_time: form.preferred_time,
+        preferred_days: form.preferred_days || null,
+        other_details: form.other_details || null,
+      }),
     });
 
     const data = await res.json();
@@ -91,6 +105,7 @@ function InterestForm() {
   };
   const labelStyle: React.CSSProperties = { display: "block", fontSize: "14px", fontWeight: 500, color: "#1e1b2e", marginBottom: "6px" };
   const fieldStyle: React.CSSProperties = { display: "flex", flexDirection: "column", gap: "6px" };
+  const hintStyle: React.CSSProperties = { fontSize: "12px", color: "#3730a3", fontWeight: 500, margin: 0 };
 
   if (success) {
     return (
@@ -102,10 +117,10 @@ function InterestForm() {
             </svg>
           </div>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 12px" }}>
-            You're registered
+            Thank you — we heard you
           </h1>
           <p style={{ fontSize: "15px", color: "#6b6880", lineHeight: 1.7, margin: "0 0 32px" }}>
-            Thank you for registering your interest. We'll be in touch as soon as this session is scheduled and ready to book.
+            Your response helps us decide which sessions to schedule first. We'll be in touch as soon as your session is ready to book.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
             <Link href="/sessions" style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 24px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none" }}>
@@ -129,13 +144,13 @@ function InterestForm() {
         </Link>
 
         <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3730a3", marginBottom: "12px" }}>
-          Register your interest
+          Tell us what you need
         </p>
         <h1 style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 12px", lineHeight: 1.2 }}>
-          Save your spot before it opens
+          Help us build the right sessions for your family
         </h1>
         <p style={{ fontSize: "16px", color: "#6b6880", lineHeight: 1.7, margin: "0 0 40px", fontWeight: 300 }}>
-          Sessions open for booking at the end of June 2026. Register your interest now and you'll be the first to know when dates are confirmed — and first in line to book.
+          Sessions open for booking at the end of June 2026. Tell us what your family needs and when works for you — we use this to hire the right practitioners and schedule sessions at the right times.
         </p>
 
         <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "40px" }}>
@@ -159,33 +174,52 @@ function InterestForm() {
                   <option key={value} value={value}>{label}</option>
                 ))}
               </select>
-              {form.age_group && (
-                <p style={{ fontSize: "12px", color: "#3730a3", fontWeight: 500, margin: 0 }}>
-                  Sessions for this age group run {timeSlotsByAge[form.age_group]}
-                </p>
-              )}
             </div>
 
-            <div style={fieldStyle}>
-              <label style={labelStyle}>Topic you're interested in</label>
-              <select name="session_topic" value={form.session_topic} onChange={handleChange} required style={{ ...inputStyle, opacity: !form.age_group ? 0.5 : 1 }} disabled={!form.age_group}>
-                <option value="">Select a topic</option>
-                {(topicsByAge[form.age_group] ?? []).map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
-            </div>
+            {form.age_group && (
+              <div style={fieldStyle}>
+                <label style={labelStyle}>Topic you're most interested in</label>
+                <select name="session_topic" value={form.session_topic} onChange={handleChange} required style={inputStyle}>
+                  <option value="">Select a topic</option>
+                  {topicsByAge[form.age_group].map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+                {showOtherTopic && (
+                  <p style={hintStyle}>Tell us more in the comments box below</p>
+                )}
+              </div>
+            )}
+
+            {form.age_group && (
+              <div style={fieldStyle}>
+                <label style={labelStyle}>What time works best for you?</label>
+                <select name="preferred_time" value={form.preferred_time} onChange={handleChange} required style={inputStyle}>
+                  <option value="">Select a time</option>
+                  {timeSlotsByAge[form.age_group].map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+                {showOtherTime && (
+                  <p style={hintStyle}>Tell us your preferred time in the comments box below</p>
+                )}
+              </div>
+            )}
 
             <div style={fieldStyle}>
               <label style={labelStyle}>
-                Preferred day <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
+                Anything else you'd like us to know <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
               </label>
-              <select name="preferred_days" value={form.preferred_days} onChange={handleChange} style={inputStyle}>
-                <option value="">No preference</option>
-                <option value="Weekday">Weekday</option>
-                <option value="Weekend">Weekend</option>
-                <option value="Either">Either works</option>
-              </select>
+              <textarea
+                name="other_details"
+                value={form.other_details}
+                onChange={handleChange}
+                rows={3}
+                placeholder={showOtherTime || showOtherTopic
+                  ? "Tell us your preferred time and/or the topic you have in mind..."
+                  : "e.g. my child is 4 and really struggles with transitions..."}
+                style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }}
+              />
             </div>
 
             {error && (
@@ -195,7 +229,7 @@ function InterestForm() {
             )}
 
             <button type="submit" disabled={loading} style={{ width: "100%", backgroundColor: "#3730a3", color: "white", border: "none", borderRadius: "999px", padding: "14px", fontSize: "15px", fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, fontFamily: "inherit" }}>
-              {loading ? "Registering…" : "Register my interest"}
+              {loading ? "Submitting…" : "Share what your family needs"}
             </button>
 
           </form>
