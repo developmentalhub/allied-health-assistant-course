@@ -78,13 +78,18 @@ export default async function HomePage() {
             <p style={{ fontSize: "14px", color: "#6b6880", lineHeight: 1.6, margin: "0 0 32px", fontStyle: "italic", borderLeft: "3px solid #e0e7ff", paddingLeft: "16px" }}>
               "I built this because families in rural and regional Australia deserve the same access to expert support as everyone else." — Robyn Papworth, Founder
             </p>
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-              <Link href="/sessions" style={{ backgroundColor: "#3730a3", color: "white", padding: "14px 28px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
-                Browse sessions
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "420px" }}>
+              <Link href="/register-interest" style={{ backgroundColor: "#3730a3", color: "white", padding: "16px 28px", borderRadius: "999px", fontSize: "16px", fontWeight: 600, textDecoration: "none", display: "block", textAlign: "center" }}>
+                Tell us what your child needs
               </Link>
-              <Link href="/about" style={{ backgroundColor: "transparent", color: "#1e1b2e", padding: "14px 28px", borderRadius: "999px", fontSize: "15px", fontWeight: 500, textDecoration: "none", display: "inline-block", border: "1px solid #e8e4de" }}>
-                Our story
-              </Link>
+              <p style={{ fontSize: "13px", color: "#6b6880", margin: 0, textAlign: "center" }}>
+                Takes 2 minutes. No payment. No commitment. Directly shapes what we build.
+              </p>
+              <div style={{ display: "flex", gap: "16px", justifyContent: "center", marginTop: "4px" }}>
+                <Link href="/sessions" style={{ fontSize: "14px", color: "#3730a3", fontWeight: 500, textDecoration: "none" }}>Browse topics</Link>
+                <span style={{ color: "#e8e4de" }}>·</span>
+                <Link href="/about" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none" }}>Our story</Link>
+              </div>
             </div>
           </div>
 
