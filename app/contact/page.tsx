@@ -1,6 +1,49 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 
 export default function ContactPage() {
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      setError(data.error ?? "Something went wrong. Please try again.");
+      setLoading(false);
+      return;
+    }
+
+    setSuccess(true);
+    setLoading(false);
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%", padding: "10px 16px", borderRadius: "12px",
+    border: "1.5px solid #e8e4de", fontSize: "15px", color: "#1e1b2e",
+    outline: "none", boxSizing: "border-box", fontFamily: "inherit",
+    backgroundColor: "#faf8f5",
+  };
+  const labelStyle: React.CSSProperties = { display: "block", fontSize: "14px", fontWeight: 500, color: "#1e1b2e", marginBottom: "6px" };
+  const fieldStyle: React.CSSProperties = { display: "flex", flexDirection: "column", gap: "6px" };
+
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
       <div style={{ maxWidth: "680px", margin: "0 auto", padding: "64px 24px 100px" }}>
@@ -19,82 +62,79 @@ export default function ContactPage() {
           We'd love to hear from you — whether you're a family looking for support, a practitioner interested in facilitating, or just curious about what we're building.
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", marginBottom: "48px" }}>
+        {/* Contact details */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "40px" }}>
+          <a href="mailto:robyn@playmoveimprove.com.au" style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "14px", padding: "20px 24px", textDecoration: "none", display: "block" }}>
+            <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", margin: "0 0 8px" }}>Email</p>
+            <p style={{ fontSize: "14px", fontWeight: 500, color: "#3730a3", margin: 0 }}>robyn@playmoveimprove.com.au</p>
+          </a>
+          <a href="https://www.instagram.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "14px", padding: "20px 24px", textDecoration: "none", display: "block" }}>
+            <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", margin: "0 0 8px" }}>Instagram</p>
+            <p style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e", margin: 0 }}>@playmoveimprove</p>
+          </a>
+          <a href="https://www.facebook.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "14px", padding: "20px 24px", textDecoration: "none", display: "block" }}>
+            <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", margin: "0 0 8px" }}>Facebook</p>
+            <p style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e", margin: 0 }}>@playmoveimprove</p>
+          </a>
+        </div>
 
-          {/* Email */}
-          <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "32px" }}>
-            <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", margin: "0 0 12px" }}>Email us</p>
-            <a href="mailto:robyn@playmoveimprove.com.au" style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: 400, color: "#3730a3", textDecoration: "none", display: "block", marginBottom: "8px" }}>
-              robyn@playmoveimprove.com.au
-            </a>
-            <p style={{ fontSize: "13px", color: "#6b6880", margin: 0, lineHeight: 1.6 }}>
-              We aim to respond within 1–2 business days.
-            </p>
-          </div>
-
-          {/* Social */}
-          <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "32px" }}>
-            <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", margin: "0 0 20px" }}>Follow us</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              <a href="https://www.instagram.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none" }}>
-                <div style={{ width: "40px", height: "40px", borderRadius: "10px", backgroundColor: "#faf8f5", border: "1px solid #e8e4de", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e1b2e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                    <circle cx="12" cy="12" r="4"/>
-                    <circle cx="17.5" cy="6.5" r="0.5" fill="#1e1b2e"/>
-                  </svg>
-                </div>
-                <div>
-                  <p style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e", margin: 0 }}>Instagram</p>
-                  <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>@playmoveimprove</p>
-                </div>
-              </a>
-              <a href="https://www.facebook.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none" }}>
-                <div style={{ width: "40px", height: "40px", borderRadius: "10px", backgroundColor: "#faf8f5", border: "1px solid #e8e4de", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e1b2e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                  </svg>
-                </div>
-                <div>
-                  <p style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e", margin: 0 }}>Facebook</p>
-                  <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>@playmoveimprove</p>
-                </div>
-              </a>
+        {/* Contact form */}
+        {success ? (
+          <div style={{ backgroundColor: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "16px", padding: "40px", textAlign: "center" }}>
+            <div style={{ width: "48px", height: "48px", backgroundColor: "#dcfce7", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+              <svg width="22" height="22" fill="none" stroke="#166534" strokeWidth="2">
+                <path d="M4 12l6 6L20 6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#166534", margin: "0 0 8px" }}>Message sent</h2>
+            <p style={{ fontSize: "15px", color: "#166534", margin: 0 }}>Thank you — we'll be in touch within 1–2 business days.</p>
           </div>
-        </div>
+        ) : (
+          <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "40px" }}>
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 24px" }}>Send us a message</h2>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 
-        {/* FAQ */}
-        <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "32px" }}>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 24px" }}>
-            Common questions
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            {[
-              {
-                q: "When do sessions open for booking?",
-                a: "We're opening bookings at the end of June 2026. Register your interest on the sessions page to be first in line.",
-              },
-              {
-                q: "I'm a practitioner — how do I apply?",
-                a: "Visit our For Practitioners page to learn more and submit an application. We review every application personally.",
-              },
-              {
-                q: "Is Developmental Hub part of Play Move Improve?",
-                a: "Yes — Developmental Hub is the telehealth platform built by Play Move Improve Pty Ltd, bringing our expertise online for families everywhere.",
-              },
-              {
-                q: "How do I know if a session is right for my child?",
-                a: "Every session is designed for a specific age group and developmental area. Browse by your child's age and the topics that matter most to your family right now.",
-              },
-            ].map((item, i, arr) => (
-              <div key={item.q} style={{ paddingBottom: i < arr.length - 1 ? "24px" : "0", borderBottom: i < arr.length - 1 ? "1px solid #f0ede8" : "none" }}>
-                <p style={{ fontSize: "15px", fontWeight: 600, color: "#1e1b2e", margin: "0 0 8px" }}>{item.q}</p>
-                <p style={{ fontSize: "14px", color: "#6b6880", lineHeight: 1.7, margin: 0 }}>{item.a}</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                <div style={fieldStyle}>
+                  <label style={labelStyle}>Your name</label>
+                  <input name="name" value={form.name} onChange={handleChange} required placeholder="Jane Smith" style={inputStyle} />
+                </div>
+                <div style={fieldStyle}>
+                  <label style={labelStyle}>Email address</label>
+                  <input name="email" type="email" value={form.email} onChange={handleChange} required placeholder="jane@example.com" style={inputStyle} />
+                </div>
               </div>
-            ))}
+
+              <div style={fieldStyle}>
+                <label style={labelStyle}>What is this about? <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span></label>
+                <select name="subject" value={form.subject} onChange={handleChange} style={inputStyle}>
+                  <option value="">Select a topic</option>
+                  <option value="Question about sessions">Question about sessions</option>
+                  <option value="Applying as a practitioner">Applying as a practitioner</option>
+                  <option value="Technical issue">Technical issue</option>
+                  <option value="Partnership enquiry">Partnership enquiry</option>
+                  <option value="Something else">Something else</option>
+                </select>
+              </div>
+
+              <div style={fieldStyle}>
+                <label style={labelStyle}>Your message</label>
+                <textarea name="message" value={form.message} onChange={handleChange} required rows={5} placeholder="Tell us what's on your mind..." style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }} />
+              </div>
+
+              {error && (
+                <div style={{ backgroundColor: "#fef2f2", border: "1px solid #fecaca", borderRadius: "10px", padding: "12px 16px", fontSize: "14px", color: "#b91c1c" }}>
+                  {error}
+                </div>
+              )}
+
+              <button type="submit" disabled={loading} style={{ width: "100%", backgroundColor: "#3730a3", color: "white", border: "none", borderRadius: "999px", padding: "14px", fontSize: "15px", fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, fontFamily: "inherit" }}>
+                {loading ? "Sending…" : "Send message"}
+              </button>
+
+            </form>
           </div>
-        </div>
+        )}
 
       </div>
     </main>
