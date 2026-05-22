@@ -67,7 +67,7 @@ export default function CompleteProfilePage() {
           return;
         }
         setSuccess(true);
-        setTimeout(() => router.push("/dashboard"), 2000);
+        setTimeout(() => router.push("/facilitator-hub"), 2000);
       } catch {
         setError("Network error. Please try again.");
       }
