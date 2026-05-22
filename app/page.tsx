@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase-server";
 
+const ROBYN_PHOTO = "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/Navigating%20Thriving%20Kids%20and%20Foundational%20Supports%20for%20Early%20Childhood%20Professionals.png";
+
 export default async function HomePage() {
   const supabase = await createClient();
 
-  // Fetch a sample of upcoming sessions grouped by age group
   const { data: sessions } = await supabase
     .from("sessions")
     .select("id, title, age_group, category, session_type, price_cents, scheduled_at, minimum_families")
@@ -57,28 +58,56 @@ export default async function HomePage() {
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section style={{ maxWidth: "800px", margin: "0 auto", padding: "80px 24px 72px", textAlign: "center" }}>
-        <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3730a3", marginBottom: "20px" }}>
-          Expert-led group support for families
-        </p>
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 6vw, 60px)", fontWeight: 300, color: "#1e1b2e", lineHeight: 1.1, margin: "0 0 24px" }}>
-          You don't have to figure this out alone
-        </h1>
-        <p style={{ fontSize: "18px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300, maxWidth: "580px", margin: "0 auto 40px" }}>
-          Developmental Hub connects families with vetted specialists through affordable, live group sessions. Real expertise. Real community. Designed around your life.
-        </p>
-        <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <Link href="/sessions" style={{ backgroundColor: "#3730a3", color: "white", padding: "14px 32px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
-            Browse upcoming sessions
-          </Link>
-          <Link href="/about" style={{ backgroundColor: "white", color: "#1e1b2e", padding: "14px 32px", borderRadius: "999px", fontSize: "15px", fontWeight: 500, textDecoration: "none", display: "inline-block", border: "1px solid #e8e4de" }}>
-            How it works
-          </Link>
+      <section style={{ backgroundColor: "white", borderBottom: "1px solid #e8e4de" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "64px 24px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "48px", alignItems: "center" }}>
+
+          {/* Text */}
+          <div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#f5f3ff", border: "1px solid #e0e7ff", borderRadius: "999px", padding: "6px 14px", marginBottom: "24px" }}>
+              <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#3730a3", flexShrink: 0 }} />
+              <p style={{ fontSize: "12px", fontWeight: 600, color: "#3730a3", margin: 0, letterSpacing: "0.06em" }}>
+                From the team at Play Move Improve
+              </p>
+            </div>
+            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 300, color: "#1e1b2e", lineHeight: 1.15, margin: "0 0 20px" }}>
+              Expert support for your child's development — wherever you are
+            </h1>
+            <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300, margin: "0 0 16px" }}>
+              Live group sessions and webinars led by vetted specialists. Affordable, practical, and designed around busy family life — no waitlists, no travel, no $200 appointments.
+            </p>
+            <p style={{ fontSize: "14px", color: "#6b6880", lineHeight: 1.6, margin: "0 0 32px", fontStyle: "italic", borderLeft: "3px solid #e0e7ff", paddingLeft: "16px" }}>
+              "I built this because families in rural and regional Australia deserve the same access to expert support as everyone else." — Robyn Papworth, Founder
+            </p>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+              <Link href="/sessions" style={{ backgroundColor: "#3730a3", color: "white", padding: "14px 28px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
+                Browse sessions
+              </Link>
+              <Link href="/about" style={{ backgroundColor: "transparent", color: "#1e1b2e", padding: "14px 28px", borderRadius: "999px", fontSize: "15px", fontWeight: 500, textDecoration: "none", display: "inline-block", border: "1px solid #e8e4de" }}>
+                Our story
+              </Link>
+            </div>
+          </div>
+
+          {/* Photo */}
+          <div style={{ position: "relative" }}>
+            <div style={{ borderRadius: "20px", overflow: "hidden", aspectRatio: "4/3" }}>
+              <img
+                src={ROBYN_PHOTO}
+                alt="Robyn Papworth speaking at an early childhood education conference"
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
+              />
+            </div>
+            <div style={{ position: "absolute", bottom: "16px", left: "16px", right: "16px", backgroundColor: "white", borderRadius: "12px", padding: "12px 16px", boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
+              <p style={{ fontSize: "14px", fontWeight: 600, color: "#1e1b2e", margin: "0 0 2px" }}>Robyn Papworth</p>
+              <p style={{ fontSize: "12px", color: "#6b6880", margin: 0 }}>Founder of Play Move Improve · Masters-qualified Developmental Educator & Exercise Physiologist</p>
+            </div>
+          </div>
+
         </div>
       </section>
 
       {/* ── Trust bar ─────────────────────────────────────────────────────── */}
-      <section style={{ borderTop: "1px solid #e8e4de", borderBottom: "1px solid #e8e4de", backgroundColor: "white" }}>
+      <section style={{ borderBottom: "1px solid #e8e4de", backgroundColor: "#faf8f5" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto", padding: "24px", display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "32px" }}>
           {[
             { label: "Vetted specialists", sub: "Every practitioner is screened and approved" },
@@ -298,30 +327,30 @@ export default async function HomePage() {
       </section>
 
       {/* ── Waitlist CTA ──────────────────────────────────────────────────── */}
-<section style={{ backgroundColor: "#1e1b2e", padding: "80px 24px" }}>
-  <div style={{ maxWidth: "680px", margin: "0 auto", textAlign: "center" }}>
-    <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#a5b4fc", marginBottom: "16px" }}>
-      Play Move Improve — now online
-    </p>
-    <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 300, color: "white", margin: "0 0 20px", lineHeight: 1.2 }}>
-      Bringing expert support to families wherever they are
-    </h2>
-    <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, fontWeight: 300, margin: "0 0 16px" }}>
-      Developmental Hub is the telehealth platform from Play Move Improve — built for busy families and those in rural and regional areas who have always found it hard to access the support their child needs.
-    </p>
-    <p style={{ fontSize: "16px", color: "#a5b4fc", lineHeight: 1.8, fontWeight: 300, margin: "0 0 36px" }}>
-      We're still building out our session library and we want to hear from you. Tell us what your family needs — when enough families express interest in a topic, we bring in a specialist and make it happen.
-    </p>
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-      <Link href="/waitlist" style={{ backgroundColor: "white", color: "#1e1b2e", padding: "14px 36px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
-        Tell us what you need
-      </Link>
-      <p style={{ fontSize: "13px", color: "#6b7280", margin: 0 }}>
-        No commitment. No charge. Just your voice helping us build something better.
-      </p>
-    </div>
-  </div>
-</section>
+      <section style={{ backgroundColor: "#1e1b2e", padding: "80px 24px" }}>
+        <div style={{ maxWidth: "680px", margin: "0 auto", textAlign: "center" }}>
+          <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#a5b4fc", marginBottom: "16px" }}>
+            Play Move Improve — now online
+          </p>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 300, color: "white", margin: "0 0 20px", lineHeight: 1.2 }}>
+            Bringing expert support to families wherever they are
+          </h2>
+          <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, fontWeight: 300, margin: "0 0 16px" }}>
+            Developmental Hub is the telehealth platform from Play Move Improve — built for busy families and those in rural and regional areas who have always found it hard to access the support their child needs.
+          </p>
+          <p style={{ fontSize: "16px", color: "#a5b4fc", lineHeight: 1.8, fontWeight: 300, margin: "0 0 36px" }}>
+            We're still building out our session library and we want to hear from you. Tell us what your family needs — when enough families express interest in a topic, we bring in a specialist and make it happen.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+            <Link href="/waitlist" style={{ backgroundColor: "white", color: "#1e1b2e", padding: "14px 36px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
+              Tell us what you need
+            </Link>
+            <p style={{ fontSize: "13px", color: "#6b7280", margin: 0 }}>
+              No commitment. No charge. Just your voice helping us build something better.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* ── Practitioners CTA ─────────────────────────────────────────────── */}
       <section style={{ maxWidth: "900px", margin: "0 auto", padding: "80px 24px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
