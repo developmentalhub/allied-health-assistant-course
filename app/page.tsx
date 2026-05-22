@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase-server";
 
-const ROBYN_PHOTO = "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/Navigating%20Thriving%20Kids%20and%20Foundational%20Supports%20for%20Early%20Childhood%20Professionals.png";
+const ROBYN_PHOTO = "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/robyn-hero.png";
 
 export default async function HomePage() {
   const supabase = await createClient();
