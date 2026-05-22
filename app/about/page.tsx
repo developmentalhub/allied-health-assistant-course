@@ -1,21 +1,19 @@
 import Link from "next/link";
 
-
 export default function AboutPage() {
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }}>
-      
+    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
 
       {/* Hero */}
       <section style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px 60px", textAlign: "center" }}>
         <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", marginBottom: "16px" }}>
           About us
         </p>
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "42px", fontWeight: 300, color: "#1e1b2e", lineHeight: 1.2, marginBottom: "24px" }}>
+        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 300, color: "#1e1b2e", lineHeight: 1.2, marginBottom: "24px" }}>
           Expert support, built around how families actually live
         </h1>
         <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300 }}>
-          Developmental Hub was created because families navigating childhood developmental challenges deserve more than a waitlist, wherever in the world they live. We bring together vetted specialists and the families who need them, in affordable, accessible group sessions that fit real life.
+          Developmental Hub is the telehealth platform from Play Move Improve — built so that busy families, and those in rural and regional areas, can access the specialist support their child needs without the waitlists, the travel, or the cost of private appointments.
         </p>
       </section>
 
@@ -26,23 +24,23 @@ export default function AboutPage() {
             A note from our founder
           </p>
           <blockquote style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "white", lineHeight: 1.7, textAlign: "center", margin: "0 0 32px 0", fontStyle: "italic" }}>
-            "I have seen firsthand what it means for a family to finally get the support they have been waiting for. And I have seen what happens when they can't access it at all."
+            "I have seen firsthand what it means for a family to finally get the support they have been waiting for. And I have seen what happens when they cannot access it at all."
           </blockquote>
           <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, marginBottom: "20px", textAlign: "center", fontWeight: 300 }}>
-            I'm Robyn, a Masters-qualified Developmental Educator and Exercise Physiologist based in Victoria, Australia. I have spent years working with families who live far from the allied health services their children need. Rural families. Isolated families. Families who are doing everything right but simply cannot access the right support.
+            I am Robyn, a Masters-qualified Developmental Educator and Exercise Physiologist based in Victoria, Australia. For years I have worked with families who live far from the allied health services their children need — rural families, isolated families, families who are doing everything right but simply cannot access the right support.
           </p>
           <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, marginBottom: "20px", textAlign: "center", fontWeight: 300 }}>
-            That is what drove me to build Developmental Hub. I would not have done it without my incredible partner Jess, an allied health business owner whose vision and passion made this real. Together with a team of occupational therapists, early childhood and primary education teachers, and specialist practitioners, we have built something I am deeply proud of.
+            That is what drove me to build Developmental Hub. Together with a team of occupational therapists, early childhood and primary education teachers, and specialist practitioners, we have created something I am deeply proud of.
           </p>
           <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, textAlign: "center", fontWeight: 300 }}>
-            Today we support families across Australia and around the world, including a beautiful family I have had the privilege of working with from my home in Victoria, all the way to India. Distance is no longer a reason a child misses out.
+            Today we support families across Australia and around the world — including a family I have had the privilege of working with from my home in Victoria, all the way to India. Distance is no longer a reason a child misses out.
           </p>
           <div style={{ textAlign: "center", marginTop: "32px" }}>
-            <p style={{ fontFamily: "var(--font-display)", fontSize: "20px", color: "white", fontStyle: "italic" }}>
+            <p style={{ fontFamily: "var(--font-display)", fontSize: "20px", color: "white", fontStyle: "italic", margin: "0 0 4px" }}>
               Robyn Papworth
             </p>
-            <p style={{ fontSize: "13px", color: "#c7d2fe", marginTop: "4px" }}>
-              Founder, Developmental Hub
+            <p style={{ fontSize: "13px", color: "#c7d2fe", margin: 0 }}>
+              Founder, Developmental Hub · Play Move Improve Pty Ltd
             </p>
           </div>
         </div>
@@ -54,15 +52,15 @@ export default function AboutPage() {
           {[
             {
               title: "Affordable by design",
-              body: "By bringing families together in small groups, we make specialist knowledge accessible at a fraction of the cost of individual therapy, without sacrificing quality."
+              body: "By bringing families together in small groups, we make specialist knowledge accessible at a fraction of the cost of individual therapy — without sacrificing quality or personal connection.",
             },
             {
               title: "Vetted practitioners",
-              body: "Every facilitator on our platform is reviewed and approved before going live. You can trust that whoever leads your session has the credentials to back it up."
+              body: "Every facilitator on our platform is reviewed and approved before going live. You can trust that whoever leads your session holds the credentials, insurance, and registrations to back it up.",
             },
             {
               title: "Community over isolation",
-              body: "Parenting a child with developmental needs can feel lonely. Our group format means you are learning alongside other families who truly understand."
+              body: "Parenting a child with developmental needs can feel lonely. Our group format means you are learning alongside other families who truly understand what you are going through.",
             },
           ].map((item) => (
             <div key={item.title}>
@@ -86,27 +84,27 @@ export default function AboutPage() {
           {[
             {
               step: "01",
-              title: "Browse upcoming sessions",
-              body: "Find a small group session or webinar on a topic that is relevant to your family right now. From sensory play to literacy support to motor development, there is something for every stage."
+              title: "Browse sessions for your child's age",
+              body: "Every session is designed for a specific developmental stage — 0 to 2, 3 to 5, or 6 to 8 years. Filter by topic to find what is most relevant to your family right now.",
             },
             {
               step: "02",
               title: "Book and pay securely",
-              body: "Reserve your spot with a simple, secure payment via Stripe. If the session does not reach its minimum attendance, you receive a full automatic refund."
+              body: "Reserve your spot with a simple, secure payment via Stripe. Your card is authorised but not charged until the session reaches its minimum number of families. If it does not run, you are never charged.",
             },
             {
               step: "03",
-              title: "Join your session",
-              body: "At the scheduled time, join your live video session from any device. No downloads required. Just show up and connect."
+              title: "Join your session live",
+              body: "At the scheduled time, join your live video session from any device. No downloads required. Just show up and connect with your facilitator and fellow families.",
             },
             {
               step: "04",
-              title: "Keep the learning going",
-              body: "Walk away with practical strategies you can use straight away, plus the option to book future sessions as your family's needs evolve."
+              title: "Walk away with real strategies",
+              body: "Every session is practical. You will leave with specific techniques you can use with your child that week — not just theory. And you can book future sessions as your family's needs evolve.",
             },
           ].map((item) => (
             <div key={item.step} style={{ display: "flex", gap: "24px", alignItems: "flex-start" }}>
-              <span style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#e0e7ff", lineHeight: 1, minWidth: "48px" }}>
+              <span style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#e0e7ff", lineHeight: 1, minWidth: "48px", flexShrink: 0 }}>
                 {item.step}
               </span>
               <div>
@@ -125,16 +123,16 @@ export default function AboutPage() {
       {/* Meet the team */}
       <section style={{ backgroundColor: "#f5f3ff", borderTop: "1px solid #e0e7ff", borderBottom: "1px solid #e0e7ff", padding: "64px 24px", textAlign: "center" }}>
         <h2 style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#1e1b2e", marginBottom: "16px" }}>
-          Meet the team
+          Meet our specialists
         </h2>
-        <p style={{ fontSize: "16px", color: "#6b6880", marginBottom: "32px", fontWeight: 300 }}>
-          Get to know the people behind Developmental Hub.
+        <p style={{ fontSize: "16px", color: "#6b6880", marginBottom: "32px", fontWeight: 300, maxWidth: "480px", margin: "0 auto 32px" }}>
+          Every practitioner on Developmental Hub is vetted, qualified, and passionate about supporting families.
         </p>
         <Link
-          href="/team"
+          href="/practitioners/directory"
           style={{ backgroundColor: "#3730a3", color: "white", padding: "14px 32px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}
         >
-          Meet our team
+          Meet our specialists
         </Link>
       </section>
 
