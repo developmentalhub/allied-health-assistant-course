@@ -226,11 +226,11 @@ export default async function ParentDashboard() {
         <div style={{ marginBottom: "40px" }}>
           <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "#1e1b2e", marginBottom: "20px" }}>Resource Library</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "16px" }}>
-            {["Gross Motor", "Sensory", "Literacy"].map(cat => (
-              <div key={cat} style={{ backgroundColor: "white", padding: "20px", borderRadius: "16px", border: "1px solid #e8e4de", textAlign: "center" }}>
-                <span style={{ fontWeight: 600, fontSize: "13px", color: "#475569" }}>{cat} Packs</span>
-              </div>
-            ))}
+           {["Gross Motor", "Sensory", "Literacy"].map(cat => (
+  <div key={cat} style={{ backgroundColor: "white", padding: "20px", borderRadius: "16px", border: "1px solid #e8e4de", textAlign: "center" }}>
+    <span style={{ fontWeight: 600, fontSize: "13px", color: "#475569" }}>{cat} Packs</span>
+  </div>
+))}
           </div>
         </div>
 
