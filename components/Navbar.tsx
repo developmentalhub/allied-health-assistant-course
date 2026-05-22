@@ -21,6 +21,7 @@ export default function Navbar() {
     { label: "Our specialists", href: "/practitioners/directory" },
     { label: "About", href: "/about" },
     { label: "For Practitioners", href: "/practitioners" },
+    { label: "Contact", href: "/contact" },
   ];
 
   return (
