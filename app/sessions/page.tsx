@@ -264,7 +264,7 @@ export default async function SessionsPage({
                     {BOOKINGS_OPEN ? (
                       <Link
                         href={isFull ? "#" : `/sessions/${session.id}`}
-                        style={{ backgroundColor: isFull ? "#e8e4de" : style.tagBg, color: isFull ? "#6b6880" : "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none", pointerEvents: isFull ? "none" : "auto" }}
+                        style={{ backgroundColor: isFull ? "#e8e4de" : style.tagBg, color: isFull ? "#6b6880" : "white", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none", pointerEvents: (isFull ? "none" : "auto") as React.CSSProperties["pointerEvents"] }}
                       >
                         {isFull ? "Full" : "Book now"}
                       </Link>
