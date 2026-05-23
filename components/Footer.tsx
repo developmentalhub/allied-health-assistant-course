@@ -1,102 +1,80 @@
 import Link from "next/link";
 
-export default function ContactPage() {
+export default function Footer() {
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
-      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "64px 24px 100px" }}>
+    <footer style={{ backgroundColor: "#1e1b2e", padding: "48px 24px", fontFamily: "DM Sans, sans-serif" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
 
-        <Link href="/" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "40px" }}>
-          ← Back to home
-        </Link>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "40px", marginBottom: "40px" }}>
 
-        <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3730a3", marginBottom: "12px" }}>
-          Get in touch
-        </p>
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "40px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 16px" }}>
-          Contact us
-        </h1>
-        <p style={{ fontSize: "16px", color: "#6b6880", lineHeight: 1.7, margin: "0 0 48px", fontWeight: 300 }}>
-          We'd love to hear from you — whether you're a family looking for support, a practitioner interested in facilitating, or just curious about what we're building.
-        </p>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", marginBottom: "48px" }}>
-
-          {/* Email */}
-          <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "32px" }}>
-            <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", margin: "0 0 12px" }}>Email us</p>
-            <a href="mailto:robyn@playmoveimprove.com.au" style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: 400, color: "#3730a3", textDecoration: "none", display: "block", marginBottom: "8px" }}>
-              robyn@playmoveimprove.com.au
-            </a>
-            <p style={{ fontSize: "13px", color: "#6b6880", margin: 0, lineHeight: 1.6 }}>
-              We aim to respond within 1–2 business days.
+          {/* Brand */}
+          <div>
+            <p style={{ fontSize: "16px", fontWeight: 600, color: "white", margin: "0 0 8px" }}>Developmental Hub</p>
+            <p style={{ fontSize: "13px", color: "#6b7280", margin: "0 0 20px", lineHeight: 1.6 }}>
+              A Play Move Improve Pty Ltd platform.<br />Victoria, Australia.
             </p>
-          </div>
-
-          {/* Social */}
-          <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "32px" }}>
-            <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", margin: "0 0 20px" }}>Follow us</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              <a href="https://www.instagram.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none" }}>
-                <div style={{ width: "40px", height: "40px", borderRadius: "10px", backgroundColor: "#faf8f5", border: "1px solid #e8e4de", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e1b2e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                    <circle cx="12" cy="12" r="4"/>
-                    <circle cx="17.5" cy="6.5" r="0.5" fill="#1e1b2e"/>
-                  </svg>
-                </div>
-                <div>
-                  <p style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e", margin: 0 }}>Instagram</p>
-                  <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>@playmoveimprove</p>
-                </div>
+            {/* Social links */}
+            <div style={{ display: "flex", gap: "12px" }}>
+              <a href="https://www.instagram.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ width: "36px", height: "36px", borderRadius: "8px", backgroundColor: "#2d2a3e", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <circle cx="12" cy="12" r="4"/>
+                  <circle cx="17.5" cy="6.5" r="0.5" fill="#9ca3af"/>
+                </svg>
               </a>
-              <a href="https://www.facebook.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none" }}>
-                <div style={{ width: "40px", height: "40px", borderRadius: "10px", backgroundColor: "#faf8f5", border: "1px solid #e8e4de", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e1b2e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                  </svg>
-                </div>
-                <div>
-                  <p style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e", margin: 0 }}>Facebook</p>
-                  <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>@playmoveimprove</p>
-                </div>
+              <a href="https://www.facebook.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ width: "36px", height: "36px", borderRadius: "8px", backgroundColor: "#2d2a3e", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                </svg>
               </a>
             </div>
           </div>
+
+          {/* For families */}
+          <div>
+            <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7280", margin: "0 0 16px" }}>For families</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <Link href="/sessions" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Browse sessions</Link>
+              <Link href="/practitioners/directory" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Our specialists</Link>
+              <Link href="/register-interest" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Register interest</Link>
+              <Link href="/waitlist" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Join the waitlist</Link>
+            </div>
+          </div>
+
+          {/* For practitioners */}
+          <div>
+            <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7280", margin: "0 0 16px" }}>For practitioners</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <Link href="/practitioners" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Why join us</Link>
+              <Link href="/practitioners/apply" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Apply to facilitate</Link>
+              <Link href="/practitioners/directory" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Meet the team</Link>
+            </div>
+          </div>
+
+          {/* Company */}
+          <div>
+            <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7280", margin: "0 0 16px" }}>Company</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <Link href="/about" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>About us</Link>
+              <Link href="/contact" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Contact</Link>
+              <Link href="/terms" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Terms</Link>
+              <Link href="/privacy" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Privacy policy</Link>
+            </div>
+          </div>
+
         </div>
 
-        {/* FAQ */}
-        <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "32px" }}>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 24px" }}>
-            Common questions
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            {[
-              {
-                q: "When do sessions open for booking?",
-                a: "We're opening bookings at the end of June 2026. Register your interest on the sessions page to be first in line.",
-              },
-              {
-                q: "I'm a practitioner — how do I apply?",
-                a: "Visit our For Practitioners page to learn more and submit an application. We review every application personally.",
-              },
-              {
-                q: "Is Developmental Hub part of Play Move Improve?",
-                a: "Yes — Developmental Hub is the telehealth platform built by Play Move Improve Pty Ltd, bringing our expertise online for families everywhere.",
-              },
-              {
-                q: "How do I know if a session is right for my child?",
-                a: "Every session is designed for a specific age group and developmental area. Browse by your child's age and the topics that matter most to your family right now.",
-              },
-            ].map((item, i, arr) => (
-              <div key={item.q} style={{ paddingBottom: i < arr.length - 1 ? "24px" : "0", borderBottom: i < arr.length - 1 ? "1px solid #f0ede8" : "none" }}>
-                <p style={{ fontSize: "15px", fontWeight: 600, color: "#1e1b2e", margin: "0 0 8px" }}>{item.q}</p>
-                <p style={{ fontSize: "14px", color: "#6b6880", lineHeight: 1.7, margin: 0 }}>{item.a}</p>
-              </div>
-            ))}
-          </div>
+        {/* Bottom bar */}
+        <div style={{ borderTop: "1px solid #2d2a3e", paddingTop: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+          <p style={{ fontSize: "12px", color: "#4b5563", margin: 0 }}>
+            © {new Date().getFullYear()} Play Move Improve Pty Ltd · ABN 17 415 190 263
+          </p>
+          <a href="mailto:robyn@playmoveimprove.com.au" style={{ fontSize: "12px", color: "#6b7280", textDecoration: "none" }}>
+            robyn@playmoveimprove.com.au
+          </a>
         </div>
 
       </div>
-    </main>
+    </footer>
   );
 }
