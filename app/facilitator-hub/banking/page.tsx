@@ -160,11 +160,11 @@ export default function BankingDetailsPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px" }}>
                   <span style={{ color: "#6b6880" }}>Small group session (up to 8 families)</span>
-                  <span style={{ color: "#1e1b2e", fontWeight: 600 }}>$65 flat</span>
+                  <span style={{ color: "#1e1b2e", fontWeight: 600 }}>$125 flat</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px" }}>
                   <span style={{ color: "#6b6880" }}>Specialist webinar (up to 100 families)</span>
-                  <span style={{ color: "#1e1b2e", fontWeight: 600 }}>$175 flat</span>
+                  <span style={{ color: "#1e1b2e", fontWeight: 600 }}>$125 flat</span>
                 </div>
                 <p style={{ fontSize: "12px", color: "#b0acbf", margin: "8px 0 0 0" }}>
                   Paid automatically within 2 business days of your session running.

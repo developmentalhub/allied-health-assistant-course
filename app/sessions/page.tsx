@@ -4,18 +4,18 @@ import { createClient } from "@/lib/supabase-server";
 const BOOKINGS_OPEN = process.env.BOOKINGS_OPEN === "true";
 
 const categoryMeta: Record<string, { label: string; description: string; color: string; bg: string; border: string }> = {
-  "gross-motor":  { label: "Movement & Coordination", description: "Building the physical foundations for confidence, learning, and life.", color: "#c2410c", bg: "#fff7ed", border: "#fed7aa" },
-  "fine-motor":   { label: "Fine Motor & Hands",       description: "Hand strength, pencil grip, and the skills schools expect.", color: "#0f766e", bg: "#f0fdfa", border: "#99f6e4" },
-  "sensory":      { label: "Sensory Processing",        description: "When the world feels too loud, too bright, or too much.", color: "#7c3aed", bg: "#f5f3ff", border: "#ddd6fe" },
-  "regulation":   { label: "Big Feelings & Regulation", description: "Meltdowns, transitions, and building a settled nervous system.", color: "#b45309", bg: "#fffbeb", border: "#fde68a" },
-  "play":         { label: "Play & Learning",            description: "Why play is the most powerful developmental tool you have.", color: "#1d4ed8", bg: "#eff6ff", border: "#bfdbfe" },
-  "literacy":     { label: "Literacy & Language",        description: "From first words to reading fluency — the foundations matter.", color: "#166534", bg: "#f0fdf4", border: "#bbf7d0" },
-  "social-skills":{ label: "Friendships & Social Skills","description": "Belonging, connection, and navigating the social world.", color: "#be185d", bg: "#fdf2f8", border: "#f9a8d4" },
+  "gross-motor":  { label: "Movement & Coordination", description: "Core strength, reflexes, classroom behaviour, sport and movement for learning.", color: "#c2410c", bg: "#fff7ed", border: "#fed7aa" },
+  "fine-motor":   { label: "Fine Motor & Hands",       description: "Handwriting, independence skills, lunchboxes, scissors and classroom confidence.", color: "#0f766e", bg: "#f0fdfa", border: "#99f6e4" },
+  "sensory":      { label: "Sensory Processing",        description: "Sensory play vs screens, classroom exhaustion, foundations for handwriting.", color: "#7c3aed", bg: "#f5f3ff", border: "#ddd6fe" },
+  "regulation":   { label: "Big Feelings & Regulation", description: "After-school crash, homework avoidance, school reluctance and screen transitions.", color: "#b45309", bg: "#fffbeb", border: "#fde68a" },
+  "play":         { label: "Play & Learning",             description: "Green time over screen time, free play, outdoor sport and active play ideas.", color: "#1d4ed8", bg: "#eff6ff", border: "#bfdbfe" },
+  "literacy":     { label: "Literacy & Language",        description: "Movement for reading, rhythm, visual tracking, pre-literacy and executive function.", color: "#166534", bg: "#f0fdf4", border: "#bbf7d0" },
+  "social-skills":{ label: "Social Skills & Resilience", description: "Joint attention, losing gracefully, board games, grit and online social play.", color: "#be185d", bg: "#fdf2f8", border: "#f9a8d4" },
 };
 
 const ageGroups = [
-  { value: "0-2", label: "0–2 years", timeSlot: "12pm–2pm AEST", categories: ["gross-motor", "sensory", "regulation", "play", "literacy", "social-skills"] },
-  { value: "3-5", label: "3–5 years", timeSlot: "9am–12pm AEST", categories: ["gross-motor", "fine-motor", "sensory", "regulation", "play", "literacy", "social-skills"] },
+  { value: "0-2", label: "0–2 years", timeSlot: "12pm–2pm AEST", categories: ["gross-motor", "sensory", "play", "regulation"] },
+  { value: "3-5", label: "3–5 years", timeSlot: "9am–12pm AEST", categories: ["gross-motor", "fine-motor", "sensory", "regulation", "play", "literacy"] },
   { value: "6-8", label: "6–8 years", timeSlot: "4pm–6pm AEST",  categories: ["gross-motor", "fine-motor", "sensory", "regulation", "play", "literacy", "social-skills"] },
 ];
 

@@ -7,30 +7,27 @@ import { Suspense } from "react";
 
 const categoriesByAge: Record<string, { value: string; label: string; description: string }[]> = {
   "0-2": [
-    { value: "gross-motor", label: "Movement & Milestones", description: "Rolling, crawling, walking and everything in between" },
-    { value: "sensory", label: "Sensory Play", description: "Touch, texture, and exploring the world safely" },
-    { value: "regulation", label: "Settling & Sleep", description: "Calm-down strategies and building a settled nervous system" },
-    { value: "play", label: "Play & Learning", description: "Floor play, tummy time, and brain-building activities" },
-    { value: "literacy", label: "Early Language", description: "Babble, books, songs, and first words" },
-    { value: "social-skills", label: "Connection & Attachment", description: "Building the relationship that shapes everything else" },
+    { value: "gross-motor", label: "Movement & Milestones", description: "Tummy time, visual tracking, reflexes, core strength and what to expect" },
+    { value: "sensory", label: "Sensory Play", description: "Nature play, everyday resources, outings and finding your baby's sensory sweet spot" },
+    { value: "play", label: "Play & Attachment", description: "Eye contact games, joint attention, floor play and building secure bonds" },
+    { value: "regulation", label: "Settling & Sleep", description: "Gentle strategies for settling, sleep and building calm predictable routines" },
   ],
   "3-5": [
-    { value: "gross-motor", label: "Movement & Coordination", description: "Balance, strength, and getting school-ready bodies" },
-    { value: "fine-motor", label: "Fine Motor & Hands", description: "Pencil grip, scissors, and hand strength for school" },
-    { value: "sensory", label: "Sensory Processing", description: "When the world feels too loud, too bright, or too much" },
-    { value: "regulation", label: "Big Feelings", description: "Meltdowns, transitions, and emotional regulation" },
-    { value: "play", label: "Play & Imagination", description: "Why pretend play matters more than you think" },
-    { value: "literacy", label: "School Readiness", description: "The movement and language foundations behind reading" },
-    { value: "social-skills", label: "Friendships & Social Skills", description: "Taking turns, reading the room, and belonging" },
+    { value: "gross-motor", label: "Movement & Coordination", description: "Core strength, reflexes, nature play, small spaces and kindy-ready bodies" },
+    { value: "fine-motor", label: "Fine Motor & Hands", description: "Core before pencil, palmar reflex, scissors, threading and hand confidence" },
+    { value: "sensory", label: "Sensory Processing", description: "Interoception, toileting, rough and tumble, messy play and when to seek help" },
+    { value: "regulation", label: "Big Feelings & Regulation", description: "Meltdowns, vagus nerve, movement for calm, transitions and focus" },
+    { value: "play", label: "Play & Learning", description: "Imaginative play, resilience, friendships and playgroup readiness" },
+    { value: "literacy", label: "Literacy & Language", description: "Movement for school-ready brains, language through play and stories" },
   ],
-  "6-8": [
-    { value: "gross-motor", label: "Sport & Physical Confidence", description: "Coordination, movement, and thriving on the field" },
-    { value: "fine-motor", label: "Handwriting & Fine Motor", description: "When writing feels hard and what to do about it" },
-    { value: "sensory", label: "Sensory at School", description: "When the school day is exhausting for sensory reasons" },
-    { value: "regulation", label: "After-School Regulation", description: "Screens, homework, and managing the emotional load" },
-    { value: "play", label: "Play & Resilience", description: "Why free play still matters in the primary years" },
-    { value: "literacy", label: "Reading & Comprehension", description: "Beyond decoding — building real readers" },
-    { value: "social-skills", label: "Friendships & Belonging", description: "Navigating the complex social world of primary school" },
+    "6-8": [
+    { value: "gross-motor", label: "Movement & Coordination", description: "Core strength, reflexes, classroom behaviour and movement for learning" },
+    { value: "fine-motor", label: "Handwriting & Independence", description: "Handwriting, lunchboxes, scissors and classroom fine motor skills" },
+    { value: "sensory", label: "Sensory Processing", description: "Sensory play vs screens, classroom exhaustion, foundations for handwriting" },
+    { value: "regulation", label: "Big Feelings & Regulation", description: "After-school crash, homework avoidance, school reluctance, screen transitions" },
+    { value: "play", label: "Play & Outdoor Activity", description: "Green time over screens, free play, sport and active play ideas" },
+    { value: "literacy", label: "Literacy & Language", description: "Movement for reading, rhythm, visual tracking and executive function" },
+    { value: "social-skills", label: "Social Skills & Resilience", description: "Joint attention, board games, losing gracefully and grit through play" },
   ],
 };
 
