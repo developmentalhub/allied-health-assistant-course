@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 const timeSlotsByAge: Record<string, string[]> = {
-  "0-2": ["12pm–3pm AEST (weekday)", "Other — I'll specify below"],
+  "0-2": ["12pm–2pm AEST (weekday)", "Other — I'll specify below"],
   "3-5": ["9am–12pm AEST (weekday)", "Other — I'll specify below"],
   "6-8": ["4pm–6pm AEST (weekday)", "7pm–8pm AEST (weekday)", "Weekend morning", "Other — I'll specify below"],
 };

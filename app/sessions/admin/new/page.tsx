@@ -70,7 +70,7 @@ export default function NewSessionPage() {
   const [minimumFamilies, setMinimumFamilies] = useState(6);
   const [priceCents, setPriceCents] = useState(3900);
   const [facilitatorId, setFacilitatorId] = useState("");
-  const [facilitatorFeeCents, setFacilitatorFeeCents] = useState(17500);
+  const [facilitatorFeeCents, setFacilitatorFeeCents] = useState(12500);
   const [isOwnerWebinar, setIsOwnerWebinar] = useState(false);
   const [ageGroup, setAgeGroup] = useState("0-2");
   const [category, setCategory] = useState("gross-motor");
