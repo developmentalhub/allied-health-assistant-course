@@ -30,6 +30,14 @@ export default async function SessionsPage({
 
   const supabase = await createClient();
 
+  const { count: interestCount } = await supabase
+    .from("session_interest")
+    .select("*", { count: "exact", head: true });
+
+  const totalInterest = interestCount ?? 0;
+  const target = 50;
+  const pct = Math.min(Math.round((totalInterest / target) * 100), 100);
+
   let query = supabase
     .from("sessions")
     .select("id, title, description, age_group, category, session_type, price_cents, minimum_families, capacity, scheduled_at, duration_minutes")
@@ -110,21 +118,36 @@ export default async function SessionsPage({
         </p>
       </section>
 
-      {/* Register interest banner */}
+      {/* Register interest banner with progress */}
       {!BOOKINGS_OPEN && (
         <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 32px" }}>
-          <div style={{ backgroundColor: "#3730a3", borderRadius: "16px", padding: "24px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "24px", flexWrap: "wrap" }}>
-            <div>
-              <p style={{ fontSize: "16px", fontWeight: 600, color: "white", margin: "0 0 4px" }}>
-                Sessions open for booking end of June 2026
-              </p>
-              <p style={{ fontSize: "14px", color: "#c7d2fe", margin: 0 }}>
-                Tell us what your family needs — we use this to hire the right practitioners and schedule the right sessions.
-              </p>
+          <div style={{ backgroundColor: "#1e1b2e", borderRadius: "16px", padding: "28px 32px" }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "24px", flexWrap: "wrap", marginBottom: "20px" }}>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#a5b4fc", margin: "0 0 8px" }}>
+                  Help us get started
+                </p>
+                <p style={{ fontSize: "18px", fontWeight: 600, color: "white", margin: "0 0 6px", lineHeight: 1.3 }}>
+                  We organise a practitioner once 50 families register interest
+                </p>
+                <p style={{ fontSize: "14px", color: "#9ca3af", margin: 0, lineHeight: 1.6 }}>
+                  {totalInterest} {totalInterest === 1 ? "family has" : "families have"} registered so far. Tell us what your child needs and help us reach {target}.
+                </p>
+              </div>
+              <Link href="/register-interest" style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 24px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" as const, flexShrink: 0 }}>
+                Tell us what you need
+              </Link>
             </div>
-            <Link href="/register-interest" style={{ backgroundColor: "white", color: "#3730a3", padding: "12px 24px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" as const, flexShrink: 0 }}>
-              Tell us what you need
-            </Link>
+            {/* Progress bar */}
+            <div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                <span style={{ fontSize: "13px", color: "#a5b4fc", fontWeight: 500 }}>{totalInterest} of {target} families</span>
+                <span style={{ fontSize: "13px", color: "#6b7280" }}>{pct}%</span>
+              </div>
+              <div style={{ height: "8px", backgroundColor: "#2d2a3e", borderRadius: "999px", overflow: "hidden" }}>
+                <div style={{ height: "100%", width: `${pct}%`, backgroundColor: "#818cf8", borderRadius: "999px", transition: "width 0.3s ease" }} />
+              </div>
+            </div>
           </div>
         </section>
       )}
