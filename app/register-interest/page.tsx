@@ -52,10 +52,12 @@ function InterestForm() {
     name: "",
     email: "",
     age_group: prefilledAge,
-    session_topic: prefilledCategory,
     preferred_time: "",
     other_details: "",
   });
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    prefilledCategory ? [prefilledCategory] : []
+  );
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -63,11 +65,14 @@ function InterestForm() {
   const showOtherTime = form.preferred_time === "Other — I'll specify below";
 
   function handleAgeChange(age: string) {
-    setForm((prev) => ({ ...prev, age_group: age, session_topic: "", preferred_time: "" }));
+    setForm((prev) => ({ ...prev, age_group: age, preferred_time: "" }));
+    setSelectedCategories([]);
   }
 
-  function handleCategoryChange(cat: string) {
-    setForm((prev) => ({ ...prev, session_topic: cat }));
+  function toggleCategory(cat: string) {
+    setSelectedCategories((prev) =>
+      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+    );
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
@@ -79,25 +84,28 @@ function InterestForm() {
     setLoading(true);
     setError("");
 
-    const res = await fetch("/api/session-interest", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: form.name,
-        email: form.email,
-        age_group: form.age_group,
-        session_topic: form.session_topic,
-        preferred_time: form.preferred_time,
-        preferred_days: null,
-        other_details: form.other_details || null,
-      }),
-    });
+    // Submit one record per selected category
+    for (const cat of selectedCategories) {
+      const res = await fetch("/api/session-interest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          age_group: form.age_group,
+          session_topic: cat,
+          preferred_time: form.preferred_time,
+          preferred_days: null,
+          other_details: form.other_details || null,
+        }),
+      });
 
-    const data = await res.json();
-    if (!res.ok) {
-      setError(data.error ?? "Something went wrong. Please try again.");
-      setLoading(false);
-      return;
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+        setLoading(false);
+        return;
+      }
     }
 
     setSuccess(true);
@@ -200,24 +208,33 @@ function InterestForm() {
                 <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "24px", height: "24px", backgroundColor: "#3730a3", color: "white", borderRadius: "50%", fontSize: "12px", fontWeight: 700, marginRight: "10px" }}>2</span>
                 What does your family need most right now?
               </label>
+              <p style={{ fontSize: "13px", color: "#6b6880", margin: "0 0 14px" }}>Select all that apply — you can choose more than one.</p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "10px" }}>
-                {categoriesByAge[form.age_group].map((cat) => (
-                  <button
-                    key={cat.value}
-                    type="button"
-                    onClick={() => handleCategoryChange(cat.value)}
-                    style={{ padding: "14px 16px", borderRadius: "12px", border: form.session_topic === cat.value ? "2px solid #3730a3" : "1.5px solid #e8e4de", backgroundColor: form.session_topic === cat.value ? "#eef2ff" : "white", textAlign: "left", cursor: "pointer", fontFamily: "inherit" }}
-                  >
-                    <p style={{ fontSize: "14px", fontWeight: 600, color: form.session_topic === cat.value ? "#3730a3" : "#1e1b2e", margin: "0 0 4px" }}>{cat.label}</p>
-                    <p style={{ fontSize: "12px", color: "#6b6880", margin: 0, lineHeight: 1.5 }}>{cat.description}</p>
-                  </button>
-                ))}
+                {categoriesByAge[form.age_group].map((cat) => {
+                  const selected = selectedCategories.includes(cat.value);
+                  return (
+                    <button
+                      key={cat.value}
+                      type="button"
+                      onClick={() => toggleCategory(cat.value)}
+                      style={{ padding: "14px 16px", borderRadius: "12px", border: selected ? "2px solid #3730a3" : "1.5px solid #e8e4de", backgroundColor: selected ? "#eef2ff" : "white", textAlign: "left", cursor: "pointer", fontFamily: "inherit", position: "relative" }}
+                    >
+                      {selected && (
+                        <div style={{ position: "absolute", top: "10px", right: "10px", width: "18px", height: "18px", backgroundColor: "#3730a3", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5"><path d="M1.5 5l2.5 2.5L8.5 2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </div>
+                      )}
+                      <p style={{ fontSize: "14px", fontWeight: 600, color: selected ? "#3730a3" : "#1e1b2e", margin: "0 0 4px", paddingRight: selected ? "24px" : "0" }}>{cat.label}</p>
+                      <p style={{ fontSize: "12px", color: "#6b6880", margin: 0, lineHeight: 1.5 }}>{cat.description}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
 
           {/* Question 3 — Time slot */}
-          {form.session_topic && (
+          {selectedCategories.length > 0 && (
             <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "28px" }}>
               <label style={labelStyle}>
                 <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "24px", height: "24px", backgroundColor: "#3730a3", color: "white", borderRadius: "50%", fontSize: "12px", fontWeight: 700, marginRight: "10px" }}>3</span>
@@ -249,7 +266,7 @@ function InterestForm() {
           )}
 
           {/* Optional extra detail */}
-          {form.preferred_time && !showOtherTime && (
+          {form.preferred_time && selectedCategories.length > 0 && !showOtherTime && (
             <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "28px" }}>
               <label style={{ ...labelStyle, marginBottom: "6px" }}>
                 Anything specific you'd like help with? <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
@@ -271,7 +288,7 @@ function InterestForm() {
             </div>
           )}
 
-          {form.name && form.email && form.age_group && form.session_topic && form.preferred_time && (
+          {form.name && form.email && form.age_group && selectedCategories.length > 0 && form.preferred_time && (
             <button type="submit" disabled={loading} style={{ width: "100%", backgroundColor: "#3730a3", color: "white", border: "none", borderRadius: "999px", padding: "16px", fontSize: "16px", fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, fontFamily: "inherit" }}>
               {loading ? "Submitting…" : "Share what my family needs"}
             </button>
