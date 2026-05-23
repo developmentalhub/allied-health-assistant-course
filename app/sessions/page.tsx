@@ -52,10 +52,6 @@ export default async function SessionsPage({
 
   const filteredAgeGroups = currentAge ? ageGroups.filter((ag) => ag.value === currentAge) : ageGroups;
 
-  function formatCategory(cat: string) {
-    return categoryMeta[cat]?.label ?? cat.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-  }
-
   function formatAgeGroup(ag: string) {
     if (ag === "0-2") return "0–2 yrs";
     if (ag === "3-5") return "3–5 yrs";
@@ -63,18 +59,12 @@ export default async function SessionsPage({
     return ag;
   }
 
-  function formatSessionDate(dateString: string) {
-    return new Date(dateString).toLocaleDateString("en-AU", {
-      weekday: "short", day: "numeric", month: "long", year: "numeric",
-      timeZone: "Australia/Melbourne",
-    });
-  }
-
-  function formatSessionTime(dateString: string) {
-    return new Date(dateString).toLocaleTimeString("en-AU", {
-      hour: "2-digit", minute: "2-digit", hour12: true,
-      timeZone: "Australia/Melbourne",
-    }) + " AEST";
+  function getQueryCategory(ageGroup: string, dbCategory: string): string {
+    if (ageGroup === "0-2") {
+      if (dbCategory === "sensory") return "sensory-baby";
+      if (dbCategory === "regulation") return "regulation-baby";
+    }
+    return dbCategory;
   }
 
   const tabStyle = (active: boolean): React.CSSProperties => ({
@@ -94,7 +84,6 @@ export default async function SessionsPage({
     return str ? `/sessions?${str}` : "/sessions";
   }
 
-  // Group sessions by age group then category
   const sessionsByAgeAndCategory: Record<string, Record<string, any[]>> = {};
   (sessions ?? []).forEach((s) => {
     if (!sessionsByAgeAndCategory[s.age_group]) sessionsByAgeAndCategory[s.age_group] = {};
@@ -118,7 +107,7 @@ export default async function SessionsPage({
         </p>
       </section>
 
-      {/* Register interest banner with progress */}
+      {/* Progress Calculator Banner */}
       {!BOOKINGS_OPEN && (
         <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 32px" }}>
           <div style={{ backgroundColor: "#1e1b2e", borderRadius: "16px", padding: "28px 32px" }}>
@@ -138,7 +127,6 @@ export default async function SessionsPage({
                 Tell us what you need
               </Link>
             </div>
-            {/* Progress bar */}
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                 <span style={{ fontSize: "13px", color: "#a5b4fc", fontWeight: 500 }}>{totalInterest} of {target} families</span>
@@ -152,7 +140,7 @@ export default async function SessionsPage({
         </section>
       )}
 
-      {/* Age group filter */}
+      {/* Age Filters */}
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 16px" }}>
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
           <Link href={filterUrl({ age: "", category: "" })} style={tabStyle(currentAge === "")}>All ages</Link>
@@ -164,7 +152,7 @@ export default async function SessionsPage({
         </div>
       </section>
 
-      {/* Category filter */}
+      {/* Category Filters */}
       {currentAge && (
         <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 32px" }}>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
@@ -178,17 +166,14 @@ export default async function SessionsPage({
         </section>
       )}
 
-      {/* Sessions content */}
+      {/* Sessions Cards Display */}
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "0 24px 80px" }}>
-
         {filteredAgeGroups.map((ag) => {
           const ageSessions = sessionsByAgeAndCategory[ag.value] ?? {};
           const visibleCategories = currentCategory ? [currentCategory] : ag.categories;
 
           return (
             <div key={ag.value} style={{ marginBottom: "64px" }}>
-
-              {/* Age group header */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px", flexWrap: "wrap", gap: "12px" }}>
                 <div>
                   <h2 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 4px" }}>
@@ -200,12 +185,11 @@ export default async function SessionsPage({
                 </div>
                 {!BOOKINGS_OPEN && (
                   <Link href={`/register-interest?age=${ag.value}`} style={{ backgroundColor: "#eef2ff", color: "#3730a3", padding: "8px 18px", borderRadius: "999px", fontSize: "13px", fontWeight: 600, textDecoration: "none" }}>
-                    Register interest →
+                    Register interest &rarr;
                   </Link>
                 )}
               </div>
 
-              {/* Category sections */}
               {visibleCategories.map((cat) => {
                 const catSessions = ageSessions[cat] ?? [];
                 const meta = categoryMeta[cat];
@@ -213,20 +197,18 @@ export default async function SessionsPage({
 
                 return (
                   <div key={cat} style={{ marginBottom: "32px" }}>
-                    {/* Category header */}
                     <div style={{ backgroundColor: meta.bg, border: `1px solid ${meta.border}`, borderRadius: "12px", padding: "16px 20px", marginBottom: "12px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
                       <div>
                         <p style={{ fontSize: "14px", fontWeight: 600, color: meta.color, margin: "0 0 2px" }}>{meta.label}</p>
                         <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>{meta.description}</p>
                       </div>
                       {!BOOKINGS_OPEN && (
-                        <Link href={`/register-interest?age=${ag.value}&category=${cat}`} style={{ fontSize: "13px", fontWeight: 500, color: meta.color, textDecoration: "none", border: `1px solid ${meta.border}`, borderRadius: "999px", padding: "6px 14px", backgroundColor: "white", whiteSpace: "nowrap" as const }}>
+                        <Link href={`/register-interest?age=${ag.value}&category=${getQueryCategory(ag.value, cat)}`} style={{ fontSize: "13px", fontWeight: 500, color: meta.color, textDecoration: "none", border: `1px solid ${meta.border}`, borderRadius: "999px", padding: "6px 14px", backgroundColor: "white", whiteSpace: "nowrap" as const }}>
                           Register interest
                         </Link>
                       )}
                     </div>
 
-                    {/* Session cards */}
                     {catSessions.length > 0 ? (
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "14px" }}>
                         {catSessions.map((session) => (
@@ -256,7 +238,7 @@ export default async function SessionsPage({
                                   Book now
                                 </Link>
                               ) : (
-                                <Link href={`/register-interest?age=${session.age_group}&category=${session.category}`} style={{ backgroundColor: meta.bg, color: meta.color, padding: "7px 16px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none", border: `1px solid ${meta.border}` }}>
+                                <Link href={`/register-interest?age=${session.age_group}&category=${getQueryCategory(session.age_group, session.category)}`} style={{ backgroundColor: meta.bg, color: meta.color, padding: "7px 16px", borderRadius: "999px", fontSize: "13px", fontWeight: 500, textDecoration: "none", border: `1px solid ${meta.border}` }}>
                                   Register interest
                                 </Link>
                               )}
@@ -267,10 +249,10 @@ export default async function SessionsPage({
                     ) : (
                       <div style={{ backgroundColor: "white", border: "1px dashed #e8e4de", borderRadius: "12px", padding: "20px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
                         <p style={{ fontSize: "14px", color: "#b0acbf", margin: 0, fontStyle: "italic" }}>
-                          Sessions coming soon — register your interest to be notified first
+                          Sessions coming soon, register your interest to be notified first
                         </p>
                         {!BOOKINGS_OPEN && (
-                          <Link href={`/register-interest?age=${ag.value}&category=${cat}`} style={{ fontSize: "13px", fontWeight: 500, color: "#3730a3", textDecoration: "none", border: "1px solid #c7d2fe", borderRadius: "999px", padding: "6px 14px", backgroundColor: "#eef2ff", whiteSpace: "nowrap" as const }}>
+                          <Link href={`/register-interest?age=${ag.value}&category=${getQueryCategory(ag.value, cat)}`} style={{ fontSize: "13px", fontWeight: 500, color: "#3730a3", textDecoration: "none", border: "1px solid #c7d2fe", borderRadius: "999px", padding: "6px 14px", backgroundColor: "#eef2ff", whiteSpace: "nowrap" as const }}>
                             Notify me
                           </Link>
                         )}
@@ -282,7 +264,6 @@ export default async function SessionsPage({
             </div>
           );
         })}
-
       </section>
     </main>
   );

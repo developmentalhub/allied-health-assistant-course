@@ -5,29 +5,31 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
+// Updated with parent-friendly language, a separate sleep category, and explicit toddler language.
 const categoriesByAge: Record<string, { value: string; label: string; description: string }[]> = {
   "0-2": [
-    { value: "gross-motor", label: "Movement & Milestones", description: "Tummy time, visual tracking, reflexes, core strength and what to expect" },
-    { value: "sensory", label: "Sensory Play", description: "Nature play, everyday resources, outings and finding your baby's sensory sweet spot" },
-    { value: "play", label: "Play & Attachment", description: "Eye contact games, joint attention, floor play and building secure bonds" },
-    { value: "regulation", label: "Settling & Sleep", description: "Gentle strategies for settling, sleep and building calm predictable routines" },
+    { value: "gross-motor", label: "Movement & Coordination", description: "Muscle strength, balance, and physical confidence for active play." },
+    { value: "play", label: "Play & Exploration", description: "Creative thinking, sharing, and building confidence through play." },
+    { value: "sensory-baby", label: "Sensory Tracking & Reactions", description: "How your baby responds to sounds, textures, visual objects, and tracking." },
+    { value: "regulation-baby", label: "Baby & Toddler Big Feelings", description: "Supporting emotional shifts, gentle soothing, and early toddler tantrums." },
+    { value: "sleep", label: "Sleep & Routines", description: "Supporting natural sleep rhythms and gentle transitions throughout the day." },
   ],
   "3-5": [
-    { value: "gross-motor", label: "Movement & Coordination", description: "Core strength, reflexes, nature play, small spaces and kindy-ready bodies" },
-    { value: "fine-motor", label: "Fine Motor & Hands", description: "Core before pencil, palmar reflex, scissors, threading and hand confidence" },
-    { value: "sensory", label: "Sensory Processing", description: "Interoception, toileting, rough and tumble, messy play and when to seek help" },
-    { value: "regulation", label: "Big Feelings & Regulation", description: "Meltdowns, vagus nerve, movement for calm, transitions and focus" },
-    { value: "play", label: "Play & Learning", description: "Imaginative play, resilience, friendships and playgroup readiness" },
-    { value: "literacy", label: "Literacy & Language", description: "Movement for school-ready brains, language through play and stories" },
+    { value: "gross-motor", label: "Movement & Coordination", description: "Muscle strength, balance, and physical confidence for active play." },
+    { value: "fine-motor", label: "Handwriting & Independence", description: "Hand strength, pencil grip, scissor skills, and everyday coordination." },
+    { value: "sensory", label: "Sensory Preferences & Environment", description: "Understanding how your child reacts to noise, textures, and their surroundings." },
+    { value: "regulation", label: "Big Feelings & Regulation", description: "Navigating meltdowns, emotional shifts, and calming daily routines." },
+    { value: "play", label: "Play & Exploration", description: "Creative thinking, sharing, and building confidence through play." },
+    { value: "literacy", label: "Literacy & Language", description: "Rhymes, talking habits, and rhythm patterns that prepare for reading." },
   ],
-    "6-8": [
-    { value: "gross-motor", label: "Movement & Coordination", description: "Core strength, reflexes, classroom behaviour and movement for learning" },
-    { value: "fine-motor", label: "Handwriting & Independence", description: "Handwriting, lunchboxes, scissors and classroom fine motor skills" },
-    { value: "sensory", label: "Sensory Processing", description: "Sensory play vs screens, classroom exhaustion, foundations for handwriting" },
-    { value: "regulation", label: "Big Feelings & Regulation", description: "After-school crash, homework avoidance, school reluctance, screen transitions" },
-    { value: "play", label: "Play & Outdoor Activity", description: "Green time over screens, free play, sport and active play ideas" },
-    { value: "literacy", label: "Literacy & Language", description: "Movement for reading, rhythm, visual tracking and executive function" },
-    { value: "social-skills", label: "Social Skills & Resilience", description: "Joint attention, board games, losing gracefully and grit through play" },
+  "6-8": [
+    { value: "gross-motor", label: "Movement & Coordination", description: "Muscle strength, balance, and physical confidence for active play." },
+    { value: "fine-motor", label: "Handwriting & Independence", description: "Hand strength, pencil grip, scissor skills, and everyday coordination." },
+    { value: "sensory", label: "Sensory Preferences & Environment", description: "Understanding how your child reacts to noise, textures, and their surroundings." },
+    { value: "regulation", label: "Big Feelings & Regulation", description: "Navigating meltdowns, emotional shifts, and calming daily routines." },
+    { value: "play", label: "Play & Exploration", description: "Creative thinking, sharing, and building confidence through play." },
+    { value: "literacy", label: "Literacy & Language", description: "Rhymes, talking habits, and rhythm patterns that prepare for reading." },
+    { value: "social-skills", label: "Social Skills & Resilience", description: "Making friends, reading social situations, and playground confidence." },
   ],
 };
 
@@ -79,6 +81,13 @@ function InterestForm() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
+  // Maps parent-friendly UI selection keys seamlessly back to core database categories
+  function mapFormCategoryToDb(formCategoryId: string): string {
+    if (formCategoryId === "sensory-baby") return "sensory";
+    if (formCategoryId === "regulation-baby" || formCategoryId === "sleep") return "regulation";
+    return formCategoryId;
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -86,6 +95,8 @@ function InterestForm() {
 
     // Submit one record per selected category
     for (const cat of selectedCategories) {
+      const dbCategory = mapFormCategoryToDb(cat);
+      
       const res = await fetch("/api/session-interest", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -93,7 +104,7 @@ function InterestForm() {
           name: form.name,
           email: form.email,
           age_group: form.age_group,
-          session_topic: cat,
+          session_topic: dbCategory,
           preferred_time: form.preferred_time,
           preferred_days: null,
           other_details: form.other_details || null,
@@ -154,7 +165,7 @@ function InterestForm() {
       <div style={{ maxWidth: "600px", margin: "0 auto", padding: "64px 24px 100px" }}>
 
         <Link href="/" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "40px" }}>
-          ← Back to home
+          &larr; Back to home
         </Link>
 
         <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3730a3", marginBottom: "12px" }}>
