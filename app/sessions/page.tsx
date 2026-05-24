@@ -30,9 +30,11 @@ export default async function SessionsPage({
 
   const supabase = await createClient();
 
-  const { count: interestCount } = await supabase
-    .from("session_interest")
-    .select("*", { count: "exact", head: true });
+  const { data: distinctEmails } = await supabase
+  .from("session_interest")
+  .select("email");
+
+const interestCount = new Set((distinctEmails ?? []).map((r: any) => r.email)).size;
 
   const totalInterest = interestCount ?? 0;
   const target = 50;
