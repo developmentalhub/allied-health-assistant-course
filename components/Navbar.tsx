@@ -19,10 +19,11 @@ export default function Navbar() {
   const navLinks = [
     { label: "Videos", href: "/videos/free" },
     { label: "Community", href: "/forum" },
+    { label: "Q&A", href: "/qanda" },
+    { label: "Resources", href: "/resources" },
     { label: "Pricing", href: "/pricing" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
-    { label: "Request content", href: "/register-interest" },
   ];
 
   return (

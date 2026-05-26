@@ -1,149 +1,123 @@
-"use client";
-
-import { useState } from "react";
+import { createClient } from "@/lib/supabase-server";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
-export default function MovementLibrary() {
-  const [activeCategory, setActiveCategory] = useState("All");
+const ACTIVITY_SHEETS = [
+  {
+    title: "Regulation Before Reading",
+    description: "Understand why regulation is the foundation of reading readiness and what you can do at home.",
+    category: "School Readiness",
+    ageGroup: "3–8 years",
+    url: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/Regulation%20before%20Reading%20Ebook.pdf",
+    free: true,
+  },
+  {
+    title: "Colour Sorting Activity Guide",
+    description: "Step-by-step guide for the colour sorting table activity — builds fine motor skills and cognitive development.",
+    category: "Hands & Fine Motor",
+    ageGroup: "2–5 years",
+    url: null,
+    free: false,
+  },
+  {
+    title: "Tearing and Cutting Activity Cards",
+    description: "Printable activity cards to extend the tearing and cutting video series at home.",
+    category: "Hands & Fine Motor",
+    ageGroup: "3–6 years",
+    url: null,
+    free: false,
+  },
+  {
+    title: "Sensory Play Ideas — 30 Activities",
+    description: "Thirty sensory play ideas using everyday household items, organised by age and sensory type.",
+    category: "Sensory Play",
+    ageGroup: "0–6 years",
+    url: null,
+    free: false,
+  },
+];
 
-  const categories = [
-    "All", 
-    "Gross Motor Skills", 
-    "Fine Motor Skills", 
-    "Sensory", 
-    "Play Skills", 
-    "Regulation", 
-    "Vagus Nerve",
-    "Literacy" // Added Literacy here
-  ];
+const categoryColors: Record<string, { color: string; bg: string }> = {
+  "School Readiness":  { color: "#be185d", bg: "#fdf2f8" },
+  "Hands & Fine Motor":{ color: "#1d4ed8", bg: "#eff6ff" },
+  "Sensory Play":      { color: "#b45309", bg: "#fffbeb" },
+};
 
-  const [resources] = useState([
-    { 
-      id: 1, 
-      title: "8 Play Activities to Build Confidence", 
-      category: "Play Skills", 
-      type: "PDF Bundle", 
-      color: "#3730a3",
-      fileName: "confidence-activities.pdf" 
-    },
-    { 
-      id: 2, 
-      title: "Crossing the Midline for Literacy Readiness", 
-      category: "Literacy", 
-      type: "PDF Guide", 
-      color: "#0f766e",
-      fileName: "midline-literacy.pdf" 
-    },
-    { 
-      id: 3, 
-      title: "Vagus Nerve Exercises for Kids", 
-      category: "Vagus Nerve", 
-      type: "PDF Guide", 
-      color: "#16a34a",
-      fileName: "vagus-nerve-guide.pdf" 
-    },
-    { 
-      id: 4, 
-      title: "Pincer Grasp & Handwriting Foundations", 
-      category: "Fine Motor Skills", 
-      type: "Printable", 
-      color: "#d97706",
-      fileName: "handwriting-foundations.pdf" 
-    }
-  ]);
+export default async function ResourcesPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) redirect("/login?redirect=/resources");
+
+  let isSubscriber = false;
+  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+  const isAdmin = ["admin", "superadmin"].includes(profile?.role ?? "");
+
+  if (!isAdmin) {
+    const { data: sub } = await supabase.from("subscriptions").select("status").eq("user_id", user.id).single();
+    isSubscriber = ["active", "trialing"].includes(sub?.status ?? "");
+  } else {
+    isSubscriber = true;
+  }
+
+  if (!isSubscriber) redirect("/pricing");
 
   return (
-    <div style={{ backgroundColor: "#faf8f5", minHeight: "100vh", padding: "40px 20px", fontFamily: "var(--font-sans)" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        
-        <header style={{ marginBottom: "30px" }}>
-          <Link href="/dashboard" style={{ color: "#3730a3", textDecoration: "none", fontSize: "0.9rem", fontWeight: "600" }}>
-            ← Back to Dashboard
-          </Link>
-          <h1 style={{ color: "#1e1b2e", fontSize: "2.4rem", fontFamily: "var(--font-display)", marginTop: "10px" }}>
-            Movement Library
-          </h1>
-          <p style={{ color: "#64748b", marginTop: "10px" }}>
-            Professional resources to support your child's physical and cognitive development.
-          </p>
-        </header>
+    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "64px 24px 80px" }}>
 
-        {/* Category Filter */}
-        <div style={{ display: "flex", gap: "10px", marginBottom: "40px", flexWrap: "wrap" }}>
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              style={{
-                padding: "10px 22px",
-                borderRadius: "25px",
-                border: "1px solid #e2e8f0",
-                backgroundColor: activeCategory === cat ? "#3730a3" : "white",
-                color: activeCategory === cat ? "white" : "#64748b",
-                cursor: "pointer",
-                fontWeight: "600",
-                fontSize: "0.9rem"
-              }}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3730a3", marginBottom: "12px" }}>
+          Member resources
+        </p>
+        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 300, color: "#1e1b2e", margin: "0 0 16px" }}>
+          Activity Sheets & Printables
+        </h1>
+        <p style={{ fontSize: "16px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300, margin: "0 0 48px" }}>
+          Download and print these activity sheets to extend the learning from your videos. New resources added every month.
+        </p>
 
-        {/* Resource Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "30px" }}>
-          {resources
-            .filter(r => activeCategory === "All" || r.category === activeCategory)
-            .map(resource => (
-              <div key={resource.id} style={{ 
-                backgroundColor: "white", 
-                borderRadius: "16px", 
-                overflow: "hidden", 
-                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-                border: "1px solid #e2e8f0",
-                display: "flex",
-                flexDirection: "column"
-              }}>
-                <div style={{ height: "160px", backgroundColor: resource.color, display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: "3.5rem" }}>
-                  📄
-                </div>
-                <div style={{ padding: "24px", flex: 1, display: "flex", flexDirection: "column" }}>
-                  <span style={{ fontSize: "0.7rem", fontWeight: "bold", color: "#64748b", textTransform: "uppercase", letterSpacing: "1px" }}>
-                    {resource.category}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
+          {ACTIVITY_SHEETS.map((sheet) => {
+            const catStyle = categoryColors[sheet.category] ?? { color: "#6b6880", bg: "#faf8f5" };
+            const available = !!sheet.url;
+
+            return (
+              <div key={sheet.title} style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "11px", fontWeight: 600, padding: "3px 8px", borderRadius: "6px", backgroundColor: catStyle.bg, color: catStyle.color }}>
+                    {sheet.category}
                   </span>
-                  <h3 style={{ fontSize: "1.2rem", color: "#1e1b2e", margin: "10px 0 15px 0", lineHeight: "1.4" }}>{resource.title}</h3>
-                  
-                  <a 
-                    href={`/library/${resource.fileName}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    style={{ 
-                      marginTop: "auto", 
-                      backgroundColor: "#3730a3", 
-                      color: "white", 
-                      padding: "14px", 
-                      borderRadius: "10px", 
-                      fontWeight: "bold", 
-                      textDecoration: "none",
-                      textAlign: "center",
-                      fontSize: "0.95rem"
-                    }}
-                  >
-                    Access Resource
-                  </a>
+                  <span style={{ fontSize: "11px", color: "#6b6880" }}>{sheet.ageGroup}</span>
                 </div>
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: 400, color: "#1e1b2e", margin: 0, lineHeight: 1.4 }}>
+                  {sheet.title}
+                </h3>
+                <p style={{ fontSize: "13px", color: "#6b6880", margin: 0, lineHeight: 1.6, flex: 1 }}>
+                  {sheet.description}
+                </p>
+                {available ? (
+                  <a
+                    href={sheet.url!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", backgroundColor: "#3730a3", color: "white", padding: "10px 20px", borderRadius: "999px", fontSize: "13px", fontWeight: 600, textDecoration: "none" }}
+                  >
+                    <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    Download PDF
+                  </a>
+                ) : (
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", backgroundColor: "#faf8f5", color: "#b0acbf", padding: "10px 20px", borderRadius: "999px", fontSize: "13px", fontWeight: 500 }}>
+                    Coming soon
+                  </div>
+                )}
               </div>
-            ))}
+            );
+          })}
         </div>
-
-        {/* Empty State */}
-        {resources.filter(r => activeCategory !== "All" && r.category === activeCategory).length === 0 && activeCategory !== "All" && (
-          <div style={{ textAlign: "center", padding: "60px", color: "#64748b" }}>
-            <p>New **{activeCategory}** resources are being prepared for you. Check back shortly.</p>
-          </div>
-        )}
 
       </div>
-    </div>
+    </main>
   );
 }
