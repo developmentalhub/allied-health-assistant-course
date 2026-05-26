@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 
 const FREE_VIDEOS = [
@@ -7,6 +10,7 @@ const FREE_VIDEOS = [
     description: "An introduction to developmental milestones and why every child's journey is unique.",
     category: "Follow Along Activities",
     duration: "12 min",
+    url: "https://developmental-hub-videos.b-cdn.net/Free%20Videos/Family%20-%20Developmental%20Milestones%20-%20Every%20Child%20is%20Different.mp4",
   },
   {
     id: "separation-anxiety",
@@ -14,6 +18,7 @@ const FREE_VIDEOS = [
     description: "Practical strategies for helping your child manage separation anxiety at kindy or daycare.",
     category: "School Readiness",
     duration: "10 min",
+    url: "https://developmental-hub-videos.b-cdn.net/Free%20Videos/Family%20-%20Free%20-%20Separation%20Anxiety%20at%20Kindergarten.mp4",
   },
   {
     id: "pre-reading-skills",
@@ -21,6 +26,7 @@ const FREE_VIDEOS = [
     description: "Movement-based activities that build the visual tracking skills children need for reading.",
     category: "School Readiness",
     duration: "8 min",
+    url: "https://developmental-hub-videos.b-cdn.net/Free%20Videos/Family%20-%20Pre-Reading%20Skills%20-%20VOR%20Dice%20Activities.mp4",
   },
   {
     id: "cerebral-palsy-goals",
@@ -28,6 +34,7 @@ const FREE_VIDEOS = [
     description: "Goal-setting and inclusion strategies for families and educators supporting children with cerebral palsy.",
     category: "Follow Along Activities",
     duration: "15 min",
+    url: "https://developmental-hub-videos.b-cdn.net/Free%20Videos/Inclusion%20-%20Teenage%20Boy%20with%20Cerebral%20Palsy%20Goals.mp4",
   },
 ];
 
@@ -37,6 +44,8 @@ const categoryColors: Record<string, { color: string; bg: string }> = {
 };
 
 export default function FreeVideosPage() {
+  const [playing, setPlaying] = useState<string | null>(null);
+
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "64px 24px 80px" }}>
@@ -56,19 +65,40 @@ export default function FreeVideosPage() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "24px", marginBottom: "64px" }}>
           {FREE_VIDEOS.map((video) => {
             const catStyle = categoryColors[video.category] ?? { color: "#6b6880", bg: "#faf8f5" };
+            const isPlaying = playing === video.id;
+
             return (
               <div key={video.id} style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", overflow: "hidden" }}>
-                <div style={{ aspectRatio: "16/9", backgroundColor: "#1e1b2e", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                  <div style={{ width: "48px", height: "48px", backgroundColor: "rgba(255,255,255,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                  </div>
-                  <span style={{ position: "absolute", bottom: "10px", right: "10px", backgroundColor: "rgba(0,0,0,0.7)", color: "white", fontSize: "12px", padding: "2px 8px", borderRadius: "4px" }}>
-                    {video.duration}
-                  </span>
-                  <span style={{ position: "absolute", top: "10px", left: "10px", backgroundColor: "#3730a3", color: "white", fontSize: "11px", fontWeight: 600, padding: "3px 10px", borderRadius: "999px" }}>
-                    Free
-                  </span>
+                {/* Video player */}
+                <div style={{ aspectRatio: "16/9", backgroundColor: "#1e1b2e", position: "relative" }}>
+                  {isPlaying ? (
+                    <video
+                      src={video.url}
+                      controls
+                      autoPlay
+                      style={{ width: "100%", height: "100%", display: "block" }}
+                    />
+                  ) : (
+                    <button
+                      onClick={() => setPlaying(video.id)}
+                      style={{ width: "100%", height: "100%", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}
+                    >
+                      <div style={{ width: "56px", height: "56px", backgroundColor: "rgba(255,255,255,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s" }}>
+                        <svg width="22" height="22" fill="white" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
+                      <span style={{ position: "absolute", bottom: "10px", right: "10px", backgroundColor: "rgba(0,0,0,0.7)", color: "white", fontSize: "12px", padding: "2px 8px", borderRadius: "4px" }}>
+                        {video.duration}
+                      </span>
+                      <span style={{ position: "absolute", top: "10px", left: "10px", backgroundColor: "#3730a3", color: "white", fontSize: "11px", fontWeight: 600, padding: "3px 10px", borderRadius: "999px" }}>
+                        Free
+                      </span>
+                    </button>
+                  )}
                 </div>
+
+                {/* Info */}
                 <div style={{ padding: "18px 20px" }}>
                   <span style={{ fontSize: "11px", fontWeight: 600, padding: "3px 8px", borderRadius: "6px", backgroundColor: catStyle.bg, color: catStyle.color, display: "inline-block", marginBottom: "10px" }}>
                     {video.category}

@@ -30,10 +30,10 @@ export default function HomePage() {
               Expert support for your child's development — at home, on your schedule
             </h1>
             <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300, margin: "0 0 16px" }}>
-              Follow-along activity videos, downloadable resources, and a monthly live Q&A with Robyn — all for $39/month.
+              Follow-along activity videos designed to meet your child where they are developmentally — practical, expert-led, and built around the reality of busy family life.
             </p>
             <p style={{ fontSize: "14px", color: "#6b6880", lineHeight: 1.6, margin: "0 0 32px", fontStyle: "italic", borderLeft: "3px solid #e0e7ff", paddingLeft: "16px" }}>
-              "I made these videos so that every family — no matter where they live — can access the same support I give families in my clinic." — Robyn Papworth, Founder
+              "I made these videos for busy families who want practical, expert support that meets their child exactly where they are, without the waitlists, the appointments, or the travel." — Robyn Papworth, Founder
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "420px" }}>
               <Link href="/pricing" style={{ backgroundColor: "#3730a3", color: "white", padding: "16px 28px", borderRadius: "999px", fontSize: "16px", fontWeight: 600, textDecoration: "none", display: "block", textAlign: "center" }}>
@@ -87,7 +87,7 @@ export default function HomePage() {
             Seven categories covering ages 0–8
           </h2>
           <p style={{ fontSize: "16px", color: "#6b6880", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7, fontWeight: 300 }}>
-            Every video is designed by Robyn based on her clinical expertise — practical, evidence-informed, and made for real family life.
+            Every video is designed by Robyn based on her clinical expertise, practical, evidence-informed, and made for real family life.
           </p>
         </div>
 
