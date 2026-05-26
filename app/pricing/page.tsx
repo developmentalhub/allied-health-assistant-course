@@ -1,4 +1,12 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Pricing — Developmental Hub",
+  description: "$39/month for unlimited access to expert child development videos, downloadable activity sheets, and a monthly live Q&A with Robyn Papworth. Cancel anytime.",
+};
+
+
 
 const ROBYN_PHOTO = "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/robyn-hero.png";
 

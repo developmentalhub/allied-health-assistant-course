@@ -1,5 +1,13 @@
 import { createClient } from "@/lib/supabase-server";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Community — Developmental Hub",
+  description: "Join the Developmental Hub community. Free resources, activity ideas and discussion from Robyn Papworth and families supporting children aged 0–8.",
+};
+
+
 
 export default async function ForumPage() {
   const supabase = await createClient();

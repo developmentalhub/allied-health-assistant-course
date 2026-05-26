@@ -1,6 +1,14 @@
 import { createClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Activity Sheets & Printables — Developmental Hub",
+  description: "Download printable activity sheets and resources for children aged 0–8. Included with your Developmental Hub membership.",
+};
+
+
 
 const ACTIVITY_SHEETS = [
   {

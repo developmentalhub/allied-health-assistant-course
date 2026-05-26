@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase-server";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Monthly Q&A with Robyn — Developmental Hub",
+  description: "Join Robyn Papworth live each month to ask questions about your child's development. Replays available for all subscribers.",
+};
+
+
 
 export default async function QandAPage() {
   const supabase = await createClient();

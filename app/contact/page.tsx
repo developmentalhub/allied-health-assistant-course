@@ -59,7 +59,7 @@ export default function ContactPage() {
           Contact us
         </h1>
         <p style={{ fontSize: "16px", color: "#6b6880", lineHeight: 1.7, margin: "0 0 48px", fontWeight: 300 }}>
-          We'd love to hear from you — whether you're a family looking for support, a practitioner interested in facilitating, or just curious about what we're building.
+          We'd love to hear from you — whether you have a question about your membership, want to know more about our videos, or are a practitioner interested in working with us.
         </p>
 
         {/* Contact details */}
@@ -109,11 +109,11 @@ export default function ContactPage() {
                 <label style={labelStyle}>What is this about? <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span></label>
                 <select name="subject" value={form.subject} onChange={handleChange} style={inputStyle}>
                   <option value="">Select a topic</option>
-                  <option value="Question about sessions">Question about sessions</option>
-                  <option value="Applying as a practitioner">Applying as a practitioner</option>
-                  <option value="Technical issue">Technical issue</option>
-                  <option value="Partnership enquiry">Partnership enquiry</option>
-                  <option value="Something else">Something else</option>
+                 <option value="Question about membership">Question about membership</option>
+<option value="Question about videos">Question about videos</option>
+<option value="Technical issue">Technical issue</option>
+<option value="Practitioner enquiry">Practitioner enquiry</option>
+<option value="Something else">Something else</option>
                 </select>
               </div>
 
