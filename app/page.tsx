@@ -101,6 +101,24 @@ export default function HomePage() {
         </div>
       </section>
 
+{/* ── Request content ─────────────────────────────────────────── */}
+<section style={{ backgroundColor: "white", borderTop: "1px solid #e8e4de", borderBottom: "1px solid #e8e4de" }}>
+  <div style={{ maxWidth: "720px", margin: "0 auto", padding: "64px 24px", textAlign: "center" }}>
+    <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3730a3", marginBottom: "12px" }}>
+      Shape what we build next
+    </p>
+    <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(26px, 4vw, 36px)", fontWeight: 300, color: "#1e1b2e", margin: "0 0 16px", lineHeight: 1.3 }}>
+      Tell us what your family needs
+    </h2>
+    <p style={{ fontSize: "16px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300, margin: "0 0 32px", maxWidth: "520px", marginLeft: "auto", marginRight: "auto" }}>
+      We use your responses to decide which videos to make next, which topics to cover in our monthly Q&A, and when to run live sessions. Takes 2 minutes. No payment required.
+    </p>
+    <Link href="/register-interest" style={{ backgroundColor: "#3730a3", color: "white", padding: "14px 32px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
+      Tell us what your child needs
+    </Link>
+  </div>
+</section>
+
       {/* ── Pricing CTA ──────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#1e1b2e", padding: "80px 24px" }}>
         <div style={{ maxWidth: "640px", margin: "0 auto", textAlign: "center" }}>
