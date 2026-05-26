@@ -81,6 +81,7 @@ export default async function AdminPage() {
 { label: "Facilitator applications", href: "/admin/applications", bg: "#7c3aed" },
 { label: "Referral codes", href: "/admin/referral-codes", bg: "#0f766e" },
 { label: "Waitlist", href: "/admin/waitlist", bg: "#7c3aed" },
+{ label: "Affiliates", href: "/admin/affiliates", bg: "#be185d" },
 { label: "Session interest", href: "/admin/session-interest", bg: "#0f766e" },
           ].map((action) => (
             <Link

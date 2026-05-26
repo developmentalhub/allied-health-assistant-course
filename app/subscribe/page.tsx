@@ -1,48 +1,58 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { Suspense } from "react";
 
-export default function SubscribePage() {
+function SubscribeForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
   const [error, setError] = useState("");
-  const [user, setUser] = useState<any>(null);
+  const [affiliateCode, setAffiliateCode] = useState(searchParams.get("ref") ?? "");
+  const [affiliateValid, setAffiliateValid] = useState<boolean | null>(null);
+  const [affiliatePartner, setAffiliatePartner] = useState("");
 
   useEffect(() => {
     async function check() {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push("/login?redirect=/subscribe");
-        return;
-      }
-      setUser(user);
-
-      // Check if already subscribed
+      if (!user) { router.push("/login?redirect=/subscribe"); return; }
       const res = await fetch("/api/subscription-status");
       const data = await res.json();
-      if (data.subscribed) {
-        router.push("/videos");
-        return;
-      }
+      if (data.subscribed) { router.push("/videos"); return; }
       setChecking(false);
     }
     check();
   }, []);
 
+  useEffect(() => {
+    if (!affiliateCode.trim()) { setAffiliateValid(null); setAffiliatePartner(""); return; }
+    const timer = setTimeout(async () => {
+      const res = await fetch(`/api/affiliate?code=${affiliateCode.trim()}`);
+      const data = await res.json();
+      setAffiliateValid(data.valid);
+      setAffiliatePartner(data.valid ? data.partner_name : "");
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [affiliateCode]);
+
   async function handleSubscribe() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/subscribe", { method: "POST" });
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ affiliate_code: affiliateValid ? affiliateCode.trim() : null }),
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       window.location.href = data.url;
     } catch (err: any) {
-      setError(err.message || "Something went wrong. Please try again.");
+      setError(err.message || "Something went wrong.");
       setLoading(false);
     }
   }
@@ -54,6 +64,13 @@ export default function SubscribePage() {
       </div>
     );
   }
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%", padding: "10px 16px", borderRadius: "12px",
+    border: `1.5px solid ${affiliateValid === true ? "#bbf7d0" : affiliateValid === false ? "#fecaca" : "#e8e4de"}`,
+    fontSize: "15px", color: "#1e1b2e", outline: "none",
+    boxSizing: "border-box", fontFamily: "inherit", backgroundColor: "#faf8f5",
+  };
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
@@ -74,10 +91,10 @@ export default function SubscribePage() {
             Start your membership
           </h1>
           <p style={{ fontSize: "15px", color: "#6b6880", margin: "0 0 32px", lineHeight: 1.6 }}>
-            You'll be taken to Stripe to complete your payment securely. Then you'll have instant access to the full video library.
+            You'll be taken to Stripe to complete your payment securely.
           </p>
 
-          <div style={{ backgroundColor: "#faf8f5", borderRadius: "12px", padding: "20px 24px", marginBottom: "32px", textAlign: "left" }}>
+          <div style={{ backgroundColor: "#faf8f5", borderRadius: "12px", padding: "20px 24px", marginBottom: "24px", textAlign: "left" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
               <span style={{ fontSize: "15px", fontWeight: 500, color: "#1e1b2e" }}>Family membership</span>
               <span style={{ fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: 300, color: "#1e1b2e" }}>$39/mo</span>
@@ -85,8 +102,31 @@ export default function SubscribePage() {
             <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>Unlimited videos · Monthly Q&A · Activity sheets · Cancel anytime</p>
           </div>
 
+          {/* Referral code */}
+          <div style={{ marginBottom: "24px", textAlign: "left" }}>
+            <label style={{ fontSize: "13px", fontWeight: 500, color: "#1e1b2e", display: "block", marginBottom: "6px" }}>
+              Referral code <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
+            </label>
+            <input
+              value={affiliateCode}
+              onChange={(e) => setAffiliateCode(e.target.value.toUpperCase())}
+              placeholder="e.g. SARAH-OT"
+              style={inputStyle}
+            />
+            {affiliateValid === true && (
+              <p style={{ fontSize: "12px", color: "#166534", margin: "6px 0 0", fontWeight: 500 }}>
+                ✓ Referred by {affiliatePartner}
+              </p>
+            )}
+            {affiliateValid === false && affiliateCode.trim() && (
+              <p style={{ fontSize: "12px", color: "#b91c1c", margin: "6px 0 0" }}>
+                That code doesn't look right. Leave it blank to continue without one.
+              </p>
+            )}
+          </div>
+
           {error && (
-            <div style={{ backgroundColor: "#fef2f2", border: "1px solid #fecaca", borderRadius: "10px", padding: "12px 16px", fontSize: "14px", color: "#b91c1c", marginBottom: "20px" }}>
+            <div style={{ backgroundColor: "#fef2f2", border: "1px solid #fecaca", borderRadius: "10px", padding: "12px 16px", fontSize: "14px", color: "#b91c1c", marginBottom: "20px", textAlign: "left" }}>
               {error}
             </div>
           )}
@@ -108,5 +148,13 @@ export default function SubscribePage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function SubscribePage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }} />}>
+      <SubscribeForm />
+    </Suspense>
   );
 }

@@ -11,13 +11,14 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 
+    const { affiliate_code } = await request.json().catch(() => ({}));
+
     const { data: profile } = await supabase
       .from("profiles")
       .select("full_name, email")
       .eq("id", user.id)
       .single();
 
-    // Check for existing subscription
     const { data: existingSub } = await supabase
       .from("subscriptions")
       .select("stripe_customer_id, status")
@@ -28,8 +29,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Already subscribed" }, { status: 400 });
     }
 
-    let customerId = existingSub?.stripe_customer_id;
+    // Validate affiliate code if provided
+    let affiliateData = null;
+    if (affiliate_code) {
+      const { data } = await supabase
+        .from("affiliate_codes")
+        .select("id, code, commission_percentage")
+        .eq("code", affiliate_code.toUpperCase().trim())
+        .eq("active", true)
+        .single();
+      affiliateData = data;
+    }
 
+    let customerId = existingSub?.stripe_customer_id;
     if (!customerId) {
       const customer = await stripe.customers.create({
         email: profile?.email ?? user.email ?? "",
@@ -46,7 +58,11 @@ export async function POST(request: NextRequest) {
       mode: "subscription",
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://developmental-hub.vercel.app"}/subscribe/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://developmental-hub.vercel.app"}/pricing`,
-      metadata: { supabase_user_id: user.id },
+      metadata: {
+        supabase_user_id: user.id,
+        affiliate_code_id: affiliateData?.id ?? "",
+        commission_percentage: affiliateData?.commission_percentage?.toString() ?? "",
+      },
     });
 
     return NextResponse.json({ url: session.url });

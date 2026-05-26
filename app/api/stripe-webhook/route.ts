@@ -45,6 +45,19 @@ export async function POST(request: NextRequest) {
           current_period_end: new Date((sub as any).current_period_end * 1000).toISOString(),
           updated_at: new Date().toISOString(),
         }, { onConflict: "stripe_subscription_id" });
+
+        // Record affiliate referral if code was used
+        const affiliateCodeId = session.metadata?.affiliate_code_id;
+        const commissionPct = session.metadata?.commission_percentage;
+        if (affiliateCodeId && commissionPct) {
+          await getSupabaseAdmin().from("affiliate_referrals").insert({
+            affiliate_code_id: affiliateCodeId,
+            subscriber_user_id: userId,
+            stripe_subscription_id: sub.id,
+            status: "active",
+            commission_percentage: parseInt(commissionPct),
+          });
+        }
         break;
       }
 
@@ -54,10 +67,17 @@ export async function POST(request: NextRequest) {
         await getSupabaseAdmin().from("subscriptions")
           .update({
             status: sub.status,
-           current_period_end: new Date((sub as any).current_period_end * 1000).toISOString(),
+            current_period_end: new Date((sub as any).current_period_end * 1000).toISOString(),
             updated_at: new Date().toISOString(),
           })
           .eq("stripe_subscription_id", sub.id);
+
+        // Update affiliate referral status if subscription cancelled
+        if (sub.status === "canceled") {
+          await getSupabaseAdmin().from("affiliate_referrals")
+            .update({ status: "cancelled" })
+            .eq("stripe_subscription_id", sub.id);
+        }
         break;
       }
     }
