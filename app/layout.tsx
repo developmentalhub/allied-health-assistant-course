@@ -6,9 +6,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Developmental Hub — Expert Group Support for Families",
+  title: "Developmental Hub — Expert Support for Your Child's Development",
   description:
-    "Join small group sessions and webinars led by developmental specialists. Affordable, evidence-based support for families navigating childhood developmental needs.",
+    "Follow-along activity videos, downloadable resources, and a monthly live Q&A with Robyn Papworth. Expert developmental support for families, at home, on your schedule. $39/month.",
 };
 
 export default function RootLayout({

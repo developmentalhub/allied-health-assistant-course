@@ -17,10 +17,9 @@ export default function Navbar() {
   }
 
   const navLinks = [
-    { label: "Sessions", href: "/sessions" },
-    { label: "Our specialists", href: "/practitioners/directory" },
+    { label: "Videos", href: "/videos/free" },
+    { label: "Pricing", href: "/pricing" },
     { label: "About", href: "/about" },
-    { label: "For Practitioners", href: "/practitioners" },
     { label: "Contact", href: "/contact" },
   ];
 
@@ -28,12 +27,10 @@ export default function Navbar() {
     <nav style={{ position: "sticky", top: 0, zIndex: 50, backgroundColor: "#faf8f5", borderBottom: "1px solid #e8e4de" }}>
       <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "64px" }}>
 
-        {/* Logo */}
         <Link href="/" style={{ textDecoration: "none", color: "#1e1b2e", fontWeight: 600, fontSize: "18px", flexShrink: 0 }}>
           Developmental Hub
         </Link>
 
-        {/* Desktop nav links */}
         <div style={{ display: "flex", alignItems: "center", gap: "32px" }} className="desktop-nav">
           {navLinks.map((link) => (
             <Link key={link.href} href={link.href} style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", fontWeight: 500 }}>
@@ -42,8 +39,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Desktop auth buttons */}
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }} className="desktop-nav">
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }} className="desktop-nav">
           {!loading && user ? (
             <>
               {(role === "admin" || role === "superadmin") && (
@@ -52,9 +48,9 @@ export default function Navbar() {
               {(role === "facilitator" || role === "superadmin") && (
                 <Link href="/facilitator-hub" style={{ color: "#0f766e", fontWeight: 500, fontSize: "14px" }}>Facilitator Hub</Link>
               )}
-              {(role === "parent" || role === "superadmin") && (
-                <Link href="/dashboard" style={{ color: "#3730a3", fontWeight: 500, fontSize: "14px" }}>My dashboard</Link>
-              )}
+              <Link href="/videos" style={{ backgroundColor: "#3730a3", color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>
+                My videos
+              </Link>
               <button onClick={handleSignOut} style={{ cursor: "pointer", border: "none", background: "none", color: "#6b6880", fontSize: "14px", fontFamily: "inherit" }}>
                 Sign out
               </button>
@@ -62,12 +58,13 @@ export default function Navbar() {
           ) : !loading ? (
             <>
               <Link href="/login" style={{ color: "#3730a3", fontSize: "14px", fontWeight: 500 }}>Sign in</Link>
-              <Link href="/signup" style={{ background: "#3730a3", color: "white", padding: "8px 16px", borderRadius: "999px", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>Join free</Link>
+              <Link href="/pricing" style={{ background: "#3730a3", color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>
+                Start membership
+              </Link>
             </>
           ) : null}
         </div>
 
-        {/* Hamburger button — mobile only */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="mobile-menu-btn"
@@ -78,26 +75,15 @@ export default function Navbar() {
           <span style={{ display: "block", width: "22px", height: "2px", backgroundColor: "#1e1b2e", transition: "all 0.2s", transform: menuOpen ? "rotate(-45deg)" : "none", marginTop: menuOpen ? "-7px" : "0" }} />
           {!menuOpen && <span style={{ display: "block", width: "22px", height: "2px", backgroundColor: "#1e1b2e" }} />}
         </button>
-
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
         <div className="mobile-menu" style={{ backgroundColor: "#faf8f5", borderTop: "1px solid #e8e4de", padding: "16px 24px 24px", display: "none", flexDirection: "column", gap: "0" }}>
-
-          {/* Nav links */}
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              style={{ fontSize: "16px", color: "#1e1b2e", textDecoration: "none", fontWeight: 500, padding: "14px 0", borderBottom: "1px solid #f0ede8", display: "block" }}
-            >
+            <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)} style={{ fontSize: "16px", color: "#1e1b2e", textDecoration: "none", fontWeight: 500, padding: "14px 0", borderBottom: "1px solid #f0ede8", display: "block" }}>
               {link.label}
             </Link>
           ))}
-
-          {/* Auth links */}
           <div style={{ marginTop: "16px", display: "flex", flexDirection: "column", gap: "8px" }}>
             {!loading && user ? (
               <>
@@ -107,25 +93,18 @@ export default function Navbar() {
                 {(role === "facilitator" || role === "superadmin") && (
                   <Link href="/facilitator-hub" onClick={() => setMenuOpen(false)} style={{ fontSize: "15px", color: "#0f766e", fontWeight: 500, textDecoration: "none", padding: "10px 0" }}>Facilitator Hub</Link>
                 )}
-                {(role === "parent" || role === "superadmin") && (
-                  <Link href="/dashboard" onClick={() => setMenuOpen(false)} style={{ fontSize: "15px", color: "#3730a3", fontWeight: 500, textDecoration: "none", padding: "10px 0" }}>My dashboard</Link>
-                )}
-                <button
-                  onClick={handleSignOut}
-                  style={{ cursor: "pointer", border: "none", background: "none", color: "#6b6880", fontSize: "15px", fontFamily: "inherit", textAlign: "left", padding: "10px 0" }}
-                >
+                <Link href="/videos" onClick={() => setMenuOpen(false)} style={{ background: "#3730a3", color: "white", padding: "12px 24px", borderRadius: "999px", fontSize: "15px", fontWeight: 500, textDecoration: "none", textAlign: "center", marginTop: "8px" }}>
+                  My videos
+                </Link>
+                <button onClick={handleSignOut} style={{ cursor: "pointer", border: "none", background: "none", color: "#6b6880", fontSize: "15px", fontFamily: "inherit", textAlign: "left", padding: "10px 0" }}>
                   Sign out
                 </button>
               </>
             ) : !loading ? (
               <>
                 <Link href="/login" onClick={() => setMenuOpen(false)} style={{ fontSize: "15px", color: "#3730a3", fontWeight: 500, textDecoration: "none", padding: "10px 0" }}>Sign in</Link>
-                <Link
-                  href="/signup"
-                  onClick={() => setMenuOpen(false)}
-                  style={{ background: "#3730a3", color: "white", padding: "12px 24px", borderRadius: "999px", fontSize: "15px", fontWeight: 500, textDecoration: "none", textAlign: "center", marginTop: "8px" }}
-                >
-                  Join free
+                <Link href="/pricing" onClick={() => setMenuOpen(false)} style={{ background: "#3730a3", color: "white", padding: "12px 24px", borderRadius: "999px", fontSize: "15px", fontWeight: 500, textDecoration: "none", textAlign: "center", marginTop: "8px" }}>
+                  Start membership
                 </Link>
               </>
             ) : null}
@@ -133,7 +112,6 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Responsive styles */}
       <style>{`
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
