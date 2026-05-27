@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+// 1. Updated API version to match your local requirement
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2026-04-22.dahlia", 
+});
 
 function getSupabaseAdmin() {
   return createClient(
@@ -16,7 +19,7 @@ export async function POST(request: NextRequest) {
   const sig = request.headers.get("stripe-signature");
 
   if (!sig || !process.env.STRIPE_WEBHOOK_SECRET) {
-    return NextResponse.json({ error: "Missing signature" }, { status: 400 });
+    return NextResponse.json({ error: "Missing configuration" }, { status: 400 });
   }
 
   let event: Stripe.Event;
@@ -27,6 +30,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
+  const supabase = getSupabaseAdmin();
+
   try {
     switch (event.type) {
       case "checkout.session.completed": {
@@ -34,23 +39,26 @@ export async function POST(request: NextRequest) {
         const userId = session.metadata?.supabase_user_id;
         if (!userId || !session.subscription) break;
 
+        // 2. Properly retrieve the subscription
         const sub = await stripe.subscriptions.retrieve(session.subscription as string);
 
-        await getSupabaseAdmin().from("subscriptions").upsert({
+        await supabase.from("subscriptions").upsert({
           user_id: userId,
           stripe_customer_id: session.customer as string,
           stripe_subscription_id: sub.id,
           stripe_price_id: sub.items.data[0].price.id,
           status: sub.status,
+          // 3. Access current_period_end correctly from the Subscription object
           current_period_end: new Date((sub as any).current_period_end * 1000).toISOString(),
           updated_at: new Date().toISOString(),
+          referral_code: session.metadata?.referral_code || null,
         }, { onConflict: "stripe_subscription_id" });
 
-        // Record affiliate referral if code was used
         const affiliateCodeId = session.metadata?.affiliate_code_id;
         const commissionPct = session.metadata?.commission_percentage;
+        
         if (affiliateCodeId && commissionPct) {
-          await getSupabaseAdmin().from("affiliate_referrals").insert({
+          await supabase.from("affiliate_referrals").insert({
             affiliate_code_id: affiliateCodeId,
             subscriber_user_id: userId,
             stripe_subscription_id: sub.id,
@@ -64,7 +72,7 @@ export async function POST(request: NextRequest) {
       case "customer.subscription.updated":
       case "customer.subscription.deleted": {
         const sub = event.data.object as Stripe.Subscription;
-        await getSupabaseAdmin().from("subscriptions")
+        await supabase.from("subscriptions")
           .update({
             status: sub.status,
             current_period_end: new Date((sub as any).current_period_end * 1000).toISOString(),
@@ -72,9 +80,8 @@ export async function POST(request: NextRequest) {
           })
           .eq("stripe_subscription_id", sub.id);
 
-        // Update affiliate referral status if subscription cancelled
         if (sub.status === "canceled") {
-          await getSupabaseAdmin().from("affiliate_referrals")
+          await supabase.from("affiliate_referrals")
             .update({ status: "cancelled" })
             .eq("stripe_subscription_id", sub.id);
         }
@@ -83,9 +90,8 @@ export async function POST(request: NextRequest) {
     }
   } catch (err) {
     console.error("Webhook processing error:", err);
+    return NextResponse.json({ error: "Internal processing error" }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });
 }
-
-export const config = { api: { bodyParser: false } };
