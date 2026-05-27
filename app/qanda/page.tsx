@@ -7,8 +7,6 @@ export const metadata: Metadata = {
   description: "Join Robyn Papworth live each month to ask questions about your child's development. Replays available for all subscribers.",
 };
 
-
-
 export default async function QandAPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -41,7 +39,7 @@ export default async function QandAPage() {
           Every month, Robyn hosts a live video session where subscribers can ask anything about their child's development. Bring your questions, your wins, and your worries.
         </p>
 
-        {/* Next session */}
+        {/* Next session and Survey */}
         <div style={{ backgroundColor: "#3730a3", borderRadius: "20px", padding: "40px", marginBottom: "40px" }}>
           <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#a5b4fc", margin: "0 0 12px" }}>
             Next session
@@ -52,11 +50,33 @@ export default async function QandAPage() {
           <p style={{ fontSize: "16px", color: "#c7d2fe", margin: "0 0 24px", lineHeight: 1.6 }}>
             Date and time to be announced. Subscribe to be notified as soon as the next session is scheduled.
           </p>
+          
           {isSubscriber ? (
-            <div style={{ backgroundColor: "rgba(255,255,255,0.1)", borderRadius: "12px", padding: "16px 20px" }}>
-              <p style={{ fontSize: "14px", color: "#e0e7ff", margin: 0 }}>
-                You'll receive an email with the Zoom link when the next session is scheduled. Keep an eye on your inbox.
+            <div style={{ backgroundColor: "rgba(255,255,255,0.1)", borderRadius: "12px", padding: "20px" }}>
+              <p style={{ fontSize: "14px", color: "white", fontWeight: 600, margin: "0 0 16px" }}>
+                Help us schedule the next session:
               </p>
+              <form action="/api/submit-qa-preference" method="POST" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                <input 
+                  name="time_pref" 
+                  required 
+                  placeholder="Preferred day and time" 
+                  style={{ padding: "10px", borderRadius: "8px", border: "none", color: "#1e1b2e", backgroundColor: "#ffffff" }} 
+                />
+                <select 
+                  name="format_pref" 
+                  style={{ padding: "10px", borderRadius: "8px", border: "none", color: "#1e1b2e", backgroundColor: "#ffffff" }}
+                >
+                  <option value="live">I prefer live sessions</option>
+                  <option value="recorded">I prefer pre-recorded</option>
+                </select>
+                <button 
+                  type="submit" 
+                  style={{ backgroundColor: "#1e1b2e", color: "white", border: "none", padding: "10px", borderRadius: "8px", fontWeight: 600, cursor: "pointer" }}
+                >
+                  Submit preference
+                </button>
+              </form>
             </div>
           ) : (
             <Link href="/pricing" style={{ backgroundColor: "white", color: "#3730a3", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
