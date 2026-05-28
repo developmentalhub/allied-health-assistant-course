@@ -2,286 +2,53 @@ import { createClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 import ClientVideoPlayer from "./ClientVideoPlayer";
 
+const CUP_SEQUENCE_VIDEOS = [
+  { order: 1, id: "cup-1", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup Rhythm Activity — Introduction 1", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20Rhythm%20Activity%20-%20Introduction%20-%201.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 2, id: "cup-2", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup Rhythm Activity — Introduction 1b", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20Rhythm%20Activity%20-%20Introduction%20-%201b.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 3, id: "cup-3", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup activity — first time using a small sequence of symbols to tap and turn", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20activity%20-%20first%20time%20using%20a%20small%20sequence%20of%20symbols%20to%20tap%20and%20turn.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 4, id: "cup-4", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup activity — tapping every beat on the cup", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20activity%20-%20tapping%20every%20beat%20on%20the%20cup.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 5, id: "cup-5", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup activity — tapping cup on table after tapping top of cup", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20activity%20-%20tapping%20cup%20on%20table%20-%20after%20tapping%20top%20of%20cup.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 6, id: "cup-6", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup activity — tap cup on table and with fingers before sliding cup", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20activity%20-%20tap%20cup%20on%20table%20and%20with%20fingers%20-%20before%20sliding%20cup.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 7, id: "cup-7", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup activity — turning the cup over on beats 1 and 3", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20activity%20-%20turning%20the%20cup%20over%20on%20beats%201%20and%203.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 8, id: "cup-8", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup activity — turning the cup over on beats 1 and 3 version 2", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20activity%20-%20turning%20the%20cup%20over%20on%20beats%201%20and%203%20-%20version%202.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 9, id: "cup-9", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup activity — turning the cup over on 4 beats after beats 1 and 3 activity", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20activity%20-%20turning%20the%20cup%20over%20on%204%20beats%20-%20after%20beats%201%20and%203%20activity.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 10, id: "cup-10", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup activity — turning the cup over on 4 beats version 2", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20activity%20-%20turning%20the%20cup%20over%20on%204%20beats%20-%20version%202.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 11, id: "cup-11", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup activity — slide cup and slide then tap cup last cup task", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20activity%20-%20slide%20cup%20and%20slide%20then%20tap%20cup%20-%20last%20cup%20task.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+  { order: 12, id: "cup-12", module: "Welcome — Start Here", category: "Cup Rhythm Activity Series", title: "Cup activity — sequence along length of table", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Cup%20Movement%20Sequence%20Activity/Cup%20activity%20-%20sequence%20along%20length%20of%20table.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Cup%20Rhythm%20Activity.pdf" },
+];
+
 const PROGRAM_VIDEOS = [
-  {
-    order: 1,
-    id: "video-1",
-    module: "Pre-Reading Skills",
-    category: "Syllable Slideshow",
-    title: "Rhythm and Literacy Syllables Slide Deck with Animal Walk Videos",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Rhythm%20and%20Literacy%20Syllables%20Slide%20Deck%20with%20Animal%20Walk%20Videos.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20Start%20to%20Finish%20Printable.pdf"
-  },
-  {
-    order: 2,
-    id: "video-2",
-    module: "Rhythm and Coordination",
-    category: "Rhythm Shape Strips",
-    title: "Coloured Circles Activity - First Video - Arrow",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20First%20Video%20-%20Arrow.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf"
-  },
-  {
-    order: 3,
-    id: "video-3",
-    module: "Pre-Writing Skills",
-    category: "Writing Warm Up",
-    title: "Writing activity warm up - hand position metronome activity - video 1",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%201.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
-  },
-  {
-    order: 4,
-    id: "video-4",
-    module: "Pre-Reading Skills",
-    category: "Syllable Tapping",
-    title: "Literacy activity - syllables - tapping hands on table - transport 1",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%20transport%201.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf"
-  },
-  {
-    order: 5,
-    id: "video-5",
-    module: "Gross Motor Skills",
-    category: "Spatial Awareness",
-    title: "Shape location spatial awareness activity - seated",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Spatial%20Awareness/Shape%20location%20spatial%20awareness%20activity%20-%20seated.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Location%20shape%20activity.pdf"
-  },
-  {
-    order: 6,
-    id: "video-6",
-    module: "Fine Motor Skills",
-    category: "Bilateral Coordination",
-    title: "Fine motor skills - tearing line strips",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Fine%20Motor%20Skills/Fine%20motor%20skills%20-%20tearing%20line%20strips.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Tearing%20Paper%20printable%20handout.pdf"
-  },
-  {
-    order: 7,
-    id: "video-7",
-    module: "Gross Motor Skills",
-    category: "Crossing the Midline",
-    title: "Seated crossing the midline - rainbow, spiral, arrow, infinity A4 pages",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Crossing%20the%20Midline/Seated%20crossing%20the%20midline%20-%20rainbow%2C%20spiral%2C%20arrow%2C%20infinity%20A4%20pages.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Gross%20motor%20crossing%20the%20midline%20activity%20shapes.pdf"
-  },
-  {
-    order: 8,
-    id: "video-8",
-    module: "Pre-Reading Skills",
-    category: "Syllable Tapping",
-    title: "Literacy activity - syllables - tapping hands on table - 2 - animals",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%202%20-%20animals.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf"
-  },
-  {
-    order: 9,
-    id: "video-9",
-    module: "Pre-Writing Skills",
-    category: "Writing Warm Up",
-    title: "Writing activity warm up - hand position metronome activity - video 2",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%202.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
-  },
-  {
-    order: 10,
-    id: "video-10",
-    module: "Gross Motor Skills",
-    category: "Spatial Awareness",
-    title: "Shape location spatial awareness activity - standing",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Spatial%20Awareness/Shape%20location%20spatial%20awareness%20activity%20-%20standing.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Location%20shape%20activity.pdf"
-  },
-  {
-    order: 11,
-    id: "video-11",
-    module: "Rhythm and Coordination",
-    category: "Rhythm Shape Strips",
-    title: "Coloured Circles Activity - Second Video - Rainbow",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20Second%20Video%20-%20Rainbow.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf"
-  },
-  {
-    order: 12,
-    id: "video-12",
-    module: "Pre-Reading Skills",
-    category: "Syllable Tapping",
-    title: "Literacy activity - syllables - tapping hands on table - 3",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%203.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf"
-  },
-  {
-    order: 13,
-    id: "video-13",
-    module: "Gross Motor Skills",
-    category: "Balance",
-    title: "Standing dynamic balance - rainbow, spiral, arrow, infinity - Sequence Strips",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Balance/Standing%20dynamic%20balance%20-%20rainbow%2C%20spiral%2C%20arrow%2C%20infinity%20-%20Sequence%20Strips.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Gross%20motor%20crossing%20the%20midline%20activity%20shapes.pdf"
-  },
-  {
-    order: 14,
-    id: "video-14",
-    module: "Fine Motor Skills",
-    category: "Bilateral Coordination",
-    title: "Fine motor tearing and cutting sorting activity - demonstration",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Fine%20Motor%20Skills/Fine%20motor%20tearing%20and%20cutting%20sorting%20activity%20-%20demonstration.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Tearing%20Paper%20printable%20handout.pdf"
-  },
-  {
-    order: 15,
-    id: "video-15",
-    module: "Pre-Writing Skills",
-    category: "Writing Warm Up",
-    title: "Writing activity warm up - hand position metronome activity - video 3",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%203.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
-  },
-  {
-    order: 16,
-    id: "video-16",
-    module: "Pre-Reading Skills",
-    category: "Syllable Tapping",
-    title: "Literacy activity - syllables - tapping hands on table - 4",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%204.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf"
-  },
-  {
-    order: 17,
-    id: "video-17",
-    module: "Reading Skills",
-    category: "Letters B D P Q",
-    title: "Dice activity - letters b, d, p, q, a, v - do it with me",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Dice%20activity%20-%20letters%20b%2C%20d%2C%20p%2C%20q%2C%20a%2C%20v%20-%20do%20it%20with%20me.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20-%20Roll%20and%20Record.pdf"
-  },
-  {
-    order: 18,
-    id: "video-18",
-    module: "Reading Skills",
-    category: "Letters B D P Q",
-    title: "Dice activity - letters b, d, p, q, a, v - do it with me - seated - 2",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Dice%20activity%20-%20letters%20b%2C%20d%2C%20p%2C%20q%2C%20a%2C%20v%20-%20do%20it%20with%20me%20-%20seated%20-%202.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20-%20Roll%20and%20Record.pdf"
-  },
-  {
-    order: 19,
-    id: "video-19",
-    module: "Reading Skills",
-    category: "Letters B D P Q",
-    title: "Dice activity - letters b, d, p, q, a, v - do it with me - standing - 3",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Dice%20activity%20-%20letters%20b%2C%20d%2C%20p%2C%20q%2C%20a%2C%20v%20-%20do%20it%20with%20me%20-%20standing%20-%203.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20-%20Roll%20and%20Record.pdf"
-  },
-  {
-    order: 20,
-    id: "video-20",
-    module: "Pre-Writing Skills",
-    category: "Writing Warm Up",
-    title: "Writing activity warm up - hand position metronome activity - video 4",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%204.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
-  },
-  {
-    order: 21,
-    id: "video-21",
-    module: "Pre-Writing Skills",
-    category: "Pre-Writing Lines",
-    title: "Pre-writing lines",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20lines.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Pre-Writing%20Lines%20Printable.pdf"
-  },
-  {
-    order: 22,
-    id: "video-22",
-    module: "Gross Motor Skills",
-    category: "Balance",
-    title: "Standing dynamic balance - rainbow, spiral, arrow, infinity A4 pages",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Balance/Standing%20dynamic%20balance%20-%20rainbow%2C%20spiral%2C%20arrow%2C%20infinity%20A4%20pages.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Gross%20motor%20crossing%20the%20midline%20activity%20shapes.pdf"
-  },
-  {
-    order: 23,
-    id: "video-23",
-    module: "Rhythm and Coordination",
-    category: "Rhythm Shape Strips",
-    title: "Coloured Circles Activity - Third Video - Arrow in the Middle",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20Third%20Video%20-%20Arrow%20in%20the%20Middle.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf"
-  },
-  {
-    order: 24,
-    id: "video-24",
-    module: "Reading Skills",
-    category: "Letters B D P Q",
-    title: "Letters b and d image sorting activity",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Letters%20b%20and%20d%20image%20sorting%20activity.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/B%20D%20object%20sorting%20literacy%20activities.pdf"
-  },
-  {
-    order: 25,
-    id: "video-25",
-    module: "Pre-Writing Skills",
-    category: "Writing Warm Up",
-    title: "Writing activity warm up - hand position metronome activity - video 5",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%205.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
-  },
-  {
-    order: 26,
-    id: "video-26",
-    module: "Pre-Writing Skills",
-    category: "Dice Activity",
-    title: "Pre-writing dice activity - introduction",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20dice%20activity%20-%20introduction.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Prewriting%20Dice%20Lines%20Activity%20-%20Fruits.pdf"
-  },
-  {
-    order: 27,
-    id: "video-27",
-    module: "Pre-Writing Skills",
-    category: "Dice Activity",
-    title: "Pre-writing dice activity",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20dice%20activity.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Prewriting%20Dice%20Lines%20Activity%20-%20Fruits.pdf"
-  },
-  {
-    order: 28,
-    id: "video-28",
-    module: "Rhythm and Coordination",
-    category: "Rhythm Shape Strips",
-    title: "Coloured Circles Activity - Fourth Video - Infinity and Rainbow",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20Fourth%20Video%20-%20Infinity%20and%20Rainbow.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf"
-  },
-  {
-    order: 29,
-    id: "video-29",
-    module: "Pre-Writing Skills",
-    category: "Writing Warm Up",
-    title: "Writing activity warm up - hand position metronome activity - video 6",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%206.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
-  },
-  {
-    order: 30,
-    id: "video-30",
-    module: "Pre-Writing Skills",
-    category: "Pre-Writing Shapes",
-    title: "Pre-writing shapes activity - 2",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20shapes%20activity%20-%202.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Activity%20Circle%20Pre-Writing%20Shape%20Handout.pdf"
-  },
-  {
-    order: 31,
-    id: "video-31",
-    module: "Pre-Writing Skills",
-    category: "Writing Warm Up",
-    title: "Writing activity warm up - vertical hand position metronome activity - video 1",
-    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20vertical%20hand%20position%20metronome%20activity%20-%20video%201.mp4",
-    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Vertical%20hand%20position%20rhythm%20template.pdf"
-  }
+  { order: 1, id: "video-1", module: "Pre-Reading Skills", category: "Syllable Slideshow", title: "Rhythm and Literacy Syllables Slide Deck with Animal Walk Videos", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Rhythm%20and%20Literacy%20Syllables%20Slide%20Deck%20with%20Animal%20Walk%20Videos.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20Start%20to%20Finish%20Printable.pdf" },
+  { order: 2, id: "video-2", module: "Rhythm and Coordination", category: "Rhythm Shape Strips", title: "Coloured Circles Activity - First Video - Arrow", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20First%20Video%20-%20Arrow.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf" },
+  { order: 3, id: "video-3", module: "Pre-Writing Skills", category: "Writing Warm Up", title: "Writing activity warm up - hand position metronome activity - video 1", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%201.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf" },
+  { order: 4, id: "video-4", module: "Pre-Reading Skills", category: "Syllable Tapping", title: "Literacy activity - syllables - tapping hands on table - transport 1", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%20transport%201.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf" },
+  { order: 5, id: "video-5", module: "Gross Motor Skills", category: "Spatial Awareness", title: "Shape location spatial awareness activity - seated", videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Spatial%20Awareness/Shape%20location%20spatial%20awareness%20activity%20-%20seated.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Location%20shape%20activity.pdf" },
+  { order: 6, id: "video-6", module: "Fine Motor Skills", category: "Bilateral Coordination", title: "Fine motor skills - tearing line strips", videoUrl: "https://developmental-hub-videos.b-cdn.net/Fine%20Motor%20Skills/Fine%20motor%20skills%20-%20tearing%20line%20strips.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Tearing%20Paper%20printable%20handout.pdf" },
+  { order: 7, id: "video-7", module: "Gross Motor Skills", category: "Crossing the Midline", title: "Seated crossing the midline - rainbow, spiral, arrow, infinity A4 pages", videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Crossing%20the%20Midline/Seated%20crossing%20the%20midline%20-%20rainbow%2C%20spiral%2C%20arrow%2C%20infinity%20A4%20pages.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Gross%20motor%20crossing%20the%20midline%20activity%20shapes.pdf" },
+  { order: 8, id: "video-8", module: "Pre-Reading Skills", category: "Syllable Tapping", title: "Literacy activity - syllables - tapping hands on table - 2 - animals", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%202%20-%20animals.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf" },
+  { order: 9, id: "video-9", module: "Pre-Writing Skills", category: "Writing Warm Up", title: "Writing activity warm up - hand position metronome activity - video 2", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%202.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf" },
+  { order: 10, id: "video-10", module: "Gross Motor Skills", category: "Spatial Awareness", title: "Shape location spatial awareness activity - standing", videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Spatial%20Awareness/Shape%20location%20spatial%20awareness%20activity%20-%20standing.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Location%20shape%20activity.pdf" },
+  { order: 11, id: "video-11", module: "Rhythm and Coordination", category: "Rhythm Shape Strips", title: "Coloured Circles Activity - Second Video - Rainbow", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20Second%20Video%20-%20Rainbow.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf" },
+  { order: 12, id: "video-12", module: "Pre-Reading Skills", category: "Syllable Tapping", title: "Literacy activity - syllables - tapping hands on table - 3", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%203.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf" },
+  { order: 13, id: "video-13", module: "Gross Motor Skills", category: "Balance", title: "Standing dynamic balance - rainbow, spiral, arrow, infinity - Sequence Strips", videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Balance/Standing%20dynamic%20balance%20-%20rainbow%2C%20spiral%2C%20arrow%2C%20infinity%20-%20Sequence%20Strips.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Gross%20motor%20crossing%20the%20midline%20activity%20shapes.pdf" },
+  { order: 14, id: "video-14", module: "Fine Motor Skills", category: "Bilateral Coordination", title: "Fine motor tearing and cutting sorting activity - demonstration", videoUrl: "https://developmental-hub-videos.b-cdn.net/Fine%20Motor%20Skills/Fine%20motor%20tearing%20and%20cutting%20sorting%20activity%20-%20demonstration.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Tearing%20Paper%20printable%20handout.pdf" },
+  { order: 15, id: "video-15", module: "Pre-Writing Skills", category: "Writing Warm Up", title: "Writing activity warm up - hand position metronome activity - video 3", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%203.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf" },
+  { order: 16, id: "video-16", module: "Pre-Reading Skills", category: "Syllable Tapping", title: "Literacy activity - syllables - tapping hands on table - 4", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%204.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf" },
+  { order: 17, id: "video-17", module: "Reading Skills", category: "Letters B D P Q", title: "Dice activity - letters b, d, p, q, a, v - do it with me", videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Dice%20activity%20-%20letters%20b%2C%20d%2C%20p%2C%20q%2C%20a%2C%20v%20-%20do%20it%20with%20me.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20-%20Roll%20and%20Record.pdf" },
+  { order: 18, id: "video-18", module: "Reading Skills", category: "Letters B D P Q", title: "Dice activity - letters b, d, p, q, a, v - do it with me - seated - 2", videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Dice%20activity%20-%20letters%20b%2C%20d%2C%20p%2C%20q%2C%20a%2C%20v%20-%20do%20it%20with%20me%20-%20seated%20-%202.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20-%20Roll%20and%20Record.pdf" },
+  { order: 19, id: "video-19", module: "Reading Skills", category: "Letters B D P Q", title: "Dice activity - letters b, d, p, q, a, v - do it with me - standing - 3", videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Dice%20activity%20-%20letters%20b%2C%20d%2C%20p%2C%20q%2C%20a%2C%20v%20-%20do%20it%20with%20me%20-%20standing%20-%203.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20-%20Roll%20and%20Record.pdf" },
+  { order: 20, id: "video-20", module: "Pre-Writing Skills", category: "Writing Warm Up", title: "Writing activity warm up - hand position metronome activity - video 4", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%204.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf" },
+  { order: 21, id: "video-21", module: "Pre-Writing Skills", category: "Pre-Writing Lines", title: "Pre-writing lines", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20lines.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Pre-Writing%20Lines%20Printable.pdf" },
+  { order: 22, id: "video-22", module: "Gross Motor Skills", category: "Balance", title: "Standing dynamic balance - rainbow, spiral, arrow, infinity A4 pages", videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Balance/Standing%20dynamic%20balance%20-%20rainbow%2C%20spiral%2C%20arrow%2C%20infinity%20A4%20pages.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Gross%20motor%20crossing%20the%20midline%20activity%20shapes.pdf" },
+  { order: 23, id: "video-23", module: "Rhythm and Coordination", category: "Rhythm Shape Strips", title: "Coloured Circles Activity - Third Video - Arrow in the Middle", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20Third%20Video%20-%20Arrow%20in%20the%20Middle.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf" },
+  { order: 24, id: "video-24", module: "Reading Skills", category: "Letters B D P Q", title: "Letters b and d image sorting activity", videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Letters%20b%20and%20d%20image%20sorting%20activity.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/B%20D%20object%20sorting%20literacy%20activities.pdf" },
+  { order: 25, id: "video-25", module: "Pre-Writing Skills", category: "Writing Warm Up", title: "Writing activity warm up - hand position metronome activity - video 5", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%205.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf" },
+  { order: 26, id: "video-26", module: "Pre-Writing Skills", category: "Dice Activity", title: "Pre-writing dice activity - introduction", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20dice%20activity%20-%20introduction.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Prewriting%20Dice%20Lines%20Activity%20-%20Fruits.pdf" },
+  { order: 27, id: "video-27", module: "Pre-Writing Skills", category: "Dice Activity", title: "Pre-writing dice activity", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20dice%20activity.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Prewriting%20Dice%20Lines%20Activity%20-%20Fruits.pdf" },
+  { order: 28, id: "video-28", module: "Rhythm and Coordination", category: "Rhythm Shape Strips", title: "Coloured Circles Activity - Fourth Video - Infinity and Rainbow", videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20Fourth%20Video%20-%20Infinity%20and%20Rainbow.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf" },
+  { order: 29, id: "video-29", module: "Pre-Writing Skills", category: "Writing Warm Up", title: "Writing activity warm up - hand position metronome activity - video 6", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%206.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf" },
+  { order: 30, id: "video-30", module: "Pre-Writing Skills", category: "Pre-Writing Shapes", title: "Pre-writing shapes activity - 2", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20shapes%20activity%20-%202.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Activity%20Circle%20Pre-Writing%20Shape%20Handout.pdf" },
+  { order: 31, id: "video-31", module: "Pre-Writing Skills", category: "Writing Warm Up", title: "Writing activity warm up - vertical hand position metronome activity - video 1", videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20vertical%20hand%20position%20metronome%20activity%20-%20video%201.mp4", printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Vertical%20hand%20position%20rhythm%20template.pdf" },
 ];
 
 export default async function VideosPage() {
@@ -311,19 +78,19 @@ export default async function VideosPage() {
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "48px 24px 80px" }}>
-        
+
         <div style={{ marginBottom: "40px" }}>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "36px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 8px" }}>
             Welcome back, {firstName}
           </h1>
           <p style={{ fontSize: "15px", color: "#6b6880", margin: 0 }}>
-            Your foundational pre,literacy video programme. Videos unlock step,by,step as you play along.
+            Welcome to the programme. Start with the Cup Rhythm Activity Series below — 12 short videos you can do today with just a cup. Then work through the full library at your own pace.
           </p>
         </div>
 
-        <ClientVideoPlayer 
-          initialVideos={PROGRAM_VIDEOS} 
-          savedProgress={savedProgress} 
+        <ClientVideoPlayer
+          initialVideos={[...CUP_SEQUENCE_VIDEOS, ...PROGRAM_VIDEOS]}
+          savedProgress={savedProgress}
           userId={user.id}
         />
 
