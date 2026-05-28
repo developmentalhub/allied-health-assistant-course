@@ -123,6 +123,27 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      {/* Quiz banner */}
+      <section style={{ backgroundColor: "#f5f3ff", borderBottom: "1px solid #e0e7ff", padding: "20px 24px" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+            <div style={{ width: "40px", height: "40px", backgroundColor: "#eef2ff", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="20" height="20" fill="none" stroke="#3730a3" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <p style={{ fontSize: "15px", fontWeight: 600, color: "#1e1b2e", margin: "0 0 2px" }}>Is my child ready to read?</p>
+              <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>Take our free 2-minute quiz and find out what your child needs next.</p>
+            </div>
+          </div>
+          <a href="https://is-my-child-ready-to-read.netlify.app/" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: "#3730a3", color: "white", padding: "10px 22px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" as const, flexShrink: 0 }}>
+            Take the free quiz →
+          </a>
+        </div>
+      </section>
+
       {/* 3. TikTok reels section */}
       <section style={{ backgroundColor: "#faf8f5", padding: "60px 20px", borderBottom: "1px solid #e8e4de" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto", textAlign: "center" }}>
