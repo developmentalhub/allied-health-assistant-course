@@ -56,6 +56,9 @@ export async function POST(request: NextRequest) {
       payment_method_types: ["card"],
       line_items: [{ price: PRICE_ID, quantity: 1 }],
       mode: "subscription",
+subscription_data: {
+    trial_period_days: 7,
+  },
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://developmental-hub.vercel.app"}/subscribe/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://developmental-hub.vercel.app"}/pricing`,
       metadata: {
