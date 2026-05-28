@@ -6,6 +6,8 @@ import Link from "next/link";
 const ageGroups = ["0–2 years", "3–5 years", "6–8 years"];
 
 const topics = [
+  "Small group sessions with Robyn (online, $45)",
+  "One to one telehealth with Robyn (online, $129)",
   "Gross Motor Development",
   "Fine Motor Skills",
   "Sensory Processing",
@@ -18,7 +20,7 @@ const topics = [
 ];
 
 export default function WaitlistPage() {
-  const [form, setForm] = useState({ name: "", email: "", age_group: "", topic: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", heard_from: "", age_group: "", topic: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -86,13 +88,13 @@ export default function WaitlistPage() {
             </svg>
           </div>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 12px" }}>
-            Thank you — we heard you
+            You're on the list.
           </h1>
           <p style={{ fontSize: "15px", color: "#6b6880", lineHeight: 1.7, margin: "0 0 32px" }}>
-            Your response directly helps us decide which sessions to build next. We'll be in touch as soon as something matching your needs is ready to book.
+            Robyn will be in touch personally as soon as a session matching your family's needs is ready. In the meantime, there are free videos waiting for your child right now.
           </p>
-          <Link href="/" style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
-            Back to home
+          <Link href="/videos/free" style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
+            Watch free videos
           </Link>
         </div>
       </div>
@@ -111,13 +113,10 @@ export default function WaitlistPage() {
           Help us build what you need
         </p>
         <h1 style={{ fontFamily: "var(--font-display)", fontSize: "36px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 20px", lineHeight: 1.2 }}>
-          Your voice shapes what we build next
+          We're building something for your family. Tell us what you need.
         </h1>
-        <p style={{ fontSize: "16px", color: "#4a4660", lineHeight: 1.8, margin: "0 0 16px", fontWeight: 300 }}>
-          Developmental Hub is Play Move Improve's new telehealth platform — built so that busy families, and those in rural and regional areas, can finally access the expert support their child needs without the waitlists, the travel, or the cost of private appointments.
-        </p>
-        <p style={{ fontSize: "16px", color: "#6b6880", lineHeight: 1.8, margin: "0 0 48px", fontWeight: 300 }}>
-          We're in the early stages and we want to hear from real families before we hire practitioners and schedule sessions. Tell us your child's age and what you're struggling with most. When enough families need the same thing, we make it happen — and you'll be the first to know.
+        <p style={{ fontSize: "16px", color: "#4a4660", lineHeight: 1.8, margin: "0 0 48px", fontWeight: 300 }}>
+          Robyn has worked with families across Australia and around the world who are stuck on waitlists, too far from the right support, or just exhausted from trying to figure it out alone. Tell us what your family needs. When enough families need the same thing, we make it happen and you'll be the first to know.
         </p>
 
         <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "40px" }}>
@@ -131,6 +130,14 @@ export default function WaitlistPage() {
             <div style={fieldStyle}>
               <label style={labelStyle}>Email address</label>
               <input name="email" type="email" value={form.email} onChange={handleChange} required placeholder="jane@example.com" style={inputStyle} />
+            </div>
+
+            <div style={fieldStyle}>
+              <label style={labelStyle}>
+                How did you hear about Robyn?{" "}
+                <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
+              </label>
+              <input name="heard_from" value={form.heard_from} onChange={handleChange} placeholder="e.g. Instagram, a friend, Facebook" style={inputStyle} />
             </div>
 
             <div style={fieldStyle}>
@@ -178,14 +185,14 @@ export default function WaitlistPage() {
               disabled={loading}
               style={{ width: "100%", backgroundColor: "#3730a3", color: "white", border: "none", borderRadius: "999px", padding: "14px", fontSize: "15px", fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, fontFamily: "inherit" }}
             >
-              {loading ? "Submitting…" : "Share what your family needs"}
+              {loading ? "Submitting…" : "Save my spot"}
             </button>
 
           </form>
         </div>
 
         <p style={{ fontSize: "13px", color: "#6b6880", textAlign: "center", marginTop: "20px", lineHeight: 1.6 }}>
-          Your response directly influences which sessions we create. We'll only contact you when a session matching your interest is ready to book.
+          We will only contact you when something matching your interest is ready. No spam, ever.
         </p>
 
       </div>
