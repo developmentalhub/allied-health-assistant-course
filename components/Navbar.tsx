@@ -20,10 +20,8 @@ export default function Navbar() {
     { label: "Videos", href: "/videos/free" },
     { label: "Community", href: "/forum" },
     { label: "Q&A", href: "/qanda" },
-    { label: "Resources", href: "/resources" },
     { label: "Pricing", href: "/pricing" },
     { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" },
   ];
 
   const waitlistLink = { label: "Join the waitlist", href: "/waitlist" };

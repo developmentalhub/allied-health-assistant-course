@@ -57,7 +57,7 @@ export default function Footer() {
             <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7280", margin: "0 0 16px" }}>Company</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <Link href="/about" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>About us</Link>
-              <Link href="/contact" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Contact</Link>
+              <Link href="/contact" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>About & Contact</Link>
               <Link href="/terms" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Terms</Link>
               <Link href="/privacy" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Privacy policy</Link>
             </div>

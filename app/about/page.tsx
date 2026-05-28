@@ -2,11 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About — Developmental Hub",
-  description: "Developmental Hub is the online platform from Play Move Improve, founded by Robyn Papworth — Masters-qualified Developmental Educator and Exercise Physiologist.",
+  title: "About Robyn — Developmental Hub",
+  description: "Robyn Papworth is a Masters-qualified Developmental Educator, Exercise Physiologist, and mother of twins. This is her story.",
 };
-
-
 
 export default function AboutPage() {
   return (
@@ -14,61 +12,55 @@ export default function AboutPage() {
 
       {/* Hero */}
       <section style={{ maxWidth: "720px", margin: "0 auto", padding: "80px 24px 60px", textAlign: "center" }}>
-        <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b6880", marginBottom: "16px" }}>
-          About us
-        </p>
         <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 300, color: "#1e1b2e", lineHeight: 1.2, marginBottom: "24px" }}>
-          Expert support, built around how families actually live
+          I'm Robyn. And I've been exactly where you are.
         </h1>
         <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300 }}>
-          Developmental Hub is the telehealth platform from Play Move Improve — built so that busy families, and those in rural and regional areas, can access the specialist support their child needs without the waitlists, the travel, or the cost of private appointments.
+          Not as a professional observing from a distance. As a mum sitting across from her son, watching him try to read, wondering why it wasn't clicking.
         </p>
       </section>
 
-      {/* Founder's note */}
+      {/* Founder section */}
       <section style={{ backgroundColor: "#3730a3", padding: "64px 24px" }}>
         <div style={{ maxWidth: "720px", margin: "0 auto" }}>
-          <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#c7d2fe", marginBottom: "24px", textAlign: "center" }}>
-            A note from our founder
-          </p>
-          <blockquote style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 300, color: "white", lineHeight: 1.7, textAlign: "center", margin: "0 0 32px 0", fontStyle: "italic" }}>
-            "I have seen firsthand what it means for a family to finally get the support they have been waiting for. And I have seen what happens when they cannot access it at all."
-          </blockquote>
           <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, marginBottom: "20px", textAlign: "center", fontWeight: 300 }}>
-            I am Robyn, a Masters-qualified Developmental Educator and Exercise Physiologist based in Victoria, Australia. For years I have worked with families who live far from the allied health services their children need — rural families, isolated families, families who are doing everything right but simply cannot access the right support.
+            My twins didn't get the easiest start. I'm five foot six and they were squashed in there — my son spent most of his time in the womb positioned up under my ribs, which meant he didn't get the typical time upside down that the vestibular system needs to develop. As a vestibular specialist I knew in my heart this might matter. It did.
           </p>
           <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, marginBottom: "20px", textAlign: "center", fontWeight: 300 }}>
-            That is what drove me to build Developmental Hub. Together with a team of occupational therapists, early childhood and primary education teachers, and specialist practitioners, we have created something I am deeply proud of.
+            I would watch him try to read. He knew every word on the page. But as his head moved across the line his eyes kept sliding off it. That's a vestibular problem. The VOR reflex — the system that keeps your eyes stable as your head moves — wasn't developed enough. Reading wasn't a learning problem. It was a movement problem. And nobody had told us.
+          </p>
+          <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, marginBottom: "20px", textAlign: "center", fontWeight: 300 }}>
+            The boring repetitive exercises didn't work for him. What worked was music. Rhythm. Silly games with a ball. Animal walks down the hallway. Playful, ridiculous, joyful movement that didn't feel like therapy at all. I have ADHD myself. I know what it's like to need movement to focus — rocking on my chair, pushing my toes against the floor, always needing something cold or warm in my hand just to stay present. I built this programme for families like mine.
           </p>
           <p style={{ fontSize: "16px", color: "#c7d2fe", lineHeight: 1.8, textAlign: "center", fontWeight: 300 }}>
-            Today we support families across Australia and around the world — including a family I have had the privilege of working with from my home in Victoria, all the way to India. Distance is no longer a reason a child misses out.
+            I work with a family in India who do these activities with their son every single day. They found me online, we've never met in person, and watching what has shifted for their child from the other side of the world is one of the things I am most proud of in my career. Distance should never be the reason a child misses out.
           </p>
           <div style={{ textAlign: "center", marginTop: "32px" }}>
             <p style={{ fontFamily: "var(--font-display)", fontSize: "20px", color: "white", fontStyle: "italic", margin: "0 0 4px" }}>
               Robyn Papworth
             </p>
             <p style={{ fontSize: "13px", color: "#c7d2fe", margin: 0 }}>
-              Founder, Developmental Hub · Play Move Improve Pty Ltd
+              Founder, Play Move Improve · Developmental Educator · Exercise Physiologist · Mum of three
             </p>
           </div>
         </div>
       </section>
 
-      {/* Why we exist */}
+      {/* Three column section */}
       <section style={{ backgroundColor: "white", borderTop: "1px solid #e8e4de", borderBottom: "1px solid #e8e4de" }}>
         <div style={{ maxWidth: "960px", margin: "0 auto", padding: "64px 24px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "48px" }}>
           {[
             {
-              title: "Affordable by design",
-              body: "By bringing families together in small groups, we make specialist knowledge accessible at a fraction of the cost of individual therapy — without sacrificing quality or personal connection.",
+              title: "Movement comes before reading",
+              body: "Before a child can learn to read and write, their body needs certain foundations — crossing the midline, spatial awareness, visual tracking, core strength, rhythm. We build those first. Everything else follows.",
             },
             {
-              title: "Vetted practitioners",
-              body: "Every facilitator on our platform is reviewed and approved before going live. You can trust that whoever leads your session holds the credentials, insurance, and registrations to back it up.",
+              title: "Three minutes is enough to start",
+              body: "Some of Robyn's videos are three minutes long. You don't need equipment, preparation, or a perfectly behaved child. You just need to press play. Your child follows Robyn on screen and their body does the rest.",
             },
             {
-              title: "Community over isolation",
-              body: "Parenting a child with developmental needs can feel lonely. Our group format means you are learning alongside other families who truly understand what you are going through.",
+              title: "You don't have to figure this out alone",
+              body: "Robyn has ADHD. Her son has vestibular challenges. She has lived the dysregulation, the school struggles, the feeling that you're trying everything and nothing is sticking. She built this because she needed it too.",
             },
           ].map((item) => (
             <div key={item.title}>
@@ -83,80 +75,39 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* How it works */}
-      <section style={{ maxWidth: "720px", margin: "0 auto", padding: "64px 24px" }}>
-        <h2 style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#1e1b2e", marginBottom: "40px", textAlign: "center" }}>
-          How it works
+      {/* Contact section */}
+      <section style={{ maxWidth: "720px", margin: "0 auto", padding: "64px 24px", textAlign: "center" }}>
+        <h2 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 300, color: "#1e1b2e", marginBottom: "12px" }}>
+          Want to get in touch?
         </h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-          {[
-            {
-              step: "01",
-              title: "Browse sessions for your child's age",
-              body: "Every session is designed for a specific developmental stage — 0 to 2, 3 to 5, or 6 to 8 years. Filter by topic to find what is most relevant to your family right now.",
-            },
-            {
-              step: "02",
-              title: "Book and pay securely",
-              body: "Reserve your spot with a simple, secure payment via Stripe. Your card is authorised but not charged until the session reaches its minimum number of families. If it does not run, you are never charged.",
-            },
-            {
-              step: "03",
-              title: "Join your session live",
-              body: "At the scheduled time, join your live video session from any device. No downloads required. Just show up and connect with your facilitator and fellow families.",
-            },
-            {
-              step: "04",
-              title: "Walk away with real strategies",
-              body: "Every session is practical. You will leave with specific techniques you can use with your child that week — not just theory. And you can book future sessions as your family's needs evolve.",
-            },
-          ].map((item) => (
-            <div key={item.step} style={{ display: "flex", gap: "24px", alignItems: "flex-start" }}>
-              <span style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#e0e7ff", lineHeight: 1, minWidth: "48px", flexShrink: 0 }}>
-                {item.step}
-              </span>
-              <div>
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: 400, color: "#1e1b2e", marginBottom: "8px" }}>
-                  {item.title}
-                </h3>
-                <p style={{ fontSize: "15px", color: "#6b6880", lineHeight: 1.7 }}>
-                  {item.body}
-                </p>
-              </div>
-            </div>
-          ))}
+        <p style={{ fontSize: "16px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300, marginBottom: "32px" }}>
+          Whether you have a question about the programme, want to know if it's right for your child, or are interested in live sessions with Robyn — she'd love to hear from you.
+        </p>
+        <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+          <a href="mailto:robyn@playmoveimprove.com.au" style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
+            Email Robyn
+          </a>
+          <Link href="/waitlist" style={{ backgroundColor: "white", color: "#3730a3", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block", border: "1.5px solid #3730a3" }}>
+            Join the waitlist
+          </Link>
+        </div>
+        <div style={{ marginTop: "24px", display: "flex", gap: "20px", justifyContent: "center" }}>
+          <a href="https://www.instagram.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none" }}>Instagram @playmoveimprove</a>
+          <span style={{ color: "#e8e4de" }}>·</span>
+          <a href="https://www.facebook.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none" }}>Facebook @playmoveimprove</a>
         </div>
       </section>
 
-      {/* Meet the team */}
-      <section style={{ backgroundColor: "#f5f3ff", borderTop: "1px solid #e0e7ff", borderBottom: "1px solid #e0e7ff", padding: "64px 24px", textAlign: "center" }}>
-        <h2 style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "#1e1b2e", marginBottom: "16px" }}>
-          Meet our specialists
-        </h2>
-        <p style={{ fontSize: "16px", color: "#6b6880", marginBottom: "32px", fontWeight: 300, maxWidth: "480px", margin: "0 auto 32px" }}>
-          Every practitioner on Developmental Hub is vetted, qualified, and passionate about supporting families.
-        </p>
-        <Link
-          href="/practitioners/directory"
-          style={{ backgroundColor: "#3730a3", color: "white", padding: "14px 32px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}
-        >
-          Meet our specialists
-        </Link>
-      </section>
-
-      {/* CTA */}
+      {/* Final CTA */}
       <section style={{ backgroundColor: "#3730a3", padding: "64px 24px", textAlign: "center" }}>
         <h2 style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 300, color: "white", marginBottom: "16px" }}>
-          Ready to find your session?
+          Start with the free videos. No account needed.
         </h2>
         <p style={{ fontSize: "16px", color: "#c7d2fe", marginBottom: "32px", fontWeight: 300 }}>
-          Browse upcoming sessions and book your spot today.
+          Watch Robyn in action with your child tonight. Just press play.
         </p>
-        <Link
-          href="/sessions"
-          style={{ backgroundColor: "white", color: "#3730a3", padding: "14px 32px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}
-        >
-          Browse sessions
+        <Link href="/videos/free" style={{ backgroundColor: "white", color: "#3730a3", padding: "14px 32px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
+          Watch free videos
         </Link>
       </section>
 
