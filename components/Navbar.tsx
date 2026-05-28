@@ -26,6 +26,8 @@ export default function Navbar() {
     { label: "Contact", href: "/contact" },
   ];
 
+  const waitlistLink = { label: "Join the waitlist", href: "/waitlist" };
+
   return (
     <nav style={{ position: "sticky", top: 0, zIndex: 50, backgroundColor: "#faf8f5", borderBottom: "1px solid #e8e4de" }}>
       <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "64px" }}>
@@ -40,6 +42,9 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <Link href={waitlistLink.href} style={{ fontSize: "14px", color: "#3730a3", textDecoration: "none", fontWeight: 600, borderBottom: "2px solid #3730a3", paddingBottom: "2px" }}>
+            {waitlistLink.label}
+          </Link>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }} className="desktop-nav">
@@ -87,6 +92,9 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <Link href={waitlistLink.href} onClick={() => setMenuOpen(false)} style={{ fontSize: "16px", color: "#3730a3", textDecoration: "none", fontWeight: 600, padding: "14px 0", borderBottom: "1px solid #f0ede8", display: "block" }}>
+            {waitlistLink.label}
+          </Link>
           <div style={{ marginTop: "16px", display: "flex", flexDirection: "column", gap: "8px" }}>
             {!loading && user ? (
               <>

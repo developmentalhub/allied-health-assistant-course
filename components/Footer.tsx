@@ -13,7 +13,6 @@ export default function Footer() {
             <p style={{ fontSize: "13px", color: "#6b7280", margin: "0 0 20px", lineHeight: 1.6 }}>
               A Play Move Improve Pty Ltd platform.<br />Victoria, Australia.
             </p>
-            {/* Social links */}
             <div style={{ display: "flex", gap: "12px" }}>
               <a href="https://www.instagram.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ width: "36px", height: "36px", borderRadius: "8px", backgroundColor: "#2d2a3e", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -34,20 +33,22 @@ export default function Footer() {
           <div>
             <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7280", margin: "0 0 16px" }}>For families</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <Link href="/sessions" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Browse sessions</Link>
-              <Link href="/practitioners/directory" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Our specialists</Link>
-              <Link href="/register-interest" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Register interest</Link>
+              <Link href="/videos/free" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Free videos</Link>
+              <Link href="/pricing" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Membership</Link>
+              <Link href="/cup-sequence" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Cup Rhythm Series</Link>
+              <Link href="/register-interest" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Request content</Link>
               <Link href="/waitlist" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Join the waitlist</Link>
             </div>
           </div>
 
-          {/* For practitioners */}
+          {/* Members */}
           <div>
-            <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7280", margin: "0 0 16px" }}>For practitioners</p>
+            <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7280", margin: "0 0 16px" }}>Members</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <Link href="/practitioners" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Why join us</Link>
-              <Link href="/practitioners/apply" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Apply to facilitate</Link>
-              <Link href="/practitioners/directory" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Meet the team</Link>
+              <Link href="/videos" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Video library</Link>
+              <Link href="/resources" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Activity sheets</Link>
+              <Link href="/forum" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Community</Link>
+              <Link href="/qanda" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Monthly Q&A</Link>
             </div>
           </div>
 
@@ -62,6 +63,17 @@ export default function Footer() {
             </div>
           </div>
 
+        </div>
+
+        {/* Waitlist section */}
+        <div style={{ backgroundColor: "#2d2a3e", borderRadius: "14px", padding: "24px 28px", marginBottom: "32px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "24px", flexWrap: "wrap" }}>
+          <div>
+            <p style={{ fontSize: "14px", fontWeight: 600, color: "white", margin: "0 0 4px" }}>Not ready to subscribe yet?</p>
+            <p style={{ fontSize: "13px", color: "#9ca3af", margin: 0 }}>Tell us what your family needs and we'll build toward it.</p>
+          </div>
+          <Link href="/waitlist" style={{ fontSize: "13px", fontWeight: 600, color: "#a5b4fc", textDecoration: "none", border: "1px solid #4338ca", borderRadius: "999px", padding: "8px 18px", whiteSpace: "nowrap" as const }}>
+            Join the waitlist →
+          </Link>
         </div>
 
         {/* Bottom bar */}
