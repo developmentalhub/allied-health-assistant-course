@@ -1,64 +1,288 @@
 import { createClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
+import ClientVideoPlayer from "./ClientVideoPlayer";
 
-const BUNNY_LIBRARY_ID = "669194";
-const BUNNY_CDN_HOST = "vz-a3bb3c8f-93b.b-cdn.net"; // update with your CDN hostname from Bunny
-
-// Hardcoded videos for now — we'll make this dynamic once you upload more
-const VIDEOS = [
+const PROGRAM_VIDEOS = [
   {
-    id: "fine-motor-tearing",
-    title: "Fine Motor Skills — Tearing Line Strips",
-    description: "A follow-along activity helping children develop hand strength and precision through tearing along lines.",
-    category: "Hands & Fine Motor",
-    ageGroup: "3-5",
-    bunnyId: "", // add Bunny video ID here once uploaded
-    thumbnail: "",
-    duration: "8 min",
+    order: 1,
+    id: "video-1",
+    module: "Pre-Reading Skills",
+    category: "Syllable Slideshow",
+    title: "Rhythm and Literacy Syllables Slide Deck with Animal Walk Videos",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Rhythm%20and%20Literacy%20Syllables%20Slide%20Deck%20with%20Animal%20Walk%20Videos.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20Start%20to%20Finish%20Printable.pdf"
   },
   {
-    id: "fine-motor-cutting-demo",
-    title: "Tearing and Cutting Sorting Activity — Demonstration",
-    description: "Watch how to set up and run the tearing and cutting sorting activity with your child.",
-    category: "Hands & Fine Motor",
-    ageGroup: "3-5",
-    bunnyId: "",
-    thumbnail: "",
-    duration: "12 min",
+    order: 2,
+    id: "video-2",
+    module: "Rhythm and Coordination",
+    category: "Rhythm Shape Strips",
+    title: "Coloured Circles Activity - First Video - Arrow",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20First%20Video%20-%20Arrow.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf"
   },
   {
-    id: "fine-motor-cutting-explanation",
-    title: "Tearing and Cutting — Explanation After Demonstration",
-    description: "Robyn explains the developmental purpose behind the activity and what to look for.",
-    category: "Hands & Fine Motor",
-    ageGroup: "3-5",
-    bunnyId: "",
-    thumbnail: "",
-    duration: "6 min",
+    order: 3,
+    id: "video-3",
+    module: "Pre-Writing Skills",
+    category: "Writing Warm Up",
+    title: "Writing activity warm up - hand position metronome activity - video 1",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%201.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
   },
+  {
+    order: 4,
+    id: "video-4",
+    module: "Pre-Reading Skills",
+    category: "Syllable Tapping",
+    title: "Literacy activity - syllables - tapping hands on table - transport 1",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%20transport%201.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf"
+  },
+  {
+    order: 5,
+    id: "video-5",
+    module: "Gross Motor Skills",
+    category: "Spatial Awareness",
+    title: "Shape location spatial awareness activity - seated",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Spatial%20Awareness/Shape%20location%20spatial%20awareness%20activity%20-%20seated.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Location%20shape%20activity.pdf"
+  },
+  {
+    order: 6,
+    id: "video-6",
+    module: "Fine Motor Skills",
+    category: "Bilateral Coordination",
+    title: "Fine motor skills - tearing line strips",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Fine%20Motor%20Skills/Fine%20motor%20skills%20-%20tearing%20line%20strips.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Tearing%20Paper%20printable%20handout.pdf"
+  },
+  {
+    order: 7,
+    id: "video-7",
+    module: "Gross Motor Skills",
+    category: "Crossing the Midline",
+    title: "Seated crossing the midline - rainbow, spiral, arrow, infinity A4 pages",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Crossing%20the%20Midline/Seated%20crossing%20the%20midline%20-%20rainbow%2C%20spiral%2C%20arrow%2C%20infinity%20A4%20pages.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Gross%20motor%20crossing%20the%20midline%20activity%20shapes.pdf"
+  },
+  {
+    order: 8,
+    id: "video-8",
+    module: "Pre-Reading Skills",
+    category: "Syllable Tapping",
+    title: "Literacy activity - syllables - tapping hands on table - 2 - animals",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%202%20-%20animals.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf"
+  },
+  {
+    order: 9,
+    id: "video-9",
+    module: "Pre-Writing Skills",
+    category: "Writing Warm Up",
+    title: "Writing activity warm up - hand position metronome activity - video 2",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%202.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
+  },
+  {
+    order: 10,
+    id: "video-10",
+    module: "Gross Motor Skills",
+    category: "Spatial Awareness",
+    title: "Shape location spatial awareness activity - standing",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Spatial%20Awareness/Shape%20location%20spatial%20awareness%20activity%20-%20standing.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Location%20shape%20activity.pdf"
+  },
+  {
+    order: 11,
+    id: "video-11",
+    module: "Rhythm and Coordination",
+    category: "Rhythm Shape Strips",
+    title: "Coloured Circles Activity - Second Video - Rainbow",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20Second%20Video%20-%20Rainbow.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf"
+  },
+  {
+    order: 12,
+    id: "video-12",
+    module: "Pre-Reading Skills",
+    category: "Syllable Tapping",
+    title: "Literacy activity - syllables - tapping hands on table - 3",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%203.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf"
+  },
+  {
+    order: 13,
+    id: "video-13",
+    module: "Gross Motor Skills",
+    category: "Balance",
+    title: "Standing dynamic balance - rainbow, spiral, arrow, infinity - Sequence Strips",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Balance/Standing%20dynamic%20balance%20-%20rainbow%2C%20spiral%2C%20arrow%2C%20infinity%20-%20Sequence%20Strips.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Gross%20motor%20crossing%20the%20midline%20activity%20shapes.pdf"
+  },
+  {
+    order: 14,
+    id: "video-14",
+    module: "Fine Motor Skills",
+    category: "Bilateral Coordination",
+    title: "Fine motor tearing and cutting sorting activity - demonstration",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Fine%20Motor%20Skills/Fine%20motor%20tearing%20and%20cutting%20sorting%20activity%20-%20demonstration.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Tearing%20Paper%20printable%20handout.pdf"
+  },
+  {
+    order: 15,
+    id: "video-15",
+    module: "Pre-Writing Skills",
+    category: "Writing Warm Up",
+    title: "Writing activity warm up - hand position metronome activity - video 3",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%203.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
+  },
+  {
+    order: 16,
+    id: "video-16",
+    module: "Pre-Reading Skills",
+    category: "Syllable Tapping",
+    title: "Literacy activity - syllables - tapping hands on table - 4",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Reading%20Skills/Literacy%20activity%20-%20syllables%20-%20tapping%20hands%20on%20table%20-%204.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20Rhythm%20Activity%20-%20Syllables.pdf"
+  },
+  {
+    order: 17,
+    id: "video-17",
+    module: "Reading Skills",
+    category: "Letters B D P Q",
+    title: "Dice activity - letters b, d, p, q, a, v - do it with me",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Dice%20activity%20-%20letters%20b%2C%20d%2C%20p%2C%20q%2C%20a%2C%20v%20-%20do%20it%20with%20me.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20-%20Roll%20and%20Record.pdf"
+  },
+  {
+    order: 18,
+    id: "video-18",
+    module: "Reading Skills",
+    category: "Letters B D P Q",
+    title: "Dice activity - letters b, d, p, q, a, v - do it with me - seated - 2",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Dice%20activity%20-%20letters%20b%2C%20d%2C%20p%2C%20q%2C%20a%2C%20v%20-%20do%20it%20with%20me%20-%20seated%20-%202.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20-%20Roll%20and%20Record.pdf"
+  },
+  {
+    order: 19,
+    id: "video-19",
+    module: "Reading Skills",
+    category: "Letters B D P Q",
+    title: "Dice activity - letters b, d, p, q, a, v - do it with me - standing - 3",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Dice%20activity%20-%20letters%20b%2C%20d%2C%20p%2C%20q%2C%20a%2C%20v%20-%20do%20it%20with%20me%20-%20standing%20-%203.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Program%20-%20Roll%20and%20Record.pdf"
+  },
+  {
+    order: 20,
+    id: "video-20",
+    module: "Pre-Writing Skills",
+    category: "Writing Warm Up",
+    title: "Writing activity warm up - hand position metronome activity - video 4",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%204.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
+  },
+  {
+    order: 21,
+    id: "video-21",
+    module: "Pre-Writing Skills",
+    category: "Pre-Writing Lines",
+    title: "Pre-writing lines",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20lines.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Pre-Writing%20Lines%20Printable.pdf"
+  },
+  {
+    order: 22,
+    id: "video-22",
+    module: "Gross Motor Skills",
+    category: "Balance",
+    title: "Standing dynamic balance - rainbow, spiral, arrow, infinity A4 pages",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Gross%20Motor%20Skills/Balance/Standing%20dynamic%20balance%20-%20rainbow%2C%20spiral%2C%20arrow%2C%20infinity%20A4%20pages.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Gross%20motor%20crossing%20the%20midline%20activity%20shapes.pdf"
+  },
+  {
+    order: 23,
+    id: "video-23",
+    module: "Rhythm and Coordination",
+    category: "Rhythm Shape Strips",
+    title: "Coloured Circles Activity - Third Video - Arrow in the Middle",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20Third%20Video%20-%20Arrow%20in%20the%20Middle.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf"
+  },
+  {
+    order: 24,
+    id: "video-24",
+    module: "Reading Skills",
+    category: "Letters B D P Q",
+    title: "Letters b and d image sorting activity",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Reading%20Skills/Letters%20b%20and%20d%20image%20sorting%20activity.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/B%20D%20object%20sorting%20literacy%20activities.pdf"
+  },
+  {
+    order: 25,
+    id: "video-25",
+    module: "Pre-Writing Skills",
+    category: "Writing Warm Up",
+    title: "Writing activity warm up - hand position metronome activity - video 5",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%205.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
+  },
+  {
+    order: 26,
+    id: "video-26",
+    module: "Pre-Writing Skills",
+    category: "Dice Activity",
+    title: "Pre-writing dice activity - introduction",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20dice%20activity%20-%20introduction.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Prewriting%20Dice%20Lines%20Activity%20-%20Fruits.pdf"
+  },
+  {
+    order: 27,
+    id: "video-27",
+    module: "Pre-Writing Skills",
+    category: "Dice Activity",
+    title: "Pre-writing dice activity",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20dice%20activity.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Prewriting%20Dice%20Lines%20Activity%20-%20Fruits.pdf"
+  },
+  {
+    order: 28,
+    id: "video-28",
+    module: "Rhythm and Coordination",
+    category: "Rhythm Shape Strips",
+    title: "Coloured Circles Activity - Fourth Video - Infinity and Rainbow",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Rhythm%20and%20Coordination/Coloured%20Circles%20Activity/Coloured%20Circles%20Activity%20-%20Fourth%20Video%20-%20Infinity%20and%20Rainbow.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Spatial%20Awareness%20Circles%20Activity.pdf"
+  },
+  {
+    order: 29,
+    id: "video-29",
+    module: "Pre-Writing Skills",
+    category: "Writing Warm Up",
+    title: "Writing activity warm up - hand position metronome activity - video 6",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20hand%20position%20metronome%20activity%20-%20video%206.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Hand%20rhythm%20strips.pdf"
+  },
+  {
+    order: 30,
+    id: "video-30",
+    module: "Pre-Writing Skills",
+    category: "Pre-Writing Shapes",
+    title: "Pre-writing shapes activity - 2",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Pre-writing%20shapes%20activity%20-%202.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Rhythm%20Literacy%20Activity%20Circle%20Pre-Writing%20Shape%20Handout.pdf"
+  },
+  {
+    order: 31,
+    id: "video-31",
+    module: "Pre-Writing Skills",
+    category: "Writing Warm Up",
+    title: "Writing activity warm up - vertical hand position metronome activity - video 1",
+    videoUrl: "https://developmental-hub-videos.b-cdn.net/Pre-Writing%20Skills/Writing%20activity%20warm%20up%20-%20vertical%20hand%20position%20metronome%20activity%20-%20video%201.mp4",
+    printableUrl: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/printables/Vertical%20hand%20position%20rhythm%20template.pdf"
+  }
 ];
-
-const CATEGORIES = [
-  "All",
-  "Follow Along Activities",
-  "Baby & Tummy Time",
-  "Movement & Balance",
-  "Hands & Fine Motor",
-  "Sensory Play",
-  "Speech & Language",
-  "School Readiness",
-];
-
-const categoryColors: Record<string, { color: string; bg: string }> = {
-  "Follow Along Activities": { color: "#7c3aed", bg: "#f5f3ff" },
-  "Baby & Tummy Time":       { color: "#0f766e", bg: "#f0fdfa" },
-  "Movement & Balance":      { color: "#c2410c", bg: "#fff7ed" },
-  "Hands & Fine Motor":      { color: "#1d4ed8", bg: "#eff6ff" },
-  "Sensory Play":            { color: "#b45309", bg: "#fffbeb" },
-  "Speech & Language":       { color: "#166534", bg: "#f0fdf4" },
-  "School Readiness":        { color: "#be185d", bg: "#fdf2f8" },
-};
 
 export default async function VideosPage() {
   const supabase = await createClient();
@@ -66,7 +290,6 @@ export default async function VideosPage() {
 
   if (!user) redirect("/login?redirect=/videos");
 
-  // Check subscription
   const { data: sub } = await supabase
     .from("subscriptions")
     .select("status")
@@ -74,101 +297,35 @@ export default async function VideosPage() {
     .single();
 
   const isSubscribed = sub?.status === "active" || sub?.status === "trialing";
-
   if (!isSubscribed) redirect("/pricing");
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name")
+    .select("full_name, current_progress")
     .eq("id", user.id)
     .single();
 
   const firstName = profile?.full_name?.split(" ")[0] ?? "there";
+  const savedProgress = profile?.current_progress ?? 1;
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "48px 24px 80px" }}>
-
-        {/* Header */}
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "48px 24px 80px" }}>
+        
         <div style={{ marginBottom: "40px" }}>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "36px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 8px" }}>
             Welcome back, {firstName}
           </h1>
           <p style={{ fontSize: "15px", color: "#6b6880", margin: 0 }}>
-            Your video library — watch anything, anytime.
+            Your foundational pre,literacy video programme. Videos unlock step,by,step as you play along.
           </p>
         </div>
 
-        {/* Category filters */}
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "40px" }}>
-          {CATEGORIES.map((cat) => (
-            <span key={cat} style={{ fontSize: "13px", fontWeight: 500, padding: "7px 16px", borderRadius: "999px", border: cat === "All" ? "1.5px solid #3730a3" : "1px solid #e8e4de", color: cat === "All" ? "#3730a3" : "#6b6880", backgroundColor: cat === "All" ? "#eef2ff" : "white", cursor: "pointer" }}>
-              {cat}
-            </span>
-          ))}
-        </div>
-
-        {/* Video grid */}
-        {VIDEOS.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "80px 24px", backgroundColor: "white", borderRadius: "16px", border: "1px solid #e8e4de" }}>
-            <p style={{ fontSize: "16px", color: "#6b6880", marginBottom: "8px" }}>Videos coming very soon.</p>
-            <p style={{ fontSize: "14px", color: "#b0acbf" }}>We're uploading your first content now. Check back shortly.</p>
-          </div>
-        ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "24px" }}>
-            {VIDEOS.map((video) => {
-              const catStyle = categoryColors[video.category] ?? { color: "#6b6880", bg: "#faf8f5" };
-              return (
-                <Link key={video.id} href={`/videos/${video.id}`} style={{ textDecoration: "none", display: "block" }}>
-                  <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", overflow: "hidden", transition: "box-shadow 0.2s" }}>
-                    {/* Thumbnail */}
-                    <div style={{ aspectRatio: "16/9", backgroundColor: "#1e1b2e", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                      <div style={{ width: "48px", height: "48px", backgroundColor: "rgba(255,255,255,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <svg width="20" height="20" fill="white" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z"/>
-                        </svg>
-                      </div>
-                      <span style={{ position: "absolute", bottom: "10px", right: "10px", backgroundColor: "rgba(0,0,0,0.7)", color: "white", fontSize: "12px", padding: "2px 8px", borderRadius: "4px" }}>
-                        {video.duration}
-                      </span>
-                    </div>
-                    {/* Info */}
-                    <div style={{ padding: "18px 20px" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
-                        <span style={{ fontSize: "11px", fontWeight: 600, padding: "3px 8px", borderRadius: "6px", backgroundColor: catStyle.bg, color: catStyle.color }}>
-                          {video.category}
-                        </span>
-                        <span style={{ fontSize: "11px", color: "#6b6880" }}>Ages {video.ageGroup}</span>
-                      </div>
-                      <h3 style={{ fontFamily: "var(--font-display)", fontSize: "16px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 8px", lineHeight: 1.4 }}>
-                        {video.title}
-                      </h3>
-                      <p style={{ fontSize: "13px", color: "#6b6880", margin: 0, lineHeight: 1.5 }}>
-                        {video.description.length > 90 ? video.description.substring(0, 90) + "..." : video.description}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Monthly Q&A banner */}
-        <div style={{ marginTop: "64px", backgroundColor: "#3730a3", borderRadius: "20px", padding: "40px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "24px", flexWrap: "wrap" }}>
-          <div>
-            <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#a5b4fc", margin: "0 0 8px" }}>Monthly live session</p>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "24px", fontWeight: 300, color: "white", margin: "0 0 8px" }}>
-              Live Q&A with Robyn
-            </h2>
-            <p style={{ fontSize: "14px", color: "#c7d2fe", margin: 0, lineHeight: 1.6 }}>
-              Join Robyn live each month to ask questions about your child's development. Replays available for subscribers.
-            </p>
-          </div>
-          <Link href="/qanda" style={{ backgroundColor: "white", color: "#3730a3", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" as const, flexShrink: 0 }}>
-            View schedule
-          </Link>
-        </div>
+        <ClientVideoPlayer 
+          initialVideos={PROGRAM_VIDEOS} 
+          savedProgress={savedProgress} 
+          userId={user.id}
+        />
 
       </div>
     </main>
