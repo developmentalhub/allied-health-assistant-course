@@ -16,10 +16,16 @@ function SubscribeForm() {
   useEffect(() => {
     if (!affiliateCode.trim()) { setAffiliateValid(null); setAffiliatePartner(""); return; }
     const timer = setTimeout(async () => {
-      const res = await fetch(`/api/affiliate?code=${affiliateCode.trim()}`);
-      const data = await res.json();
-      setAffiliateValid(data.valid);
-      setAffiliatePartner(data.valid ? data.partner_name : "");
+      try {
+        const res = await fetch(`/api/affiliate?code=${encodeURIComponent(affiliateCode.trim())}`);
+        const data = await res.json();
+        setAffiliateValid(data.valid);
+        setAffiliatePartner(data.valid ? data.partner_name : "");
+      } catch {
+        // A failed referral lookup must never block sign-up — just treat as no code.
+        setAffiliateValid(null);
+        setAffiliatePartner("");
+      }
     }, 500);
     return () => clearTimeout(timer);
   }, [affiliateCode]);
@@ -28,19 +34,22 @@ function SubscribeForm() {
     setLoading(true);
     setError("");
     try {
+      // Only send a code when it has been confirmed valid; otherwise send null.
+      // A blank or unconfirmed code is a normal, supported case.
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          affiliate_code: affiliateValid ? affiliateCode.trim() : null,
+          affiliate_code: affiliateValid === true ? affiliateCode.trim() : null,
         }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (data.error === "already_subscribed") {
         window.location.href = "/login?redirect=/videos";
         return;
       }
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) throw new Error(data.error || "We couldn't start your trial. Please try again.");
+      if (!data.url) throw new Error("We couldn't reach the checkout page. Please try again.");
       window.location.href = data.url;
     } catch (err: any) {
       setError(err.message || "Something went wrong.");
@@ -83,7 +92,7 @@ function SubscribeForm() {
             <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>31 videos · Monthly Q&A · Activity sheets · Cancel anytime</p>
           </div>
 
-          {/* Referral code */}
+          {/* Referral code — entirely optional */}
           <div style={{ marginBottom: "24px", textAlign: "left" }}>
             <label style={{ fontSize: "13px", fontWeight: 500, color: "#1e1b2e", display: "block", marginBottom: "6px" }}>
               Referral code <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
@@ -94,6 +103,12 @@ function SubscribeForm() {
               placeholder="e.g. SARAH-OT"
               style={inputStyle}
             />
+            {/* Reassure people who don't have a code that they can still join */}
+            {affiliateValid !== true && (
+              <p style={{ fontSize: "12px", color: "#6b6880", margin: "6px 0 0", lineHeight: 1.5 }}>
+                No referral code? No problem — you can join without one. Just leave this blank and press the button below.
+              </p>
+            )}
             {affiliateValid === true && (
               <p style={{ fontSize: "12px", color: "#166534", margin: "6px 0 0", fontWeight: 500 }}>
                 ✓ Referred by {affiliatePartner}
