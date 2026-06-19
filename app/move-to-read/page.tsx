@@ -142,6 +142,9 @@ export default function MoveToReadPage() {
               style={{ display: "inline-block", backgroundColor: "#3730a3", color: "white", padding: "16px 44px", borderRadius: "999px", fontSize: "15px", fontWeight: 600, textDecoration: "none" }}>
               Get the bundle
             </a>
+            <p style={{ fontSize: "13px", color: "#9591a6", margin: "18px 0 0" }}>
+              Already a member or bought it? <a href="/login?redirect=/move-to-read" style={{ color: "#3730a3", fontWeight: 600 }}>Sign in</a>
+            </p>
           </div>
         )}
 
