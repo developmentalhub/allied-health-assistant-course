@@ -144,6 +144,57 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      {/* Move to Read deck offer */}
+      <section style={{ backgroundColor: "#ffffff", padding: "70px 20px", borderBottom: "1px solid #e8e4de" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "42px" }}>
+
+          <div style={{ flex: "1 1 420px" }}>
+            <p style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#3730a3", margin: "0 0 12px" }}>
+              New $24 activity card deck
+            </p>
+            <h2 style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "36px", lineHeight: 1.18, margin: "0 0 16px", fontWeight: 700, color: "#1e1b2e" }}>
+              Move to Read: three printable activity decks for reading foundations
+            </h2>
+            <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.65, margin: "0 0 22px" }}>
+              A gentle starting point before membership. Get Levels 1–3 as PDF activity decks, with movement ideas that support visual tracking, body awareness, coordination, phonological awareness and early reading readiness.
+            </p>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", margin: "0 0 26px" }}>
+              <span style={{ padding: "8px 14px", borderRadius: "999px", backgroundColor: "#f0fdfa", color: "#0f766e", fontSize: "13px", fontWeight: 600 }}>111 activities</span>
+              <span style={{ padding: "8px 14px", borderRadius: "999px", backgroundColor: "#f5f3ff", color: "#3730a3", fontSize: "13px", fontWeight: 600 }}>3 levels</span>
+              <span style={{ padding: "8px 14px", borderRadius: "999px", backgroundColor: "#fff7ed", color: "#c2410c", fontSize: "13px", fontWeight: 600 }}>5 minutes a day</span>
+              <span style={{ padding: "8px 14px", borderRadius: "999px", backgroundColor: "#fdf2f8", color: "#be185d", fontSize: "13px", fontWeight: 600 }}>Free for members</span>
+            </div>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", alignItems: "center" }}>
+              <a href="/move-to-read" style={{ backgroundColor: "#3730a3", color: "#ffffff", padding: "14px 28px", borderRadius: "10px", textDecoration: "none", fontWeight: 700, fontSize: "16px", display: "inline-block" }}>
+                View the $24 deck
+              </a>
+              <a href="/pricing" style={{ color: "#3730a3", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
+                Or join the membership →
+              </a>
+            </div>
+          </div>
+
+          <div style={{ flex: "1 1 420px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", minWidth: 0 }}>
+            {[
+              { src: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero.jpg", label: "Level 1", color: "#4a8b6d" },
+              { src: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero-2.jpg", label: "Level 2", color: "#7B4FA6" },
+              { src: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero-3.jpg", label: "Level 3", color: "#3730a3" },
+            ].map((card) => (
+              <a key={card.label} href="/move-to-read" style={{ position: "relative", aspectRatio: "4 / 5", borderRadius: "16px", overflow: "hidden", border: "1px solid #e8e4de", borderTop: `4px solid ${card.color}`, backgroundColor: "#f1ede7", textDecoration: "none", boxShadow: "0 10px 24px rgba(30, 27, 46, 0.08)" }}>
+                <img src={card.src} alt={`${card.label} Move to Read activity deck`} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                <span style={{ position: "absolute", left: "10px", bottom: "10px", backgroundColor: card.color, color: "#ffffff", padding: "4px 10px", borderRadius: "999px", fontSize: "12px", fontWeight: 700 }}>
+                  {card.label}
+                </span>
+              </a>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
       {/* 3. TikTok reels section */}
       <section style={{ backgroundColor: "#faf8f5", padding: "60px 20px", borderBottom: "1px solid #e8e4de" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto", textAlign: "center" }}>
