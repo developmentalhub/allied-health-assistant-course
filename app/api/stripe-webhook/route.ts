@@ -31,7 +31,55 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        if (!session.subscription) break;
+
+// One-off deck purchase (no subscription)
+if (session.metadata?.bundle === "move-to-read") {
+  const supabase = getSupabaseAdmin();
+  const email = (session.customer_details?.email ?? session.customer_email ?? "").toLowerCase();
+  const name = session.customer_details?.name ?? "";
+  if (!email) break;
+
+  const { data: { users } } = await supabase.auth.admin.listUsers();
+  let userId = users?.find(u => u.email === email)?.id ?? null;
+
+  if (!userId) {
+    const { data: newUser } = await supabase.auth.admin.createUser({
+      email, email_confirm: true, user_metadata: { full_name: name },
+    });
+    userId = newUser.user?.id ?? null;
+    if (userId) {
+      await supabase.from("profiles").upsert({ id: userId, email, full_name: name, role: "parent" });
+    }
+  }
+
+  if (userId) {
+    await supabase.from("deck_purchases").insert({ user_id: userId, bundle: "move-to-read" });
+    try {
+      const { data: linkData } = await supabase.auth.admin.generateLink({
+        type: "recovery",
+        email,
+        options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://developmental-hub.vercel.app"}/move-to-read` },
+      });
+      const { Resend } = await import("resend");
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const FROM = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+      await resend.emails.send({
+        from: FROM,
+        to: email,
+        subject: "Your Move to Read deck is ready",
+        html: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">
+          <h1 style="font-size:22px;font-weight:300;color:#1e1b2e;">Thanks${name ? `, ${name.split(" ")[0]}` : ""}!</h1>
+          <p style="font-size:15px;color:#4a4660;line-height:1.7;">Set your password to download your three Move to Read activity decks:</p>
+          <a href="${linkData?.properties?.action_link ?? `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://developmental-hub.vercel.app"}/move-to-read`}"
+             style="display:inline-block;padding:14px 28px;background:#3730a3;color:#fff;border-radius:999px;font-size:15px;font-weight:600;text-decoration:none;margin-top:8px;">Set password & download →</a>
+        </div>`,
+      });
+    } catch (e) { console.error("Deck email failed:", e); }
+  }
+  break;
+}
+
+if (!session.subscription) break;
 
         const supabase = getSupabaseAdmin();
         const customerEmail = session.customer_details?.email ?? session.customer_email ?? "";
