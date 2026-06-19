@@ -2,7 +2,12 @@
 import { useEffect, useState } from "react";
 
 const STRIPE_LINK = "https://buy.stripe.com/5kQ4gs7DI7XqeMp5yy9fW0a";
-const HERO = "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero.jpg";
+
+const HEROES = [
+  { url: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero.jpg", level: 1, color: "#4a8b6d" },
+  { url: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero-2.jpg", level: 2, color: "#7B4FA6" },
+  { url: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero-3.jpg", level: 3, color: "#3730a3" },
+];
 
 const LEVELS = [
   { n: 1, name: "Foundations", color: "#4a8b6d",
@@ -32,6 +37,8 @@ export default function MoveToReadPage() {
         .mtr-btn { transition: transform .15s ease, box-shadow .15s ease }
         .mtr-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(55,48,163,.22) }
         .mtr-btn:focus-visible { outline: 2px solid #3730a3; outline-offset: 3px }
+        .mtr-hero-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0 0 28px }
+        @media (max-width: 560px) { .mtr-hero-grid { grid-template-columns: 1fr } }
         @media (prefers-reduced-motion: reduce) { .mtr-rise { animation: none } .mtr-btn { transition: none } }
       `}</style>
 
@@ -43,17 +50,24 @@ export default function MoveToReadPage() {
         <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(30px, 5vw, 46px)", fontWeight: 300, margin: "0 0 18px", lineHeight: 1.12, letterSpacing: "-0.01em" }}>
           Reading starts on the floor,<br />not at a desk
         </h1>
-        <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300, margin: "0 0 22px", maxWidth: "560px" }}>
+        <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300, margin: "0 0 28px", maxWidth: "560px" }}>
           The professional toolkit for building the foundations of reading and writing — through movement, adapted for home in minutes a day.
         </p>
 
-        <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 10", borderRadius: "20px", overflow: "hidden", border: "1px solid #e8e4de", backgroundColor: "#f1ede7", margin: "0 0 28px" }}>
-          <img
-            src={HERO}
-            alt="A child moving through a play-based reading-readiness activity at home"
-            onError={(e) => { const p = e.currentTarget.parentElement; if (p) p.style.display = "none"; }}
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          />
+        <div className="mtr-hero-grid">
+          {HEROES.map((h) => (
+            <div key={h.level} style={{ position: "relative", aspectRatio: "4 / 5", borderRadius: "14px", overflow: "hidden", border: "1px solid #e8e4de", borderTop: `3px solid ${h.color}`, backgroundColor: "#f1ede7" }}>
+              <img
+                src={h.url}
+                alt={`Level ${h.level} movement activity`}
+                onError={(e) => { const p = e.currentTarget.parentElement; if (p) p.style.display = "none"; }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }}
+              />
+              <span style={{ position: "absolute", bottom: "8px", left: "8px", fontSize: "11px", fontWeight: 600, color: "white", backgroundColor: h.color, padding: "2px 8px", borderRadius: "6px" }}>
+                Level {h.level}
+              </span>
+            </div>
+          ))}
         </div>
 
         <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", fontSize: "13px", color: "#9591a6", margin: "0 0 56px" }}>
