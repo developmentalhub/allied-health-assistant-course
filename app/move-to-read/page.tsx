@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 
 const STRIPE_LINK = "https://buy.stripe.com/5kQ4gs7DI7XqeMp5yy9fW0a";
+const HERO = "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero.jpg";
 
 const LEVELS = [
   { n: 1, name: "Foundations", color: "#4a8b6d",
@@ -45,6 +46,15 @@ export default function MoveToReadPage() {
         <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300, margin: "0 0 22px", maxWidth: "560px" }}>
           The professional toolkit for building the foundations of reading and writing — through movement, adapted for home in minutes a day.
         </p>
+
+        <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 10", borderRadius: "20px", overflow: "hidden", border: "1px solid #e8e4de", backgroundColor: "#f1ede7", margin: "0 0 28px" }}>
+          <img
+            src={HERO}
+            alt="A child moving through a play-based reading-readiness activity at home"
+            onError={(e) => { const p = e.currentTarget.parentElement; if (p) p.style.display = "none"; }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
 
         <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", fontSize: "13px", color: "#9591a6", margin: "0 0 56px" }}>
           {["111 activities", "3 stages", "5 minutes a day"].map((m, i) => (
