@@ -1,455 +1,392 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import React from "react";
+import Script from "next/script";
 
-export default function HomePage() {
-  const [showCupPopup, setShowCupPopup] = useState(false);
-  const [serviceModal, setServiceModal] = useState<{ service: string; price: string } | null>(null);
+// ── CONFIGURATION ─────────────────────────────────────────────────
+const SB_URL = "https://vfflpjpvbazvzxbuxwme.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmZmxwanB2YmF6dnp4YnV4d21lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2NTAxODIsImV4cCI6MjA5NTIyNjE4Mn0.x_U8pHlAcdgnbsMIYV8eigPLtiBp2rYAx6ljt4pIkkw";
+const LEAD_TABLE = "email_signups";
+const GUIDE_URL = "https://vfflpjpvbazvzxbuxwme.supabase.co/storage/v1/object/public/resources/reflex-ebook.pdf";
 
-  const [serviceForm, setServiceForm] = useState({ name: "", email: "", child_age: "", message: "" });
-  const [serviceLoading, setServiceLoading] = useState(false);
-  const [serviceSuccess, setServiceSuccess] = useState(false);
-  const [serviceError, setServiceError] = useState("");
+const HUB_ASSETS = "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/";
+const EDU_ASSETS = "https://vfflpjpvbazvzxbuxwme.supabase.co/storage/v1/object/public/website-images/";
 
-  const inputStyle: React.CSSProperties = {
-    width: "100%",
-    padding: "10px 16px",
-    borderRadius: "10px",
-    border: "1.5px solid #e8e4de",
-    fontSize: "15px",
-    color: "#1e1b2e",
-    outline: "none",
-    boxSizing: "border-box",
-    fontFamily: "inherit",
-    backgroundColor: "#faf8f5"
-  };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const seen = localStorage.getItem("cup_popup_seen");
-      if (seen === "1") return;
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight <= 0) return;
-      const scrollDepth = window.scrollY / totalHeight;
-      if (scrollDepth >= 0.5) {
-        setShowCupPopup(true);
-        localStorage.setItem("cup_popup_seen", "1");
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://www.tiktok.com/embed.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      if (document.body.contains(script)) document.body.removeChild(script);
-    };
-  }, []);
-
-  async function handleServiceSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!serviceModal) return;
-    setServiceLoading(true);
-    setServiceError("");
-    try {
-      const res = await fetch("/api/service-interest", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...serviceForm, service_type: serviceModal.service }),
-      });
-      const data = await res.json();
-      if (!res.ok) { setServiceError(data.error ?? "Something went wrong."); setServiceLoading(false); return; }
-      setServiceSuccess(true);
-      setServiceLoading(false);
-      setTimeout(() => {
-        setServiceModal(null);
-        setServiceSuccess(false);
-        setServiceForm({ name: "", email: "", child_age: "", message: "" });
-      }, 2000);
-    } catch {
-      setServiceError("An unexpected error occurred. Please try again.");
-      setServiceLoading(false);
-    }
+// ── CSS STYLES ────────────────────────────────────────────────────
+const css = `
+  .pmi-hub {
+    --purple: #6B4E9E;
+    --purple-deep: #3D2C5F;
+    --purple-soft: #EFE9F6;
+    --accent: #E89A6C;
+    --accent-deep: #C06B3A;
+    --ink: #2A2435;
+    --body: #4A4458;
+    --muted: #6E6878;
+    --line: #E7E0EE;
+    --radius: 20px;
+    --shadow: 0 18px 40px -22px rgba(61,44,95,.45);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--body);
+    line-height: 1.7;
+    font-size: 1.06rem;
+    background-color: #faf8f5;
+  }
+  .pmi-hub * { box-sizing: border-box; }
+  .pmi-hub h1, .pmi-hub h2, .pmi-hub h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    color: var(--purple-deep);
+    line-height: 1.2;
+    margin: 0;
+  }
+  .pmi-container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+  .pmi-banner {
+    background-color: #3730a3;
+    color: #ffffff;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .pmi-banner a { color: #ffffff; text-decoration: underline; margin-left: 6px; }
+  
+  .pmi-hero {
+    background: #ffffff;
+    padding: 80px 20px;
+    border-bottom: 1px solid #e8e4de;
+  }
+  .pmi-hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .pmi-hero h1 { font-size: 44px; margin-bottom: 20px; font-weight: 700; }
+  .pmi-hero p { font-size: 18px; color: #6b6880; margin-bottom: 32px; }
+  
+  .pmi-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    border-radius: 10px;
+    background: var(--purple);
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+    transition: background .15s ease;
+  }
+  .pmi-btn:hover { background: #5d4189; }
+  .pmi-btn-accent { background: var(--accent); }
+  .pmi-btn-accent:hover { background: var(--accent-deep); }
+  .pmi-btn-ghost { background: transparent; color: var(--purple-deep) !important; border: 2px solid var(--line); }
+  
+  .pmi-quiz-bar {
+    background-color: #f5f3ff;
+    border-bottom: 1px solid #e0e7ff;
+    padding: 20px 24px;
+  }
+  .pmi-quiz-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .pmi-quiz-info { display: flex; align-items: center; gap: 14px; }
+  .pmi-quiz-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #eef2ff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
 
-  return (
-    <div style={{ fontFamily: "DM Sans, sans-serif", color: "#1e1b2e", backgroundColor: "#faf8f5", margin: 0, padding: 0 }}>
+  .pmi-checklist-box {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 30px;
+    margin: 20px 0 40px;
+    box-shadow: var(--shadow);
+  }
+  .pmi-checklist-box h3 { font-size: 22px; margin-bottom: 15px; color: var(--purple-deep); }
+  .pmi-checklist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .pmi-checklist-item { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: #4A4458; }
+  .pmi-checklist-item span { color: var(--accent-deep); font-weight: bold; }
 
-      {/* 1. Announcement banner */}
-      <div style={{ backgroundColor: "#3730a3", color: "#ffffff", padding: "12px 20px", textAlign: "center", fontSize: "14px", fontWeight: "500" }}>
-        Free videos — no account needed. Watch Robyn's activities with your child today. ·
-        <a href="/videos/free" style={{ color: "#ffffff", textDecoration: "underline", marginLeft: "6px" }}>Watch free →</a>
+  .pmi-free {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 40px;
+    margin: 40px 0;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: .85fr 1.15fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .pmi-free img { width: 100%; border-radius: 14px; object-fit: cover; aspect-ratio: 4/3; background: var(--purple-soft); }
+  .pmi-eyebrow {
+    color: var(--accent-deep);
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-size: .82rem;
+    margin-bottom: 8px;
+  }
+  .pmi-free h2 { font-size: 32px; margin-bottom: 12px; }
+  .pmi-free p { margin: 0 0 20px; color: #6b6880; }
+  .pmi-free form { display: flex; gap: 12px; flex-wrap: wrap; }
+  .pmi-free input {
+    flex: 1;
+    min-width: 200px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-inherit;
+    font-size: 1rem;
+    background-color: #faf8f5;
+    outline: none;
+  }
+  .pmi-free input:focus { border-color: var(--purple); background-color: #fff; }
+  .pmi-msg { font-size: .98rem; margin: 15px 0 0; font-weight: 700; }
+  .pmi-hint { font-size: .9rem; color: var(--muted); margin: 12px 0 0; font-style: italic; }
+
+  .pmi-section-title { text-align: center; margin-bottom: 40px; }
+  .pmi-section-title h2 { font-size: 36px; margin-bottom: 10px; }
+  .pmi-section-title p { color: #6b6880; font-size: 18px; margin: 0; }
+
+  .pmi-video-section { margin-bottom: 60px; }
+  .pmi-video-container { background: #000; border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 16/9; box-shadow: var(--shadow); }
+  .pmi-video-placeholder { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pmi-video-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; }
+  .pmi-play-circle { width: 80px; height: 80px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform 0.2s ease; cursor: pointer; }
+  .pmi-play-circle:hover { transform: scale(1.08); }
+  .pmi-play-icon { width: 0; height: 0; border-top: 14px solid transparent; border-bottom: 14px solid transparent; border-left: 24px solid var(--purple-deep); margin-left: 6px; }
+
+  .pmi-pricing-panel { background: var(--purple-soft); border-radius: var(--radius); padding: 40px; text-align: center; margin-bottom: 40px; }
+  .pmi-pricing-panel h2 { font-size: 32px; margin-bottom: 12px; }
+  .pmi-pricing-panel p { max-width: 700px; margin: 0 auto 24px; color: var(--purple-deep); }
+
+  .image-cluster { position: relative; width: 100%; max-width: 420px; height: 340px; margin: 0 auto; }
+  .img-main { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-4deg); z-index: 5; width: 180px; height: 180px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 4px solid #ffffff; }
+  .img-sub1 { position: absolute; top: 10px; left: 10px; width: 130px; height: 130px; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,0.05); transform: rotate(-12deg); }
+  .img-sub2 { position: absolute; bottom: 10px; right: 10px; width: 140px; height: 140px; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,0.05); transform: rotate(10deg); }
+
+  @media (max-width: 820px) {
+    .pmi-hero-grid, .pmi-free { grid-template-columns: 1fr; }
+    .pmi-hero h1 { font-size: 32px; }
+    .pmi-checklist-grid { grid-template-columns: 1fr; }
+  }
+`;
+
+const freeJs = `
+  (function(){
+    var f = document.getElementById("freeForm");
+    if(!f) return;
+    f.addEventListener("submit", function(e){
+      e.preventDefault();
+      var name = (document.getElementById("lead_name").value || "").trim();
+      var email = (document.getElementById("lead_email").value || "").trim();
+      var msg = document.getElementById("freeMsg");
+      var btn = f.querySelector("button");
+      if(!email) return;
+      
+      btn.disabled = true; 
+      msg.style.display = "block"; 
+      msg.style.color = "#6E6878"; 
+      msg.textContent = "Sending...";
+      
+      fetch("${SB_URL}/rest/v1/${LEAD_TABLE}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "${SB_KEY}",
+          "Authorization": "Bearer ${SB_KEY}",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify({
+          first_name: name,
+          email: email,
+          source: "parent-hub-reflex-ebook"
+        })
+      })
+      .then(function(r){ 
+        if(!r.ok){ throw new Error("Network response error"); }
+        msg.style.color = "#3D2C5F"; 
+        msg.textContent = "Enjoy — your eBook is opening in a new tab!";
+        f.reset(); 
+        btn.disabled = false;
+        if("${GUIDE_URL}") window.open("${GUIDE_URL}", "_blank", "noopener");
+      })
+      .catch(function(){ 
+        btn.disabled = false; 
+        msg.style.color = "#C0392B";
+        msg.textContent = "Hmm, that did not send. Please email robyn@playmoveimprove.com.au and we will send it across straight away."; 
+      });
+    });
+  })();
+`;
+
+export default function HomePage() {
+  return (
+    <main className="pmi-hub">
+      <style dangerouslySetInnerHTML={{ __html: css }} />
+
+      {/* 1. Announcement Banner */}
+      <div className="pmi-banner">
+        Free follow-along videos, zero financial commitment. Strengthen your child's foundations at home today. · 
+        <a href="/videos/free">Watch free tracks →</a>
       </div>
 
-      {/* 2. Hero section */}
-      <section style={{ backgroundColor: "#ffffff", padding: "80px 20px", borderBottom: "1px solid #e8e4de" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "40px" }}>
-
-          {/* Left side content */}
-          <div style={{ flex: "1 1 500px" }}>
-            <h1 style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "44px", color: "#1e1b2e", lineHeight: "1.2", margin: "0 0 20px 0", fontWeight: "700" }}>
-              He knew every word on the page. But his eyes kept sliding off it.
-            </h1>
-            <p style={{ fontSize: "18px", color: "#6b6880", lineHeight: "1.6", margin: "0 0 32px 0" }}>
-              Watching my son try to read broke my heart. He wasn't behind. He wasn't disengaged. His brain just hadn't built the movement foundations it needed first. I'm Robyn — a vestibular specialist, Exercise Physiologist, and mum who has been exactly where you are. These videos are what worked for my son. Three minutes. Follow along. Just press play.
+      {/* 2. Parent-Focused Hero Section */}
+      <section className="pmi-hero">
+        <div className="pmi-container pmi-hero-grid">
+          <div>
+            <h1>He knew every word on the page. But his eyes kept sliding off it.</h1>
+            <p>
+              Watching my son struggle to read broke my heart. He wasn't behind in understanding, and he wasn't disengaged. 
+              His brain and eyes simply hadn't built the movement foundations they needed to track lines of text together. 
+              I'm Robyn, a vestibular specialist, Exercise Physiologist, and mum. These simple, three-minute, 
+              follow-along tracks are exactly what built the neural and physical pathways that allowed my son to read smoothly.
             </p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
-              <a href="/videos/free" style={{ backgroundColor: "#3730a3", color: "#ffffff", padding: "14px 28px", borderRadius: "10px", textDecoration: "none", fontWeight: "600", fontSize: "16px", display: "inline-block", border: "none", cursor: "pointer" }}>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+              <a href="/videos/free" className="pmi-btn">
                 Watch free videos
+              </a>
+              <a href="#free-ebook" className="pmi-btn pmi-btn-ghost">
+                Get the free eBook
               </a>
             </div>
           </div>
 
-          {/* Right side image cluster */}
-          <div style={{ flex: "1 1 400px", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "380px", position: "relative" }}>
-            <div style={{ position: "relative", width: "100%", maxWidth: "420px", height: "340px" }}>
-              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%) rotate(-4deg)", zIndex: 5, width: "180px", height: "180px", borderRadius: "16px", overflow: "hidden", boxShadow: "0 10px 25px rgba(0,0,0,0.08)", border: "4px solid #ffffff" }}>
-                <img src="https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/colour-sorting-table-activity.png" alt="Colour sorting activity" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          {/* Decorative Image Cluster */}
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "380px" }}>
+            <div className="image-cluster">
+              <div className="img-main">
+                <img src={`${HUB_ASSETS}colour-sorting-table-activity.png`} alt="Colour sorting activity" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
-              <div style={{ position: "absolute", top: "10px", left: "10px", width: "130px", height: "130px", borderRadius: "16px", overflow: "hidden", boxShadow: "0 6px 16px rgba(0,0,0,0.05)", transform: "rotate(-12deg)" }}>
-                <img src="https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/floor-based-tearing-paper-activity.png" alt="Floor based paper activity" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div className="img-sub1">
+                <img src={`${HUB_ASSETS}floor-based-tearing-paper-activity.png`} alt="Floor based paper activity" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
-              <div style={{ position: "absolute", bottom: "10px", right: "10px", width: "140px", height: "140px", borderRadius: "16px", overflow: "hidden", boxShadow: "0 6px 16px rgba(0,0,0,0.05)", transform: "rotate(10deg)" }}>
-                <img src="https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/cup-colour-sort-activity.png" alt="Cup sorting activity" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div className="img-sub2">
+                <img src={`${HUB_ASSETS}cup-colour-sort-activity.png`} alt="Cup sorting activity" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
-
-      {/* Quiz banner */}
-      <section style={{ backgroundColor: "#f5f3ff", borderBottom: "1px solid #e0e7ff", padding: "20px 24px" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-            <div style={{ width: "40px", height: "40px", backgroundColor: "#eef2ff", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      {/* 3. Quiz Banner */}
+      <section className="pmi-quiz-bar">
+        <div className="pmi-container pmi-quiz-flex">
+          <div className="pmi-quiz-info">
+            <div className="pmi-quiz-icon">
               <svg width="20" height="20" fill="none" stroke="#3730a3" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
             <div>
-              <p style={{ fontSize: "15px", fontWeight: 600, color: "#1e1b2e", margin: "0 0 2px" }}>Is my child ready to read?</p>
-              <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>Take our free 2-minute quiz and find out what your child needs next.</p>
+              <p style={{ fontSize: "15px", fontWeight: 600, color: "#1e1b2e", margin: "0 0 2px" }}>Is your child physically ready to read?</p>
+              <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>Take our free two-minute foundational check to see what physical tracking skills they need next.</p>
             </div>
           </div>
-          <a href="https://is-my-child-ready-to-read.netlify.app/" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: "#3730a3", color: "white", padding: "10px 22px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" as const, flexShrink: 0 }}>
-            Take the free quiz →
-          </a>
+          <a href="/quiz" className="pmi-btn pmi-btn-accent" style={{ fontSize: "14px", padding: "10px 20px" }}>Take the Quiz</a>
         </div>
       </section>
 
-
-      {/* Move to Read deck offer */}
-      <section style={{ backgroundColor: "#ffffff", padding: "70px 20px", borderBottom: "1px solid #e8e4de" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "42px" }}>
-
-          <div style={{ flex: "1 1 420px" }}>
-            <p style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#3730a3", margin: "0 0 12px" }}>
-              New $24 activity card deck
-            </p>
-            <h2 style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "36px", lineHeight: 1.18, margin: "0 0 16px", fontWeight: 700, color: "#1e1b2e" }}>
-              Move to Read: three printable activity decks for reading foundations
-            </h2>
-            <p style={{ fontSize: "17px", color: "#6b6880", lineHeight: 1.65, margin: "0 0 22px" }}>
-              A gentle starting point before membership. Get Levels 1–3 as PDF activity decks, with movement ideas that support visual tracking, body awareness, coordination, phonological awareness and early reading readiness.
-            </p>
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", margin: "0 0 26px" }}>
-              <span style={{ padding: "8px 14px", borderRadius: "999px", backgroundColor: "#f0fdfa", color: "#0f766e", fontSize: "13px", fontWeight: 600 }}>111 activities</span>
-              <span style={{ padding: "8px 14px", borderRadius: "999px", backgroundColor: "#f5f3ff", color: "#3730a3", fontSize: "13px", fontWeight: 600 }}>3 levels</span>
-              <span style={{ padding: "8px 14px", borderRadius: "999px", backgroundColor: "#fff7ed", color: "#c2410c", fontSize: "13px", fontWeight: 600 }}>5 minutes a day</span>
-              <span style={{ padding: "8px 14px", borderRadius: "999px", backgroundColor: "#fdf2f8", color: "#be185d", fontSize: "13px", fontWeight: 600 }}>Free for members</span>
-            </div>
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", alignItems: "center" }}>
-              <a href="/move-to-read" style={{ backgroundColor: "#3730a3", color: "#ffffff", padding: "14px 28px", borderRadius: "10px", textDecoration: "none", fontWeight: 700, fontSize: "16px", display: "inline-block" }}>
-                View the $24 deck
-              </a>
-              <a href="/pricing" style={{ color: "#3730a3", fontWeight: 700, fontSize: "15px", textDecoration: "none" }}>
-                Or join the membership →
-              </a>
-            </div>
-          </div>
-
-          <div style={{ flex: "1 1 420px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", minWidth: 0 }}>
-            {[
-              { src: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero.jpg", label: "Level 1", color: "#4a8b6d" },
-              { src: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero-2.jpg", label: "Level 2", color: "#7B4FA6" },
-              { src: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/move-to-read-hero-3.jpg", label: "Level 3", color: "#3730a3" },
-            ].map((card) => (
-              <a key={card.label} href="/move-to-read" style={{ position: "relative", aspectRatio: "4 / 5", borderRadius: "16px", overflow: "hidden", border: "1px solid #e8e4de", borderTop: `4px solid ${card.color}`, backgroundColor: "#f1ede7", textDecoration: "none", boxShadow: "0 10px 24px rgba(30, 27, 46, 0.08)" }}>
-                <img src={card.src} alt={`${card.label} Move to Read activity deck`} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                <span style={{ position: "absolute", left: "10px", bottom: "10px", backgroundColor: card.color, color: "#ffffff", padding: "4px 10px", borderRadius: "999px", fontSize: "12px", fontWeight: 700 }}>
-                  {card.label}
-                </span>
-              </a>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* 3. TikTok reels section */}
-      <section style={{ backgroundColor: "#faf8f5", padding: "60px 20px", borderBottom: "1px solid #e8e4de" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "32px", margin: "0 0 8px 0", fontWeight: "700" }}>
-            See Robyn in action
-          </h2>
-          <p style={{ fontSize: "16px", color: "#6b6880", margin: "0 0 40px 0" }}>
-            Follow @playmoveimprove on TikTok for sensory and physical play strategies
+      {/* 4. Behavioural vs. Developmental Symptom Checklist */}
+      <section className="pmi-container">
+        <div className="pmi-checklist-box">
+          <h3>Does this sound like your afternoon reading routine?</h3>
+          <p style={{ color: "#6b6880", fontSize: "15px", margin: "0 0 20px" }}>
+            When a child struggles to sit still, avoid text, or melt down during reading, it often isn't a lack of focus or willpower. 
+            Their physical systems might be working overtime just to keep their body upright or their eyes aligned.
           </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", justifyContent: "center" }}>
-            <div style={{ flex: "1 1 300px", maxWidth: "325px", minHeight: "580px" }}>
-              <blockquote className="tiktok-embed" data-video-id="7608865997918899476" style={{ maxWidth: "325px", minWidth: "325px", margin: "0 auto" }}>
-                <section><a target="_blank" rel="noopener noreferrer" href="https://www.tiktok.com/@playmoveimprove/video/7608865997918899476">Loading Video...</a></section>
-              </blockquote>
+          <div className="pmi-checklist-grid">
+            <div className="pmi-checklist-item">
+              <span>✓</span> Fidgeting, slouching, or leaning their head all the way down on the table to look at a book.
             </div>
-            <div style={{ flex: "1 1 300px", maxWidth: "325px", minHeight: "580px" }}>
-              <blockquote className="tiktok-embed" data-video-id="7329735221685914898" style={{ maxWidth: "325px", minWidth: "325px", margin: "0 auto" }}>
-                <section><a target="_blank" rel="noopener noreferrer" href="https://www.tiktok.com/@playmoveimprove/video/7329735221685914898">Loading Video...</a></section>
-              </blockquote>
+            <div className="pmi-checklist-item">
+              <span>✓</span> Skipping words, missing lines entirely, or losing their place unless they use a finger to track.
             </div>
-            <div style={{ flex: "1 1 300px", maxWidth: "325px", minHeight: "580px" }}>
-              <blockquote className="tiktok-embed" data-video-id="7309319533162990866" style={{ maxWidth: "325px", minWidth: "325px", margin: "0 auto" }}>
-                <section><a target="_blank" rel="noopener noreferrer" href="https://www.tiktok.com/@playmoveimprove/video/7309319533162990866">Loading Video...</a></section>
-              </blockquote>
+            <div className="pmi-checklist-item">
+              <span>✓</span> Becoming easily frustrated, rubbing eyes, or complaining of being tired after only a few sentences.
+            </div>
+            <div className="pmi-checklist-item">
+              <span>✓</span> High levels of restlessness or constantly needing to swing their legs to stay focused.
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. Pain points strip */}
-      <section style={{ backgroundColor: "#ffffff", padding: "60px 20px", borderBottom: "1px solid #e8e4de" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <p style={{ fontSize: "20px", fontWeight: "700", color: "#1e1b2e", textAlign: "center", margin: "0 0 40px 0", fontFamily: "var(--font-display), sans-serif" }}>
-            If any of this sounds like your child, you are in the right place.
-          </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "32px" }}>
-            <div style={{ flex: "1 1 300px", backgroundColor: "#faf8f5", padding: "28px", borderRadius: "12px", border: "1px solid #e8e4de" }}>
-              <p style={{ fontWeight: "700", fontSize: "16px", color: "#1e1b2e", margin: "0 0 12px 0", fontStyle: "italic" }}>
-                They can read the words but lose their place constantly
-              </p>
-              <p style={{ fontSize: "15px", color: "#6b6880", lineHeight: "1.5", margin: 0 }}>
-                The eyes need a stable vestibular system to track across a page. Movement builds that. Flashcards and reading apps don't.
-              </p>
-            </div>
-            <div style={{ flex: "1 1 300px", backgroundColor: "#faf8f5", padding: "28px", borderRadius: "12px", border: "1px solid #e8e4de" }}>
-              <p style={{ fontWeight: "700", fontSize: "16px", color: "#1e1b2e", margin: "0 0 12px 0", fontStyle: "italic" }}>
-                They can't sit still, focus, or get through a task
-              </p>
-              <p style={{ fontSize: "15px", color: "#6b6880", lineHeight: "1.5", margin: 0 }}>
-                Dysregulation is a body problem before it's a behaviour problem. Rhythm and movement activities settle the nervous system first.
-              </p>
-            </div>
-            <div style={{ flex: "1 1 300px", backgroundColor: "#faf8f5", padding: "28px", borderRadius: "12px", border: "1px solid #e8e4de" }}>
-              <p style={{ fontWeight: "700", fontSize: "16px", color: "#1e1b2e", margin: "0 0 12px 0", fontStyle: "italic" }}>
-                Writing is a battle every single morning
-              </p>
-              <p style={{ fontSize: "15px", color: "#6b6880", lineHeight: "1.5", margin: 0 }}>
-                Fine motor skills need a foundation of gross motor development. We build from the ground up, in minutes, at home.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Free videos section */}
-      <section style={{ backgroundColor: "#1e1b2e", color: "#ffffff", padding: "80px 20px" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "40px", alignItems: "center", justifyContent: "center" }}>
-
-            {/* Video preview */}
-            <div style={{ flex: "1 1 450px", maxWidth: "480px", width: "100%" }}>
-              <div style={{ position: "relative", width: "100%", aspectRatio: "16/9", borderRadius: "12px", overflow: "hidden", backgroundColor: "#000000", boxShadow: "0 12px 32px rgba(0,0,0,0.2)" }}>
-                <img
-                  src="https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/20220203_092213_01.jpg"
-                  alt="Robyn demonstrating an activity"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </div>
-            </div>
-
-            {/* Right side copy and CTA */}
-            <div style={{ flex: "1 1 400px", maxWidth: "450px", color: "#ffffff", display: "flex", flexDirection: "column", gap: "20px" }}>
-              <h2 style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "36px", margin: 0, fontWeight: "700", lineHeight: "1.2" }}>
-                Not ready to subscribe yet? Start here for free.
-              </h2>
-              <p style={{ fontSize: "17px", color: "#9ca3af", lineHeight: "1.6", margin: 0 }}>
-                Eight free videos. No account needed. Your child follows Robyn on screen, you just press play. Some are three minutes long.
-              </p>
-              <div style={{ textAlign: "center" }}>
-                <a href="/videos/free" style={{ backgroundColor: "#3730a3", color: "#ffffff", padding: "14px 32px", borderRadius: "10px", textDecoration: "none", fontWeight: "600", fontSize: "16px", display: "inline-block" }}>
-                  Watch free videos now
-                </a>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 6. What's in the membership */}
-      <section style={{ backgroundColor: "#ffffff", padding: "80px 20px", borderBottom: "1px solid #e8e4de", position: "relative", overflow: "hidden" }}>
-        <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 5 }}>
-          <h2 style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "32px", margin: "0 0 32px 0", fontWeight: "700" }}>
-            One programme. One starting point. Everything your child needs.
-          </h2>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", justifyContent: "center", marginBottom: "40px" }}>
-            <span style={{ padding: "8px 18px", borderRadius: "50px", fontSize: "14px", fontWeight: "600", color: "#7c3aed", backgroundColor: "#f5f3ff", border: "1px solid rgba(124,58,237,0.15)" }}>Pre-Reading Skills</span>
-            <span style={{ padding: "8px 18px", borderRadius: "50px", fontSize: "14px", fontWeight: "600", color: "#1d4ed8", backgroundColor: "#eff6ff", border: "1px solid rgba(29,78,216,0.15)" }}>Pre-Writing Skills</span>
-            <span style={{ padding: "8px 18px", borderRadius: "50px", fontSize: "14px", fontWeight: "600", color: "#c2410c", backgroundColor: "#fff7ed", border: "1px solid rgba(194,65,12,0.15)" }}>Gross Motor Skills</span>
-            <span style={{ padding: "8px 18px", borderRadius: "50px", fontSize: "14px", fontWeight: "600", color: "#0f766e", backgroundColor: "#f0fdfa", border: "1px solid rgba(15,118,110,0.15)" }}>Fine Motor Skills</span>
-            <span style={{ padding: "8px 18px", borderRadius: "50px", fontSize: "14px", fontWeight: "600", color: "#be185d", backgroundColor: "#fdf2f8", border: "1px solid rgba(190,24,93,0.15)" }}>Reading Skills</span>
-            <span style={{ padding: "8px 18px", borderRadius: "50px", fontSize: "14px", fontWeight: "600", color: "#b45309", backgroundColor: "#fffbeb", border: "1px solid rgba(180,83,9,0.15)" }}>Rhythm & Coordination</span>
-            <span style={{ padding: "8px 18px", borderRadius: "50px", fontSize: "14px", fontWeight: "600", color: "#166534", backgroundColor: "#f0fdf4", border: "1px solid rgba(22,101,52,0.15)" }}>Cup Sequence Program</span>
-          </div>
-          <div style={{ backgroundColor: "#fffbeb", border: "1px solid #fef3c7", borderRadius: "12px", padding: "16px 24px", display: "inline-block", maxWidth: "720px" }}>
-            <p style={{ margin: 0, color: "#b45309", fontSize: "14px", fontWeight: "600", lineHeight: "1.5" }}>
-              More content added every month. Your price stays at $39 as the library grows.
+      {/* 5. Functional Supabase Lead Capture Form */}
+      <section className="pmi-container" id="free-ebook">
+        <div className="pmi-free">
+          <img src={`${EDU_ASSETS}cup-stacking-tummy-time-activity.png`} alt="Reflex Integration eBook" />
+          <div>
+            <p className="pmi-eyebrow">Free Downloadable Guide</p>
+            <h2>When tracking and focus look like behaviour</h2>
+            <p>
+              Download Robyn's Reflex Integration eBook. Discover how unintegrated primitive reflexes and structural tracking 
+              gaps mimic classroom inattention, and explore the precise home-based patterns that build genuine reading stamina.
+            </p>
+            <form id="freeForm">
+              <input id="lead_name" type="text" placeholder="First name" required />
+              <input id="lead_email" type="email" placeholder="Email address" required />
+              <button className="pmi-btn pmi-btn-accent" type="submit">Send me the free eBook</button>
+            </form>
+            <p className="pmi-msg" id="freeMsg" style={{ display: "none" }}></p>
+            <p className="pmi-hint">
+              The PDF guide opens immediately in a new window once submitted, allowing you to read it straight away.
             </p>
           </div>
         </div>
-
-        <div style={{ position: "absolute", bottom: "-20px", left: "40px", width: "100px", height: "100px", opacity: 0.4, transform: "rotate(-15deg)", pointerEvents: "none" }}>
-          <img src="https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/colour-sorting-table-activity.png" alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-        </div>
-        <div style={{ position: "absolute", top: "20px", right: "40px", width: "110px", height: "110px", opacity: 0.4, transform: "rotate(20deg)", pointerEvents: "none" }}>
-          <img src="https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/floor-based-tearing-paper-activity.png" alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-        </div>
       </section>
 
-      {/* 7. Pricing section */}
-      <section style={{ backgroundColor: "#faf8f5", padding: "80px 20px", borderBottom: "1px solid #e8e4de" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <p style={{ textAlign: "center", fontSize: "15px", color: "#6b6880", margin: "0 0 40px 0" }}>
-            Start with the membership today, or join the waitlist for live sessions with Robyn when they're ready.
-          </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", justifyContent: "center", alignItems: "stretch" }}>
-
-            {/* Card 1: Small Group */}
-            <div style={{ flex: "1 1 300px", maxWidth: "350px", border: "1px solid #e8e4de", borderRadius: "16px", padding: "32px", display: "flex", flexDirection: "column", justifyContent: "between", backgroundColor: "#ffffff" }}>
-              <div>
-                <h3 style={{ fontSize: "20px", margin: "0 0 8px 0", fontWeight: "700" }}>Small Group Coaching</h3>
-                <p style={{ fontSize: "14px", color: "#6b6880", margin: "0 0 24px 0" }}>Tailored peer groups for interactive foundation building.</p>
-                <div style={{ fontSize: "36px", fontWeight: "700", color: "#1e1b2e", margin: "0 0 24px 0" }}>
-                  $45<span style={{ fontSize: "14px", fontWeight: "normal", color: "#6b6880" }}> / session</span>
-                </div>
-              </div>
-              <a href="/waitlist" style={{ width: "100%", padding: "12px", border: "1.5px solid #3730a3", borderRadius: "10px", backgroundColor: "transparent", color: "#3730a3", fontWeight: "600", cursor: "pointer", fontSize: "15px", marginTop: "auto", textDecoration: "none", textAlign: "center", display: "block", boxSizing: "border-box" }}>
-                Join the waitlist
-              </a>
-            </div>
-
-            {/* Card 2: Membership */}
-            <div style={{ flex: "1 1 300px", maxWidth: "360px", border: "2px solid #3730a3", borderRadius: "16px", padding: "36px 32px", display: "flex", flexDirection: "column", backgroundColor: "#faf8f5", boxShadow: "0 10px 25px rgba(55,48,163,0.08)", position: "relative" }}>
-              <div style={{ position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)", backgroundColor: "#3730a3", color: "#ffffff", padding: "4px 14px", borderRadius: "20px", fontSize: "12px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                Start today
-              </div>
-              <div>
-                <h3 style={{ fontSize: "22px", margin: "0 0 8px 0", fontWeight: "700", color: "#3730a3" }}>Video Library Membership</h3>
-                <p style={{ fontSize: "14px", color: "#6b6880", margin: "0 0 24px 0" }}>Complete instant access to all developmental follow-along programs.</p>
-                <div style={{ fontSize: "42px", fontWeight: "700", color: "#1e1b2e", margin: "0 0 24px 0" }}>
-                  $39<span style={{ fontSize: "14px", fontWeight: "normal", color: "#6b6880" }}> / month</span>
-                </div>
-              </div>
-              <a href="/pricing" style={{ width: "100%", padding: "14px", border: "none", borderRadius: "10px", backgroundColor: "#3730a3", color: "#ffffff", fontWeight: "600", cursor: "pointer", fontSize: "15px", textDecoration: "none", textAlign: "center", display: "block", boxSizing: "border-box", marginTop: "auto" }}>
-                Start 7 day free trial
-              </a>
-            </div>
-
-            {/* Card 3: 1:1 */}
-            <div style={{ flex: "1 1 300px", maxWidth: "350px", border: "1px solid #e8e4de", borderRadius: "16px", padding: "32px", display: "flex", flexDirection: "column", justifyContent: "between", backgroundColor: "#ffffff" }}>
-              <div>
-                <h3 style={{ fontSize: "20px", margin: "0 0 8px 0", fontWeight: "700" }}>1:1 Clinical Assessment</h3>
-                <p style={{ fontSize: "14px", color: "#6b6880", margin: "0 0 24px 0" }}>Individual targeted consultation and specific milestone roadmap.</p>
-                <div style={{ fontSize: "36px", fontWeight: "700", color: "#1e1b2e", margin: "0 0 24px 0" }}>
-                  $129<span style={{ fontSize: "14px", fontWeight: "normal", color: "#6b6880" }}> / session</span>
-                </div>
-              </div>
-              <a href="/waitlist" style={{ width: "100%", padding: "12px", border: "1.5px solid #3730a3", borderRadius: "10px", backgroundColor: "transparent", color: "#3730a3", fontWeight: "600", cursor: "pointer", fontSize: "15px", marginTop: "auto", textDecoration: "none", textAlign: "center", display: "block", boxSizing: "border-box" }}>
-                Join the waitlist
-              </a>
-            </div>
-
-          </div>
+      {/* 6. Original Video Section Asset Hook */}
+      <section className="pmi-container">
+        <div className="pmi-section-title">
+          <h2>Start with these free home activities</h2>
+          <p>Simple, targeted exercises to support ocular tracking, core stabilisation, and structural focus.</p>
         </div>
-      </section>
-
-      {/* 8. Final CTA */}
-      <section style={{ backgroundColor: "#1e1b2e", color: "#ffffff", padding: "80px 20px", textAlign: "center" }}>
-        <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "36px", margin: "0 0 32px 0", fontWeight: "700" }}>
-            Your child doesn't need another app. They need to move.
-          </h2>
-          <a href="/videos/free" style={{ backgroundColor: "#ffffff", color: "#1e1b2e", padding: "14px 36px", borderRadius: "10px", textDecoration: "none", fontWeight: "600", fontSize: "16px", display: "inline-block" }}>
-            Watch free videos
-          </a>
-        </div>
-      </section>
-
-      {/* Scroll popup modal */}
-      {showCupPopup && (
-        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(30,27,46,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: "20px", boxSizing: "border-box" }}>
-          <div style={{ backgroundColor: "#ffffff", maxWidth: "460px", width: "100%", borderRadius: "16px", padding: "32px", position: "relative", boxShadow: "0 20px 50px rgba(0,0,0,0.15)" }}>
-            <button onClick={() => setShowCupPopup(false)} style={{ position: "absolute", top: "16px", right: "16px", background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#6b6880" }}>✕</button>
-            <h3 style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "24px", margin: "0 0 12px 0", color: "#1e1b2e", fontWeight: "700" }}>
-              Three minutes tonight. That's all.
-            </h3>
-            <p style={{ fontSize: "15px", color: "#6b6880", lineHeight: "1.5", margin: "0 0 24px 0" }}>
-              Watch one free video with your child right now. Robyn leads the activity on screen. No equipment. No preparation. Just press play.
-            </p>
-            <a href="/videos/free" style={{ display: "block", backgroundColor: "#3730a3", color: "#ffffff", padding: "13px 24px", borderRadius: "10px", fontWeight: "600", fontSize: "15px", textDecoration: "none", textAlign: "center" }}>
-              Watch free videos now
+        <div className="pmi-video-section">
+          <div className="pmi-video-container">
+            <img src={`${HUB_ASSETS}colour-sorting-table-activity.png`} alt="Free follow-along video background" className="pmi-video-placeholder" />
+            <a href="/videos/free" className="pmi-video-overlay">
+              <div className="pmi-play-circle">
+                <div className="pmi-play-icon"></div>
+              </div>
             </a>
           </div>
         </div>
-      )}
+      </section>
 
-      {/* Service interest modal */}
-      {serviceModal && (
-        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(30,27,46,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 110, padding: "20px", boxSizing: "border-box" }}>
-          <div style={{ backgroundColor: "#ffffff", maxWidth: "500px", width: "100%", borderRadius: "16px", padding: "32px", position: "relative", boxShadow: "0 20px 50px rgba(0,0,0,0.15)" }}>
-            <button onClick={() => setServiceModal(null)} style={{ position: "absolute", top: "16px", right: "16px", background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#6b6880" }}>✕</button>
-            <h3 style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "24px", margin: "0 0 4px 0", color: "#1e1b2e", fontWeight: "700" }}>Register Interest</h3>
-            <p style={{ fontSize: "15px", color: "#3730a3", fontWeight: "600", margin: "0 0 20px 0" }}>{serviceModal.service} ({serviceModal.price})</p>
-            {serviceSuccess ? (
-              <div style={{ padding: "20px", backgroundColor: "#f0fdf4", color: "#166534", borderRadius: "10px", textAlign: "center", fontWeight: "600" }}>
-                Thank you! Your interest has been submitted successfully.
-              </div>
-            ) : (
-              <form onSubmit={handleServiceSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                <div>
-                  <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "6px", color: "#1e1b2e" }}>Your Name</label>
-                  <input type="text" required placeholder="Enter your full name" style={inputStyle} value={serviceForm.name} onChange={(e) => setServiceForm({ ...serviceForm, name: e.target.value })} />
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "6px", color: "#1e1b2e" }}>Email Address</label>
-                  <input type="email" required placeholder="Enter your email" style={inputStyle} value={serviceForm.email} onChange={(e) => setServiceForm({ ...serviceForm, email: e.target.value })} />
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "6px", color: "#1e1b2e" }}>Child's Age</label>
-                  <input type="text" required placeholder="e.g. 5 years old" style={inputStyle} value={serviceForm.child_age} onChange={(e) => setServiceForm({ ...serviceForm, child_age: e.target.value })} />
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "6px", color: "#1e1b2e" }}>Message / Specific Concerns</label>
-                  <textarea rows={4} placeholder="Tell us a little bit about what your child is experiencing..." style={{ ...inputStyle, height: "auto", resize: "none" }} value={serviceForm.message} onChange={(e) => setServiceForm({ ...serviceForm, message: e.target.value })} />
-                </div>
-                {serviceError && <p style={{ color: "#b91c1c", fontSize: "14px", margin: "0" }}>{serviceError}</p>}
-                <button type="submit" disabled={serviceLoading} style={{ backgroundColor: "#3730a3", color: "#ffffff", padding: "12px 24px", borderRadius: "10px", fontWeight: "600", border: "none", cursor: "pointer", fontSize: "15px", marginTop: "8px" }}>
-                  {serviceLoading ? "Submitting..." : "Submit Registration"}
-                </button>
-              </form>
-            )}
-          </div>
+      {/* 7. Tier Explanation Section */}
+      <section className="pmi-container">
+        <div className="pmi-pricing-panel">
+          <h2>How the Developmental Hub works</h2>
+          <p>
+            Our absolute priority is reducing the financial friction families experience when trying to find answers. 
+            The introductory resource guide and our primary follow-along activity video tracks are entirely free 
+            to ensure you can start supporting your child's physical development immediately. For parents seeking a deeper, 
+            sequential, multi-week tracking program with tailored progressions, extended premium frameworks are accessible 
+            via our paid membership options.
+          </p>
+          <a href="/videos/free" className="pmi-btn">Explore Free Track Content First</a>
         </div>
-      )}
+      </section>
 
-    </div>
+      <Script id="pmi-free-form-script" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: freeJs }} />
+    </main>
   );
 }
