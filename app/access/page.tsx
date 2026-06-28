@@ -99,7 +99,7 @@ export default function AccessCodePage() {
             id="access-code"
             value={code}
             onChange={(e) => setCode(e.target.value.toUpperCase())}
-            placeholder="FOCUS123"
+            placeholder="Enter your code"
             autoComplete="off"
             style={{
               width: "100%",
