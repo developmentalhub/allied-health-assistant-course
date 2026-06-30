@@ -47,16 +47,6 @@ export async function POST(req: Request) {
       );
     }
 
-    if (accessCode.is_used) {
-      return NextResponse.json(
-        {
-          error:
-            "This code has already been used. Please contact Play Move Improve for help."
-        },
-        { status: 403 }
-      );
-    }
-
     if (accessCode.expires_at && new Date(accessCode.expires_at) < new Date()) {
       return NextResponse.json(
         {
@@ -66,11 +56,6 @@ export async function POST(req: Request) {
         { status: 403 }
       );
     }
-
-    await supabaseAdmin
-      .from("customer_access_codes")
-      .update({ is_used: true })
-      .eq("id", accessCode.id);
 
     return NextResponse.json({
       success: true,
