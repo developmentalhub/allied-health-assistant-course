@@ -15,12 +15,14 @@ export default function AccessCodePage() {
     setMessage("");
 
     try {
+      const cleanCode = code.trim().toUpperCase();
+
       const res = await fetch("/api/access-code", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ code: code.trim().toUpperCase() })
+        body: JSON.stringify({ code: cleanCode })
       });
 
       const data = await res.json();
@@ -31,7 +33,11 @@ export default function AccessCodePage() {
         return;
       }
 
-      router.push(data.redirectPath || "/library");
+      localStorage.setItem("pmi_customer_access", "true");
+      localStorage.setItem("pmi_customer_access_code", cleanCode);
+      localStorage.setItem("pmi_customer_access_time", new Date().toISOString());
+
+      router.push(data.redirectPath || "/videos");
     } catch {
       setMessage("Something went wrong. Please try again.");
       setLoading(false);
