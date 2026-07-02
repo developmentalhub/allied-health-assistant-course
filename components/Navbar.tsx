@@ -73,7 +73,7 @@ export default function Navbar() {
               )}
               <Link 
                 href="/videos" 
-                className="bg-[#3730a3] text-white px-[18px] py-2 rounded-full text-sm font-medium hover:bg-[#2e288a] transition"
+                className="bg-[#3730a3] text-white px-4.5 py-2 rounded-full text-sm font-medium hover:bg-[#2e288a] transition"
               >
                 My videos
               </Link>
@@ -91,7 +91,7 @@ export default function Navbar() {
               </Link>
               <Link 
                 href="/pricing" 
-                className="bg-[#3730a3] text-white px-[18px] py-2 rounded-full text-sm font-medium hover:bg-[#2e288a] transition"
+                className="bg-[#3730a3] text-white px-4.5 py-2 rounded-full text-sm font-medium hover:bg-[#2e288a] transition"
               >
                 Start membership
               </Link>
@@ -105,9 +105,9 @@ export default function Navbar() {
           className="md:hidden bg-none border-none cursor-pointer p-2 flex flex-col gap-1 items-center justify-center"
           aria-label="Toggle menu"
         >
-          <span className={`block w-[22px] height-[2px] bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "rotate-45 translate-y-[6px]" : ""}`} />
-          <span className={`block w-[22px] height-[2px] bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "opacity-0" : ""}`} />
-          <span className={`block w-[22px] height-[2px] bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "-rotate-45 -translate-y-[6px]" : ""}`} />
+          <span className={`block w-5.5 h-0.5 bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
+          <span className={`block w-5.5 h-0.5 bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "opacity-0" : ""}`} />
+          <span className={`block w-5.5 h-0.5 bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
         </button>
       </div>
 
@@ -161,7 +161,7 @@ export default function Navbar() {
               </>
             ) : !loading ? (
               <>
-                <Link href="/login" onClick={() => setMenuOpen(false)} className="text-sm text-[#3730a3] font-medium py-2精确">
+                <Link href="/login" onClick={() => setMenuOpen(false)} className="text-sm text-[#3730a3] font-medium py-2">
                   Sign in
                 </Link>
                 <Link 

@@ -5,25 +5,23 @@ const TOOL_EMBED_URL = "";
 const resourceCards = [
   {
     title: "What an AHA is / what an AHA isn't",
+    type: "Visual one-pager",
     description:
       "Two-column comparison: IS / ISN'T, plus one line at the bottom: Where you'll work.",
-    status: "Visual one-pager",
   },
   {
     title: "Before You Walk In",
+    type: "Printable resource",
     description:
       "Practical, self-check focused, not a repeat of the one-pager.",
-    status: "Printable resource",
   },
   {
     title: "Lesson plan: my warm-up activity",
+    type: "Worksheet",
     description:
       "Fillable version of the template designed so an AHA can complete it digitally or print it.",
-    status: "Worksheet",
   },
 ];
-
-const progressSteps = ["Watch", "Practice", "Do", "Reflect"];
 
 const videoBeats = [
   "The textbook definition vs the real one — an AHA implements what the AHP designs, but the how is entirely on you: tone, pace, patience, reading the room.",
@@ -78,7 +76,7 @@ export default function WelcomeToAhaRolePage() {
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
       <section className="mx-auto max-w-6xl px-6 py-10 md:py-14">
         {/* Breadcrumb */}
-        <nav className="mb-8 text-sm text-[#6b6880]" aria-label="Breadcrumb">
+        <nav className="mb-8 text-base text-[#5f5b73]" aria-label="Breadcrumb">
           <Link href="/" className="font-semibold text-[#0f766e] hover:underline">
             Academy
           </Link>
@@ -93,33 +91,38 @@ export default function WelcomeToAhaRolePage() {
           <span>Core — Module 1: Foundations</span>
         </nav>
 
-        {/* Topic Header */}
+        {/* Header */}
         <header className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <div className="mb-6 flex flex-wrap gap-3">
-            <span className="rounded-full bg-[#f0fdfa] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
+          <div className="mb-7 flex flex-wrap gap-3">
+            <span className="rounded-full bg-[#f0fdfa] px-5 py-3 text-base font-semibold text-[#0f766e]">
               Core — Module 1: Foundations
             </span>
-            <span className="rounded-full bg-[#eef2ff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#3730a3]">
+            <span className="rounded-full bg-[#eef2ff] px-5 py-3 text-base font-semibold text-[#3730a3]">
               Both — early childhood and school-age
             </span>
-            <span className="rounded-full bg-[#faf8f5] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6b6880]">
-              ~25 min
+            <span className="rounded-full bg-[#faf8f5] px-5 py-3 text-base font-semibold text-[#5f5b73]">
+              Approx. 25 min
             </span>
           </div>
 
-          <h1 className="mb-5 text-4xl font-bold leading-tight md:text-6xl">
+          <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
             Welcome to the Allied Health Assistant Role
           </h1>
 
-          <p className="mb-6 max-w-4xl text-lg leading-relaxed text-[#6b6880]">
-            AHAs are increasingly the ones in the room day to day — early
-            learning centres, classrooms, playgroups — implementing what the
-            supervising AHP has designed, as support shifts into everyday
-            community settings rather than clinic-only delivery.
-          </p>
+          <div className="mb-7 rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-6">
+            <p className="mb-2 text-lg font-semibold text-[#1e1b2e]">
+              Why this matters
+            </p>
+            <p className="text-lg leading-relaxed text-[#5f5b73]">
+              AHAs are increasingly the ones in the room day to day — early
+              learning centres, classrooms, playgroups — implementing what the
+              supervising AHP has designed, as support shifts into everyday
+              community settings rather than clinic-only delivery.
+            </p>
+          </div>
 
-          <div className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-5">
-            <p className="text-sm font-semibold text-[#1e1b2e]">
+          <div className="rounded-2xl border border-[#e8e4de] bg-white p-6">
+            <p className="text-lg font-semibold text-[#1e1b2e]">
               Builds on: exact copy needed
               <span className="mx-2 text-[#b0acbf]">—</span>
               Leads to: Your AHA Toolkit
@@ -127,27 +130,51 @@ export default function WelcomeToAhaRolePage() {
           </div>
         </header>
 
-        {/* Progress Indicator */}
-        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-6">
-          <div className="grid gap-3 md:grid-cols-4">
-            {progressSteps.map((step, index) => (
-              <div
-                key={step}
-                className="flex items-center gap-3 rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4"
-              >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0f766e] text-sm font-bold text-white">
-                  {index + 1}
-                </div>
-                <p className="font-semibold">{step}</p>
-              </div>
-            ))}
+        {/* Topic flow */}
+        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Topic flow
+          </p>
+
+          <h2 className="mb-6 text-3xl font-bold md:text-4xl">
+            What learners will do in this topic
+          </h2>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6">
+              <h3 className="mb-3 text-2xl font-bold">Watch</h3>
+              <p className="text-lg leading-relaxed text-[#5f5b73]">
+                Start with the audio/video walkthrough for this topic.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6">
+              <h3 className="mb-3 text-2xl font-bold">Practice</h3>
+              <p className="text-lg leading-relaxed text-[#5f5b73]">
+                Use the scenario practice and lesson plan worksheet.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6">
+              <h3 className="mb-3 text-2xl font-bold">Do</h3>
+              <p className="text-lg leading-relaxed text-[#5f5b73]">
+                Complete the hands-on warm-up activity.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6">
+              <h3 className="mb-3 text-2xl font-bold">Reflect</h3>
+              <p className="text-lg leading-relaxed text-[#5f5b73]">
+                Finish with the reflection and debrief questions.
+              </p>
+            </div>
           </div>
         </section>
 
         {/* Hook */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-[#1e1b2e] p-8 text-white md:p-10">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#99f6e4]">
-            The hook
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#99f6e4]">
+            Opening script
           </p>
 
           <blockquote className="text-xl leading-relaxed md:text-2xl">
@@ -163,40 +190,42 @@ export default function WelcomeToAhaRolePage() {
 
         {/* Watch */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div className="mb-7 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
                 Watch
               </p>
-              <h2 className="text-3xl font-bold">Audio/video walkthrough</h2>
+              <h2 className="text-3xl font-bold md:text-4xl">
+                Audio/video walkthrough
+              </h2>
             </div>
 
-            <span className="rounded-full bg-[#f0fdfa] px-4 py-2 text-sm font-semibold text-[#0f766e]">
+            <span className="rounded-full bg-[#f0fdfa] px-5 py-3 text-base font-semibold text-[#0f766e]">
               6 min
             </span>
           </div>
 
           <div className="mb-8 flex aspect-video items-center justify-center rounded-3xl border border-dashed border-[#d8d2c8] bg-[#faf8f5] p-8 text-center">
             <div>
-              <p className="mb-2 text-sm font-semibold text-[#1e1b2e]">
+              <p className="mb-3 text-lg font-semibold text-[#1e1b2e]">
                 Video placeholder
               </p>
-              <p className="text-sm text-[#6b6880]">
+              <p className="text-base leading-relaxed text-[#5f5b73]">
                 Add the final video URL here when it is ready.
               </p>
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {videoBeats.map((beat, index) => (
               <div
                 key={beat}
-                className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-5"
+                className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-6"
               >
-                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
+                <p className="mb-3 text-base font-semibold text-[#0f766e]">
                   Beat {index + 1}
                 </p>
-                <p className="text-sm leading-relaxed text-[#6b6880]">{beat}</p>
+                <p className="text-lg leading-relaxed text-[#5f5b73]">{beat}</p>
               </div>
             ))}
           </div>
@@ -204,11 +233,13 @@ export default function WelcomeToAhaRolePage() {
 
         {/* Resources */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-            Practice
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Practice resources
           </p>
 
-          <h2 className="mb-6 text-3xl font-bold">Resources</h2>
+          <h2 className="mb-7 text-3xl font-bold md:text-4xl">
+            Topic resources
+          </h2>
 
           <div className="grid gap-5 md:grid-cols-3">
             {resourceCards.map((resource) => (
@@ -216,13 +247,13 @@ export default function WelcomeToAhaRolePage() {
                 key={resource.title}
                 className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6"
               >
-                <p className="mb-4 inline-block rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#0f766e]">
-                  {resource.status}
+                <p className="mb-4 text-base font-semibold text-[#0f766e]">
+                  {resource.type}
                 </p>
 
-                <h3 className="mb-3 text-xl font-bold">{resource.title}</h3>
+                <h3 className="mb-4 text-2xl font-bold">{resource.title}</h3>
 
-                <p className="text-sm leading-relaxed text-[#6b6880]">
+                <p className="text-lg leading-relaxed text-[#5f5b73]">
                   {resource.description}
                 </p>
               </article>
@@ -232,15 +263,15 @@ export default function WelcomeToAhaRolePage() {
 
         {/* Interactive Embed */}
         <section className="mb-8 rounded-3xl border-2 border-[#0f766e] bg-white p-8 shadow-sm md:p-10">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
             Try it yourself
           </p>
 
-          <h2 className="mb-4 text-3xl font-bold">
+          <h2 className="mb-5 text-3xl font-bold md:text-4xl">
             Before You Walk In: Scenario Practice + lesson plan worksheet
           </h2>
 
-          <p className="mb-6 text-sm leading-relaxed text-[#6b6880]">
+          <p className="mb-7 text-lg leading-relaxed text-[#5f5b73]">
             Learner clicks through four scenarios with feedback, then a
             “Continue to your lesson plan” button reveals the fillable worksheet
             on the same page — no second Netlify deploy needed.
@@ -256,10 +287,10 @@ export default function WelcomeToAhaRolePage() {
             </div>
           ) : (
             <div className="rounded-3xl border border-dashed border-[#d8d2c8] bg-[#faf8f5] p-8 text-center">
-              <p className="mb-2 text-sm font-semibold text-[#1e1b2e]">
+              <p className="mb-3 text-lg font-semibold text-[#1e1b2e]">
                 Iframe URL not added yet
               </p>
-              <p className="text-sm text-[#6b6880]">
+              <p className="text-base leading-relaxed text-[#5f5b73]">
                 Add the final Netlify or Vercel tool URL to TOOL_EMBED_URL at
                 the top of this file.
               </p>
@@ -269,34 +300,34 @@ export default function WelcomeToAhaRolePage() {
 
         {/* Hands-on Activity */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-            Do
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Hands-on activity
           </p>
 
-          <h2 className="mb-4 text-3xl font-bold">
+          <h2 className="mb-5 text-3xl font-bold md:text-4xl">
             Activity: Run a 5-minute “welcome” warm-up
           </h2>
 
-          <p className="mb-6 max-w-4xl text-base leading-relaxed text-[#6b6880]">
+          <p className="mb-7 max-w-4xl text-lg leading-relaxed text-[#5f5b73]">
             The first thing a good AHA does with a new child isn't therapy —
             it's making them feel safe enough for therapy to work. This activity
             puts that into practice immediately.
           </p>
 
-          <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6">
-            <h3 className="mb-5 text-xl font-bold">Visible checklist</h3>
+          <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6 md:p-8">
+            <h3 className="mb-6 text-2xl font-bold">Activity checklist</h3>
 
             <div className="space-y-4">
               {handsOnChecklist.map((item) => (
                 <label
                   key={item}
-                  className="flex gap-4 rounded-2xl border border-[#e8e4de] bg-white p-4"
+                  className="flex gap-4 rounded-2xl border border-[#e8e4de] bg-white p-5"
                 >
                   <input
                     type="checkbox"
-                    className="mt-1 h-5 w-5 rounded border-[#d8d2c8]"
+                    className="mt-1 h-6 w-6 rounded border-[#d8d2c8]"
                   />
-                  <span className="text-sm leading-relaxed text-[#6b6880]">
+                  <span className="text-lg leading-relaxed text-[#5f5b73]">
                     {item}
                   </span>
                 </label>
@@ -304,7 +335,7 @@ export default function WelcomeToAhaRolePage() {
             </div>
 
             <div className="mt-6 rounded-2xl bg-white p-5">
-              <p className="text-sm font-semibold text-[#1e1b2e]">
+              <p className="text-lg font-semibold text-[#1e1b2e]">
                 Time: 10–15 min including setup
               </p>
             </div>
@@ -313,11 +344,11 @@ export default function WelcomeToAhaRolePage() {
 
         {/* Lesson Plan */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
             Lesson plan component
           </p>
 
-          <h2 className="mb-6 text-3xl font-bold">
+          <h2 className="mb-7 text-3xl font-bold md:text-4xl">
             Lesson plan: my warm-up activity
           </h2>
 
@@ -325,12 +356,12 @@ export default function WelcomeToAhaRolePage() {
             {lessonPlanItems.map((item) => (
               <div
                 key={item.label}
-                className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-5"
+                className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-6"
               >
-                <p className="mb-2 text-sm font-bold text-[#1e1b2e]">
+                <p className="mb-3 text-xl font-bold text-[#1e1b2e]">
                   {item.label}
                 </p>
-                <p className="text-sm leading-relaxed text-[#6b6880]">
+                <p className="text-lg leading-relaxed text-[#5f5b73]">
                   {item.text}
                 </p>
               </div>
@@ -340,11 +371,11 @@ export default function WelcomeToAhaRolePage() {
 
         {/* Reflection */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
             Reflect
           </p>
 
-          <h2 className="mb-6 text-3xl font-bold">
+          <h2 className="mb-7 text-3xl font-bold md:text-4xl">
             Reflection / debrief
           </h2>
 
@@ -352,9 +383,9 @@ export default function WelcomeToAhaRolePage() {
             {reflectionQuestions.map((question) => (
               <div
                 key={question}
-                className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-5"
+                className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-6"
               >
-                <p className="text-sm font-semibold text-[#1e1b2e]">
+                <p className="text-lg font-semibold leading-relaxed text-[#1e1b2e]">
                   {question}
                 </p>
               </div>
@@ -364,15 +395,15 @@ export default function WelcomeToAhaRolePage() {
 
         {/* Where Do You Stand */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#6b6880]">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#5f5b73]">
             Where Do You Stand?
           </p>
 
-          <h2 className="mb-4 text-3xl font-bold">
-            Exact self-check copy needed
+          <h2 className="mb-5 text-3xl font-bold md:text-4xl">
+            Self-check copy needed
           </h2>
 
-          <p className="text-sm leading-relaxed text-[#6b6880]">
+          <p className="text-lg leading-relaxed text-[#5f5b73]">
             This section is included in the reusable page structure, but Topic 1
             does not yet include exact “Where Do You Stand?” self-check copy.
           </p>
@@ -382,22 +413,22 @@ export default function WelcomeToAhaRolePage() {
         <nav className="grid gap-4 md:grid-cols-2">
           <Link
             href="/dashboard"
-            className="rounded-3xl border border-[#e8e4de] bg-white p-6 transition hover:border-[#0f766e]"
+            className="rounded-3xl border border-[#e8e4de] bg-white p-7 transition hover:border-[#0f766e]"
           >
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#6b6880]">
+            <p className="mb-3 text-base font-semibold text-[#5f5b73]">
               Previous
             </p>
-            <p className="text-xl font-bold">Academy dashboard</p>
+            <p className="text-2xl font-bold">Academy dashboard</p>
           </Link>
 
           <Link
             href="/allied-health/foundations/your-aha-toolkit"
-            className="rounded-3xl border border-[#e8e4de] bg-white p-6 text-right transition hover:border-[#0f766e]"
+            className="rounded-3xl border border-[#e8e4de] bg-white p-7 text-right transition hover:border-[#0f766e]"
           >
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+            <p className="mb-3 text-base font-semibold text-[#0f766e]">
               Next
             </p>
-            <p className="text-xl font-bold">Your AHA Toolkit</p>
+            <p className="text-2xl font-bold">Your AHA Toolkit</p>
           </Link>
         </nav>
       </section>

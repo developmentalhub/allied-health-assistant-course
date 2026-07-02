@@ -98,7 +98,7 @@ export default function Footer() {
           </div>
           <Link 
             href="/waitlist" 
-            className="text-xs font-semibold text-indigo-200 border border-indigo-900 rounded-full px-[18px] py-2 whitespace-nowrap hover:bg-[#38344e] transition"
+            className="text-xs font-semibold text-indigo-200 border border-indigo-900 rounded-full px-4.5 py-2 whitespace-nowrap hover:bg-[#38344e] transition"
           >
             Join the waitlist →
           </Link>
