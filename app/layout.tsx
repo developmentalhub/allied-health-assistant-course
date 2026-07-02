@@ -4,35 +4,72 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import GlobalBanner from "@/components/GlobalBanner";
 
 export const metadata: Metadata = {
-  title: "The Allied Health & Educator Resource Academy",
-  description: "Practical, movement-based strategies to support child self-regulation, reducing the overwhelm of modern classroom behaviours.",
-  keywords: "child development, developmental support, tummy time, fine motor skills, sensory play, school readiness, occupational therapy, developmental educator, online, telehealth",
+  title: {
+    default: "The Allied Health & Educator Resource Academy",
+    template: "%s | The Allied Health & Educator Resource Academy",
+  },
+  description:
+    "A Play Move Improve academy for allied health assistants, educators and support teams building practical confidence through movement, play, regulation and everyday implementation.",
+  keywords: [
+    "allied health assistant",
+    "educator resources",
+    "Play Move Improve",
+    "movement and regulation",
+    "child development",
+    "early childhood education",
+    "school age support",
+    "developmental educator",
+    "inclusive play",
+    "AHA training",
+  ],
   openGraph: {
     title: "The Allied Health & Educator Resource Academy",
-    description: "Practical, movement-based strategies to support child self-regulation, reducing the overwhelm of modern classroom behaviours.",
-    url: "https://developmental-hub.vercel.app",
-    siteName: "Developmental Hub",
-    images: [{ url: "https://pndihjsqkwbjewlulotg.supabase.co/storage/v1/object/public/public-assets/robyn-hero.png", width: 1200, height: 630, alt: "Robyn Papworth — Developmental Hub" }],
+    description:
+      "A Play Move Improve academy for allied health assistants, educators and support teams building practical confidence through movement, play, regulation and everyday implementation.",
+    url: "https://playmoveimprove.com",
+    siteName: "The Allied Health & Educator Resource Academy",
     type: "website",
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
+    <html lang="en-AU">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body style={{ fontFamily: "'DM Sans', sans-serif", color: "#1e1b2e", backgroundColor: "#faf8f5" }} className="antialiased">
+
+      <body
+        className="antialiased"
+        style={{
+          fontFamily: "'DM Sans', sans-serif",
+          color: "#1e1b2e",
+          backgroundColor: "#faf8f5",
+        }}
+      >
         <AuthProvider>
+          <GlobalBanner />
           <Navbar />
           {children}
           <Footer />
         </AuthProvider>
+
         <Analytics />
       </body>
     </html>
