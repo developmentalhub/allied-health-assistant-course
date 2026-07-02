@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact — Developmental Hub",
-  description: "Get in touch with the Developmental Hub team. Questions about membership, sessions, or your child's development — we are here to help.",
+  title: "Contact — Allied Health & Educator Resource Academy",
+  description:
+    "Get in touch with Play Move Improve about the Allied Health & Educator Resource Academy, course access, waitlist updates, or future training pathways.",
 };
