@@ -27,92 +27,148 @@ export default function Navbar() {
   const waitlistLink = { label: "Join the waitlist", href: "/waitlist" };
 
   return (
-    <nav style={{ position: "sticky", top: 0, zIndex: 50, backgroundColor: "#faf8f5", borderBottom: "1px solid #e8e4de" }}>
-      <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "64px" }}>
+    <nav className="sticky top-0 z-50 bg-[#faf8f5] border-b border-[#e8e4de]">
+      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
 
-        <Link href="/" style={{ textDecoration: "none", color: "#1e1b2e", fontWeight: 600, fontSize: "18px", flexShrink: 0 }}>
+        {/* Brand Link */}
+        <Link 
+          href="/" 
+          className="text-[#1e1b2e] font-semibold text-lg shrink-0 hover:opacity-90 transition"
+        >
           Developmental Hub
         </Link>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "32px" }} className="desktop-nav">
+        {/* Desktop Links Navigation */}
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", fontWeight: 500 }}>
+            <Link 
+              key={link.href} 
+              href={link.href} 
+              className="text-sm text-[#6b6880] font-medium hover:text-[#1e1b2e] transition"
+            >
               {link.label}
             </Link>
           ))}
-          <Link href={waitlistLink.href} style={{ fontSize: "14px", color: "#3730a3", textDecoration: "none", fontWeight: 600, borderBottom: "2px solid #3730a3", paddingBottom: "2px" }}>
+          <Link 
+            href={waitlistLink.href} 
+            className="text-sm text-[#3730a3] font-semibold border-b-2 border-[#3730a3] pb-0.5 hover:opacity-80 transition"
+          >
             {waitlistLink.label}
           </Link>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }} className="desktop-nav">
+        {/* Desktop Auth Actions */}
+        <div className="hidden md:flex items-center gap-4">
           {!loading && user ? (
             <>
               {(role === "admin" || role === "superadmin") && (
-                <Link href="/admin" style={{ color: "#c2410c", fontWeight: 600, fontSize: "14px" }}>Admin</Link>
+                <Link href="/admin" className="text-[#c2410c] font-semibold text-sm hover:opacity-80 transition">
+                  Admin
+                </Link>
               )}
               {(role === "facilitator" || role === "superadmin") && (
-                <Link href="/facilitator-hub" style={{ color: "#0f766e", fontWeight: 500, fontSize: "14px" }}>Facilitator Hub</Link>
+                <Link href="/facilitator-hub" className="text-[#0f766e] font-medium text-sm hover:opacity-80 transition">
+                  Facilitator Hub
+                </Link>
               )}
-              <Link href="/videos" style={{ backgroundColor: "#3730a3", color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>
+              <Link 
+                href="/videos" 
+                className="bg-[#3730a3] text-white px-[18px] py-2 rounded-full text-sm font-medium hover:bg-[#2e288a] transition"
+              >
                 My videos
               </Link>
-              <button onClick={handleSignOut} style={{ cursor: "pointer", border: "none", background: "none", color: "#6b6880", fontSize: "14px", fontFamily: "inherit" }}>
+              <button 
+                onClick={handleSignOut} 
+                className="cursor-pointer border-none bg-none text-[#6b6880] text-sm font-inherit hover:text-[#1e1b2e] transition"
+              >
                 Sign out
               </button>
             </>
           ) : !loading ? (
             <>
-              <Link href="/login" style={{ color: "#3730a3", fontSize: "14px", fontWeight: 500 }}>Sign in</Link>
-              <Link href="/pricing" style={{ background: "#3730a3", color: "white", padding: "8px 18px", borderRadius: "999px", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>
+              <Link href="/login" className="text-[#3730a3] text-sm font-medium hover:opacity-80 transition">
+                Sign in
+              </Link>
+              <Link 
+                href="/pricing" 
+                className="bg-[#3730a3] text-white px-[18px] py-2 rounded-full text-sm font-medium hover:bg-[#2e288a] transition"
+              >
                 Start membership
               </Link>
             </>
           ) : null}
         </div>
 
+        {/* Mobile Menu Action Toggle Button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="mobile-menu-btn"
-          style={{ background: "none", border: "none", cursor: "pointer", padding: "8px", display: "none", flexDirection: "column", gap: "5px", alignItems: "center", justifyContent: "center" }}
+          className="md:hidden bg-none border-none cursor-pointer p-2 flex flex-col gap-1 items-center justify-center"
           aria-label="Toggle menu"
         >
-          <span style={{ display: "block", width: "22px", height: "2px", backgroundColor: menuOpen ? "transparent" : "#1e1b2e", transition: "all 0.2s", transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
-          <span style={{ display: "block", width: "22px", height: "2px", backgroundColor: "#1e1b2e", transition: "all 0.2s", transform: menuOpen ? "rotate(-45deg)" : "none", marginTop: menuOpen ? "-7px" : "0" }} />
-          {!menuOpen && <span style={{ display: "block", width: "22px", height: "2px", backgroundColor: "#1e1b2e" }} />}
+          <span className={`block w-[22px] height-[2px] bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "rotate-45 translate-y-[6px]" : ""}`} />
+          <span className={`block w-[22px] height-[2px] bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "opacity-0" : ""}`} />
+          <span className={`block w-[22px] height-[2px] bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "-rotate-45 -translate-y-[6px]" : ""}`} />
         </button>
       </div>
 
+      {/* Mobile Menu Dropdown Panel */}
       {menuOpen && (
-        <div className="mobile-menu" style={{ backgroundColor: "#faf8f5", borderTop: "1px solid #e8e4de", padding: "16px 24px 24px", display: "none", flexDirection: "column", gap: "0" }}>
+        <div className="md:hidden bg-[#faf8f5] border-t border-[#e8e4de] px-6 py-4 flex flex-col">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)} style={{ fontSize: "16px", color: "#1e1b2e", textDecoration: "none", fontWeight: 500, padding: "14px 0", borderBottom: "1px solid #f0ede8", display: "block" }}>
+            <Link 
+              key={link.href} 
+              href={link.href} 
+              onClick={() => setMenuOpen(false)} 
+              className="text-base text-[#1e1b2e] font-medium py-3 border-b border-[#f0ede8] block"
+            >
               {link.label}
             </Link>
           ))}
-          <Link href={waitlistLink.href} onClick={() => setMenuOpen(false)} style={{ fontSize: "16px", color: "#3730a3", textDecoration: "none", fontWeight: 600, padding: "14px 0", borderBottom: "1px solid #f0ede8", display: "block" }}>
+          <Link 
+            href={waitlistLink.href} 
+            onClick={() => setMenuOpen(false)} 
+            className="text-base text-[#3730a3] font-semibold py-3 border-b border-[#f0ede8] block"
+          >
             {waitlistLink.label}
           </Link>
-          <div style={{ marginTop: "16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+          
+          <div className="mt-4 flex flex-col gap-2">
             {!loading && user ? (
               <>
                 {(role === "admin" || role === "superadmin") && (
-                  <Link href="/admin" onClick={() => setMenuOpen(false)} style={{ fontSize: "15px", color: "#c2410c", fontWeight: 600, textDecoration: "none", padding: "10px 0" }}>Admin</Link>
+                  <Link href="/admin" onClick={() => setMenuOpen(false)} className="text-sm text-[#c2410c] font-semibold py-2">
+                    Admin
+                  </Link>
                 )}
                 {(role === "facilitator" || role === "superadmin") && (
-                  <Link href="/facilitator-hub" onClick={() => setMenuOpen(false)} style={{ fontSize: "15px", color: "#0f766e", fontWeight: 500, textDecoration: "none", padding: "10px 0" }}>Facilitator Hub</Link>
+                  <Link href="/facilitator-hub" onClick={() => setMenuOpen(false)} className="text-sm text-[#0f766e] font-medium py-2">
+                    Facilitator Hub
+                  </Link>
                 )}
-                <Link href="/videos" onClick={() => setMenuOpen(false)} style={{ background: "#3730a3", color: "white", padding: "12px 24px", borderRadius: "999px", fontSize: "15px", fontWeight: 500, textDecoration: "none", textAlign: "center", marginTop: "8px" }}>
+                <Link 
+                  href="/videos" 
+                  onClick={() => setMenuOpen(false)} 
+                  className="bg-[#3730a3] text-white py-3 rounded-full text-sm font-medium text-center mt-2 shadow-xs"
+                >
                   My videos
                 </Link>
-                <button onClick={handleSignOut} style={{ cursor: "pointer", border: "none", background: "none", color: "#6b6880", fontSize: "15px", fontFamily: "inherit", textAlign: "left", padding: "10px 0" }}>
+                <button 
+                  onClick={handleSignOut} 
+                  className="cursor-pointer border-none bg-none text-[#6b6880] text-sm text-left py-2 font-inherit"
+                >
                   Sign out
                 </button>
               </>
             ) : !loading ? (
               <>
-                <Link href="/login" onClick={() => setMenuOpen(false)} style={{ fontSize: "15px", color: "#3730a3", fontWeight: 500, textDecoration: "none", padding: "10px 0" }}>Sign in</Link>
-                <Link href="/pricing" onClick={() => setMenuOpen(false)} style={{ background: "#3730a3", color: "white", padding: "12px 24px", borderRadius: "999px", fontSize: "15px", fontWeight: 500, textDecoration: "none", textAlign: "center", marginTop: "8px" }}>
+                <Link href="/login" onClick={() => setMenuOpen(false)} className="text-sm text-[#3730a3] font-medium py-2精确">
+                  Sign in
+                </Link>
+                <Link 
+                  href="/pricing" 
+                  onClick={() => setMenuOpen(false)} 
+                  className="bg-[#3730a3] text-white py-3 rounded-full text-sm font-medium text-center mt-2 shadow-xs"
+                >
                   Start membership
                 </Link>
               </>
@@ -120,14 +176,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-
-      <style>{`
-        @media (max-width: 768px) {
-          .desktop-nav { display: none !important; }
-          .mobile-menu-btn { display: flex !important; }
-          .mobile-menu { display: flex !important; }
-        }
-      `}</style>
     </nav>
   );
 }
