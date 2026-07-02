@@ -1,77 +1,82 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 
-// Configuration for the learning phases
-const LEARNING_PHASES = [
-  {
-    id: 'watch',
-    title: 'Watch',
-    description: 'We begin by observing clinical demonstrations. This establishes a visual baseline and helps you recognise correct technique before attempting the movement yourself.'
-  },
-  {
-    id: 'practice',
-    title: 'Practice',
-    description: 'You will simulate the activity in a controlled environment. This builds muscle memory and allows for safe experimentation without affecting the child’s outcome.'
-  },
-  {
-    id: 'do',
-    title: 'Do',
-    description: 'You perform the activity with the child under guidance. This is where theory meets real-world application, ensuring the child receives the targeted support they need.'
-  },
-  {
-    id: 'reflect',
-    title: 'Reflect',
-    description: 'We review the interaction to identify what went well and where to adjust. Reflection is the most important step for professional growth as an Allied Health Assistant.'
-  }
-];
-
-export default function TopicPage() {
-  const [activeStep, setActiveStep] = useState(LEARNING_PHASES[0]);
-
+export default function Home() {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
+    <div className="bg-[#faf8f5] min-h-screen text-[#1e1b2e]">
       
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">Working within the allied health team</h1>
-        <p className="text-slate-600">Our four-step methodology ensures you move from theory to high-quality clinical support.</p>
-      </header>
+      {/* Hero Section */}
+      <section className="max-w-5xl mx-auto px-6 py-20 text-center">
+        <span className="text-[#0f766e] font-semibold tracking-widest uppercase text-xs mb-4 block">
+          Welcome to the academy
+        </span>
+        <h1 className="text-4xl md:text-6xl font-bold text-[#1e1b2e] mb-8 leading-tight">
+          The Allied Health & Educator Resource Academy
+        </h1>
+        <p className="text-lg md:text-xl text-[#6b6880] max-w-2xl mx-auto leading-relaxed mb-12">
+          Practical, movement-based strategies to support child self-regulation, 
+          reducing the overwhelm of modern classroom and clinical behaviours.
+        </p>
+      </section>
 
-      {/* Interactive Stepper */}
-      <section className="mb-10">
-        <div className="flex items-center justify-between gap-2 mb-8 bg-slate-100 p-2 rounded-2xl">
-          {LEARNING_PHASES.map((step, index) => (
-            <button
-              key={step.id}
-              onClick={() => setActiveStep(step)}
-              className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all ${
-                activeStep.id === step.id 
-                  ? 'bg-white text-indigo-700 shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-800'
-              }`}
+      {/* Pathway Selection */}
+      <section className="max-w-6xl mx-auto px-6 pb-24">
+        <div className="grid md:grid-cols-2 gap-8">
+          
+          {/* Allied Health Pathway */}
+          <div className="bg-white p-10 rounded-3xl border border-[#e8e4de] shadow-sm hover:shadow-lg transition-all duration-300">
+            <div className="w-12 h-12 bg-[#f0fdfa] rounded-xl flex items-center justify-center mb-6">
+              <span className="text-2xl">🧠</span>
+            </div>
+            <h2 className="text-2xl font-bold mb-4">Allied Health Assistants</h2>
+            <p className="text-[#6b6880] mb-8 leading-relaxed">
+              Focused on <strong>Clinical Strategy Delivery</strong>. Access structured milestone 
+              trackers and implementation frameworks designed to bridge the gap between 
+              professional assessment and daily support.
+            </p>
+            <a 
+              href="/aha-pathway" 
+              className="inline-block bg-[#0f766e] text-white font-semibold py-3 px-6 rounded-xl hover:bg-[#0d6962] transition"
             >
-              <span className="mr-2 opacity-60">0{index + 1}</span>
-              {step.title}
-            </button>
-          ))}
-        </div>
+              Explore AHA Pathway
+            </a>
+          </div>
 
-        {/* Dynamic Content Card */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
-          <h2 className="text-xl font-bold text-indigo-900 mb-4">{activeStep.title}</h2>
-          <p className="text-slate-600 leading-relaxed text-lg">{activeStep.description}</p>
+          {/* Educator Pathway */}
+          <div className="bg-white p-10 rounded-3xl border border-[#e8e4de] shadow-sm hover:shadow-lg transition-all duration-300">
+            <div className="w-12 h-12 bg-[#eef2ff] rounded-xl flex items-center justify-center mb-6">
+              <span className="text-2xl">🌿</span>
+            </div>
+            <h2 className="text-2xl font-bold mb-4">Early Childhood Educators</h2>
+            <p className="text-[#6b6880] mb-8 leading-relaxed">
+              Focused on <strong>Classroom Regulation Support</strong>. Immediate movement 
+              tools to assist with screen-time dysregulation and Thriving Kids 
+              requirements without the extra administrative paperwork.
+            </p>
+            <a 
+              href="/educator-pathway" 
+              className="inline-block bg-[#3730a3] text-white font-semibold py-3 px-6 rounded-xl hover:bg-[#2e288a] transition"
+            >
+              Explore Educator Pathway
+            </a>
+          </div>
+
         </div>
       </section>
 
-      {/* Instructional Section */}
-      <section className="bg-indigo-900 text-indigo-50 rounded-2xl p-8">
-        <h3 className="text-lg font-bold mb-3">Ready to begin?</h3>
-        <p className="text-indigo-200 mb-6">Start with the Watch phase to observe your first clinical demonstration.</p>
-        <button className="bg-indigo-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-indigo-400 transition">
-          Start Watching →
-        </button>
+      {/* Trust & Methodology Section */}
+      <section className="bg-white border-t border-[#e8e4de] py-20">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-[#6b6880] mb-6">
+            The Methodology
+          </h3>
+          <p className="text-2xl md:text-3xl font-medium text-[#1e1b2e] leading-snug">
+            We simplify complex neurodevelopmental concepts into <span className="text-[#0f766e]">Watch, Practice, Do, and Reflect</span> cycles, empowering you to create sustainable change in the children you support.
+          </p>
+        </div>
       </section>
-      
+
     </div>
   );
 }
