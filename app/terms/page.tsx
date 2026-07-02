@@ -1,11 +1,9 @@
 import Link from "next/link";
 
 export default function TermsPage() {
-  const lastUpdated = "22 May 2026";
-
   return (
-    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
-      <section className="mx-auto max-w-4xl px-6 py-14 md:py-20">
+    <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
+      <section className="mx-auto max-w-4xl">
         <div className="mb-10">
           <Link
             href="/"
@@ -15,202 +13,173 @@ export default function TermsPage() {
           </Link>
         </div>
 
-        <header className="mb-12">
+        <header className="mb-10">
           <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-            Legal
+            Terms of use
           </p>
 
-          <h1 className="mb-4 text-4xl font-bold leading-tight md:text-6xl">
-            Terms and Conditions
+          <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
+            Allied Health & Educator Resource Academy terms
           </h1>
 
-          <p className="text-lg text-[#5f5b73]">
-            Last updated {lastUpdated}
+          <p className="text-xl leading-relaxed text-[#5f5b73]">
+            These draft terms explain how the academy platform, learning
+            resources, community spaces and future membership access are
+            intended to be used.
           </p>
         </header>
 
-        <div className="mb-10 rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
-          <h2 className="mb-4 text-2xl font-bold">
-            Draft notice
-          </h2>
-
-          <p className="text-lg leading-relaxed text-[#5f5b73]">
-            These terms are a working draft for the Allied Health & Educator Resource Academy. They should be reviewed before paid enrolments, memberships, or community access are launched.
-          </p>
-        </div>
-
-        <div className="space-y-10 text-lg leading-relaxed text-[#4a4660]">
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              1. About us
-            </h2>
-
+        <div className="space-y-6 rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-10">
+          <TermsSection title="1. About us">
             <p>
-              The Allied Health & Educator Resource Academy is operated by Play Move Improve Pty Ltd (ABN: 17 415 190 263), a company registered in Victoria, Australia. References to “we”, “us”, or “our” in these terms refer to Play Move Improve Pty Ltd. References to “you” refer to any person who accesses or uses the academy platform.
+              The Allied Health & Educator Resource Academy is created by Play
+              Move Improve Pty Ltd in Victoria, Australia.
             </p>
-          </section>
+          </TermsSection>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              2. Acceptance of terms
-            </h2>
-
+          <TermsSection title="2. Acceptance of these terms">
             <p>
-              By creating an account, accessing course material, joining a membership area, or using the platform, you agree to be bound by these Terms and Conditions and our Privacy Policy. If you do not agree, please do not use the platform.
+              By using this website, joining the waitlist, creating an account,
+              accessing learning resources, or participating in academy spaces,
+              you agree to use the platform respectfully and only for lawful
+              purposes.
             </p>
-          </section>
+          </TermsSection>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              3. The platform
-            </h2>
-
-            <p className="mb-4">
-              The academy platform may include online courses, topic pages, embedded tools, downloadable resources, live sessions, saved recordings, membership areas, and community features.
-            </p>
-
+          <TermsSection title="3. Platform purpose">
             <p>
-              Platform content is provided for education, training, professional learning, and general information. It does not replace individual supervision, workplace policies, professional judgement, or advice from an appropriately qualified professional.
+              The academy provides professional learning, practical resources,
+              implementation tools, reflection prompts, community support and
+              pathway-based training for allied health assistants, educators and
+              related professionals.
             </p>
-          </section>
+          </TermsSection>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              4. Course and membership access
-            </h2>
-
-            <p className="mb-4">
-              Access to some parts of the academy may require payment, enrolment approval, a valid subscription, or a specific access level.
-            </p>
-
+          <TermsSection title="4. Course and membership access">
             <p>
-              We may update, add, remove, or change platform content over time as the academy develops.
+              Some academy content may be free, some may require account access,
+              and some may require a paid course, membership, licence or future
+              subscription. Access rules may change as the academy is developed.
             </p>
-          </section>
+          </TermsSection>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              5. Payments
-            </h2>
-
-            <p className="mb-4">
-              Payments may be processed through Stripe or another secure payment provider. We do not store your card details on our servers.
-            </p>
-
+          <TermsSection title="5. Payments and access">
             <p>
-              Specific prices, inclusions, billing periods, cancellation terms, and refund terms will be shown at the time of purchase.
+              Payment access is not fully active yet. When payments are
+              connected, any paid access terms, refund conditions, cancellation
+              rules and licence details will be clearly shown before purchase.
             </p>
-          </section>
+          </TermsSection>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              6. Community conduct
-            </h2>
-
-            <p className="mb-4">
-              If you access a community or membership area, you agree to participate respectfully and professionally.
+          <TermsSection title="6. Professional responsibility">
+            <p>
+              Academy resources are educational in nature. They do not replace
+              individual professional judgement, supervision, clinical
+              reasoning, workplace policy, legal duties, safeguarding
+              obligations, or advice from a qualified professional who knows the
+              specific situation.
             </p>
+          </TermsSection>
 
-            <p className="mb-4">
-              You agree not to harass, abuse, threaten, shame, or disclose private information about other members, children, families, workplaces, or professionals.
+          <TermsSection title="7. Community conduct">
+            <p>
+              You agree not to harass, abuse, threaten, shame, or disclose
+              private information about other members, learners, workplaces, or
+              professionals. Community spaces must be used respectfully and with
+              care.
+            </p>
+          </TermsSection>
+
+          <TermsSection title="8. Privacy and confidentiality">
+            <p>
+              You must not upload, share or discuss identifying personal
+              information unless you have the right consent and a lawful reason
+              to do so. De-identified examples should be used wherever possible.
+            </p>
+          </TermsSection>
+
+          <TermsSection title="9. Intellectual property">
+            <p>
+              All academy content, including videos, worksheets, written
+              resources, graphics, activities, frameworks and downloadable
+              materials, remains the intellectual property of Play Move Improve
+              Pty Ltd unless otherwise stated.
             </p>
 
             <p>
-              We may remove posts, restrict access, or cancel membership access if community conduct expectations are not followed.
+              You may use resources for your own learning and approved
+              implementation setting. You may not resell, redistribute, upload,
+              copy, rebrand, or train others using academy materials unless
+              written permission or a licence specifically allows it.
             </p>
-          </section>
+          </TermsSection>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              7. User responsibilities
-            </h2>
-
-            <p className="mb-4">
-              You agree not to:
-            </p>
-
-            <ul className="list-disc space-y-3 pl-6">
-              <li>Share your login details with another person</li>
-              <li>Copy, reproduce, or distribute academy content without permission</li>
-              <li>Use the platform for unlawful, unsafe, or misleading purposes</li>
-              <li>Represent academy content as individual clinical advice</li>
-              <li>Upload content that breaches another person’s privacy or rights</li>
-              <li>Provide false or misleading information when creating an account</li>
-            </ul>
-          </section>
-
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              8. Intellectual property
-            </h2>
-
+          <TermsSection title="10. External tools and links">
             <p>
-              All academy content, including course materials, videos, worksheets, tools, text, graphics, downloads, platform structure, and related resources, is owned by Play Move Improve Pty Ltd or licensed to us. You may not reproduce, distribute, adapt, sell, or use our content for commercial purposes without our prior written consent.
+              The academy may link to external platforms, embedded tools,
+              payment providers, email services, video platforms, forms or
+              community spaces. Those services may have their own terms and
+              privacy policies.
             </p>
-          </section>
+          </TermsSection>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              9. External links and embedded tools
-            </h2>
-
+          <TermsSection title="11. Availability and changes">
             <p>
-              The platform may link to or embed external tools, videos, forms, communities, file storage, or third-party services. We are not responsible for the availability, security, or content of third-party platforms.
+              The academy is being built and improved over time. Pages,
+              resources, prices, access rules, tools, pathways and features may
+              change as the platform develops.
             </p>
-          </section>
+          </TermsSection>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              10. Limitation of liability
-            </h2>
-
-            <p className="mb-4">
-              To the maximum extent permitted by law, Play Move Improve Pty Ltd is not liable for indirect, incidental, or consequential loss arising from your use of the platform.
-            </p>
-
+          <TermsSection title="12. Limitation of liability">
             <p>
-              Nothing in these terms limits any rights you may have under Australian Consumer Law or other laws that cannot be excluded.
+              To the extent allowed by law, Play Move Improve Pty Ltd is not
+              liable for loss, damage, injury, interruption, misuse of resources,
+              or decisions made from general educational content without
+              appropriate professional judgement and supervision.
             </p>
-          </section>
+          </TermsSection>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              11. Changes to these terms
-            </h2>
-
+          <TermsSection title="13. Governing law">
             <p>
-              We may update these terms from time to time. If changes are material, we may notify users by email or by posting a notice on the platform.
+              These terms are governed by the laws of Victoria, Australia.
             </p>
-          </section>
+          </TermsSection>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              12. Governing law
-            </h2>
-
+          <TermsSection title="14. Contact">
             <p>
-              These terms are governed by the laws of Victoria, Australia. Any disputes will be subject to the jurisdiction of the courts of Victoria.
+              For questions about these terms, academy access or use of
+              resources, please contact Play Move Improve through the contact
+              page.
             </p>
-          </section>
 
-          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
-            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
-              13. Contact us
-            </h2>
-
-            <p>
-              If you have any questions about these terms, please contact us at{" "}
-              <a
-                href="mailto:robyn@playmoveimprove.com.au"
-                className="font-semibold text-[#0f766e] hover:underline"
-              >
-                robyn@playmoveimprove.com.au
-              </a>
-              .
-            </p>
-          </section>
+            <Link
+              href="/contact"
+              className="inline-flex rounded-full bg-[#0f766e] px-6 py-3 text-base font-semibold text-white transition hover:bg-[#0d6962]"
+            >
+              Contact Play Move Improve
+            </Link>
+          </TermsSection>
         </div>
       </section>
     </main>
+  );
+}
+
+function TermsSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="border-b border-[#f0ede8] pb-6 last:border-b-0 last:pb-0">
+      <h2 className="mb-3 text-2xl font-bold text-[#1e1b2e]">{title}</h2>
+
+      <div className="space-y-4 text-lg leading-relaxed text-[#5f5b73]">
+        {children}
+      </div>
+    </section>
   );
 }
