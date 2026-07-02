@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -22,14 +22,12 @@ function LoginForm() {
     setLoading(true);
     setError("");
 
-    console.log('Attempting sign in...');
+    const cleanEmail = email.trim().toLowerCase();
 
     const { error: signInError } = await supabase.auth.signInWithPassword({
-      email,
+      email: cleanEmail,
       password,
     });
-
-    console.log('Sign in result:', signInError);
 
     if (signInError) {
       setError(signInError.message);
@@ -37,11 +35,9 @@ function LoginForm() {
       return;
     }
 
-    console.log('Getting user...');
-
-    const { data: { user } } = await supabase.auth.getUser();
-
-    console.log('User:', user?.email);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       setError("Something went wrong. Please try again.");
@@ -55,9 +51,7 @@ function LoginForm() {
       .eq("id", user.id)
       .single();
 
-    const role = profile?.role || "parent";
-
-    console.log('Role:', role);
+    const role = profile?.role || "learner";
 
     if (redirectTo) {
       router.push(redirectTo);
@@ -71,101 +65,122 @@ function LoginForm() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#faf8f5", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 16px" }}>
-      <div style={{ width: "100%", maxWidth: "480px", paddingTop: "48px", paddingBottom: "48px" }}>
-
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "24px" }}>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <circle cx="16" cy="16" r="16" fill="#3730a3" />
-              <path d="M10 9h6.5C20.09 9 23 11.91 23 16s-2.91 7-6.5 7H10V9z" fill="white" opacity="0.9" />
-              <circle cx="16" cy="16" r="3" fill="#3730a3" />
-            </svg>
-            <span style={{ fontFamily: "var(--font-display)", color: "#1e1b2e", fontWeight: 600, fontSize: "18px" }}>
-              Developmental Hub
-            </span>
-          </Link>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "30px", fontWeight: 300, color: "#1e1b2e", marginBottom: "8px" }}>
-            Welcome back
-          </h1>
-          <p style={{ fontSize: "14px", color: "#6b6880" }}>
-            Sign in to your Developmental Hub account
-          </p>
-        </div>
-
-        {/* Changed container to an HTML form element with onSubmit */}
-        <form 
-          onSubmit={handleLogin} 
-          style={{ background: "white", borderRadius: "16px", border: "1px solid #e8e4de", padding: "40px 48px", boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}
-        >
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: "24px" }}>
-
-            <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
-              <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>
-                Email address
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="jane@example.com"
-                required
-                style={{ width: "100%", padding: "10px 16px", borderRadius: "12px", border: "1px solid #e8e4de", fontSize: "14px", color: "#1e1b2e", outline: "none", boxSizing: "border-box" as const }}
-              />
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <label style={{ fontSize: "14px", fontWeight: 500, color: "#1e1b2e" }}>
-                  Password
-                </label>
-                <Link href="/forgot-password" style={{ fontSize: "12px", color: "#3730a3" }}>
-                  Forgot password?
-                </Link>
-              </div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Your password"
-                required
-                style={{ width: "100%", padding: "10px 16px", borderRadius: "12px", border: "1px solid #e8e4de", fontSize: "14px", color: "#1e1b2e", outline: "none", boxSizing: "border-box" as const }}
-              />
-            </div>
-
-            {error && (
-              <div style={{ backgroundColor: "#fef2f2", border: "1px solid #fecaca", color: "#b91c1c", fontSize: "14px", padding: "12px 16px", borderRadius: "12px" }}>
-                {error}
-              </div>
-            )}
-
-            {/* Changed to type="submit" and removed explicit onClick */}
-            <button
-              type="submit"
-              disabled={loading}
-              style={{ marginTop: "8px", width: "100%", backgroundColor: "#3730a3", color: "white", padding: "12px", borderRadius: "999px", fontSize: "14px", fontWeight: 500, border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.6 : 1 }}
+    <main className="min-h-screen bg-[#faf8f5] px-4 py-12 text-[#1e1b2e]">
+      <section className="mx-auto flex min-h-[calc(100vh-96px)] max-w-6xl items-center justify-center">
+        <div className="w-full max-w-xl">
+          <div className="mb-8 text-center">
+            <Link
+              href="/"
+              className="mb-6 inline-flex items-center justify-center gap-3"
             >
-              {loading ? "Signing in..." : "Sign in"}
-            </button>
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0f766e] text-lg text-white">
+                ✦
+              </div>
 
+              <span className="text-lg font-bold text-[#1e1b2e]">
+                Allied Health & Educator Resource Academy
+              </span>
+            </Link>
+
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Learner login
+            </p>
+
+            <h1 className="mb-3 text-4xl font-bold">
+              Welcome back
+            </h1>
+
+            <p className="mx-auto max-w-md text-sm leading-relaxed text-[#6b6880]">
+              Sign in to continue to your academy dashboard.
+            </p>
           </div>
 
-          <p style={{ textAlign: "center", fontSize: "14px", color: "#6b6880", marginTop: "24px" }}>
-            Don't have an account?{" "}
-            <Link href={`/signup${redirectTo ? `?redirect=${redirectTo}` : ""}`} style={{ color: "#3730a3", fontWeight: 500 }}>
-              Join free
-            </Link>
-          </p>
-        </form>
+          <form
+            onSubmit={handleLogin}
+            className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8"
+          >
+            <div className="space-y-5">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="mb-2 block text-sm font-semibold text-[#1e1b2e]"
+                >
+                  Email address
+                </label>
 
-      </div>
-    </div>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="jane@example.com"
+                  required
+                  className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-sm text-[#1e1b2e] outline-none transition focus:border-[#0f766e]"
+                />
+              </div>
+
+              <div>
+                <div className="mb-2 flex items-center justify-between gap-4">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-semibold text-[#1e1b2e]"
+                  >
+                    Password
+                  </label>
+
+                  <Link
+                    href="/forgot-password"
+                    className="text-xs font-semibold text-[#0f766e] hover:underline"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
+
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Your password"
+                  required
+                  className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-sm text-[#1e1b2e] outline-none transition focus:border-[#0f766e]"
+                />
+              </div>
+
+              {error && (
+                <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loading ? "Signing in..." : "Sign in"}
+              </button>
+            </div>
+
+            <p className="mt-6 text-center text-sm text-[#6b6880]">
+              Don&apos;t have an account?{" "}
+              <Link
+                href={`/signup${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`}
+                className="font-semibold text-[#0f766e] hover:underline"
+              >
+                Create learner account
+              </Link>
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
   );
 }
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }} />}>
+    <Suspense fallback={<main className="min-h-screen bg-[#faf8f5]" />}>
       <LoginForm />
     </Suspense>
   );

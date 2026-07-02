@@ -1,82 +1,212 @@
 "use client";
 
-import React from 'react';
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="bg-[#faf8f5] min-h-screen text-[#1e1b2e]">
-      
-      {/* Hero Section */}
-      <section className="max-w-5xl mx-auto px-6 py-20 text-center">
-        <span className="text-[#0f766e] font-semibold tracking-widest uppercase text-xs mb-4 block">
+    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
+      {/* Hero */}
+      <section className="mx-auto max-w-6xl px-6 py-20 text-center">
+        <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.25em] text-[#0f766e]">
           Welcome to the academy
         </span>
-        <h1 className="text-4xl md:text-6xl font-bold text-[#1e1b2e] mb-8 leading-tight">
+
+        <h1 className="mx-auto mb-8 max-w-4xl text-4xl font-bold leading-tight md:text-6xl">
           The Allied Health & Educator Resource Academy
         </h1>
-        <p className="text-lg md:text-xl text-[#6b6880] max-w-2xl mx-auto leading-relaxed mb-12">
-          Practical, movement-based strategies to support child self-regulation, 
-          reducing the overwhelm of modern classroom and clinical behaviours.
+
+        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-[#6b6880] md:text-xl">
+          One platform with two wings: Allied Health and Educator.
         </p>
       </section>
 
-      {/* Pathway Selection */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="grid md:grid-cols-2 gap-8">
-          
-          {/* Allied Health Pathway */}
-          <div className="bg-white p-10 rounded-3xl border border-[#e8e4de] shadow-sm hover:shadow-lg transition-all duration-300">
-            <div className="w-12 h-12 bg-[#f0fdfa] rounded-xl flex items-center justify-center mb-6">
-              <span className="text-2xl">🧠</span>
+      {/* Platform wings */}
+      <section className="mx-auto max-w-6xl px-6 pb-20">
+        <div className="grid gap-8 md:grid-cols-2">
+          {/* Allied Health Wing */}
+          <div className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f0fdfa] text-2xl">
+              🧠
             </div>
-            <h2 className="text-2xl font-bold mb-4">Allied Health Assistants</h2>
-            <p className="text-[#6b6880] mb-8 leading-relaxed">
-              Focused on <strong>Clinical Strategy Delivery</strong>. Access structured milestone 
-              trackers and implementation frameworks designed to bridge the gap between 
-              professional assessment and daily support.
+
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Wing one
             </p>
-            <a 
-              href="/aha-pathway" 
-              className="inline-block bg-[#0f766e] text-white font-semibold py-3 px-6 rounded-xl hover:bg-[#0d6962] transition"
-            >
-              Explore AHA Pathway
-            </a>
+
+            <h2 className="mb-5 text-3xl font-bold">
+              Allied Health
+            </h2>
+
+            <div className="space-y-3 text-sm leading-relaxed text-[#6b6880]">
+              <p>
+                Foundations module
+              </p>
+              <p>
+                Developmental milestones series
+              </p>
+              <p>
+                Specialty tracks
+              </p>
+              <p>
+                Business partnership module
+              </p>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/allied-health/foundations/welcome-to-aha-role"
+                className="rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                View first topic layout
+              </Link>
+
+              <Link
+                href="/community"
+                className="rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+              >
+                View AHA membership hub
+              </Link>
+            </div>
           </div>
 
-          {/* Educator Pathway */}
-          <div className="bg-white p-10 rounded-3xl border border-[#e8e4de] shadow-sm hover:shadow-lg transition-all duration-300">
-            <div className="w-12 h-12 bg-[#eef2ff] rounded-xl flex items-center justify-center mb-6">
-              <span className="text-2xl">🌿</span>
+          {/* Educator Wing */}
+          <div className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eef2ff] text-2xl">
+              🌿
             </div>
-            <h2 className="text-2xl font-bold mb-4">Early Childhood Educators</h2>
-            <p className="text-[#6b6880] mb-8 leading-relaxed">
-              Focused on <strong>Classroom Regulation Support</strong>. Immediate movement 
-              tools to assist with screen-time dysregulation and Thriving Kids 
-              requirements without the extra administrative paperwork.
-            </p>
-            <a 
-              href="/educator-pathway" 
-              className="inline-block bg-[#3730a3] text-white font-semibold py-3 px-6 rounded-xl hover:bg-[#2e288a] transition"
-            >
-              Explore Educator Pathway
-            </a>
-          </div>
 
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#3730a3]">
+              Wing two
+            </p>
+
+            <h2 className="mb-5 text-3xl font-bold">
+              Educator
+            </h2>
+
+            <div className="space-y-3 text-sm leading-relaxed text-[#6b6880]">
+              <p>
+                Educator pathway
+              </p>
+              <p>
+                Joyful Educator tools
+              </p>
+              <p>
+                Movement and regulation resources
+              </p>
+              <p>
+                Future educator modules
+              </p>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/educator"
+                className="rounded-full bg-[#3730a3] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2e288a]"
+              >
+                View educator wing
+              </Link>
+
+              <a
+                href="https://pmi-joyful-educator.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-[#c7d2fe] bg-[#eef2ff] px-6 py-3 text-sm font-semibold text-[#3730a3] transition hover:bg-[#e0e7ff]"
+              >
+                Open current Joyful Educator site
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Trust & Methodology Section */}
-      <section className="bg-white border-t border-[#e8e4de] py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-[#6b6880] mb-6">
-            The Methodology
-          </h3>
-          <p className="text-2xl md:text-3xl font-medium text-[#1e1b2e] leading-snug">
-            We simplify complex neurodevelopmental concepts into <span className="text-[#0f766e]">Watch, Practice, Do, and Reflect</span> cycles, empowering you to create sustainable change in the children you support.
-          </p>
+      {/* Shared structure */}
+      <section className="border-y border-[#e8e4de] bg-white py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-10 text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#6b6880]">
+              Reusable learning structure
+            </p>
+            <h2 className="text-3xl font-bold md:text-4xl">
+              One topic page template
+            </h2>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-4">
+            {["Watch", "Practice", "Do", "Reflect"].map((step, index) => (
+              <div
+                key={step}
+                className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-6 text-center"
+              >
+                <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-bold text-[#0f766e]">
+                  {index + 1}
+                </div>
+                <h3 className="text-xl font-bold">{step}</h3>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-    </div>
+      {/* Membership */}
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <div className="rounded-3xl bg-[#1e1b2e] p-8 text-white md:p-12">
+          <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr] md:items-center">
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#99f6e4]">
+                Monthly membership
+              </p>
+
+              <h2 className="mb-5 text-3xl font-bold md:text-4xl">
+                AHA Community Hub
+              </h2>
+
+              <div className="space-y-3 text-sm leading-relaxed text-[#d9d7e5]">
+                <p>
+                  A private space for AHAs to connect.
+                </p>
+                <p>
+                  Monthly live Zooms.
+                </p>
+                <p>
+                  Saved recordings.
+                </p>
+                <p>
+                  A simple member feed for posts, photos, questions and updates.
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-white/10 p-6">
+              <p className="mb-4 text-sm font-semibold text-white">
+                Demo links
+              </p>
+
+              <div className="flex flex-col gap-3">
+                <Link
+                  href="/community"
+                  className="rounded-full bg-white px-5 py-3 text-center text-sm font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
+                >
+                  View community hub
+                </Link>
+
+                <Link
+                  href="/signup"
+                  className="rounded-full border border-white/25 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10"
+                >
+                  Signup
+                </Link>
+
+                <Link
+                  href="/subscribe"
+                  className="rounded-full border border-white/25 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10"
+                >
+                  Subscribe
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
