@@ -2,26 +2,41 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: "#1e1b2e", padding: "48px 24px", fontFamily: "DM Sans, sans-serif" }}>
-      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+    <footer className="bg-[#1e1b2e] px-6 py-12 font-sans">
+      <div className="max-w-6xl mx-auto">
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "40px", marginBottom: "40px" }}>
+        {/* Links Directories Columns Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-10">
 
-          {/* Brand */}
+          {/* Primary Business Identity Block */}
           <div>
-            <p style={{ fontSize: "16px", fontWeight: 600, color: "white", margin: "0 0 8px" }}>Developmental Hub</p>
-            <p style={{ fontSize: "13px", color: "#6b7280", margin: "0 0 20px", lineHeight: 1.6 }}>
+            <p className="text-base font-semibold text-white mb-2">
+              Developmental Hub
+            </p>
+            <p className="text-xs text-slate-400 mb-5 leading-relaxed">
               A Play Move Improve Pty Ltd platform.<br />Victoria, Australia.
             </p>
-            <div style={{ display: "flex", gap: "12px" }}>
-              <a href="https://www.instagram.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ width: "36px", height: "36px", borderRadius: "8px", backgroundColor: "#2d2a3e", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div className="flex gap-3">
+              <a 
+                href="https://www.instagram.com/playmoveimprove" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-9 h-9 rounded-lg bg-[#2d2a3e] flex items-center justify-center hover:bg-[#38344e] transition"
+                aria-label="Instagram Profile"
+              >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                   <circle cx="12" cy="12" r="4"/>
                   <circle cx="17.5" cy="6.5" r="0.5" fill="#9ca3af"/>
                 </svg>
               </a>
-              <a href="https://www.facebook.com/playmoveimprove" target="_blank" rel="noopener noreferrer" style={{ width: "36px", height: "36px", borderRadius: "8px", backgroundColor: "#2d2a3e", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <a 
+                href="https://www.facebook.com/playmoveimprove" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-9 h-9 rounded-lg bg-[#2d2a3e] flex items-center justify-center hover:bg-[#38344e] transition"
+                aria-label="Facebook Page"
+              >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
                 </svg>
@@ -29,59 +44,75 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* For families */}
+          {/* Families Category Columns */}
           <div>
-            <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7280", margin: "0 0 16px" }}>For families</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <Link href="/videos/free" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Free videos</Link>
-              <Link href="/pricing" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Membership</Link>
-              <Link href="/cup-sequence" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Cup Rhythm Series</Link>
-              <Link href="/register-interest" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Request content</Link>
-              <Link href="/waitlist" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Join the waitlist</Link>
+            <p className="text-xs font-semibold tracking-wider uppercase text-slate-500 mb-4">
+              For families
+            </p>
+            <div className="flex flex-col gap-2.5">
+              <Link href="/videos/free" className="text-sm text-slate-400 hover:text-white transition">Free videos</Link>
+              <Link href="/pricing" className="text-sm text-slate-400 hover:text-white transition">Membership</Link>
+              <Link href="/cup-sequence" className="text-sm text-slate-400 hover:text-white transition">Cup Rhythm Series</Link>
+              <Link href="/register-interest" className="text-sm text-slate-400 hover:text-white transition">Request content</Link>
+              <Link href="/waitlist" className="text-sm text-slate-400 hover:text-white transition">Join the waitlist</Link>
             </div>
           </div>
 
-          {/* Members */}
+          {/* Members Information Navigation */}
           <div>
-            <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7280", margin: "0 0 16px" }}>Members</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <Link href="/videos" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Video library</Link>
-              <Link href="/resources" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Activity sheets</Link>
-              <Link href="/forum" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Community</Link>
-              <Link href="/qanda" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Monthly Q&A</Link>
+            <p className="text-xs font-semibold tracking-wider uppercase text-slate-500 mb-4">
+              Members
+            </p>
+            <div className="flex flex-col gap-2.5">
+              <Link href="/videos" className="text-sm text-slate-400 hover:text-white transition">Video library</Link>
+              <Link href="/resources" className="text-sm text-slate-400 hover:text-white transition">Activity sheets</Link>
+              <Link href="/forum" className="text-sm text-slate-400 hover:text-white transition">Community</Link>
+              <Link href="/qanda" className="text-sm text-slate-400 hover:text-white transition">Monthly Q&A</Link>
             </div>
           </div>
 
-          {/* Company */}
+          {/* Company Context Links */}
           <div>
-            <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6b7280", margin: "0 0 16px" }}>Company</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <Link href="/about" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>About us</Link>
-              <Link href="/contact" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>About & Contact</Link>
-              <Link href="/terms" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Terms</Link>
-              <Link href="/privacy" style={{ fontSize: "14px", color: "#9ca3af", textDecoration: "none" }}>Privacy policy</Link>
+            <p className="text-xs font-semibold tracking-wider uppercase text-slate-500 mb-4">
+              Company
+            </p>
+            <div className="flex flex-col gap-2.5">
+              <Link href="/about" className="text-sm text-slate-400 hover:text-white transition">About us</Link>
+              <Link href="/contact" className="text-sm text-slate-400 hover:text-white transition">About & Contact</Link>
+              <Link href="/terms" className="text-sm text-slate-400 hover:text-white transition">Terms</Link>
+              <Link href="/privacy" className="text-sm text-slate-400 hover:text-white transition">Privacy policy</Link>
             </div>
           </div>
 
         </div>
 
-        {/* Waitlist section */}
-        <div style={{ backgroundColor: "#2d2a3e", borderRadius: "14px", padding: "24px 28px", marginBottom: "32px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "24px", flexWrap: "wrap" }}>
+        {/* Secondary Subscription Notification Bar */}
+        <div className="bg-[#2d2a3e] rounded-xl p-6 md:p-8 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div>
-            <p style={{ fontSize: "14px", fontWeight: 600, color: "white", margin: "0 0 4px" }}>Not ready to subscribe yet?</p>
-            <p style={{ fontSize: "13px", color: "#9ca3af", margin: 0 }}>Tell us what your family needs and we'll build toward it.</p>
+            <p className="text-sm font-semibold text-white mb-1">
+              Not ready to subscribe yet?
+            </p>
+            <p className="text-xs text-slate-400">
+              Tell us what your family needs and we will build toward it.
+            </p>
           </div>
-          <Link href="/waitlist" style={{ fontSize: "13px", fontWeight: 600, color: "#a5b4fc", textDecoration: "none", border: "1px solid #4338ca", borderRadius: "999px", padding: "8px 18px", whiteSpace: "nowrap" as const }}>
+          <Link 
+            href="/waitlist" 
+            className="text-xs font-semibold text-indigo-200 border border-indigo-900 rounded-full px-[18px] py-2 whitespace-nowrap hover:bg-[#38344e] transition"
+          >
             Join the waitlist →
           </Link>
         </div>
 
-        {/* Bottom bar */}
-        <div style={{ borderTop: "1px solid #2d2a3e", paddingTop: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
-          <p style={{ fontSize: "12px", color: "#4b5563", margin: 0 }}>
+        {/* Closing Corporate and Legal Line */}
+        <div className="border-t border-[#2d2a3e] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-slate-500 text-center sm:text-left">
             © {new Date().getFullYear()} Play Move Improve Pty Ltd · ABN 17 415 190 263
           </p>
-          <a href="mailto:robyn@playmoveimprove.com.au" style={{ fontSize: "12px", color: "#6b7280", textDecoration: "none" }}>
+          <a 
+            href="mailto:robyn@playmoveimprove.com.au" 
+            className="text-xs text-slate-400 hover:text-white transition"
+          >
             robyn@playmoveimprove.com.au
           </a>
         </div>
