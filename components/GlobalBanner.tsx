@@ -2,13 +2,21 @@ import Link from "next/link";
 
 export default function GlobalBanner() {
   return (
-    <div style={{ backgroundColor: "#1e1b2e", padding: "14px 24px" }}>
-      <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "center", gap: "16px", flexWrap: "wrap", textAlign: "center" }}>
-        <p style={{ fontSize: "14px", color: "#c7d2fe", margin: 0, lineHeight: 1.5 }}>
-          🌏 <strong style={{ color: "white" }}>Coming globally late 2026</strong> — we're expanding to families worldwide with practitioners in multiple timezones.
+    <div className="bg-[#1e1b2e] px-6 py-4">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 text-center md:flex-row md:gap-5">
+        <p className="m-0 text-base leading-relaxed text-slate-300">
+          <strong className="text-white">
+            The Allied Health & Educator Resource Academy is being built now.
+          </strong>{" "}
+          Join the waitlist for updates as new course areas, resources and live
+          sessions open.
         </p>
-        <Link href="/global" style={{ backgroundColor: "#3730a3", color: "white", padding: "6px 16px", borderRadius: "999px", fontSize: "13px", fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
-          Register your interest
+
+        <Link
+          href="/waitlist"
+          className="whitespace-nowrap rounded-full bg-[#0f766e] px-5 py-2.5 text-base font-semibold text-white transition hover:bg-[#0d6962]"
+        >
+          Join the waitlist
         </Link>
       </div>
     </div>
