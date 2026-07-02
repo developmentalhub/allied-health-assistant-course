@@ -2,209 +2,226 @@
 
 import React, { useState } from 'react';
 
-// Define real-world classroom situations using a supportive, educational voice
-const BEHAVIOUR_STRATEGIES = [
-  {
-    id: 'dysregulated',
-    label: 'Screen-Time Meltdown or Transition Struggles',
-    situation: 'When children appear glazed over, irritable, or highly distressed when moving away from digital devices.',
-    strategy: 'Vestibular Reset (The Gentle Rock)',
-    actionSteps: [
-      'Have the children sit comfortably on the floor with their knees tucked towards their chest.',
-      'Encourage them to gently rock backward and forward on a soft mat, or rock side to side like a boat.',
-      'Keep your voice calm, slow, and low to help lower their nervous system arousal levels naturally.'
-    ],
-    duration: '2 to 3 minutes'
-  },
-  {
-    id: 'fidgety',
-    label: 'Climbing the Walls, Bumping, or High Physical Energy',
-    situation: 'When children are constantly moving, seeking physical contact, or struggling to respect personal space boundaries.',
-    strategy: 'Proprioceptive Heavy Work (Wall Pushes)',
-    actionSteps: [
-      'Ask the children to place both hands flat against a sturdy, safe classroom wall.',
-      'Instruct them to push as hard as they can for 10 seconds, as if they are trying to push the wall into the next room.',
-      'Relax for 5 seconds, then repeat 3 times to provide deep muscle and joint feedback that grounds their system.'
-    ],
-    duration: '1 to 2 minutes'
-  },
-  {
-    id: 'slouching',
-    label: 'Slouching, Low Muscle Tone, or General Fatigue',
-    situation: 'When children appear floppy, lack core stability, or lean heavily on tables, chairs, and peers during floor time.',
-    strategy: 'Core Activation (The Starfish Stretch)',
-    actionSteps: [
-      'Have the children stand up tall with wide spaces between each other so they feel safe.',
-      'Reach arms and legs out wide like a starfish, holding the stable position for 5 seconds.',
-      'Curl inward tightly like a small ball, then release back out to gently activate core postural stabilizers.'
-    ],
-    duration: '2 minutes'
-  }
-];
-
 export default function Home() {
-  // State to track which classroom situation an educator has selected
-  const [selectedSituation, setSelectedSituation] = useState(BEHAVIOUR_STRATEGIES[0].id);
-
-  // Find the active strategy details based on selection
-  const activeStrategy = BEHAVIOUR_STRATEGIES.find(b => b.id === selectedSituation) || BEHAVIOUR_STRATEGIES[0];
+  // Track active steps in the topic timeline
+  const [activeStep, setActiveStep] = useState('watch');
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 antialiased">
+    <div className="min-h-screen bg-slate-50 text-slate-800 antialiased flex flex-col justify-between">
       
-      {/* Warm Educational Header Banner */}
-      <header className="bg-linear-to-b from-teal-50/50 to-transparent pt-16 pb-12 px-6 border-b border-slate-100">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-slate-900">
-            The Allied Health & Educator Resource Academy
-          </h1>
-          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Practical, movement-based strategies to support child self-regulation, reducing the overwhelm of modern classroom behaviours.
-          </p>
+      {/* Top Navigation Bar */}
+      <nav className="bg-white border-b border-slate-100 sticky top-0 z-50 px-6 py-4">
+        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-slate-900 tracking-tight text-lg">
+              Play Move Improve
+            </span>
+            <span className="text-slate-300">|</span>
+            <span className="text-slate-600 font-medium text-sm">
+              Spectrum Village Academy
+            </span>
+          </div>
+          
+          <div className="flex items-center gap-6 text-sm font-medium">
+            <a href="#allied-health" className="text-teal-700 hover:text-teal-800 border-b-2 border-teal-600 pb-1 pt-0.5">
+              Allied Health
+            </a>
+            <a href="#educator" className="text-slate-600 hover:text-slate-800 pb-1 pt-0.5">
+              Educator
+            </a>
+          </div>
         </div>
-      </header>
+      </nav>
 
       {/* Main Content Area */}
-      <main className="max-w-6xl mx-auto px-6 py-12">
+      <main className="max-w-4xl mx-auto px-6 py-8 flex-grow w-full">
         
-        {/* Pathway Split Section */}
-        <section className="grid md:grid-cols-2 gap-8 mb-16">
-          
-          {/* Left Path: Allied Health Assistants */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
-            <div>
-              <div className="inline-block text-xs font-semibold uppercase tracking-wider text-teal-700 bg-teal-50 px-3 py-1 rounded-full mb-4">
-                Allied Health Assistants
-              </div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-3">
-                Clinical Strategy Delivery
-              </h2>
-              <p className="text-slate-600 leading-relaxed mb-6">
-                Bridge the gap between formal therapy plans and classroom routines. Access structured paediatric milestone trackers, documentation frameworks, and primitive reflex integration tools.
-              </p>
-              
-              {/* Free Resource Preview Box */}
-              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6">
-                <span className="text-xs font-bold uppercase tracking-wide text-teal-600 block mb-1">
-                  Free Starter Access
-                </span>
-                <p className="text-sm text-slate-600">
-                  Includes Introductory Training Video & AHA Framework Implementation Manual (PDF).
-                </p>
-              </div>
-            </div>
+        {/* Breadcrumb Path */}
+        <nav className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-6 flex items-center gap-2">
+          <span>Module 1: Foundations</span>
+          <span>/</span>
+          <span className="text-slate-600">Topic 2</span>
+        </nav>
+
+        {/* Dynamic Learning Phase Progress Stepper */}
+        <section className="bg-white rounded-2xl border border-slate-100 p-4 md:p-6 shadow-xs mb-8">
+          <div className="grid grid-cols-4 gap-2 relative">
             
-            <button className="w-full bg-teal-600 text-white font-medium py-3 px-4 rounded-xl hover:bg-teal-700 active:bg-teal-800 transition shadow-sm">
-              Access AHA Training Portal
+            {/* Step 1: Watch */}
+            <button 
+              onClick={() => setActiveStep('watch')}
+              className={`flex flex-col items-center text-center p-3 rounded-xl transition ${
+                activeStep === 'watch' 
+                  ? 'bg-teal-50 text-teal-900 font-bold ring-1 ring-teal-600/20' 
+                  : 'hover:bg-slate-50 text-slate-500 font-medium'
+              }`}
+            >
+              <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs mb-2 font-bold ${
+                activeStep === 'watch' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-600'
+              }`}>1</span>
+              <span className="text-xs md:text-sm">Watch</span>
+            </button>
+
+            {/* Step 2: Practice */}
+            <button 
+              onClick={() => setActiveStep('practice')}
+              className={`flex flex-col items-center text-center p-3 rounded-xl transition ${
+                activeStep === 'practice' 
+                  ? 'bg-teal-50 text-teal-900 font-bold ring-1 ring-teal-600/20' 
+                  : 'hover:bg-slate-50 text-slate-500 font-medium'
+              }`}
+            >
+              <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs mb-2 font-bold ${
+                activeStep === 'practice' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-600'
+              }`}>2</span>
+              <span className="text-xs md:text-sm">Practice</span>
+            </button>
+
+            {/* Step 3: Do */}
+            <button 
+              onClick={() => setActiveStep('do')}
+              className={`flex flex-col items-center text-center p-3 rounded-xl transition ${
+                activeStep === 'do' 
+                  ? 'bg-teal-50 text-teal-900 font-bold ring-1 ring-teal-600/20' 
+                  : 'hover:bg-slate-50 text-slate-500 font-medium'
+              }`}
+            >
+              <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs mb-2 font-bold ${
+                activeStep === 'do' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-600'
+              }`}>3</span>
+              <span className="text-xs md:text-sm">Do</span>
+            </button>
+
+            {/* Step 4: Reflect */}
+            <button 
+              onClick={() => setActiveStep('reflect')}
+              className={`flex flex-col items-center text-center p-3 rounded-xl transition ${
+                activeStep === 'reflect' 
+                  ? 'bg-teal-50 text-teal-900 font-bold ring-1 ring-teal-600/20' 
+                  : 'hover:bg-slate-50 text-slate-500 font-medium'
+              }`}
+            >
+              <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs mb-2 font-bold ${
+                activeStep === 'reflect' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-600'
+              }`}>4</span>
+              <span className="text-xs md:text-sm">Reflect</span>
+            </button>
+
+          </div>
+        </section>
+
+        {/* Primary Topic Heading */}
+        <header className="mb-8">
+          <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-slate-900 mb-2">
+            Working within the allied health team
+          </h1>
+          <p className="text-slate-600 text-base md:text-lg">
+            Understanding lines of reporting, roles, and maintaining highly effective professional connections.
+          </p>
+        </header>
+
+        {/* Free Starter Content: Core Resource Cards */}
+        <section className="grid md:grid-cols-2 gap-6 mb-12">
+          
+          {/* Card 1: Team Structures */}
+          <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-100 flex flex-col justify-between">
+            <div>
+              <div className="inline-block text-[10px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-md mb-3">
+                Free Document Guide
+              </div>
+              <h2 className="text-lg font-bold text-slate-900 mb-2">
+                Who is on your allied health team
+              </h2>
+              <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                A clear breakdown mapping out the core differences between Occupational Therapists, Physiotherapists, Speech Pathologists, and Developmental Educators.
+              </p>
+            </div>
+            <button className="w-full sm:w-auto bg-slate-900 text-white font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-800 transition text-center">
+              Download Framework Guide (PDF)
             </button>
           </div>
 
-          {/* Right Path: Early Childhood Educators */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
+          {/* Card 2: Quick Communication Reference */}
+          <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-100 flex flex-col justify-between">
             <div>
-              <div className="inline-block text-xs font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 px-3 py-1 rounded-full mb-4">
-                Early Childhood Educators
+              <div className="inline-block text-[10px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-md mb-3">
+                Free Strategy Card
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-3">
-                Classroom Regulation Support
+              <h2 className="text-lg font-bold text-slate-900 mb-2">
+                Communication with your AHP quick card
               </h2>
-              <p className="text-slate-600 leading-relaxed mb-6">
-                We know you are navigating complex sensory needs and screen-addicted dysregulation. Find immediate, actionable movement paths to meet Thriving Kids guidelines without increasing your administrative paperwork.
+              <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                Practical, clinical reporting scripts to streamline handover details during brief checks with your supervising Allied Health Professionals.
               </p>
-
-              {/* Free Resource Preview Box */}
-              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6">
-                <span className="text-xs font-bold uppercase tracking-wide text-amber-600 block mb-1">
-                  Free Starter Access
-                </span>
-                <p className="text-sm text-slate-600">
-                  Includes De-escalation Movement Video & Interactive Sensory Strategy Audit (PDF).
-                </p>
-              </div>
             </div>
-
-            <a 
-              href="#situation-selector" 
-              className="w-full bg-amber-600 text-white font-medium py-3 px-4 rounded-xl hover:bg-amber-700 active:bg-amber-800 transition text-center shadow-sm"
-            >
-              Explore Classroom Tools Below
-            </a>
+            <button className="w-full sm:w-auto bg-slate-900 text-white font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-800 transition text-center">
+              Open Strategy Card
+            </button>
           </div>
 
         </section>
 
-        <hr className="border-slate-200 mb-16" />
-
-        {/* Improved In-the-Moment Regulation Guide */}
-        <section id="situation-selector" className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-10">
-          <div className="mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
-              In-the-Moment Regulation Guide
+        {/* Interactive Tool Section (AHA Only Area) */}
+        <section className="bg-white rounded-2xl shadow-xs border border-slate-100 p-6 md:p-8 mb-12">
+          <div className="mb-6">
+            <span className="text-xs font-bold uppercase tracking-wider text-teal-600 block mb-1">
+              Try it yourself
+            </span>
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">
+              Who Do I Go To?
             </h2>
-            <p className="text-slate-600">
-              What is happening in your room right now? Select the description that best matches what you are seeing to find a calm, movement-focused response.
+            <p className="text-sm text-slate-600">
+              Use this digital tool to process clinical triage paths and verify when to escalate common childhood presentation hurdles.
             </p>
           </div>
 
-          {/* Large, welcoming selection cards */}
-          <div className="grid md:grid-cols-3 gap-4 mb-8">
-            {BEHAVIOUR_STRATEGIES.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setSelectedSituation(item.id)}
-                className={`p-5 text-left rounded-xl border transition flex flex-col justify-between h-full ${
-                  selectedSituation === item.id
-                    ? 'border-amber-500 bg-amber-50/40 text-amber-950 shadow-sm ring-1 ring-amber-500'
-                    : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50/50'
-                }`}
-              >
-                <span className="font-semibold text-sm leading-snug">{item.label}</span>
-              </button>
-            ))}
+          {/* Embedded Application Frame */}
+          <div className="w-full rounded-xl overflow-hidden border border-slate-200/80 shadow-xs bg-slate-50 h-[500px]">
+            <iframe 
+              src="https://allied-health-assistant-course.netlify.app/" 
+              title="Who Do I Go To? Interactive Clinical Tool"
+              className="w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
+        </section>
 
-          {/* Interactive Strategy Display Panel */}
-          <div className="bg-slate-50 rounded-xl p-6 border border-slate-100">
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-200/60">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-700 block mb-1">
-                  Recommended Practical Strategy
-                </span>
-                <h3 className="text-xl font-bold text-slate-900">
-                  {activeStrategy.strategy}
-                </h3>
-              </div>
-              <span className="text-xs font-semibold text-slate-600 bg-slate-200/70 px-3 py-1.5 rounded-lg">
-                Time Needed: {activeStrategy.duration}
-              </span>
-            </div>
-            
-            <p className="text-sm text-slate-600 italic mb-6">
-              <strong>The Presentation:</strong> {activeStrategy.situation}
-            </p>
-
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">
-              How to guide your group through this exercise:
-            </h4>
-            
-            <ol className="space-y-4">
-              {activeStrategy.actionSteps.map((step, index) => (
-                <li key={index} className="flex gap-4 text-slate-700 leading-relaxed text-sm">
-                  <span className="shrink-0 w-6 h-6 rounded-full bg-white border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-500 shadow-xs">
-                    {index + 1}
-                  </span>
-                  <span className="pt-0.5">{step}</span>
-                </li>
-              ))}
-            </ol>
+        {/* Experiential Application Blocks */}
+        <section className="bg-slate-900 text-slate-100 rounded-2xl p-6 md:p-8 mb-12 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="bg-teal-500/20 text-teal-300 font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full border border-teal-500/30">
+              Hands-on activity
+            </span>
           </div>
+          <h3 className="text-xl font-bold text-white mb-2">
+            Professional check-in workflow
+          </h3>
+          <p className="text-slate-300 text-sm leading-relaxed mb-6 max-w-2xl">
+            Run a structured check-in with your supervising AHP, then fill in your communication plan.
+          </p>
+          <button className="bg-white text-slate-900 font-semibold text-sm py-2.5 px-5 rounded-xl hover:bg-slate-100 transition shadow-xs">
+            Log Completed Activity
+          </button>
         </section>
 
       </main>
 
-      {/* Footer */}
-      <footer className="text-center py-12 text-xs text-slate-400 border-t border-slate-100 mt-12">
-        <p>&copy; {new Date().getFullYear()} Play Move Improve. All rights reserved.</p>
+      {/* Lesson Progression Bottom Navigation */}
+      <footer className="bg-white border-t border-slate-100 py-6 px-6 mt-auto">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
+          
+          <button className="flex items-center gap-2 text-slate-500 hover:text-slate-800 text-sm font-semibold transition group py-2">
+            <span className="transition-transform group-hover:-translate-x-0.5">←</span>
+            <span>Your AHA toolkit</span>
+          </button>
+
+          <button className="flex items-center gap-2 text-teal-700 hover:text-teal-900 text-sm font-semibold transition group py-2">
+            <span>Scope and boundaries</span>
+            <span className="transition-transform group-hover:translate-x-0.5">→</span>
+          </button>
+
+        </div>
       </footer>
 
     </div>
