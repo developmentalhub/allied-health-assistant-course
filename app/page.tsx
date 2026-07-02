@@ -1,4 +1,4 @@
-'use strict';
+"use client";
 
 import React, { useState } from 'react';
 
@@ -53,7 +53,7 @@ export default function Home() {
     <div className="min-h-screen bg-slate-50 text-slate-800 antialiased">
       
       {/* Warm Educational Header Banner */}
-      <header className="bg-gradient-to-b from-teal-50/50 to-transparent pt-16 pb-12 px-6 border-b border-slate-100">
+      <header className="bg-linear-to-b from-teal-50/50 to-transparent pt-16 pb-12 px-6 border-b border-slate-100">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-slate-900">
             The Allied Health & Educator Resource Academy
@@ -184,7 +184,7 @@ export default function Home() {
             <ol className="space-y-3">
               {activeStrategy.actionSteps.map((step, index) => (
                 <li key={index} className="flex gap-4 text-slate-700 leading-relaxed text-sm">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white border border-slate-200 flex items-center justify-center font-semibold text-xs text-slate-500">
+                  <span className="shrink-0 w-6 h-6 rounded-full bg-white border border-slate-200 flex items-center justify-center font-semibold text-xs text-slate-500">
                     {index + 1}
                   </span>
                   <span className="pt-0.5">{step}</span>
