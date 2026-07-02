@@ -4,132 +4,213 @@ export default function PrivacyPage() {
   const lastUpdated = "22 May 2026";
 
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
-      <div style={{ maxWidth: "720px", margin: "0 auto", padding: "64px 24px 100px" }}>
+    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
+      <section className="mx-auto max-w-4xl px-6 py-14 md:py-20">
+        <div className="mb-10">
+          <Link
+            href="/"
+            className="text-base font-semibold text-[#0f766e] hover:underline"
+          >
+            Back to academy
+          </Link>
+        </div>
 
-        <Link href="/" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "40px" }}>
-          ← Back to home
-        </Link>
+        <header className="mb-12">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Legal
+          </p>
 
-        <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6b6880", marginBottom: "12px" }}>
-          Legal
-        </p>
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "40px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 8px" }}>
-          Privacy Policy
-        </h1>
-        <p style={{ fontSize: "14px", color: "#6b6880", margin: "0 0 48px" }}>
-          Last updated {lastUpdated}
-        </p>
+          <h1 className="mb-4 text-4xl font-bold leading-tight md:text-6xl">
+            Privacy Policy
+          </h1>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "40px", fontSize: "15px", lineHeight: 1.8, color: "#4a4660" }}>
+          <p className="text-lg text-[#5f5b73]">
+            Last updated {lastUpdated}
+          </p>
+        </header>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>1. Who we are</h2>
-            <p style={{ margin: 0 }}>
-              Developmental Hub is operated by Play Move Improve Pty Ltd, a company registered in Victoria, Australia. We are committed to protecting your privacy and handling your personal information in accordance with the Australian Privacy Act 1988 and the Australian Privacy Principles.
+        <div className="mb-10 rounded-3xl border border-[#fcd34d] bg-[#fffbeb] p-6">
+          <p className="text-base leading-relaxed text-[#92400e]">
+            This is a draft privacy policy for the academy while the site is
+            being rebuilt. It should be reviewed before paid enrolments,
+            memberships, or large-scale data collection are activated.
+          </p>
+        </div>
+
+        <div className="space-y-8 text-lg leading-relaxed text-[#4a4660]">
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              1. Who we are
+            </h2>
+            <p>
+              The Allied Health & Educator Resource Academy is operated by Play
+              Move Improve Pty Ltd, a company based in Victoria, Australia. We
+              are committed to protecting your privacy and handling personal
+              information in accordance with applicable Australian privacy
+              requirements.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>2. Information we collect</h2>
-            <p style={{ margin: "0 0 12px" }}>We collect the following types of information:</p>
-            <ul style={{ margin: "0 0 12px", paddingLeft: "24px", display: "flex", flexDirection: "column", gap: "8px" }}>
-              <li><strong>Account information</strong> — your name, email address, and password when you create an account</li>
-              <li><strong>Child information</strong> — your child's name and date of birth if you choose to add a child profile</li>
-              <li><strong>Payment information</strong> — processed securely through Stripe; we do not store your card details</li>
-              <li><strong>Booking information</strong> — sessions you have booked and their status</li>
-              <li><strong>Facilitator information</strong> — for approved facilitators, compliance documents including WWC check details, insurance, and professional registration</li>
-              <li><strong>Usage information</strong> — how you use the platform, including pages visited and sessions attended</li>
-            </ul>
-            <p style={{ margin: 0 }}>
-              We only collect information that is necessary to provide our services to you.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              2. Information we collect
+            </h2>
+            <p className="mb-4">
+              We may collect information you provide when you use the academy,
+              including:
             </p>
-          </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>3. How we use your information</h2>
-            <p style={{ margin: "0 0 12px" }}>We use your information to:</p>
-            <ul style={{ margin: 0, paddingLeft: "24px", display: "flex", flexDirection: "column", gap: "8px" }}>
-              <li>Create and manage your account</li>
-              <li>Process bookings and payments</li>
-              <li>Send booking confirmations, session reminders, and important account notices</li>
-              <li>Connect families with appropriate sessions based on their child's age and needs</li>
-              <li>Verify facilitator credentials and compliance</li>
-              <li>Improve the platform and our services</li>
-              <li>Comply with our legal obligations</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>4. Information about children</h2>
-            <p style={{ margin: 0 }}>
-              We take the privacy of children seriously. Child profile information (name and date of birth) is used only to personalise your family's experience on the platform and to help facilitators tailor their sessions. We do not share child information with third parties except as required to deliver our services. We do not knowingly collect information directly from children under the age of 18.
-            </p>
-          </section>
-
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>5. Sharing your information</h2>
-            <p style={{ margin: "0 0 12px" }}>We do not sell your personal information. We may share your information with:</p>
-            <ul style={{ margin: 0, paddingLeft: "24px", display: "flex", flexDirection: "column", gap: "8px" }}>
-              <li><strong>Stripe</strong> — to process payments securely</li>
-              <li><strong>Supabase</strong> — to store your account and booking data securely</li>
-              <li><strong>Daily.co</strong> — to deliver live video sessions</li>
-              <li><strong>Resend</strong> — to send transactional emails</li>
-              <li><strong>Facilitators</strong> — limited booking information so they can deliver sessions effectively</li>
-              <li><strong>Law enforcement or regulators</strong> — where required by law</li>
+            <ul className="space-y-3 pl-6">
+              <li>Your name and email address</li>
+              <li>Account login details</li>
+              <li>Messages submitted through contact or waitlist forms</li>
+              <li>Course, membership, community or access preferences</li>
+              <li>Technical information about how the site is used</li>
+              <li>
+                Payment or subscription status when payment systems are
+                connected
+              </li>
             </ul>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>6. Data storage and security</h2>
-            <p style={{ margin: 0 }}>
-              Your data is stored securely using Supabase, which uses industry-standard encryption. We implement appropriate technical and organisational measures to protect your personal information against unauthorised access, loss, or disclosure. However, no method of transmission over the internet is completely secure, and we cannot guarantee absolute security.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              3. How we use your information
+            </h2>
+            <p className="mb-4">
+              We use personal information to operate and improve the academy,
+              including to:
+            </p>
+
+            <ul className="space-y-3 pl-6">
+              <li>Create and manage user accounts</li>
+              <li>Provide access to courses, resources and community areas</li>
+              <li>Respond to enquiries and support requests</li>
+              <li>Send important account or access information</li>
+              <li>Manage waitlist updates and launch communications</li>
+              <li>Improve the website, learning experience and resources</li>
+              <li>Meet legal, security and administrative requirements</li>
+            </ul>
+          </section>
+
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              4. Payments and subscriptions
+            </h2>
+            <p>
+              When payments or subscriptions are connected, payment details will
+              be processed by a secure third-party payment provider. We do not
+              intend to store full card details on our own servers.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>7. Your rights</h2>
-            <p style={{ margin: "0 0 12px" }}>Under Australian privacy law, you have the right to:</p>
-            <ul style={{ margin: 0, paddingLeft: "24px", display: "flex", flexDirection: "column", gap: "8px" }}>
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              5. Sharing your information
+            </h2>
+            <p className="mb-4">
+              We do not sell your personal information. We may share limited
+              information with trusted service providers who help us operate the
+              academy, such as:
+            </p>
+
+            <ul className="space-y-3 pl-6">
+              <li>Website hosting and analytics providers</li>
+              <li>Authentication and database providers</li>
+              <li>Email delivery providers</li>
+              <li>Payment processors, when payment systems are active</li>
+              <li>Professional advisers where required</li>
+              <li>Regulators or authorities where required by law</li>
+            </ul>
+          </section>
+
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              6. Community areas
+            </h2>
+            <p>
+              If you use academy community features, information you choose to
+              post may be visible to other members of that community area. You
+              are responsible for the information you choose to share in member
+              spaces.
+            </p>
+          </section>
+
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              7. Data storage and security
+            </h2>
+            <p>
+              We take reasonable steps to protect personal information from
+              misuse, interference, loss, unauthorised access, modification or
+              disclosure. No online platform can guarantee absolute security,
+              but we aim to use appropriate technical and organisational
+              safeguards.
+            </p>
+          </section>
+
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              8. Cookies and analytics
+            </h2>
+            <p>
+              We may use cookies and similar technologies to keep users signed
+              in, understand how the site is used, improve performance and
+              support security. You can manage cookies through your browser
+              settings, though some features may not work properly if cookies
+              are disabled.
+            </p>
+          </section>
+
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              9. Your rights
+            </h2>
+            <p className="mb-4">
+              Depending on your circumstances, you may ask to:
+            </p>
+
+            <ul className="space-y-3 pl-6">
               <li>Access the personal information we hold about you</li>
-              <li>Request correction of inaccurate information</li>
-              <li>Request deletion of your account and personal information</li>
-              <li>Opt out of marketing communications at any time</li>
+              <li>Correct inaccurate or outdated information</li>
+              <li>Delete your account or personal information where appropriate</li>
+              <li>Opt out of marketing emails</li>
+              <li>Ask questions about how your information is handled</li>
             </ul>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>8. Cookies</h2>
-            <p style={{ margin: 0 }}>
-              We use cookies and similar technologies to keep you logged in and to understand how the platform is used. You can control cookies through your browser settings, but disabling cookies may affect your ability to use the platform.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              10. Changes to this policy
+            </h2>
+            <p>
+              We may update this Privacy Policy as the academy develops. The
+              latest version will be published on this page with an updated date.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>9. Changes to this policy</h2>
-            <p style={{ margin: 0 }}>
-              We may update this Privacy Policy from time to time. We will notify you of significant changes by email or by posting a notice on the platform. Your continued use of the platform after any changes constitutes your acceptance of the updated policy.
-            </p>
-          </section>
-
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>10. Contact us</h2>
-            <p style={{ margin: "0 0 12px" }}>
-              If you have any questions about this Privacy Policy or wish to exercise your privacy rights, please contact us at{" "}
-              <a href="mailto:hello@playmoveimprove.com.au" style={{ color: "#3730a3", textDecoration: "none" }}>
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-7">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              11. Contact us
+            </h2>
+            <p className="mb-4">
+              For privacy questions, contact Play Move Improve at{" "}
+              <a
+                href="mailto:hello@playmoveimprove.com.au"
+                className="font-semibold text-[#0f766e] hover:underline"
+              >
                 hello@playmoveimprove.com.au
               </a>
+              .
             </p>
-            <p style={{ margin: 0 }}>
-              If you are not satisfied with our response, you may lodge a complaint with the Office of the Australian Information Commissioner at{" "}
-              <a href="https://www.oaic.gov.au" target="_blank" rel="noopener noreferrer" style={{ color: "#3730a3", textDecoration: "none" }}>
-                oaic.gov.au
-              </a>
+
+            <p>
+              If you are not satisfied with our response, you may contact the
+              Office of the Australian Information Commissioner.
             </p>
           </section>
-
         </div>
-      </div>
+      </section>
     </main>
   );
 }
