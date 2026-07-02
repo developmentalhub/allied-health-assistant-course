@@ -30,7 +30,7 @@ export default function Navbar() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <Link
           href="/"
-          className="max-w-[220px] text-xl font-bold leading-tight text-[#1e1b2e] transition hover:opacity-90 md:max-w-none md:text-2xl"
+          className="max-w-55 text-xl font-bold leading-tight text-[#1e1b2e] transition hover:opacity-90 md:max-w-none md:text-2xl"
         >
           Allied Health & Educator Academy
         </Link>
