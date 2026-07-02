@@ -17,162 +17,189 @@ export default function Navbar() {
   }
 
   const navLinks = [
-    { label: "Videos", href: "/videos/free" },
-    { label: "Community", href: "/forum" },
-    { label: "Q&A", href: "/qanda" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "About", href: "/about" },
+    { label: "Academy", href: "/" },
+    { label: "Allied Health", href: "/allied-health/foundations/welcome-to-aha-role" },
+    { label: "Videos", href: "/videos" },
+    { label: "Community", href: "/community" },
+    { label: "Live sessions", href: "/sessions" },
+    { label: "Access", href: "/subscribe" },
   ];
 
-  const waitlistLink = { label: "Join the waitlist", href: "/waitlist" };
-
   return (
-    <nav className="sticky top-0 z-50 bg-[#faf8f5] border-b border-[#e8e4de]">
-      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
-
-        {/* Brand Link */}
-        <Link 
-          href="/" 
-          className="text-[#1e1b2e] font-semibold text-lg shrink-0 hover:opacity-90 transition"
+    <nav className="sticky top-0 z-50 border-b border-[#e8e4de] bg-[#faf8f5]">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+        <Link
+          href="/"
+          className="max-w-[220px] text-xl font-bold leading-tight text-[#1e1b2e] transition hover:opacity-90 md:max-w-none md:text-2xl"
         >
-          Developmental Hub
+          Allied Health & Educator Academy
         </Link>
 
-        {/* Desktop Links Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden items-center gap-7 lg:flex">
           {navLinks.map((link) => (
-            <Link 
-              key={link.href} 
-              href={link.href} 
-              className="text-sm text-[#6b6880] font-medium hover:text-[#1e1b2e] transition"
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-base font-semibold text-[#5f5b73] transition hover:text-[#1e1b2e]"
             >
               {link.label}
             </Link>
           ))}
-          <Link 
-            href={waitlistLink.href} 
-            className="text-sm text-[#3730a3] font-semibold border-b-2 border-[#3730a3] pb-0.5 hover:opacity-80 transition"
-          >
-            {waitlistLink.label}
-          </Link>
         </div>
 
-        {/* Desktop Auth Actions */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden items-center gap-4 lg:flex">
           {!loading && user ? (
             <>
               {(role === "admin" || role === "superadmin") && (
-                <Link href="/admin" className="text-[#c2410c] font-semibold text-sm hover:opacity-80 transition">
+                <Link
+                  href="/admin"
+                  className="text-base font-semibold text-[#c2410c] transition hover:opacity-80"
+                >
                   Admin
                 </Link>
               )}
+
               {(role === "facilitator" || role === "superadmin") && (
-                <Link href="/facilitator-hub" className="text-[#0f766e] font-medium text-sm hover:opacity-80 transition">
-                  Facilitator Hub
+                <Link
+                  href="/facilitator-hub"
+                  className="text-base font-semibold text-[#0f766e] transition hover:opacity-80"
+                >
+                  Facilitator
                 </Link>
               )}
-              <Link 
-                href="/videos" 
-                className="bg-[#3730a3] text-white px-4.5 py-2 rounded-full text-sm font-medium hover:bg-[#2e288a] transition"
+
+              <Link
+                href="/dashboard"
+                className="rounded-full bg-[#0f766e] px-5 py-3 text-base font-semibold text-white transition hover:bg-[#0d6962]"
               >
-                My videos
+                Dashboard
               </Link>
-              <button 
-                onClick={handleSignOut} 
-                className="cursor-pointer border-none bg-none text-[#6b6880] text-sm font-inherit hover:text-[#1e1b2e] transition"
+
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="cursor-pointer border-none bg-transparent text-base font-semibold text-[#5f5b73] transition hover:text-[#1e1b2e]"
               >
                 Sign out
               </button>
             </>
           ) : !loading ? (
             <>
-              <Link href="/login" className="text-[#3730a3] text-sm font-medium hover:opacity-80 transition">
+              <Link
+                href="/login"
+                className="text-base font-semibold text-[#0f766e] transition hover:opacity-80"
+              >
                 Sign in
               </Link>
-              <Link 
-                href="/pricing" 
-                className="bg-[#3730a3] text-white px-4.5 py-2 rounded-full text-sm font-medium hover:bg-[#2e288a] transition"
+
+              <Link
+                href="/signup"
+                className="rounded-full bg-[#0f766e] px-5 py-3 text-base font-semibold text-white transition hover:bg-[#0d6962]"
               >
-                Start membership
+                Create account
               </Link>
             </>
           ) : null}
         </div>
 
-        {/* Mobile Menu Action Toggle Button */}
         <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden bg-none border-none cursor-pointer p-2 flex flex-col gap-1 items-center justify-center"
+          type="button"
+          onClick={() => setMenuOpen((open) => !open)}
+          className="flex cursor-pointer flex-col items-center justify-center gap-1.5 border-none bg-transparent p-3 lg:hidden"
           aria-label="Toggle menu"
+          aria-expanded={menuOpen}
         >
-          <span className={`block w-5.5 h-0.5 bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
-          <span className={`block w-5.5 h-0.5 bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "opacity-0" : ""}`} />
-          <span className={`block w-5.5 h-0.5 bg-[#1e1b2e] transition-all duration-200 ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
+          <span
+            className={`block h-0.5 w-7 bg-[#1e1b2e] transition-all duration-200 ${
+              menuOpen ? "translate-y-2 rotate-45" : ""
+            }`}
+          />
+          <span
+            className={`block h-0.5 w-7 bg-[#1e1b2e] transition-all duration-200 ${
+              menuOpen ? "opacity-0" : ""
+            }`}
+          />
+          <span
+            className={`block h-0.5 w-7 bg-[#1e1b2e] transition-all duration-200 ${
+              menuOpen ? "-translate-y-2 -rotate-45" : ""
+            }`}
+          />
         </button>
       </div>
 
-      {/* Mobile Menu Dropdown Panel */}
       {menuOpen && (
-        <div className="md:hidden bg-[#faf8f5] border-t border-[#e8e4de] px-6 py-4 flex flex-col">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.href} 
-              href={link.href} 
-              onClick={() => setMenuOpen(false)} 
-              className="text-base text-[#1e1b2e] font-medium py-3 border-b border-[#f0ede8] block"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link 
-            href={waitlistLink.href} 
-            onClick={() => setMenuOpen(false)} 
-            className="text-base text-[#3730a3] font-semibold py-3 border-b border-[#f0ede8] block"
-          >
-            {waitlistLink.label}
-          </Link>
-          
-          <div className="mt-4 flex flex-col gap-2">
-            {!loading && user ? (
-              <>
-                {(role === "admin" || role === "superadmin") && (
-                  <Link href="/admin" onClick={() => setMenuOpen(false)} className="text-sm text-[#c2410c] font-semibold py-2">
-                    Admin
+        <div className="border-t border-[#e8e4de] bg-[#faf8f5] px-6 py-5 lg:hidden">
+          <div className="flex flex-col">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="border-b border-[#f0ede8] py-4 text-lg font-semibold text-[#1e1b2e]"
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            <div className="mt-5 flex flex-col gap-3">
+              {!loading && user ? (
+                <>
+                  {(role === "admin" || role === "superadmin") && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setMenuOpen(false)}
+                      className="py-2 text-base font-semibold text-[#c2410c]"
+                    >
+                      Admin
+                    </Link>
+                  )}
+
+                  {(role === "facilitator" || role === "superadmin") && (
+                    <Link
+                      href="/facilitator-hub"
+                      onClick={() => setMenuOpen(false)}
+                      className="py-2 text-base font-semibold text-[#0f766e]"
+                    >
+                      Facilitator
+                    </Link>
+                  )}
+
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMenuOpen(false)}
+                    className="rounded-full bg-[#0f766e] py-4 text-center text-base font-semibold text-white"
+                  >
+                    Dashboard
                   </Link>
-                )}
-                {(role === "facilitator" || role === "superadmin") && (
-                  <Link href="/facilitator-hub" onClick={() => setMenuOpen(false)} className="text-sm text-[#0f766e] font-medium py-2">
-                    Facilitator Hub
+
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="cursor-pointer border-none bg-transparent py-3 text-left text-base font-semibold text-[#5f5b73]"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : !loading ? (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="py-3 text-base font-semibold text-[#0f766e]"
+                  >
+                    Sign in
                   </Link>
-                )}
-                <Link 
-                  href="/videos" 
-                  onClick={() => setMenuOpen(false)} 
-                  className="bg-[#3730a3] text-white py-3 rounded-full text-sm font-medium text-center mt-2 shadow-xs"
-                >
-                  My videos
-                </Link>
-                <button 
-                  onClick={handleSignOut} 
-                  className="cursor-pointer border-none bg-none text-[#6b6880] text-sm text-left py-2 font-inherit"
-                >
-                  Sign out
-                </button>
-              </>
-            ) : !loading ? (
-              <>
-                <Link href="/login" onClick={() => setMenuOpen(false)} className="text-sm text-[#3730a3] font-medium py-2">
-                  Sign in
-                </Link>
-                <Link 
-                  href="/pricing" 
-                  onClick={() => setMenuOpen(false)} 
-                  className="bg-[#3730a3] text-white py-3 rounded-full text-sm font-medium text-center mt-2 shadow-xs"
-                >
-                  Start membership
-                </Link>
-              </>
-            ) : null}
+
+                  <Link
+                    href="/signup"
+                    onClick={() => setMenuOpen(false)}
+                    className="rounded-full bg-[#0f766e] py-4 text-center text-base font-semibold text-white"
+                  >
+                    Create account
+                  </Link>
+                </>
+              ) : null}
+            </div>
           </div>
         </div>
       )}
