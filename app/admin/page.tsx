@@ -35,8 +35,8 @@ export default async function AdminPage() {
 
           <p className="max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
             This admin area is being rebuilt for the Allied Health & Educator
-            Resource Academy. The old Developmental Hub session, booking,
-            facilitator and revenue panels have been paused.
+            Resource Academy. The old session, booking, facilitator and revenue
+            panels have been paused.
           </p>
         </div>
 
@@ -71,9 +71,9 @@ export default async function AdminPage() {
 
           <p className="text-lg leading-relaxed text-[#5f5b73]">
             Session management, facilitator approvals, bookings, affiliate
-            tools, payment reports and old Developmental Hub admin panels should
-            stay paused until the academy structure, Supabase tables and Stripe
-            access model are rebuilt properly.
+            tools, payment reports and old admin panels should stay paused until
+            the academy structure, Supabase tables and Stripe access model are
+            rebuilt properly.
           </p>
         </div>
       </section>
