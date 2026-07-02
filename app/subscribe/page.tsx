@@ -1,161 +1,127 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Suspense } from "react";
 
-function SubscribeForm() {
-  const searchParams = useSearchParams();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [affiliateCode, setAffiliateCode] = useState(searchParams.get("ref") ?? "");
-  const [affiliateValid, setAffiliateValid] = useState<boolean | null>(null);
-  const [affiliatePartner, setAffiliatePartner] = useState("");
-
-  useEffect(() => {
-    if (!affiliateCode.trim()) { setAffiliateValid(null); setAffiliatePartner(""); return; }
-    const timer = setTimeout(async () => {
-      try {
-        const res = await fetch(`/api/affiliate?code=${encodeURIComponent(affiliateCode.trim())}`);
-        const data = await res.json();
-        setAffiliateValid(data.valid);
-        setAffiliatePartner(data.valid ? data.partner_name : "");
-      } catch {
-        // A failed referral lookup must never block sign-up — just treat as no code.
-        setAffiliateValid(null);
-        setAffiliatePartner("");
-      }
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [affiliateCode]);
-
-  async function handleSubscribe() {
-    setLoading(true);
-    setError("");
-    try {
-      // Only send a code when it has been confirmed valid; otherwise send null.
-      // A blank or unconfirmed code is a normal, supported case.
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          affiliate_code: affiliateValid === true ? affiliateCode.trim() : null,
-        }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (data.error === "already_subscribed") {
-        window.location.href = "/login?redirect=/videos";
-        return;
-      }
-      if (!res.ok) throw new Error(data.error || "We couldn't start your trial. Please try again.");
-      if (!data.url) throw new Error("We couldn't reach the checkout page. Please try again.");
-      window.location.href = data.url;
-    } catch (err: any) {
-      setError(err.message || "Something went wrong.");
-      setLoading(false);
-    }
-  }
-
-  const inputStyle: React.CSSProperties = {
-    width: "100%", padding: "10px 16px", borderRadius: "12px",
-    border: `1.5px solid ${affiliateValid === true ? "#bbf7d0" : affiliateValid === false ? "#fecaca" : "#e8e4de"}`,
-    fontSize: "15px", color: "#1e1b2e", outline: "none",
-    boxSizing: "border-box", fontFamily: "inherit", backgroundColor: "#faf8f5",
-  };
-
-  return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
-      <div style={{ maxWidth: "480px", margin: "0 auto", padding: "80px 24px" }}>
-
-        <Link href="/pricing" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "40px" }}>
-          ← Back to pricing
-        </Link>
-
-        <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "20px", padding: "48px 40px", textAlign: "center" }}>
-
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 8px" }}>
-            Start your free trial
-          </h1>
-          <p style={{ fontSize: "15px", color: "#6b6880", margin: "0 0 8px", lineHeight: 1.6 }}>
-            7 days free, then $39/month. Cancel anytime.
-          </p>
-          <p style={{ fontSize: "14px", color: "#6b6880", margin: "0 0 32px", lineHeight: 1.6 }}>
-            You'll enter your email and card details on the next screen. We'll create your account automatically — no separate sign-up needed.
-          </p>
-
-          <div style={{ backgroundColor: "#faf8f5", borderRadius: "12px", padding: "20px 24px", marginBottom: "24px", textAlign: "left" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-              <span style={{ fontSize: "15px", fontWeight: 500, color: "#1e1b2e" }}>Family membership</span>
-              <span style={{ fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: 300, color: "#1e1b2e" }}>$39/mo</span>
-            </div>
-            <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>31 videos · Monthly Q&A · Activity sheets · Cancel anytime</p>
-          </div>
-
-          {/* Referral code — entirely optional */}
-          <div style={{ marginBottom: "24px", textAlign: "left" }}>
-            <label style={{ fontSize: "13px", fontWeight: 500, color: "#1e1b2e", display: "block", marginBottom: "6px" }}>
-              Referral code <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
-            </label>
-            <input
-              value={affiliateCode}
-              onChange={(e) => setAffiliateCode(e.target.value.toUpperCase())}
-              placeholder="e.g. SARAH-OT"
-              style={inputStyle}
-            />
-            {/* Reassure people who don't have a code that they can still join */}
-            {affiliateValid !== true && (
-              <p style={{ fontSize: "12px", color: "#6b6880", margin: "6px 0 0", lineHeight: 1.5 }}>
-                No referral code? No problem — you can join without one. Just leave this blank and press the button below.
-              </p>
-            )}
-            {affiliateValid === true && (
-              <p style={{ fontSize: "12px", color: "#166534", margin: "6px 0 0", fontWeight: 500 }}>
-                ✓ Referred by {affiliatePartner}
-              </p>
-            )}
-            {affiliateValid === false && affiliateCode.trim() && (
-              <p style={{ fontSize: "12px", color: "#b91c1c", margin: "6px 0 0" }}>
-                That code doesn't look right. Leave it blank to continue without one.
-              </p>
-            )}
-          </div>
-
-          {error && (
-            <div style={{ backgroundColor: "#fef2f2", border: "1px solid #fecaca", borderRadius: "10px", padding: "12px 16px", fontSize: "14px", color: "#b91c1c", marginBottom: "20px", textAlign: "left" }}>
-              {error}
-            </div>
-          )}
-
-          <button
-            onClick={handleSubscribe}
-            disabled={loading}
-            style={{ width: "100%", backgroundColor: "#3730a3", color: "white", border: "none", borderRadius: "999px", padding: "16px", fontSize: "16px", fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, fontFamily: "inherit" }}
-          >
-            {loading ? "Redirecting to Stripe..." : "Start 7-day free trial →"}
-          </button>
-
-          <p style={{ fontSize: "12px", color: "#6b6880", margin: "16px 0 0", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-            <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
-            </svg>
-            Secured by Stripe · No charge for 7 days
-          </p>
-
-          <p style={{ fontSize: "12px", color: "#6b6880", margin: "12px 0 0" }}>
-            Already have an account?{" "}
-            <Link href="/login?redirect=/videos" style={{ color: "#3730a3", fontWeight: 600, textDecoration: "none" }}>Sign in</Link>
-          </p>
-        </div>
-      </div>
-    </main>
-  );
-}
+const accessOptions = [
+  {
+    title: "Allied Health course access",
+    status: "Payment link coming later",
+    details: [
+      "Foundations module",
+      "Developmental milestones series",
+      "Specialty tracks",
+      "Business partnership module",
+    ],
+  },
+  {
+    title: "AHA monthly membership",
+    status: "Payment link coming later",
+    details: [
+      "Community feed",
+      "Monthly live Zooms",
+      "Saved recordings",
+      "Shared resources",
+    ],
+  },
+  {
+    title: "Educator access",
+    status: "Payment link coming later",
+    details: [
+      "Educator pathway",
+      "Joyful Educator tools",
+      "Movement and regulation resources",
+      "Future educator modules",
+    ],
+  },
+];
 
 export default function SubscribePage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", backgroundColor: "#faf8f5" }} />}>
-      <SubscribeForm />
-    </Suspense>
+    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
+      <section className="mx-auto max-w-6xl px-6 py-14 md:py-20">
+        <div className="mb-10">
+          <Link
+            href="/"
+            className="text-base font-semibold text-[#0f766e] hover:underline"
+          >
+            Back to academy
+          </Link>
+        </div>
+
+        <header className="mb-10 max-w-4xl">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Membership and access
+          </p>
+
+          <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
+            Choose your academy access
+          </h1>
+
+          <p className="text-xl leading-relaxed text-[#5f5b73]">
+            Payment links will be connected later. For now, this page shows the access structure for the academy.
+          </p>
+        </header>
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          {accessOptions.map((option) => (
+            <article
+              key={option.title}
+              className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm"
+            >
+              <p className="mb-4 rounded-full bg-[#f0fdfa] px-5 py-3 text-base font-semibold text-[#0f766e]">
+                {option.status}
+              </p>
+
+              <h2 className="mb-6 text-3xl font-bold">
+                {option.title}
+              </h2>
+
+              <div className="mb-8 space-y-4">
+                {option.details.map((detail) => (
+                  <div
+                    key={detail}
+                    className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4 text-lg font-semibold text-[#1e1b2e]"
+                  >
+                    {detail}
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                disabled
+                className="w-full rounded-full bg-[#d8d2c8] px-6 py-4 text-base font-semibold text-[#5f5b73] disabled:cursor-not-allowed"
+              >
+                Stripe link coming soon
+              </button>
+            </article>
+          ))}
+        </div>
+
+        <section className="mt-10 rounded-3xl border border-[#e8e4de] bg-white p-8 md:p-10">
+          <h2 className="mb-5 text-3xl font-bold">
+            Already have access?
+          </h2>
+
+          <p className="mb-6 text-lg leading-relaxed text-[#5f5b73]">
+            Sign in to continue to your dashboard.
+          </p>
+
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/login?redirect=/dashboard"
+              className="rounded-full bg-[#0f766e] px-7 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962]"
+            >
+              Sign in
+            </Link>
+
+            <Link
+              href="/signup"
+              className="rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-7 py-4 text-base font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+            >
+              Create learner account
+            </Link>
+          </div>
+        </section>
+      </section>
+    </main>
   );
 }
