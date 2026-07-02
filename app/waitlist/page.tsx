@@ -3,29 +3,50 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const ageGroups = ["0–2 years", "3–5 years", "6–8 years"];
+const pathways = [
+  "Allied Health",
+  "Educator",
+  "AHA monthly membership",
+  "Not sure yet",
+];
 
-const topics = [
-  "Small group sessions with Robyn (online, $45)",
-  "One to one telehealth with Robyn (online, $129)",
-  "Gross Motor Development",
-  "Fine Motor Skills",
-  "Sensory Processing",
-  "Literacy and School Readiness",
-  "Play and Social Skills",
-  "Regulation and Big Emotions",
-  "Social Skills and Confidence",
-  "Sleep and Settling",
+const interests = [
+  "Allied Health course access",
+  "AHA monthly membership",
+  "Monthly live Zooms",
+  "Community hub",
+  "Educator pathway",
+  "Joyful Educator tools",
+  "Business partnership module",
   "Other",
 ];
 
+type WaitlistForm = {
+  name: string;
+  email: string;
+  heard_from: string;
+  pathway: string;
+  interest: string;
+  message: string;
+};
+
 export default function WaitlistPage() {
-  const [form, setForm] = useState({ name: "", email: "", heard_from: "", age_group: "", topic: "", message: "" });
+  const [form, setForm] = useState<WaitlistForm>({
+    name: "",
+    email: "",
+    heard_from: "",
+    pathway: "",
+    interest: "",
+    message: "",
+  });
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
@@ -34,148 +55,231 @@ export default function WaitlistPage() {
     setLoading(true);
     setError("");
 
-    const res = await fetch("/api/waitlist", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          pathway: form.pathway,
+          interest: form.interest,
+          message: form.heard_from
+            ? `Heard from: ${form.heard_from}\n\n${form.message}`
+            : form.message,
+        }),
+      });
 
-    const data = await res.json();
-    if (!res.ok) {
-      setError(data.error ?? "Something went wrong. Please try again.");
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      setSuccess(true);
       setLoading(false);
-      return;
+    } catch {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
     }
-
-    setSuccess(true);
-    setLoading(false);
   }
-
-  const inputStyle: React.CSSProperties = {
-    width: "100%",
-    padding: "10px 16px",
-    borderRadius: "12px",
-    border: "1.5px solid #e8e4de",
-    fontSize: "15px",
-    color: "#1e1b2e",
-    outline: "none",
-    boxSizing: "border-box",
-    fontFamily: "inherit",
-    backgroundColor: "#faf8f5",
-  };
-
-  const labelStyle: React.CSSProperties = {
-    display: "block",
-    fontSize: "14px",
-    fontWeight: 500,
-    color: "#1e1b2e",
-    marginBottom: "6px",
-  };
-
-  const fieldStyle: React.CSSProperties = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "6px",
-  };
 
   if (success) {
     return (
-      <div style={{ minHeight: "100vh", backgroundColor: "#faf8f5", display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 24px", fontFamily: "DM Sans, sans-serif" }}>
-        <div style={{ maxWidth: "480px", textAlign: "center" }}>
-          <div style={{ width: "56px", height: "56px", backgroundColor: "#f0fdf4", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px" }}>
-            <svg width="24" height="24" fill="none" stroke="#166534" strokeWidth="2">
-              <path d="M4 12l6 6L20 6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 12px" }}>
-            You're on the list.
-          </h1>
-          <p style={{ fontSize: "15px", color: "#6b6880", lineHeight: 1.7, margin: "0 0 32px" }}>
-            Robyn will be in touch personally as soon as a session matching your family's needs is ready. In the meantime, there are free videos waiting for your child right now.
+      <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
+        <section className="mx-auto max-w-3xl rounded-3xl border border-[#e8e4de] bg-white p-8 text-center shadow-sm md:p-12">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            You&apos;re on the list
           </p>
-          <Link href="/videos/free" style={{ backgroundColor: "#3730a3", color: "white", padding: "12px 28px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
-            Watch free videos
-          </Link>
-        </div>
-      </div>
+
+          <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl">
+            Thanks for joining the academy waitlist
+          </h1>
+
+          <p className="mx-auto mb-8 max-w-2xl text-xl leading-relaxed text-[#5f5b73]">
+            We&apos;ll let you know when the matching academy access, membership option, or pathway update is ready.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/"
+              className="rounded-full bg-[#0f766e] px-7 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962]"
+            >
+              Back to academy
+            </Link>
+
+            <Link
+              href="/community"
+              className="rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-7 py-4 text-base font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+            >
+              View community hub
+            </Link>
+          </div>
+        </section>
+      </main>
     );
   }
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
-      <div style={{ maxWidth: "560px", margin: "0 auto", padding: "64px 24px 100px" }}>
+    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
+      <section className="mx-auto max-w-3xl px-6 py-14 md:py-20">
+        <div className="mb-10">
+          <Link
+            href="/"
+            className="text-base font-semibold text-[#0f766e] hover:underline"
+          >
+            Back to academy
+          </Link>
+        </div>
 
-        <Link href="/" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "40px" }}>
-          ← Back to home
-        </Link>
+        <header className="mb-10">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Academy waitlist
+          </p>
 
-        <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3730a3", marginBottom: "12px" }}>
-          Help us build what you need
-        </p>
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "36px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 20px", lineHeight: 1.2 }}>
-          We're building something for your family. Tell us what you need.
-        </h1>
-        <p style={{ fontSize: "16px", color: "#4a4660", lineHeight: 1.8, margin: "0 0 48px", fontWeight: 300 }}>
-          Robyn has worked with families across Australia and around the world who are stuck on waitlists, too far from the right support, or just exhausted from trying to figure it out alone. Tell us what your family needs. When enough families need the same thing, we make it happen and you'll be the first to know.
-        </p>
+          <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
+            Tell us what you&apos;re interested in
+          </h1>
 
-        <div style={{ backgroundColor: "white", border: "1px solid #e8e4de", borderRadius: "16px", padding: "40px" }}>
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          <p className="text-xl leading-relaxed text-[#5f5b73]">
+            Join the waitlist for academy access, membership updates, or future pathway releases.
+          </p>
+        </header>
 
-            <div style={fieldStyle}>
-              <label style={labelStyle}>Your name</label>
-              <input name="name" value={form.name} onChange={handleChange} required placeholder="Jane Smith" style={inputStyle} />
-            </div>
-
-            <div style={fieldStyle}>
-              <label style={labelStyle}>Email address</label>
-              <input name="email" type="email" value={form.email} onChange={handleChange} required placeholder="jane@example.com" style={inputStyle} />
-            </div>
-
-            <div style={fieldStyle}>
-              <label style={labelStyle}>
-                How did you hear about Robyn?{" "}
-                <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
+        <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label
+                htmlFor="name"
+                className="mb-2 block text-lg font-semibold text-[#1e1b2e]"
+              >
+                Your name
               </label>
-              <input name="heard_from" value={form.heard_from} onChange={handleChange} placeholder="e.g. Instagram, a friend, Facebook" style={inputStyle} />
+
+              <input
+                id="name"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                required
+                placeholder="Jane Smith"
+                className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-4 text-lg text-[#1e1b2e] outline-none transition focus:border-[#0f766e]"
+              />
             </div>
 
-            <div style={fieldStyle}>
-              <label style={labelStyle}>Your child's age group</label>
-              <select name="age_group" value={form.age_group} onChange={handleChange} required style={inputStyle}>
-                <option value="">Select an age group</option>
-                {ageGroups.map((ag) => <option key={ag} value={ag}>{ag}</option>)}
+            <div>
+              <label
+                htmlFor="email"
+                className="mb-2 block text-lg font-semibold text-[#1e1b2e]"
+              >
+                Email address
+              </label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                placeholder="jane@example.com"
+                className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-4 text-lg text-[#1e1b2e] outline-none transition focus:border-[#0f766e]"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="heard_from"
+                className="mb-2 block text-lg font-semibold text-[#1e1b2e]"
+              >
+                How did you hear about the academy?{" "}
+                <span className="font-normal text-[#5f5b73]">(optional)</span>
+              </label>
+
+              <input
+                id="heard_from"
+                name="heard_from"
+                value={form.heard_from}
+                onChange={handleChange}
+                placeholder="Example: Instagram, email, colleague, training event"
+                className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-4 text-lg text-[#1e1b2e] outline-none transition focus:border-[#0f766e]"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="pathway"
+                className="mb-2 block text-lg font-semibold text-[#1e1b2e]"
+              >
+                Which pathway are you interested in?
+              </label>
+
+              <select
+                id="pathway"
+                name="pathway"
+                value={form.pathway}
+                onChange={handleChange}
+                required
+                className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-4 text-lg text-[#1e1b2e] outline-none transition focus:border-[#0f766e]"
+              >
+                <option value="">Select a pathway</option>
+                {pathways.map((pathway) => (
+                  <option key={pathway} value={pathway}>
+                    {pathway}
+                  </option>
+                ))}
               </select>
             </div>
 
-            <div style={fieldStyle}>
-              <label style={labelStyle}>Topic you're most interested in</label>
-              <select name="topic" value={form.topic} onChange={handleChange} required style={inputStyle}>
-                <option value="">Select a topic</option>
-                {topics.map((t) => <option key={t} value={t}>{t}</option>)}
+            <div>
+              <label
+                htmlFor="interest"
+                className="mb-2 block text-lg font-semibold text-[#1e1b2e]"
+              >
+                What are you most interested in?
+              </label>
+
+              <select
+                id="interest"
+                name="interest"
+                value={form.interest}
+                onChange={handleChange}
+                required
+                className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-4 text-lg text-[#1e1b2e] outline-none transition focus:border-[#0f766e]"
+              >
+                <option value="">Select an option</option>
+                {interests.map((interest) => (
+                  <option key={interest} value={interest}>
+                    {interest}
+                  </option>
+                ))}
               </select>
             </div>
 
-            <div style={fieldStyle}>
-              <label style={labelStyle}>
-                Tell us more about what your family is finding hard{" "}
-                <span style={{ color: "#6b6880", fontWeight: 400 }}>(optional)</span>
+            <div>
+              <label
+                htmlFor="message"
+                className="mb-2 block text-lg font-semibold text-[#1e1b2e]"
+              >
+                Anything else you&apos;d like us to know?{" "}
+                <span className="font-normal text-[#5f5b73]">(optional)</span>
               </label>
+
               <textarea
+                id="message"
                 name="message"
                 value={form.message}
                 onChange={handleChange}
-                rows={4}
-                placeholder="e.g. My 4 year old really struggles with transitions and I can't find anyone in our area who can help..."
-                style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }}
+                rows={5}
+                placeholder="Add anything helpful here."
+                className="w-full resize-y rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-4 text-lg leading-relaxed text-[#1e1b2e] outline-none transition focus:border-[#0f766e]"
               />
-              <p style={{ fontSize: "12px", color: "#6b6880", margin: 0, lineHeight: 1.5 }}>
-                The more you share, the better we can tailor sessions to what families actually need.
-              </p>
             </div>
 
             {error && (
-              <div style={{ backgroundColor: "#fef2f2", border: "1px solid #fecaca", borderRadius: "10px", padding: "12px 16px", fontSize: "14px", color: "#b91c1c" }}>
+              <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-base text-red-700">
                 {error}
               </div>
             )}
@@ -183,19 +287,17 @@ export default function WaitlistPage() {
             <button
               type="submit"
               disabled={loading}
-              style={{ width: "100%", backgroundColor: "#3730a3", color: "white", border: "none", borderRadius: "999px", padding: "14px", fontSize: "15px", fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, fontFamily: "inherit" }}
+              className="w-full rounded-full bg-[#0f766e] px-7 py-4 text-lg font-semibold text-white transition hover:bg-[#0d6962] disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {loading ? "Submitting…" : "Save my spot"}
+              {loading ? "Submitting..." : "Join the waitlist"}
             </button>
-
           </form>
-        </div>
+        </section>
 
-        <p style={{ fontSize: "13px", color: "#6b6880", textAlign: "center", marginTop: "20px", lineHeight: 1.6 }}>
-          We will only contact you when something matching your interest is ready. No spam, ever.
+        <p className="mt-6 text-center text-base leading-relaxed text-[#5f5b73]">
+          We'll only contact you about academy updates connected to your interest.
         </p>
-
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

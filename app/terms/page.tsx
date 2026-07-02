@@ -4,133 +4,213 @@ export default function TermsPage() {
   const lastUpdated = "22 May 2026";
 
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
-      <div style={{ maxWidth: "720px", margin: "0 auto", padding: "64px 24px 100px" }}>
+    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
+      <section className="mx-auto max-w-4xl px-6 py-14 md:py-20">
+        <div className="mb-10">
+          <Link
+            href="/"
+            className="text-base font-semibold text-[#0f766e] hover:underline"
+          >
+            Back to academy
+          </Link>
+        </div>
 
-        <Link href="/" style={{ fontSize: "14px", color: "#6b6880", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "40px" }}>
-          ← Back to home
-        </Link>
+        <header className="mb-12">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Legal
+          </p>
 
-        <p style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6b6880", marginBottom: "12px" }}>
-          Legal
-        </p>
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "40px", fontWeight: 300, color: "#1e1b2e", margin: "0 0 8px" }}>
-          Terms and Conditions
-        </h1>
-        <p style={{ fontSize: "14px", color: "#6b6880", margin: "0 0 48px" }}>
-          Last updated {lastUpdated}
-        </p>
+          <h1 className="mb-4 text-4xl font-bold leading-tight md:text-6xl">
+            Terms and Conditions
+          </h1>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "40px", fontSize: "15px", lineHeight: 1.8, color: "#4a4660" }}>
+          <p className="text-lg text-[#5f5b73]">
+            Last updated {lastUpdated}
+          </p>
+        </header>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>1. About us</h2>
-            <p style={{ margin: 0 }}>
-              Developmental Hub is operated by Play Move Improve Pty Ltd (ABN: 17 415 190 263), a company registered in Victoria, Australia. References to "we", "us", or "our" in these terms refer to Play Move Improve Pty Ltd. References to "you" refer to any person who accesses or uses the Developmental Hub platform at developmental-hub.vercel.app.
+        <div className="mb-10 rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
+          <h2 className="mb-4 text-2xl font-bold">
+            Draft notice
+          </h2>
+
+          <p className="text-lg leading-relaxed text-[#5f5b73]">
+            These terms are a working draft for the Allied Health & Educator Resource Academy. They should be reviewed before paid enrolments, memberships, or community access are launched.
+          </p>
+        </div>
+
+        <div className="space-y-10 text-lg leading-relaxed text-[#4a4660]">
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              1. About us
+            </h2>
+
+            <p>
+              The Allied Health & Educator Resource Academy is operated by Play Move Improve Pty Ltd (ABN: 17 415 190 263), a company registered in Victoria, Australia. References to “we”, “us”, or “our” in these terms refer to Play Move Improve Pty Ltd. References to “you” refer to any person who accesses or uses the academy platform.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>2. Acceptance of terms</h2>
-            <p style={{ margin: 0 }}>
-              By creating an account or using our platform, you agree to be bound by these Terms and Conditions and our Privacy Policy. If you do not agree, please do not use the platform. We may update these terms from time to time and will notify you of material changes by email or by posting a notice on the platform.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              2. Acceptance of terms
+            </h2>
+
+            <p>
+              By creating an account, accessing course material, joining a membership area, or using the platform, you agree to be bound by these Terms and Conditions and our Privacy Policy. If you do not agree, please do not use the platform.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>3. The platform and services</h2>
-            <p style={{ margin: "0 0 12px" }}>
-              Developmental Hub is an online platform that connects families with qualified practitioners for live group sessions and webinars focused on childhood development. We facilitate the booking and payment process but are not ourselves a health or therapeutic service provider.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              3. The platform
+            </h2>
+
+            <p className="mb-4">
+              The academy platform may include online courses, topic pages, embedded tools, downloadable resources, live sessions, saved recordings, membership areas, and community features.
             </p>
-            <p style={{ margin: 0 }}>
-              Sessions on the platform are educational and informational in nature. They do not constitute medical advice, diagnosis, or treatment. If you have concerns about your child's health or development, please consult a registered health professional.
+
+            <p>
+              Platform content is provided for education, training, professional learning, and general information. It does not replace individual supervision, workplace policies, professional judgement, or advice from an appropriately qualified professional.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>4. Bookings and payments</h2>
-            <p style={{ margin: "0 0 12px" }}>
-              When you book a session, your payment card is authorised but not charged immediately. Payment is only captured if the session reaches its minimum number of participating families, which is assessed 24 hours before the session start time.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              4. Course and membership access
+            </h2>
+
+            <p className="mb-4">
+              Access to some parts of the academy may require payment, enrolment approval, a valid subscription, or a specific access level.
             </p>
-            <p style={{ margin: "0 0 12px" }}>
-              If a session does not reach the minimum number of families, it will be cancelled and your authorisation will be released. You will not be charged.
-            </p>
-            <p style={{ margin: 0 }}>
-              All payments are processed securely through Stripe. We do not store your card details on our servers.
+
+            <p>
+              We may update, add, remove, or change platform content over time as the academy develops.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>5. Cancellations and refunds</h2>
-            <p style={{ margin: "0 0 12px" }}>
-              If a session is cancelled by us due to insufficient bookings, you will receive a full automatic refund within 5–10 business days.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              5. Payments
+            </h2>
+
+            <p className="mb-4">
+              Payments may be processed through Stripe or another secure payment provider. We do not store your card details on our servers.
             </p>
-            <p style={{ margin: "0 0 12px" }}>
-              If you wish to cancel your booking, please contact us at least 48 hours before the session start time. Cancellations made within 48 hours of the session start time are not eligible for a refund unless the session is also cancelled by us.
-            </p>
-            <p style={{ margin: 0 }}>
-              We reserve the right to cancel or reschedule sessions due to facilitator unavailability, technical issues, or other circumstances beyond our control. In such cases, a full refund will be issued.
+
+            <p>
+              Specific prices, inclusions, billing periods, cancellation terms, and refund terms will be shown at the time of purchase.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>6. Facilitators</h2>
-            <p style={{ margin: "0 0 12px" }}>
-              All facilitators on Developmental Hub are independent contractors, not employees of Play Move Improve Pty Ltd. Each facilitator is required to hold a current Working With Children Check, professional indemnity insurance, and relevant professional registration before being approved to facilitate sessions.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              6. Community conduct
+            </h2>
+
+            <p className="mb-4">
+              If you access a community or membership area, you agree to participate respectfully and professionally.
             </p>
-            <p style={{ margin: 0 }}>
-              While we screen and approve all facilitators, we do not guarantee the accuracy or completeness of information they provide. We are not liable for the content of sessions delivered by independent facilitators.
+
+            <p className="mb-4">
+              You agree not to harass, abuse, threaten, shame, or disclose private information about other members, children, families, workplaces, or professionals.
+            </p>
+
+            <p>
+              We may remove posts, restrict access, or cancel membership access if community conduct expectations are not followed.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>7. User conduct</h2>
-            <p style={{ margin: "0 0 12px" }}>You agree not to:</p>
-            <ul style={{ margin: "0", paddingLeft: "24px", display: "flex", flexDirection: "column", gap: "8px" }}>
-              <li>Share session links or access with people who have not booked</li>
-              <li>Record sessions without the express consent of the facilitator and all participants</li>
-              <li>Use the platform for any unlawful purpose</li>
-              <li>Harass, abuse, or threaten other users or facilitators</li>
-              <li>Provide false or misleading information when creating your account</li>
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              7. User responsibilities
+            </h2>
+
+            <p className="mb-4">
+              You agree not to:
+            </p>
+
+            <ul className="list-disc space-y-3 pl-6">
+              <li>Share your login details with another person</li>
+              <li>Copy, reproduce, or distribute academy content without permission</li>
+              <li>Use the platform for unlawful, unsafe, or misleading purposes</li>
+              <li>Represent academy content as individual clinical advice</li>
+              <li>Upload content that breaches another person’s privacy or rights</li>
+              <li>Provide false or misleading information when creating an account</li>
             </ul>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>8. Intellectual property</h2>
-            <p style={{ margin: 0 }}>
-              All content on the Developmental Hub platform, including session materials, text, graphics, and the platform itself, is owned by Play Move Improve Pty Ltd or licensed to us. You may not reproduce, distribute, or use our content for commercial purposes without our prior written consent.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              8. Intellectual property
+            </h2>
+
+            <p>
+              All academy content, including course materials, videos, worksheets, tools, text, graphics, downloads, platform structure, and related resources, is owned by Play Move Improve Pty Ltd or licensed to us. You may not reproduce, distribute, adapt, sell, or use our content for commercial purposes without our prior written consent.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>9. Limitation of liability</h2>
-            <p style={{ margin: "0 0 12px" }}>
-              To the maximum extent permitted by law, Play Move Improve Pty Ltd is not liable for any indirect, incidental, or consequential loss or damage arising from your use of the platform or attendance at sessions.
-            </p>
-            <p style={{ margin: 0 }}>
-              Our total liability to you for any claim arising out of your use of the platform is limited to the amount you paid for the session giving rise to the claim.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              9. External links and embedded tools
+            </h2>
+
+            <p>
+              The platform may link to or embed external tools, videos, forms, communities, file storage, or third-party services. We are not responsible for the availability, security, or content of third-party platforms.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>10. Governing law</h2>
-            <p style={{ margin: 0 }}>
-              These terms are governed by the laws of Victoria, Australia. Any disputes will be subject to the exclusive jurisdiction of the courts of Victoria.
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              10. Limitation of liability
+            </h2>
+
+            <p className="mb-4">
+              To the maximum extent permitted by law, Play Move Improve Pty Ltd is not liable for indirect, incidental, or consequential loss arising from your use of the platform.
+            </p>
+
+            <p>
+              Nothing in these terms limits any rights you may have under Australian Consumer Law or other laws that cannot be excluded.
             </p>
           </section>
 
-          <section>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 400, color: "#1e1b2e", margin: "0 0 16px" }}>11. Contact us</h2>
-            <p style={{ margin: 0 }}>
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              11. Changes to these terms
+            </h2>
+
+            <p>
+              We may update these terms from time to time. If changes are material, we may notify users by email or by posting a notice on the platform.
+            </p>
+          </section>
+
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              12. Governing law
+            </h2>
+
+            <p>
+              These terms are governed by the laws of Victoria, Australia. Any disputes will be subject to the jurisdiction of the courts of Victoria.
+            </p>
+          </section>
+
+          <section className="rounded-3xl border border-[#e8e4de] bg-white p-6 md:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-[#1e1b2e]">
+              13. Contact us
+            </h2>
+
+            <p>
               If you have any questions about these terms, please contact us at{" "}
-              <a href="mailto:hello@playmoveimprove.com.au" style={{ color: "#3730a3", textDecoration: "none" }}>
+              <a
+                href="mailto:hello@playmoveimprove.com.au"
+                className="font-semibold text-[#0f766e] hover:underline"
+              >
                 hello@playmoveimprove.com.au
               </a>
+              .
             </p>
           </section>
-
         </div>
-      </div>
+      </section>
     </main>
   );
 }
