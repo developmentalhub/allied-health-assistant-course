@@ -201,10 +201,10 @@ export default function TermsPage() {
             <p>
               If you have any questions about these terms, please contact us at{" "}
               <a
-                href="mailto:hello@playmoveimprove.com.au"
+                href="mailto:robyn@playmoveimprove.com.au"
                 className="font-semibold text-[#0f766e] hover:underline"
               >
-                hello@playmoveimprove.com.au
+                robyn@playmoveimprove.com.au
               </a>
               .
             </p>

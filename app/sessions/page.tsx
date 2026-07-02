@@ -1,51 +1,75 @@
 import Link from "next/link";
 
-export default async function SessionsPage() {
+export default function SessionsPage() {
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#faf8f5", fontFamily: "DM Sans, sans-serif", color: "#1e1b2e" }}>
-      
-      {/* Hero Section */}
-      <section style={{ maxWidth: "760px", margin: "0 auto", padding: "60px 24px 48px" }}>
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 5vw, 44px)", fontWeight: 300, color: "#1e1b2e", margin: "0 0 16px" }}>
-          Developmental support tailored to your child's needs
-        </h1>
-        <p style={{ fontSize: "18px", color: "#6b6880", lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
-          Every child's journey is different. Whether you are navigating after-school meltdowns, handwriting struggles, or seeking to build foundational literacy skills, I am here to help. Register your interest below so I can understand what your family needs right now.
-        </p>
-      </section>
-
-      {/* Offerings Section */}
-      <section style={{ maxWidth: "760px", margin: "0 auto", padding: "0 24px 80px" }}>
-        <div style={{ display: "grid", gap: "24px" }}>
-          
-          {[
-            { 
-              title: "Literacy & Learning Programme", 
-              pain: "Does your child struggle with rhythm, focus, or the foundations of reading?", 
-              desc: "My evidence-based programme integrates movement and executive function to make literacy engaging and accessible." 
-            },
-            { 
-              title: "Small Group Sessions", 
-              pain: "Are you looking for a supportive environment where your child can build social confidence and regulation skills?", 
-              desc: "I facilitate small groups that focus on sensory processing, movement, and learning to navigate big feelings together." 
-            },
-            { 
-              title: "Individual Telehealth", 
-              pain: "Do you need personalised strategies for challenges at home or school that are specific to your child?", 
-              desc: "One-on-one sessions where we dive deep into your child's unique profile to create a plan that actually works." 
-            }
-          ].map((item, index) => (
-            <div key={index} style={{ backgroundColor: "white", padding: "32px", borderRadius: "16px", border: "1px solid #e8e4de" }}>
-              <h2 style={{ fontSize: "18px", fontWeight: 600, color: "#3730a3", margin: "0 0 8px" }}>{item.title}</h2>
-              <p style={{ fontSize: "15px", fontWeight: 500, color: "#1e1b2e", margin: "0 0 8px" }}>{item.pain}</p>
-              <p style={{ fontSize: "14px", color: "#6b6880", lineHeight: 1.6, margin: "0 0 20px" }}>{item.desc}</p>
-              <Link href="/register-interest" style={{ backgroundColor: "#3730a3", color: "white", padding: "10px 20px", borderRadius: "999px", fontSize: "14px", fontWeight: 600, textDecoration: "none", display: "inline-block" }}>
-                Tell me what you need
-              </Link>
-            </div>
-          ))}
-
+    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
+      <section className="mx-auto max-w-5xl px-6 py-14 md:py-20">
+        <div className="mb-10">
+          <Link
+            href="/"
+            className="text-base font-semibold text-[#0f766e] hover:underline"
+          >
+            Back to academy
+          </Link>
         </div>
+
+        <header className="mb-10 max-w-4xl">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Live sessions
+          </p>
+
+          <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
+            Live session area coming later
+          </h1>
+
+          <p className="text-xl leading-relaxed text-[#5f5b73]">
+            This area will later hold academy live sessions, monthly Zooms, and replay access.
+          </p>
+        </header>
+
+        <section className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+          <h2 className="mb-5 text-3xl font-bold">
+            Current access options
+          </h2>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            <Link
+              href="/community"
+              className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6 transition hover:border-[#0f766e]"
+            >
+              <h3 className="mb-3 text-2xl font-bold">
+                Community hub
+              </h3>
+              <p className="text-lg leading-relaxed text-[#5f5b73]">
+                Open the member community layout.
+              </p>
+            </Link>
+
+            <Link
+              href="/videos"
+              className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6 transition hover:border-[#0f766e]"
+            >
+              <h3 className="mb-3 text-2xl font-bold">
+                Video area
+              </h3>
+              <p className="text-lg leading-relaxed text-[#5f5b73]">
+                Open the academy video area.
+              </p>
+            </Link>
+
+            <Link
+              href="/dashboard"
+              className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6 transition hover:border-[#0f766e]"
+            >
+              <h3 className="mb-3 text-2xl font-bold">
+                Dashboard
+              </h3>
+              <p className="text-lg leading-relaxed text-[#5f5b73]">
+                Return to your learner dashboard.
+              </p>
+            </Link>
+          </div>
+        </section>
       </section>
     </main>
   );
