@@ -2,52 +2,52 @@
 
 import React, { useState } from 'react';
 
-// Define the behaviors and practical movement strategies for overwhelmed educators
-const BEHAVIOR_STRATEGIES = [
+// Define real-world classroom situations using a supportive, educational voice
+const BEHAVIOUR_STRATEGIES = [
   {
     id: 'dysregulated',
-    label: 'Screen-Time Dysregulation & Meltdowns',
-    description: 'When children are highly irritable, glazed over, or struggling to transition away from devices.',
+    label: 'Screen-Time Meltdown or Transition Struggles',
+    situation: 'When children appear glazed over, irritable, or highly distressed when moving away from digital devices.',
     strategy: 'Vestibular Reset (The Gentle Rock)',
     actionSteps: [
-      'Have the children sit on the floor with their knees tucked to their chest.',
+      'Have the children sit comfortably on the floor with their knees tucked towards their chest.',
       'Encourage them to gently rock backward and forward on a soft mat, or rock side to side like a boat.',
-      'Keep your voice calm, slow, and low to help lower their nervous system arousal levels.'
+      'Keep your voice calm, slow, and low to help lower their nervous system arousal levels naturally.'
     ],
     duration: '2 to 3 minutes'
   },
   {
     id: 'fidgety',
-    label: 'Fidgeting, Bumping, & High Energy',
-    description: 'When children are constantly moving, touching others, or seeking physical input.',
+    label: 'Climbing the Walls, Bumping, or High Physical Energy',
+    situation: 'When children are constantly moving, seeking physical contact, or struggling to respect personal space boundaries.',
     strategy: 'Proprioceptive Heavy Work (Wall Pushes)',
     actionSteps: [
-      'Ask the children to place both hands flat against a sturdy wall.',
+      'Ask the children to place both hands flat against a sturdy, safe classroom wall.',
       'Instruct them to push as hard as they can for 10 seconds, as if they are trying to push the wall into the next room.',
-      'Relax for 5 seconds, then repeat 3 times to provide deep muscle feedback.'
+      'Relax for 5 seconds, then repeat 3 times to provide deep muscle and joint feedback that grounds their system.'
     ],
     duration: '1 to 2 minutes'
   },
   {
     id: 'slouching',
-    label: 'Slouching, Low Tone, & Fatigue',
-    description: 'When children appear floppy, lack core stability, or lean heavily on tables and peers.',
+    label: 'Slouching, Low Muscle Tone, or General Fatigue',
+    situation: 'When children appear floppy, lack core stability, or lean heavily on tables, chairs, and peers during floor time.',
     strategy: 'Core Activation (The Starfish Stretch)',
     actionSteps: [
-      'Have the children stand up tall with wide spaces between each other.',
-      'Reach arms and legs out wide like a starfish, holding the position for 5 seconds.',
-      'Curl inward tightly like a ball, then release back out to activate core stabilizers.'
+      'Have the children stand up tall with wide spaces between each other so they feel safe.',
+      'Reach arms and legs out wide like a starfish, holding the stable position for 5 seconds.',
+      'Curl inward tightly like a small ball, then release back out to gently activate core postural stabilizers.'
     ],
     duration: '2 minutes'
   }
 ];
 
 export default function Home() {
-  // State to track which behavior an educator has selected
-  const [selectedBehavior, setSelectedBehavior] = useState(BEHAVIOR_STRATEGIES[0].id);
+  // State to track which classroom situation an educator has selected
+  const [selectedSituation, setSelectedSituation] = useState(BEHAVIOUR_STRATEGIES[0].id);
 
   // Find the active strategy details based on selection
-  const activeStrategy = BEHAVIOR_STRATEGIES.find(b => b.id === selectedBehavior) || BEHAVIOR_STRATEGIES[0];
+  const activeStrategy = BEHAVIOUR_STRATEGIES.find(b => b.id === selectedSituation) || BEHAVIOUR_STRATEGIES[0];
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 antialiased">
@@ -59,7 +59,7 @@ export default function Home() {
             The Allied Health & Educator Resource Academy
           </h1>
           <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Practical, movement-based strategies to support child self-regulation, reducing the overwhelm of modern classroom behaviors.
+            Practical, movement-based strategies to support child self-regulation, reducing the overwhelm of modern classroom behaviours.
           </p>
         </div>
       </header>
@@ -80,7 +80,7 @@ export default function Home() {
                 Clinical Strategy Delivery
               </h2>
               <p className="text-slate-600 leading-relaxed mb-6">
-                Bridge the gap between formal therapy plans and classroom routines. Access structured pediatric milestone trackers, documentation frameworks, and primitive reflex integration tools.
+                Bridge the gap between formal therapy plans and classroom routines. Access structured paediatric milestone trackers, documentation frameworks, and primitive reflex integration tools.
               </p>
               
               {/* Free Resource Preview Box */}
@@ -124,7 +124,7 @@ export default function Home() {
             </div>
 
             <a 
-              href="#behavior-selector" 
+              href="#situation-selector" 
               className="w-full bg-amber-600 text-white font-medium py-3 px-4 rounded-xl hover:bg-amber-700 active:bg-amber-800 transition text-center shadow-sm"
             >
               Explore Classroom Tools Below
@@ -135,56 +135,62 @@ export default function Home() {
 
         <hr className="border-slate-200 mb-16" />
 
-        {/* Integrated Joyful Educator Interactive Tool Section */}
-        <section id="behavior-selector" className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-10">
+        {/* Improved In-the-Moment Regulation Guide */}
+        <section id="situation-selector" className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-10">
           <div className="mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
-              Instant Classroom Support Tool
+              In-the-Moment Regulation Guide
             </h2>
             <p className="text-slate-600">
-              Select the behavioral presentation you are seeing right now to access a fast, evidence-based regulation movement strategy.
+              What is happening in your room right now? Select the description that best matches what you are seeing to find a calm, movement-focused response.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-3 mb-8">
-            {BEHAVIOR_STRATEGIES.map((item) => (
+          {/* Large, welcoming selection cards */}
+          <div className="grid md:grid-cols-3 gap-4 mb-8">
+            {BEHAVIOUR_STRATEGIES.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setSelectedBehavior(item.id)}
-                className={`p-4 text-left rounded-xl border font-medium transition text-sm flex flex-col justify-between ${
-                  selectedBehavior === item.id
-                    ? 'border-amber-500 bg-amber-50/50 text-amber-900 shadow-sm'
-                    : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                onClick={() => setSelectedSituation(item.id)}
+                className={`p-5 text-left rounded-xl border transition flex flex-col justify-between h-full ${
+                  selectedSituation === item.id
+                    ? 'border-amber-500 bg-amber-50/40 text-amber-950 shadow-sm ring-1 ring-amber-500'
+                    : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50/50'
                 }`}
               >
-                <span>{item.label}</span>
+                <span className="font-semibold text-sm leading-snug">{item.label}</span>
               </button>
             ))}
           </div>
 
-          {/* Render Active Regulation Strategy */}
+          {/* Interactive Strategy Display Panel */}
           <div className="bg-slate-50 rounded-xl p-6 border border-slate-100">
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-              <h3 className="text-xl font-bold text-slate-900">
-                Strategy: {activeStrategy.strategy}
-              </h3>
-              <span className="text-xs font-semibold text-slate-500 bg-slate-200/60 px-2.5 py-1 rounded-md">
-                Estimated Time: {activeStrategy.duration}
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-200/60">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-700 block mb-1">
+                  Recommended Practical Strategy
+                </span>
+                <h3 className="text-xl font-bold text-slate-900">
+                  {activeStrategy.strategy}
+                </h3>
+              </div>
+              <span className="text-xs font-semibold text-slate-600 bg-slate-200/70 px-3 py-1.5 rounded-lg">
+                Time Needed: {activeStrategy.duration}
               </span>
             </div>
             
             <p className="text-sm text-slate-600 italic mb-6">
-              {activeStrategy.description}
+              <strong>The Presentation:</strong> {activeStrategy.situation}
             </p>
 
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
-              How to implement this with children:
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">
+              How to guide your group through this exercise:
             </h4>
             
-            <ol className="space-y-3">
+            <ol className="space-y-4">
               {activeStrategy.actionSteps.map((step, index) => (
                 <li key={index} className="flex gap-4 text-slate-700 leading-relaxed text-sm">
-                  <span className="shrink-0 w-6 h-6 rounded-full bg-white border border-slate-200 flex items-center justify-center font-semibold text-xs text-slate-500">
+                  <span className="shrink-0 w-6 h-6 rounded-full bg-white border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-500 shadow-xs">
                     {index + 1}
                   </span>
                   <span className="pt-0.5">{step}</span>
