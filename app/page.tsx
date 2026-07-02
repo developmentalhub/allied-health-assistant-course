@@ -217,13 +217,13 @@ const freeJs = `
         body: JSON.stringify({
           first_name: name,
           email: email,
-          source: "parent-hub-reflex-ebook"
+          source: "aha-academy-clinical-framework-guide"
         })
       })
       .then(function(r){ 
         if(!r.ok){ throw new Error("Network response error"); }
         msg.style.color = "#3D2C5F"; 
-        msg.textContent = "Enjoy — your eBook is opening in a new tab!";
+        msg.textContent = "Thank you — your clinical implementation guide is opening in a new tab!";
         f.reset(); 
         btn.disabled = false;
         if("${GUIDE_URL}") window.open("${GUIDE_URL}", "_blank", "noopener");
@@ -231,7 +231,7 @@ const freeJs = `
       .catch(function(){ 
         btn.disabled = false; 
         msg.style.color = "#C0392B";
-        msg.textContent = "Hmm, that did not send. Please email robyn@playmoveimprove.com.au and we will send it across straight away."; 
+        msg.textContent = "Hmm, that did not send. Please email robyn@playmoveimprove.com.au and we will provide access straight away."; 
       });
     });
   })();
@@ -242,29 +242,30 @@ export default function HomePage() {
     <main className="pmi-hub">
       <style dangerouslySetInnerHTML={{ __html: css }} />
 
-      {/* 1. Announcement Banner */}
+      {/* 1. Co-Branded Announcement Banner */}
       <div className="pmi-banner">
-        Free follow-along videos, zero financial commitment. Strengthen your child's foundations at home today. · 
-        <a href="/videos/free">Watch free tracks →</a>
+        Play Move Improve and Spectrum Village · Scalable workforce training templates for paediatric clinics. 
+        <a href="/videos/free">Explore free onboarding paths →</a>
       </div>
 
-      {/* 2. Parent-Focused Hero Section */}
+      {/* 2. B2B / Clinic Director Focused Hero Section */}
       <section className="pmi-hero">
         <div className="pmi-container pmi-hero-grid">
           <div>
-            <h1>He knew every word on the page. But his eyes kept sliding off it.</h1>
+            <h1>Your AHAs understand the clinical intent. But do they know how to prompt a child?</h1>
             <p>
-              Watching my son struggle to read broke my heart. He wasn't behind in understanding, and he wasn't disengaged. 
-              His brain and eyes simply hadn't built the movement foundations they needed to track lines of text together. 
-              I'm Robyn, a vestibular specialist, Exercise Physiologist, and mum. These simple, three-minute, 
-              follow-along tracks are exactly what built the neural and physical pathways that allowed my son to read smoothly.
+              Hiring and onboarding passionate Allied Health Assistants is the single best way to scale your clinic billable hours, 
+              but senior clinicians waste non-billable time teaching raw staff how to pace and run a pediatric session. 
+              I am Robyn Papworth, a Masters-qualified Developmental Educator, Exercise Physiologist, and clinic partner. 
+              We built this academy to solve workforce onboarding. Our multi-module layout frames short, structured lessons with 
+              real-world, child-facing video modeling assets, teaching your assistants exactly how to guide, regulate, and connect with young clients.
             </p>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <a href="/videos/free" className="pmi-btn">
-                Watch free videos
+                Preview Training Tracks
               </a>
               <a href="#free-ebook" className="pmi-btn pmi-btn-ghost">
-                Get the free eBook
+                Download Clinical Framework
               </a>
             </div>
           </div>
@@ -273,20 +274,20 @@ export default function HomePage() {
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "380px" }}>
             <div className="image-cluster">
               <div className="img-main">
-                <img src={`${HUB_ASSETS}colour-sorting-table-activity.png`} alt="Colour sorting activity" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src={`${HUB_ASSETS}colour-sorting-table-activity.png`} alt="Ocular tracking task" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
               <div className="img-sub1">
-                <img src={`${HUB_ASSETS}floor-based-tearing-paper-activity.png`} alt="Floor based paper activity" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src={`${HUB_ASSETS}floor-based-tearing-paper-activity.png`} alt="Proprioceptive base play" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
               <div className="img-sub2">
-                <img src={`${HUB_ASSETS}cup-colour-sort-activity.png`} alt="Cup sorting activity" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src={`${HUB_ASSETS}cup-colour-sort-activity.png`} alt="Midline crossing exercise" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. Quiz Banner */}
+      {/* 3. B2B Competency Check Banner */}
       <section className="pmi-quiz-bar">
         <div className="pmi-container pmi-quiz-flex">
           <div className="pmi-quiz-info">
@@ -296,34 +297,34 @@ export default function HomePage() {
               </svg>
             </div>
             <div>
-              <p style={{ fontSize: "15px", fontWeight: 600, color: "#1e1b2e", margin: "0 0 2px" }}>Is your child physically ready to read?</p>
-              <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>Take our free two-minute foundational check to see what physical tracking skills they need next.</p>
+              <p style={{ fontSize: "15px", fontWeight: 600, color: "#1e1b2e", margin: "0 0 2px" }}>Are your therapy assistants ready for solo pediatric caseloads?</p>
+              <p style={{ fontSize: "13px", color: "#6b6880", margin: 0 }}>Take our free two-minute clinical onboarding audit to assess your team's tracking, core, and regulation delivery skills.</p>
             </div>
           </div>
-          <a href="/quiz" className="pmi-btn pmi-btn-accent" style={{ fontSize: "14px", padding: "10px 20px" }}>Take the Quiz</a>
+          <a href="/quiz" className="pmi-btn pmi-btn-accent" style={{ fontSize: "14px", padding: "10px 20px" }}>Run Team Audit</a>
         </div>
       </section>
 
-      {/* 4. Behavioural vs. Developmental Symptom Checklist */}
+      {/* 4. Clinical Pain Point Checklist */}
       <section className="pmi-container">
         <div className="pmi-checklist-box">
-          <h3>Does this sound like your afternoon reading routine?</h3>
+          <h3>Is your senior clinical team experiencing onboarding fatigue?</h3>
           <p style={{ color: "#6b6880", fontSize: "15px", margin: "0 0 20px" }}>
-            When a child struggles to sit still, avoid text, or melt down during reading, it often isn't a lack of focus or willpower. 
-            Their physical systems might be working overtime just to keep their body upright or their eyes aligned.
+            When private practices attempt to manage internal training pipelines from scratch, senior Occupational Therapists 
+            and Speech Pathologists spend precious billable time reviewing fundamental session boundaries rather than advanced care.
           </p>
           <div className="pmi-checklist-grid">
             <div className="pmi-checklist-item">
-              <span>✓</span> Fidgeting, slouching, or leaning their head all the way down on the table to look at a book.
+              <span>✓</span> Assistants struggle to adapt motor activities when a pediatric client experiences sensory meltdowns.
             </div>
             <div className="pmi-checklist-item">
-              <span>✓</span> Skipping words, missing lines entirely, or losing their place unless they use a finger to track.
+              <span>✓</span> Non-billable onboarding hours skyrocketing due to highly manual, repetitive training protocols.
             </div>
             <div className="pmi-checklist-item">
-              <span>✓</span> Becoming easily frustrated, rubbing eyes, or complaining of being tired after only a few sentences.
+              <span>✓</span> Inconsistent documentation and session data logging across new integration support staff.
             </div>
             <div className="pmi-checklist-item">
-              <span>✓</span> High levels of restlessness or constantly needing to swing their legs to stay focused.
+              <span>✓</span> Difficulties translating advanced theory into practical child-level engagement strategies.
             </div>
           </div>
         </div>
@@ -332,36 +333,36 @@ export default function HomePage() {
       {/* 5. Functional Supabase Lead Capture Form */}
       <section className="pmi-container" id="free-ebook">
         <div className="pmi-free">
-          <img src={`${EDU_ASSETS}cup-stacking-tummy-time-activity.png`} alt="Reflex Integration eBook" />
+          <img src={`${EDU_ASSETS}cup-stacking-tummy-time-activity.png`} alt="Reflex Integration Framework" />
           <div>
-            <p className="pmi-eyebrow">Free Downloadable Guide</p>
-            <h2>When tracking and focus look like behaviour</h2>
+            <p className="pmi-eyebrow">Director Implementation Manual</p>
+            <h2>Aligning AHA session structure to clinic outcomes</h2>
             <p>
-              Download Robyn's Reflex Integration eBook. Discover how unintegrated primitive reflexes and structural tracking 
-              gaps mimic classroom inattention, and explore the precise home-based patterns that build genuine reading stamina.
+              Download our complete Reflex Integration Guide. Learn how primitive reflex gaps mimic behavioral avoidance, 
+              and explore the structural modeling workflows that help therapy assistants maintain high engagement during clinical sessions.
             </p>
             <form id="freeForm">
-              <input id="lead_name" type="text" placeholder="First name" required />
-              <input id="lead_email" type="email" placeholder="Email address" required />
-              <button className="pmi-btn pmi-btn-accent" type="submit">Send me the free eBook</button>
+              <input id="lead_name" type="text" placeholder="Your name" required />
+              <input id="lead_email" type="email" placeholder="Practice email address" required />
+              <button className="pmi-btn pmi-btn-accent" type="submit">Access Technical Guide</button>
             </form>
             <p className="pmi-msg" id="freeMsg" style={{ display: "none" }}></p>
             <p className="pmi-hint">
-              The PDF guide opens immediately in a new window once submitted, allowing you to read it straight away.
+              The PDF training documentation opens immediately in a new window upon submission for direct team review.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 6. Original Video Section Asset Hook */}
+      {/* 6. Video Section (Reframing existing video asset as modeling tool) */}
       <section className="pmi-container">
         <div className="pmi-section-title">
-          <h2>Start with these free home activities</h2>
-          <p>Simple, targeted exercises to support ocular tracking, core stabilisation, and structural focus.</p>
+          <h2>Clinical Modeling: Watch our session pacing in practice</h2>
+          <p>Our initial training track provides raw assistants with exact language models and child-facing tone strategies.</p>
         </div>
         <div className="pmi-video-section">
           <div className="pmi-video-container">
-            <img src={`${HUB_ASSETS}colour-sorting-table-activity.png`} alt="Free follow-along video background" className="pmi-video-placeholder" />
+            <img src={`${HUB_ASSETS}colour-sorting-table-activity.png`} alt="Session modeling sample video" className="pmi-video-placeholder" />
             <a href="/videos/free" className="pmi-video-overlay">
               <div className="pmi-play-circle">
                 <div className="pmi-play-icon"></div>
@@ -371,18 +372,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. Tier Explanation Section */}
+      {/* 7. Tier Explanation Section (Explaining the B2B Academy model) */}
       <section className="pmi-container">
         <div className="pmi-pricing-panel">
-          <h2>How the Developmental Hub works</h2>
+          <h2>Standardized workforce structures for modern practices</h2>
           <p>
-            Our absolute priority is reducing the financial friction families experience when trying to find answers. 
-            The introductory resource guide and our primary follow-along activity video tracks are entirely free 
-            to ensure you can start supporting your child's physical development immediately. For parents seeking a deeper, 
-            sequential, multi-week tracking program with tailored progressions, extended premium frameworks are accessible 
-            via our paid membership options.
+            Our core mission is to remove training bottlenecks within the allied health workforce ecosystem. 
+            The foundational framework guides and primary child-facing interactive modeling clips are completely open access, 
+            allowing practice managers to quickly verify value. For clinics requiring complete multi-week onboarding tracks, 
+            progressive motor sequence variations, and standardized template download hubs, flexible enterprise team memberships 
+            provide complete coverage.
           </p>
-          <a href="/videos/free" className="pmi-btn">Explore Free Track Content First</a>
+          <a href="/videos/free" className="pmi-btn">Review Open Training Content</a>
         </div>
       </section>
 
