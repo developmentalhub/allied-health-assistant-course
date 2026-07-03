@@ -1,208 +1,135 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "@/lib/auth-context";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase";
 
 export default function Navbar() {
-  const { user, role, loading, signOut } = useAuth();
-  const router = useRouter();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const supabase = createClient();
+  const [signedIn, setSignedIn] = useState(false);
+  const [checking, setChecking] = useState(true);
 
-  async function handleSignOut() {
-    await signOut();
-    setMenuOpen(false);
-    router.push("/");
-  }
+  useEffect(() => {
+    let mounted = true;
 
-  const navLinks = [
-    { label: "Academy", href: "/" },
-    { label: "Allied Health", href: "/allied-health/foundations/welcome-to-aha-role" },
-    { label: "Videos", href: "/videos" },
-    { label: "Community", href: "/community" },
-    { label: "Live sessions", href: "/sessions" },
-    { label: "Access", href: "/subscribe" },
-  ];
+    async function checkUser() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (mounted) {
+        setSignedIn(!!user);
+        setChecking(false);
+      }
+    }
+
+    checkUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => {
+        setSignedIn(!!session?.user);
+        setChecking(false);
+      }
+    );
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, [supabase]);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[#e8e4de] bg-[#faf8f5]">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-        <Link
-          href="/"
-          className="max-w-55 text-xl font-bold leading-tight text-[#1e1b2e] transition hover:opacity-90 md:max-w-none md:text-2xl"
-        >
-          Allied Health & Educator Academy
+    <header className="sticky top-0 z-40 border-b border-[#e8e4de] bg-[#faf8f5]/95 backdrop-blur">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 text-[#1e1b2e]">
+        <Link href="/" className="min-w-0">
+          <p className="text-lg font-bold leading-tight md:text-xl">
+            AHA Learning Community
+          </p>
+          <p className="hidden text-sm leading-tight text-[#5f5b73] sm:block">
+            Monthly coaching for Allied Health Assistants
+          </p>
         </Link>
 
-        <div className="hidden items-center gap-7 lg:flex">
-          {navLinks.map((link) => (
+        <div className="hidden items-center gap-6 text-base font-semibold md:flex">
+          <Link href="/" className="hover:text-[#0f766e]">
+            Home
+          </Link>
+
+          <Link href="/sessions" className="hover:text-[#0f766e]">
+            Onboarding webinar
+          </Link>
+
+          <Link href="/community" className="hover:text-[#0f766e]">
+            Community
+          </Link>
+
+          <Link href="/waitlist" className="hover:text-[#0f766e]">
+            Join interest list
+          </Link>
+
+          <Link href="/contact" className="hover:text-[#0f766e]">
+            Contact
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {!checking && signedIn && (
             <Link
-              key={link.href}
-              href={link.href}
-              className="text-base font-semibold text-[#5f5b73] transition hover:text-[#1e1b2e]"
+              href="/dashboard"
+              className="hidden rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1] sm:inline-flex"
             >
-              {link.label}
+              Dashboard
             </Link>
-          ))}
+          )}
+
+          {!checking && !signedIn && (
+            <Link
+              href="/login"
+              className="hidden rounded-full border border-[#e8e4de] bg-white px-5 py-3 text-sm font-semibold text-[#1e1b2e] transition hover:bg-[#f5f1eb] sm:inline-flex"
+            >
+              Login
+            </Link>
+          )}
+
+          <Link
+            href="/waitlist"
+            className="rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+          >
+            Join
+          </Link>
         </div>
+      </nav>
 
-        <div className="hidden items-center gap-4 lg:flex">
-          {!loading && user ? (
-            <>
-              {(role === "admin" || role === "superadmin") && (
-                <Link
-                  href="/admin"
-                  className="text-base font-semibold text-[#c2410c] transition hover:opacity-80"
-                >
-                  Admin
-                </Link>
-              )}
+      <div className="border-t border-[#e8e4de] px-6 py-3 md:hidden">
+        <div className="mx-auto flex max-w-7xl flex-wrap gap-4 text-sm font-semibold text-[#1e1b2e]">
+          <Link href="/sessions" className="hover:text-[#0f766e]">
+            Webinar
+          </Link>
 
-              {(role === "facilitator" || role === "superadmin") && (
-                <Link
-                  href="/facilitator-hub"
-                  className="text-base font-semibold text-[#0f766e] transition hover:opacity-80"
-                >
-                  Facilitator
-                </Link>
-              )}
+          <Link href="/community" className="hover:text-[#0f766e]">
+            Community
+          </Link>
 
-              <Link
-                href="/dashboard"
-                className="rounded-full bg-[#0f766e] px-5 py-3 text-base font-semibold text-white transition hover:bg-[#0d6962]"
-              >
-                Dashboard
-              </Link>
+          <Link href="/waitlist" className="hover:text-[#0f766e]">
+            Join
+          </Link>
 
-              <button
-                type="button"
-                onClick={handleSignOut}
-                className="cursor-pointer border-none bg-transparent text-base font-semibold text-[#5f5b73] transition hover:text-[#1e1b2e]"
-              >
-                Sign out
-              </button>
-            </>
-          ) : !loading ? (
-            <>
-              <Link
-                href="/login"
-                className="text-base font-semibold text-[#0f766e] transition hover:opacity-80"
-              >
-                Sign in
-              </Link>
+          {!checking && signedIn && (
+            <Link href="/dashboard" className="hover:text-[#0f766e]">
+              Dashboard
+            </Link>
+          )}
 
-              <Link
-                href="/signup"
-                className="rounded-full bg-[#0f766e] px-5 py-3 text-base font-semibold text-white transition hover:bg-[#0d6962]"
-              >
-                Create account
-              </Link>
-            </>
-          ) : null}
+          {!checking && !signedIn && (
+            <Link href="/login" className="hover:text-[#0f766e]">
+              Login
+            </Link>
+          )}
         </div>
-
-        <button
-          type="button"
-          onClick={() => setMenuOpen((open) => !open)}
-          className="flex cursor-pointer flex-col items-center justify-center gap-1.5 border-none bg-transparent p-3 lg:hidden"
-          aria-label="Toggle menu"
-          aria-expanded={menuOpen}
-        >
-          <span
-            className={`block h-0.5 w-7 bg-[#1e1b2e] transition-all duration-200 ${
-              menuOpen ? "translate-y-2 rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`block h-0.5 w-7 bg-[#1e1b2e] transition-all duration-200 ${
-              menuOpen ? "opacity-0" : ""
-            }`}
-          />
-          <span
-            className={`block h-0.5 w-7 bg-[#1e1b2e] transition-all duration-200 ${
-              menuOpen ? "-translate-y-2 -rotate-45" : ""
-            }`}
-          />
-        </button>
       </div>
-
-      {menuOpen && (
-        <div className="border-t border-[#e8e4de] bg-[#faf8f5] px-6 py-5 lg:hidden">
-          <div className="flex flex-col">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className="border-b border-[#f0ede8] py-4 text-lg font-semibold text-[#1e1b2e]"
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            <div className="mt-5 flex flex-col gap-3">
-              {!loading && user ? (
-                <>
-                  {(role === "admin" || role === "superadmin") && (
-                    <Link
-                      href="/admin"
-                      onClick={() => setMenuOpen(false)}
-                      className="py-2 text-base font-semibold text-[#c2410c]"
-                    >
-                      Admin
-                    </Link>
-                  )}
-
-                  {(role === "facilitator" || role === "superadmin") && (
-                    <Link
-                      href="/facilitator-hub"
-                      onClick={() => setMenuOpen(false)}
-                      className="py-2 text-base font-semibold text-[#0f766e]"
-                    >
-                      Facilitator
-                    </Link>
-                  )}
-
-                  <Link
-                    href="/dashboard"
-                    onClick={() => setMenuOpen(false)}
-                    className="rounded-full bg-[#0f766e] py-4 text-center text-base font-semibold text-white"
-                  >
-                    Dashboard
-                  </Link>
-
-                  <button
-                    type="button"
-                    onClick={handleSignOut}
-                    className="cursor-pointer border-none bg-transparent py-3 text-left text-base font-semibold text-[#5f5b73]"
-                  >
-                    Sign out
-                  </button>
-                </>
-              ) : !loading ? (
-                <>
-                  <Link
-                    href="/login"
-                    onClick={() => setMenuOpen(false)}
-                    className="py-3 text-base font-semibold text-[#0f766e]"
-                  >
-                    Sign in
-                  </Link>
-
-                  <Link
-                    href="/signup"
-                    onClick={() => setMenuOpen(false)}
-                    className="rounded-full bg-[#0f766e] py-4 text-center text-base font-semibold text-white"
-                  >
-                    Create account
-                  </Link>
-                </>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      )}
-    </nav>
+    </header>
   );
 }
