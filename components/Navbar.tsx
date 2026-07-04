@@ -59,10 +59,6 @@ export default function Navbar() {
             Home
           </Link>
 
-          <Link href="/sessions" className="hover:text-[#0f766e]">
-            Onboarding webinar
-          </Link>
-
           <Link href="/join" className="hover:text-[#0f766e]">
             Free community
           </Link>
@@ -115,10 +111,6 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-7xl flex-wrap gap-4 text-sm font-semibold text-[#1e1b2e]">
           <Link href="/" className="hover:text-[#0f766e]">
             Home
-          </Link>
-
-          <Link href="/sessions" className="hover:text-[#0f766e]">
-            Webinar
           </Link>
 
           <Link href="/join" className="hover:text-[#0f766e]">
