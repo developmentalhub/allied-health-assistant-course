@@ -22,6 +22,9 @@ import { createClient } from "@/utils/supabase/client";
 type WaitlistForm = {
   name: string;
   email: string;
+  role: string;
+  biggest_support_need: string;
+  pricing_preference: string;
 };
 
 type Feature = {
@@ -37,6 +40,29 @@ type PriceOption = {
   highlight?: string;
   bestValue?: boolean;
 };
+
+const ROLE_OPTIONS = [
+  "Allied Health Assistant",
+  "Therapy Assistant",
+  "Student",
+  "Educator",
+  "Allied Health Professional",
+  "Parent / Carer",
+  "Other",
+];
+
+const SUPPORT_OPTIONS = [
+  "Understanding the AHA role",
+  "Working well with therapists",
+  "Supporting children’s regulation",
+  "Movement and play ideas",
+  "Thriving Kids updates",
+  "Building confidence in sessions",
+  "Finding work or understanding opportunities",
+  "Something else",
+];
+
+const PRICING_OPTIONS = ["$19/month AUD", "$190/year AUD", "Not sure yet"];
 
 const FEATURES: Feature[] = [
   {
@@ -105,6 +131,9 @@ export default function SubscribePage() {
   const [form, setForm] = useState<WaitlistForm>({
     name: "",
     email: "",
+    role: ROLE_OPTIONS[0],
+    biggest_support_need: SUPPORT_OPTIONS[0],
+    pricing_preference: PRICING_OPTIONS[0],
   });
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -134,6 +163,9 @@ export default function SubscribePage() {
     const cleanForm: WaitlistForm = {
       name: form.name.trim(),
       email: form.email.trim(),
+      role: form.role,
+      biggest_support_need: form.biggest_support_need,
+      pricing_preference: form.pricing_preference,
     };
 
     const { error } = await supabase.from("paid_waitlist").insert(cleanForm);
@@ -150,6 +182,9 @@ export default function SubscribePage() {
     setForm({
       name: "",
       email: "",
+      role: ROLE_OPTIONS[0],
+      biggest_support_need: SUPPORT_OPTIONS[0],
+      pricing_preference: PRICING_OPTIONS[0],
     });
   };
 
@@ -233,6 +268,61 @@ export default function SubscribePage() {
                       placeholder="you@example.com"
                       className="w-full rounded-2xl border border-[#e8e4de] bg-white p-3 text-sm outline-none transition focus:border-[#0f766e]"
                     />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-xs font-semibold">
+                      I am a...
+                    </label>
+                    <select
+                      value={form.role}
+                      onChange={(event) => updateForm("role", event.target.value)}
+                      className="w-full rounded-2xl border border-[#e8e4de] bg-white p-3 text-sm outline-none transition focus:border-[#0f766e]"
+                    >
+                      {ROLE_OPTIONS.map((role) => (
+                        <option key={role} value={role}>
+                          {role}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-xs font-semibold">
+                      What would you most want support with?
+                    </label>
+                    <select
+                      value={form.biggest_support_need}
+                      onChange={(event) =>
+                        updateForm("biggest_support_need", event.target.value)
+                      }
+                      className="w-full rounded-2xl border border-[#e8e4de] bg-white p-3 text-sm outline-none transition focus:border-[#0f766e]"
+                    >
+                      {SUPPORT_OPTIONS.map((supportNeed) => (
+                        <option key={supportNeed} value={supportNeed}>
+                          {supportNeed}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-xs font-semibold">
+                      Which founding option interests you most?
+                    </label>
+                    <select
+                      value={form.pricing_preference}
+                      onChange={(event) =>
+                        updateForm("pricing_preference", event.target.value)
+                      }
+                      className="w-full rounded-2xl border border-[#e8e4de] bg-white p-3 text-sm outline-none transition focus:border-[#0f766e]"
+                    >
+                      {PRICING_OPTIONS.map((pricingOption) => (
+                        <option key={pricingOption} value={pricingOption}>
+                          {pricingOption}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <button
