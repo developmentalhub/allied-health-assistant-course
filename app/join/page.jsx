@@ -1,12 +1,20 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { MapPin, Check, Loader2, Pin, Send, AlertCircle } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Loader2,
+  MapPin,
+  MessageCircle,
+  Pin,
+  Send,
+  Sparkles,
+  Star,
+  Users,
+} from "lucide-react";
+import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
-
-// Free, welcoming community front door.
-// Left: introduce yourself (email captured privately). Right: a live members feed + who's here.
-// No login required.
 
 const ROLES = [
   "Allied Health Assistant",
@@ -23,10 +31,13 @@ const ROLES = [
 
 const STATES = ["VIC", "NSW", "QLD", "SA", "WA", "TAS", "ACT", "NT"];
 
+const PUBLIC_MEMBER_COLUMNS = "id, name, role, state, intro, created_at";
+const PUBLIC_POST_COLUMNS = "id, author, body, created_at";
+
 const initials = (name = "") =>
   name
     .split(" ")
-    .map((n) => n[0])
+    .map((part) => part[0])
     .filter(Boolean)
     .slice(0, 2)
     .join("")
@@ -47,9 +58,6 @@ const timeAgo = (iso) => {
   });
 };
 
-const PUBLIC_MEMBER_COLUMNS = "id, name, role, state, intro, created_at";
-const PUBLIC_POST_COLUMNS = "id, author, body, created_at";
-
 export default function JoinCommunity() {
   const supabase = useMemo(() => createClient(), []);
 
@@ -67,6 +75,7 @@ export default function JoinCommunity() {
 
   const [submitting, setSubmitting] = useState(false);
   const [joined, setJoined] = useState(false);
+  const [joinError, setJoinError] = useState("");
 
   const [post, setPost] = useState({
     author: "",
@@ -75,7 +84,10 @@ export default function JoinCommunity() {
 
   const [posting, setPosting] = useState(false);
   const [postError, setPostError] = useState("");
-  const [joinError, setJoinError] = useState("");
+
+  const validEmail = /\S+@\S+\.\S+/.test(form.email);
+  const canJoin = Boolean(form.name.trim() && validEmail);
+  const canPost = Boolean(post.author.trim() && post.body.trim());
 
   const set = (key, value) => {
     setForm((current) => ({
@@ -90,10 +102,6 @@ export default function JoinCommunity() {
       [key]: value,
     }));
   };
-
-  const validEmail = /\S+@\S+\.\S+/.test(form.email);
-  const canJoin = Boolean(form.name.trim() && validEmail);
-  const canPost = Boolean(post.author.trim() && post.body.trim());
 
   useEffect(() => {
     const loadCommunity = async () => {
@@ -133,7 +141,10 @@ export default function JoinCommunity() {
   const join = async () => {
     setJoinError("");
 
-    if (!canJoin) return;
+    if (!canJoin) {
+      setJoinError("Please add your name and a valid email address.");
+      return;
+    }
 
     setSubmitting(true);
 
@@ -170,14 +181,9 @@ export default function JoinCommunity() {
   };
 
   const submitPost = async () => {
-    console.log("POST BUTTON CLICKED");
-    console.log("canPost:", canPost);
-    console.log("post before insert:", post);
-
     setPostError("");
 
     if (!canPost) {
-      console.log("POST BLOCKED: author or body is empty");
       setPostError("Please add your name and a message before posting.");
       return;
     }
@@ -195,12 +201,10 @@ export default function JoinCommunity() {
       .select(PUBLIC_POST_COLUMNS)
       .single();
 
-    console.log("SUPABASE INSERT DATA:", data);
-    console.log("SUPABASE INSERT ERROR:", error);
-
     setPosting(false);
 
     if (error) {
+      console.error("COMMUNITY POST INSERT ERROR:", error);
       setPostError(error.message || "Your post could not be saved.");
       return;
     }
@@ -217,25 +221,105 @@ export default function JoinCommunity() {
   return (
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
       <section className="mx-auto max-w-6xl px-6 py-14">
-        {/* Header */}
-        <div className="mb-10 rounded-3xl border border-[#e8e4de] bg-white p-8 md:p-10">
+        <div className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
             Free to join · everyone welcome
           </p>
 
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl">Come on in</h1>
+          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <h1 className="mb-4 text-4xl font-bold leading-tight md:text-5xl">
+                Come on in.
+              </h1>
 
-          <p className="max-w-2xl text-base leading-relaxed text-[#6b6880]">
-            A warm, free space for allied health assistants and the people around them — to
-            connect, share the real everyday stuff, and get ready for what&apos;s coming, together.
-            Introduce yourself, then jump into the feed.
-          </p>
+              <p className="max-w-2xl text-base leading-relaxed text-[#6b6880]">
+                A warm, free space for Allied Health Assistants and the people
+                around them — to connect, share the real everyday stuff, and get
+                ready for what&apos;s coming, together. Introduce yourself, then
+                jump into the feed.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                <Sparkles size={24} />
+              </div>
+
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
+                Paid members space coming soon
+              </p>
+
+              <h2 className="mb-3 text-2xl font-bold">
+                Want the deeper support layer?
+              </h2>
+
+              <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
+                Monthly live coaching, the onboarding webinar, recorded
+                sessions, practical AHA resources, Thriving Kids updates, a
+                private members feed and priority question support.
+              </p>
+
+              <div className="mb-5 rounded-2xl border border-[#99f6e4] bg-white p-4">
+                <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
+                  <Star size={15} />
+                  Founding member offer
+                </div>
+
+                <p className="text-sm leading-relaxed text-[#6b6880]">
+                  Early members will be able to lock in $19/month AUD or
+                  $190/year AUD before the price rises to $29/month.
+                </p>
+              </div>
+
+              <Link
+                href="/subscribe"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                Join the paid waitlist
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
         </div>
 
+        {joined ? (
+          <div className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6 shadow-sm">
+            <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+              <div>
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                    <Check size={22} />
+                  </div>
+
+                  <div>
+                    <h2 className="text-xl font-bold">You&apos;re in.</h2>
+                    <p className="text-sm text-[#3f5f5a]">
+                      Welcome — you&apos;re on the wall.
+                    </p>
+                  </div>
+                </div>
+
+                <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                  You can now post in the free community feed. The deeper paid
+                  support space is also coming soon if you want live coaching,
+                  resources and priority question support.
+                </p>
+              </div>
+
+              <Link
+                href="/subscribe"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                Join paid waitlist
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        ) : null}
+
         <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
-          {/* Introduce yourself */}
           <aside>
-            <div className="sticky top-8 rounded-3xl border border-[#e8e4de] bg-white p-6">
+            <div className="sticky top-8 rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm">
               {joined ? (
                 <div className="py-6 text-center">
                   <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#0f766e] text-white">
@@ -244,36 +328,50 @@ export default function JoinCommunity() {
 
                   <h2 className="mb-2 text-xl font-bold">You&apos;re in.</h2>
 
-                  <p className="text-sm leading-relaxed text-[#6b6880]">
-                    Welcome — you&apos;re on the wall. Say something in the feed to get chatting.
+                  <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
+                    Welcome — you&apos;re on the wall. Say something in the feed
+                    to get chatting.
                   </p>
+
+                  <Link
+                    href="/subscribe"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+                  >
+                    Paid space waitlist
+                    <ArrowRight size={15} />
+                  </Link>
                 </div>
               ) : (
                 <>
                   <h2 className="mb-1 text-xl font-bold">Say hello</h2>
 
-                  <p className="mb-5 text-sm text-[#6b6880]">Tell us who you are.</p>
+                  <p className="mb-5 text-sm text-[#6b6880]">
+                    Tell us who you are.
+                  </p>
 
                   {joinError ? (
-                    <div className="mb-4 flex gap-2 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                      <AlertCircle size={17} className="mt-0.5 shrink-0" />
-                      <p>{joinError}</p>
+                    <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                      {joinError}
                     </div>
                   ) : null}
 
-                  <label className="mb-1.5 block text-xs font-semibold">Your name</label>
+                  <label className="mb-1.5 block text-xs font-semibold">
+                    Your name
+                  </label>
                   <input
                     value={form.name}
-                    onChange={(e) => set("name", e.target.value)}
+                    onChange={(event) => set("name", event.target.value)}
                     placeholder="First name is fine"
                     className="mb-4 w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-3 text-sm outline-none focus:border-[#0f766e]"
                   />
 
-                  <label className="mb-1.5 block text-xs font-semibold">Email</label>
+                  <label className="mb-1.5 block text-xs font-semibold">
+                    Email
+                  </label>
                   <input
                     type="email"
                     value={form.email}
-                    onChange={(e) => set("email", e.target.value)}
+                    onChange={(event) => set("email", event.target.value)}
                     placeholder="you@example.com"
                     className="mb-1.5 w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-3 text-sm outline-none focus:border-[#0f766e]"
                   />
@@ -284,10 +382,13 @@ export default function JoinCommunity() {
 
                   <div className="mb-4 grid grid-cols-2 gap-3">
                     <div>
-                      <label className="mb-1.5 block text-xs font-semibold">Current role</label>
+                      <label className="mb-1.5 block text-xs font-semibold">
+                        Current role
+                      </label>
+
                       <select
                         value={form.role}
-                        onChange={(e) => set("role", e.target.value)}
+                        onChange={(event) => set("role", event.target.value)}
                         className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-3 text-sm outline-none focus:border-[#0f766e]"
                       >
                         {ROLES.map((role) => (
@@ -299,10 +400,13 @@ export default function JoinCommunity() {
                     </div>
 
                     <div>
-                      <label className="mb-1.5 block text-xs font-semibold">State</label>
+                      <label className="mb-1.5 block text-xs font-semibold">
+                        State
+                      </label>
+
                       <select
                         value={form.state}
-                        onChange={(e) => set("state", e.target.value)}
+                        onChange={(event) => set("state", event.target.value)}
                         className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-3 text-sm outline-none focus:border-[#0f766e]"
                       >
                         {STATES.map((state) => (
@@ -314,11 +418,14 @@ export default function JoinCommunity() {
                     </div>
                   </div>
 
-                  <label className="mb-1.5 block text-xs font-semibold">Say hi</label>
+                  <label className="mb-1.5 block text-xs font-semibold">
+                    Say hi
+                  </label>
+
                   <textarea
                     rows={3}
                     value={form.intro}
-                    onChange={(e) => set("intro", e.target.value)}
+                    onChange={(event) => set("intro", event.target.value)}
                     placeholder="A line about you and what you're hoping for here."
                     className="mb-5 w-full resize-none rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-3 text-sm outline-none focus:border-[#0f766e]"
                   />
@@ -327,35 +434,48 @@ export default function JoinCommunity() {
                     type="button"
                     onClick={join}
                     disabled={submitting || !canJoin}
-                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0c5f58] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962] disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    {submitting ? <Loader2 size={16} className="animate-spin" /> : null}
-                    {submitting ? "Joining…" : "Join the community"}
+                    {submitting ? (
+                      <Loader2 size={16} className="animate-spin" />
+                    ) : null}
+                    {submitting ? "Joining…" : "Join the free community"}
                   </button>
                 </>
               )}
             </div>
           </aside>
 
-          {/* Feed + who's here */}
           <div className="space-y-10">
-            {/* Feed */}
             <section>
-              <h2 className="mb-4 text-xl font-bold">Community feed</h2>
+              <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <h2 className="text-xl font-bold">Community feed</h2>
+                  <p className="mt-1 text-sm text-[#6b6880]">
+                    Ask questions, share wins and connect with others.
+                  </p>
+                </div>
 
-              {/* Compose */}
-              <div className="mb-5 rounded-3xl border border-[#e8e4de] bg-white p-5">
+                <Link
+                  href="/subscribe"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-2.5 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+                >
+                  Paid support coming soon
+                  <ArrowRight size={15} />
+                </Link>
+              </div>
+
+              <div className="mb-5 rounded-3xl border border-[#e8e4de] bg-white p-5 shadow-sm">
                 {postError ? (
-                  <div className="mb-4 flex gap-2 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                    <AlertCircle size={17} className="mt-0.5 shrink-0" />
-                    <p>{postError}</p>
+                  <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                    {postError}
                   </div>
                 ) : null}
 
                 <div className="mb-3 grid gap-3 sm:grid-cols-[1fr_2fr]">
                   <input
                     value={post.author}
-                    onChange={(e) => setP("author", e.target.value)}
+                    onChange={(event) => setP("author", event.target.value)}
                     placeholder="Your name"
                     className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-3 text-sm outline-none focus:border-[#0f766e]"
                   />
@@ -364,7 +484,7 @@ export default function JoinCommunity() {
                 <textarea
                   rows={3}
                   value={post.body}
-                  onChange={(e) => setP("body", e.target.value)}
+                  onChange={(event) => setP("body", event.target.value)}
                   placeholder="Share a question, an update, a small win, or something you're chewing on."
                   className="mb-3 w-full resize-none rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-3 text-sm outline-none focus:border-[#0f766e]"
                 />
@@ -374,7 +494,7 @@ export default function JoinCommunity() {
                     type="button"
                     onClick={submitPost}
                     disabled={posting || !canPost}
-                    className="flex items-center gap-2 rounded-full bg-[#0f766e] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0c5f58] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex items-center gap-2 rounded-full bg-[#0f766e] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d6962] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {posting ? (
                       <Loader2 size={15} className="animate-spin" />
@@ -386,7 +506,6 @@ export default function JoinCommunity() {
                 </div>
               </div>
 
-              {/* Pinned welcome */}
               <article className="mb-4 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
                 <div className="mb-3 flex items-center gap-3">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#0f766e] text-sm font-semibold text-white">
@@ -395,7 +514,9 @@ export default function JoinCommunity() {
 
                   <div className="min-w-0">
                     <p className="truncate font-bold">Robyn</p>
-                    <p className="truncate text-xs font-semibold text-[#0f766e]">Host</p>
+                    <p className="truncate text-xs font-semibold text-[#0f766e]">
+                      Host
+                    </p>
                   </div>
 
                   <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-[#0f766e]">
@@ -404,14 +525,44 @@ export default function JoinCommunity() {
                 </div>
 
                 <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                  I&apos;m so glad you found us. This is a space to swap the real, everyday
-                  stuff of the work — the wins, the hard days, the questions — and to get ready
-                  for what&apos;s coming together. Pull up a chair and say hello. I can&apos;t wait
-                  to meet you.
+                  I&apos;m so glad you found us. This is a space to swap the
+                  real, everyday stuff of the work — the wins, the hard days,
+                  the questions — and to get ready for what&apos;s coming
+                  together. Pull up a chair and say hello. I can&apos;t wait to
+                  meet you.
                 </p>
               </article>
 
-              {/* Posts */}
+              <article className="mb-4 rounded-3xl border border-[#e8e4de] bg-white p-5 shadow-sm">
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+                    <MessageCircle size={22} />
+                  </div>
+
+                  <div>
+                    <p className="font-bold">Free now. Deeper support soon.</p>
+                    <p className="text-xs font-semibold text-[#0f766e]">
+                      Paid members space waitlist open
+                    </p>
+                  </div>
+                </div>
+
+                <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
+                  The free community is open now. The paid members space is
+                  coming soon with monthly live coaching, the onboarding
+                  webinar, recorded sessions, AHA resources, Thriving Kids
+                  updates and priority answers to your questions.
+                </p>
+
+                <Link
+                  href="/subscribe"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+                >
+                  Join the waitlist
+                  <ArrowRight size={15} />
+                </Link>
+              </article>
+
               {loading ? (
                 <div className="flex justify-center py-10 text-[#0f766e]">
                   <Loader2 className="animate-spin" />
@@ -433,7 +584,9 @@ export default function JoinCommunity() {
                         </div>
 
                         <div className="min-w-0">
-                          <p className="truncate font-bold leading-tight">{currentPost.author}</p>
+                          <p className="truncate font-bold leading-tight">
+                            {currentPost.author}
+                          </p>
                           <p className="text-xs text-[#9a97a8]">
                             {timeAgo(currentPost.created_at)}
                           </p>
@@ -449,7 +602,6 @@ export default function JoinCommunity() {
               )}
             </section>
 
-            {/* Who's here */}
             <section>
               <div className="mb-5 flex items-baseline justify-between">
                 <h2 className="text-xl font-bold">Who&apos;s here</h2>
@@ -457,7 +609,9 @@ export default function JoinCommunity() {
                 <span className="text-sm font-semibold text-[#6b6880]">
                   {loading
                     ? "…"
-                    : `${members.length} ${members.length === 1 ? "member" : "members"}`}
+                    : `${members.length} ${
+                        members.length === 1 ? "member" : "members"
+                      }`}
                 </span>
               </div>
 
@@ -496,7 +650,9 @@ export default function JoinCommunity() {
                       </div>
 
                       {member.intro ? (
-                        <p className="text-sm leading-relaxed text-[#6b6880]">{member.intro}</p>
+                        <p className="text-sm leading-relaxed text-[#6b6880]">
+                          {member.intro}
+                        </p>
                       ) : null}
                     </article>
                   ))}
