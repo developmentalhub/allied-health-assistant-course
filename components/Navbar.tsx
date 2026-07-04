@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
-import { createClient } from "@/lib/supabase";
+import { createClient } from "@/utils/supabase/client";
 
 export default function Navbar() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
+
   const [signedIn, setSignedIn] = useState(false);
   const [checking, setChecking] = useState(true);
 
@@ -19,7 +20,7 @@ export default function Navbar() {
       } = await supabase.auth.getUser();
 
       if (mounted) {
-        setSignedIn(!!user);
+        setSignedIn(Boolean(user));
         setChecking(false);
       }
     }
@@ -30,7 +31,7 @@ export default function Navbar() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
       (_event: AuthChangeEvent, session: Session | null) => {
-        setSignedIn(!!session?.user);
+        setSignedIn(Boolean(session?.user));
         setChecking(false);
       }
     );
@@ -49,7 +50,7 @@ export default function Navbar() {
             AHA Learning Community
           </p>
           <p className="hidden text-sm leading-tight text-[#5f5b73] sm:block">
-            Monthly coaching for Allied Health Assistants
+            Free community now · paid support coming soon
           </p>
         </Link>
 
@@ -62,12 +63,12 @@ export default function Navbar() {
             Onboarding webinar
           </Link>
 
-          <Link href="/community" className="hover:text-[#0f766e]">
-            Community
+          <Link href="/join" className="hover:text-[#0f766e]">
+            Free community
           </Link>
 
-          <Link href="/waitlist" className="hover:text-[#0f766e]">
-            Join interest list
+          <Link href="/subscribe" className="hover:text-[#0f766e]">
+            Paid space coming soon
           </Link>
 
           <Link href="/contact" className="hover:text-[#0f766e]">
@@ -95,26 +96,41 @@ export default function Navbar() {
           )}
 
           <Link
-            href="/waitlist"
-            className="rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+            href="/join"
+            className="hidden rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962] sm:inline-flex"
           >
-            Join
+            Join free
+          </Link>
+
+          <Link
+            href="/subscribe"
+            className="rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+          >
+            Waitlist
           </Link>
         </div>
       </nav>
 
       <div className="border-t border-[#e8e4de] px-6 py-3 md:hidden">
         <div className="mx-auto flex max-w-7xl flex-wrap gap-4 text-sm font-semibold text-[#1e1b2e]">
+          <Link href="/" className="hover:text-[#0f766e]">
+            Home
+          </Link>
+
           <Link href="/sessions" className="hover:text-[#0f766e]">
             Webinar
           </Link>
 
-          <Link href="/community" className="hover:text-[#0f766e]">
-            Community
+          <Link href="/join" className="hover:text-[#0f766e]">
+            Free community
           </Link>
 
-          <Link href="/waitlist" className="hover:text-[#0f766e]">
-            Join
+          <Link href="/subscribe" className="hover:text-[#0f766e]">
+            Waitlist
+          </Link>
+
+          <Link href="/contact" className="hover:text-[#0f766e]">
+            Contact
           </Link>
 
           {!checking && signedIn && (

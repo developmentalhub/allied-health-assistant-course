@@ -6,18 +6,26 @@ export default function GlobalBanner() {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 text-center md:flex-row md:gap-5">
         <p className="m-0 text-base leading-relaxed text-slate-300">
           <strong className="text-white">
-            The Allied Health & Educator Resource Academy is being built now.
+            Free AHA community open now.
           </strong>{" "}
-          Join the waitlist for updates as new course areas, resources and live
-          sessions open.
+          Join the live chat for free, then add your name for the paid members space coming soon.
         </p>
 
-        <Link
-          href="/waitlist"
-          className="whitespace-nowrap rounded-full bg-[#0f766e] px-5 py-2.5 text-base font-semibold text-white transition hover:bg-[#0d6962]"
-        >
-          Join the waitlist
-        </Link>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Link
+            href="/join"
+            className="whitespace-nowrap rounded-full bg-[#0f766e] px-5 py-2.5 text-base font-semibold text-white transition hover:bg-[#0d6962]"
+          >
+            Join free community
+          </Link>
+
+          <Link
+            href="/subscribe"
+            className="whitespace-nowrap rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-2.5 text-base font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+          >
+            Paid space coming soon
+          </Link>
+        </div>
       </div>
     </div>
   );
