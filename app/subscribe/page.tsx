@@ -14,7 +14,18 @@ import {
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 
-const FEATURES = [
+type WaitlistForm = {
+  name: string;
+  email: string;
+};
+
+type Feature = {
+  title: string;
+  description: string;
+  icon: React.ElementType;
+};
+
+const FEATURES: Feature[] = [
   {
     title: "Monthly live Zoom coaching",
     description:
@@ -59,22 +70,22 @@ const FEATURES = [
   },
 ];
 
-export default function PaidCommunityComingSoon() {
+export default function SubscribePage() {
   const supabase = useMemo(() => createClient(), []);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<WaitlistForm>({
     name: "",
     email: "",
   });
 
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const validEmail = /\S+@\S+\.\S+/.test(form.email);
   const canSubmit = Boolean(form.name.trim() && validEmail);
 
-  const updateForm = (key, value) => {
+  const updateForm = (key: keyof WaitlistForm, value: string) => {
     setForm((current) => ({
       ...current,
       [key]: value,
@@ -91,7 +102,7 @@ export default function PaidCommunityComingSoon() {
 
     setSubmitting(true);
 
-    const cleanForm = {
+    const cleanForm: WaitlistForm = {
       name: form.name.trim(),
       email: form.email.trim(),
     };
@@ -116,7 +127,6 @@ export default function PaidCommunityComingSoon() {
   return (
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
       <section className="mx-auto max-w-6xl px-6 py-14 md:py-20">
-        {/* Hero */}
         <div className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
             Coming soon
@@ -214,7 +224,6 @@ export default function PaidCommunityComingSoon() {
           </div>
         </div>
 
-        {/* What's inside */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <div className="mb-7 max-w-2xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -257,7 +266,6 @@ export default function PaidCommunityComingSoon() {
           </div>
         </section>
 
-        {/* Who it's for */}
         <section className="mb-8 grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="rounded-3xl border border-[#e8e4de] bg-white p-7 shadow-sm">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -294,7 +302,6 @@ export default function PaidCommunityComingSoon() {
           </div>
         </section>
 
-        {/* Bottom CTA */}
         <section className="rounded-3xl border border-[#e8e4de] bg-white p-8 text-center shadow-sm md:p-10">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
             Want to know when it opens?
@@ -310,17 +317,14 @@ export default function PaidCommunityComingSoon() {
             ready.
           </p>
 
-          <a
-            href="#"
-            onClick={(event) => {
-              event.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
           >
             Join the waitlist
             <ArrowRight size={16} />
-          </a>
+          </button>
         </section>
       </section>
     </main>
