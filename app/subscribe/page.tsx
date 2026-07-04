@@ -25,6 +25,7 @@ type WaitlistForm = {
   role: string;
   biggest_support_need: string;
   pricing_preference: string;
+  main_question: string;
 };
 
 type Feature = {
@@ -134,6 +135,7 @@ export default function SubscribePage() {
     role: ROLE_OPTIONS[0],
     biggest_support_need: SUPPORT_OPTIONS[0],
     pricing_preference: PRICING_OPTIONS[0],
+    main_question: "",
   });
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -166,6 +168,7 @@ export default function SubscribePage() {
       role: form.role,
       biggest_support_need: form.biggest_support_need,
       pricing_preference: form.pricing_preference,
+      main_question: form.main_question.trim(),
     };
 
     const { error } = await supabase.from("paid_waitlist").insert(cleanForm);
@@ -185,6 +188,7 @@ export default function SubscribePage() {
       role: ROLE_OPTIONS[0],
       biggest_support_need: SUPPORT_OPTIONS[0],
       pricing_preference: PRICING_OPTIONS[0],
+      main_question: "",
     });
   };
 
@@ -230,7 +234,9 @@ export default function SubscribePage() {
                     <Check size={22} />
                   </div>
 
-                  <h3 className="mb-2 text-lg font-bold">You&apos;re on the list.</h3>
+                  <h3 className="mb-2 text-lg font-bold">
+                    You&apos;re on the founding member interest list.
+                  </h3>
 
                   <p className="text-sm leading-relaxed text-[#6b6880]">
                     Thank you — I&apos;ll let you know when founding member
@@ -304,6 +310,21 @@ export default function SubscribePage() {
                         </option>
                       ))}
                     </select>
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-xs font-semibold">
+                      What is one question you would love answered inside the paid members space?
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={form.main_question}
+                      onChange={(event) =>
+                        updateForm("main_question", event.target.value)
+                      }
+                      placeholder="For example: What can an AHA do independently? How do I support regulation? How do I work well with therapists?"
+                      className="w-full resize-none rounded-2xl border border-[#e8e4de] bg-white p-3 text-sm outline-none transition focus:border-[#0f766e]"
+                    />
                   </div>
 
                   <div>

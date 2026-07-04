@@ -11,7 +11,6 @@ import {
   Send,
   Sparkles,
   Star,
-  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
@@ -220,90 +219,81 @@ export default function JoinCommunity() {
 
   return (
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
-      <section className="mx-auto max-w-6xl px-6 py-14">
-        <div className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-            Free to join · everyone welcome
-          </p>
-
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+      <section className="mx-auto max-w-6xl px-6 py-8 md:py-10">
+        <div className="mb-6 rounded-3xl border border-[#e8e4de] bg-white p-5 shadow-sm md:p-7">
+          <div className="grid gap-5 lg:grid-cols-[1fr_360px] lg:items-center">
             <div>
-              <h1 className="mb-4 text-4xl font-bold leading-tight md:text-5xl">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
+                Free AHA community
+              </p>
+
+              <h1 className="mb-3 text-3xl font-bold leading-tight md:text-4xl">
                 Come on in.
               </h1>
 
-              <p className="max-w-2xl text-base leading-relaxed text-[#6b6880]">
-                A warm, free space for Allied Health Assistants and the people
-                around them — to connect, share the real everyday stuff, and get
-                ready for what&apos;s coming, together. Introduce yourself, then
-                jump into the feed.
+              <p className="max-w-2xl text-sm leading-relaxed text-[#6b6880] md:text-base">
+                Introduce yourself, see who else is here, and post in the free
+                community feed. This is a warm space for AHAs and the people
+                working alongside them.
               </p>
             </div>
 
-            <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
-                <Sparkles size={24} />
-              </div>
-
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
-                Paid members space coming soon
-              </p>
-
-              <h2 className="mb-3 text-2xl font-bold">
-                Want the deeper support layer?
-              </h2>
-
-              <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
-                Monthly live coaching, the onboarding webinar, recorded
-                sessions, practical AHA resources, Thriving Kids updates, a
-                private members feed and priority question support.
-              </p>
-
-              <div className="mb-5 rounded-2xl border border-[#99f6e4] bg-white p-4">
-                <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
-                  <Star size={15} />
-                  Founding member offer
+            <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+              <div className="mb-3 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                  <Sparkles size={20} />
                 </div>
 
-                <p className="text-sm leading-relaxed text-[#6b6880]">
-                  Early members will be able to lock in $19/month AUD or
-                  $190/year AUD before the price rises to $29/month.
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0f766e]">
+                    Paid space coming soon
+                  </p>
+                  <h2 className="text-lg font-bold">Want deeper support?</h2>
+                </div>
+              </div>
+
+              <p className="mb-4 text-sm leading-relaxed text-[#3f5f5a]">
+                Monthly coaching, onboarding webinar, resources, Thriving Kids
+                updates and priority questions.
+              </p>
+
+              <div className="mb-4 rounded-2xl border border-[#99f6e4] bg-white p-3">
+                <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
+                  <Star size={14} />
+                  Founding rate: $19/month AUD
+                </div>
+                <p className="text-xs leading-relaxed text-[#6b6880]">
+                  Or $190/year AUD before the price rises to $29/month.
                 </p>
               </div>
 
               <Link
                 href="/subscribe"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
               >
-                Join the paid waitlist
-                <ArrowRight size={16} />
+                Join paid waitlist
+                <ArrowRight size={15} />
               </Link>
             </div>
           </div>
         </div>
 
         {joined ? (
-          <div className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6 shadow-sm">
-            <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+          <div className="mb-6 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 shadow-sm">
+            <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-center">
               <div>
-                <div className="mb-3 flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0f766e] text-white">
-                    <Check size={22} />
+                <div className="mb-2 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                    <Check size={21} />
                   </div>
 
                   <div>
-                    <h2 className="text-xl font-bold">You&apos;re in.</h2>
+                    <h2 className="text-lg font-bold">You&apos;re in.</h2>
                     <p className="text-sm text-[#3f5f5a]">
-                      Welcome — you&apos;re on the wall.
+                      Welcome — you can now post in the free community feed.
                     </p>
                   </div>
                 </div>
-
-                <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                  You can now post in the free community feed. The deeper paid
-                  support space is also coming soon if you want live coaching,
-                  resources and priority question support.
-                </p>
               </div>
 
               <Link
@@ -317,7 +307,7 @@ export default function JoinCommunity() {
           </div>
         ) : null}
 
-        <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
+        <div className="grid gap-8 lg:grid-cols-[360px_1fr]">
           <aside>
             <div className="sticky top-8 rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm">
               {joined ? (
