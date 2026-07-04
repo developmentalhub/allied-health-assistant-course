@@ -1,14 +1,19 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { ElementType } from "react";
 import {
   ArrowRight,
   Check,
+  HelpCircle,
+  Library,
   Loader2,
   Mail,
   MessageCircle,
   PlayCircle,
+  ShieldCheck,
   Sparkles,
+  Star,
   Users,
   Video,
 } from "lucide-react";
@@ -22,36 +27,44 @@ type WaitlistForm = {
 type Feature = {
   title: string;
   description: string;
-  icon: React.ElementType;
+  icon: ElementType;
+};
+
+type PriceOption = {
+  title: string;
+  price: string;
+  note: string;
+  highlight?: string;
+  bestValue?: boolean;
 };
 
 const FEATURES: Feature[] = [
   {
-    title: "Monthly live Zoom coaching",
+    title: "Monthly live Zoom coaching with me",
     description:
-      "Come together for practical coaching, reflection and real-world support with me.",
+      "Practical coaching, reflection and support around real AHA work, real questions and real settings.",
     icon: Video,
   },
   {
-    title: "Recorded session library",
+    title: "Growing library of recorded sessions",
     description:
-      "Catch up in your own time with a growing library of professional learning sessions.",
-    icon: PlayCircle,
+      "Catch up in your own time and revisit key sessions whenever you need a refresh.",
+    icon: Library,
   },
   {
-    title: "Practical AHA resources",
+    title: "Movement, regulation and play resources",
     description:
-      "Movement, regulation and play resources mapped to the everyday work AHAs are doing.",
+      "Practical resources mapped to everyday AHA work with children, educators, therapists and families.",
     icon: Sparkles,
   },
   {
-    title: "Skill-building for real settings",
+    title: "Skill-building for everyday child support",
     description:
       "Build confidence supporting children in classrooms, therapy spaces, homes and community routines.",
-    icon: Check,
+    icon: ShieldCheck,
   },
   {
-    title: "Get ready for Thriving Kids",
+    title: "Get ready for Thriving Kids track",
     description:
       "Stay across the reform conversation and what it may mean for AHAs and the teams around them.",
     icon: ArrowRight,
@@ -59,14 +72,30 @@ const FEATURES: Feature[] = [
   {
     title: "Private members-only feed",
     description:
-      "A closer space to ask questions, share wins, problem-solve and feel less alone in the work.",
+      "A closer space to ask questions, share wins, problem-solve and feel supported between live sessions.",
     icon: MessageCircle,
   },
   {
-    title: "Priority question support",
+    title: "Priority answers to your questions",
     description:
       "Bring your questions and get clearer, practical answers that connect back to everyday practice.",
-    icon: Mail,
+    icon: HelpCircle,
+  },
+];
+
+const PRICE_OPTIONS: PriceOption[] = [
+  {
+    title: "Founding monthly",
+    price: "$19/month AUD",
+    note: "A low monthly option for early members who want to join the paid space as soon as it opens.",
+    highlight: "Locked in for founding members",
+  },
+  {
+    title: "Founding annual",
+    price: "$190/year AUD",
+    note: "Two months free compared with paying monthly, with the same founding member access.",
+    highlight: "Best value",
+    bestValue: true,
   },
 ];
 
@@ -135,15 +164,16 @@ export default function SubscribePage() {
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div>
               <h1 className="mb-5 max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
-                The deeper support space for AHAs who want to feel ready,
+                The paid AHA support space for people who want to feel ready,
                 capable and connected.
               </h1>
 
               <p className="max-w-2xl text-base leading-relaxed text-[#6b6880] md:text-lg">
-                The free community is your warm front door. The paid community
-                will be the next layer — with live coaching, practical resources,
-                reform updates and closer support for the real everyday work of
-                being an Allied Health Assistant.
+                The free community is your warm front door. The paid members
+                space will be the deeper layer — with live coaching, recorded
+                sessions, practical resources, Thriving Kids updates and closer
+                support for the real everyday work of being an Allied Health
+                Assistant.
               </p>
             </div>
 
@@ -152,11 +182,11 @@ export default function SubscribePage() {
                 <Users size={24} />
               </div>
 
-              <h2 className="mb-3 text-2xl font-bold">Join the interest list</h2>
+              <h2 className="mb-3 text-2xl font-bold">Join the waitlist</h2>
 
               <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
-                Be the first to hear when the paid community opens, what is
-                included, and how founding members can join.
+                Be the first to hear when founding member spots open, what is
+                included, and how to lock in the lowest monthly rate.
               </p>
 
               {submitted ? (
@@ -168,8 +198,8 @@ export default function SubscribePage() {
                   <h3 className="mb-2 text-lg font-bold">You&apos;re on the list.</h3>
 
                   <p className="text-sm leading-relaxed text-[#6b6880]">
-                    Thank you — I&apos;ll let you know when the paid community is
-                    ready to open.
+                    Thank you — I&apos;ll let you know when founding member
+                    access is ready to open.
                   </p>
                 </div>
               ) : (
@@ -224,6 +254,52 @@ export default function SubscribePage() {
           </div>
         </div>
 
+        <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
+          <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+                Onboarding webinar included
+              </p>
+
+              <h2 className="mb-3 text-3xl font-bold md:text-4xl">
+                Start with a clear pathway into the AHA role.
+              </h2>
+
+              <p className="text-base leading-relaxed text-[#3f5f5a]">
+                The onboarding webinar will become part of the paid members
+                space, so new members can start with a clear foundation before
+                moving into monthly coaching, resources and deeper support.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-[#99f6e4] bg-white p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                <PlayCircle size={24} />
+              </div>
+
+              <h3 className="mb-3 text-2xl font-bold">
+                AHA onboarding webinar
+              </h3>
+
+              <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
+                A practical introduction to the AHA role, boundaries,
+                confidence, communication, child development support and how to
+                work well alongside therapists, educators and families.
+              </p>
+
+              <div className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4">
+                <p className="text-sm font-semibold text-[#1e1b2e]">
+                  Planned as part of founding member access
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
+                  This gives people a reason to join early, even before the full
+                  session library has grown.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <div className="mb-7 max-w-2xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -237,8 +313,8 @@ export default function SubscribePage() {
             <p className="text-base leading-relaxed text-[#6b6880]">
               This will not be another place full of vague advice. The paid
               community is being built around practical AHA work, real questions,
-              everyday child development support, and the changes coming across
-              the sector.
+              everyday child development support, movement, regulation, play and
+              the changes coming across the sector.
             </p>
           </div>
 
@@ -263,6 +339,64 @@ export default function SubscribePage() {
                 </article>
               );
             })}
+          </div>
+        </section>
+
+        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+          <div className="mb-7 max-w-2xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Founding member offer
+            </p>
+
+            <h2 className="mb-3 text-3xl font-bold md:text-4xl">
+              Join early and lock in the lowest rate.
+            </h2>
+
+            <p className="text-base leading-relaxed text-[#6b6880]">
+              Founding members will be able to join for $19/month AUD, locked in
+              while they remain a member. The price will rise to $29/month later,
+              so joining early will be the best deal.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            {PRICE_OPTIONS.map((option) => (
+              <article
+                key={option.title}
+                className={`relative rounded-3xl border p-6 shadow-sm ${
+                  option.bestValue
+                    ? "border-[#99f6e4] bg-[#f0fdfa]"
+                    : "border-[#e8e4de] bg-[#faf8f5]"
+                }`}
+              >
+                {option.highlight ? (
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#0f766e]">
+                    <Star size={13} />
+                    {option.highlight}
+                  </div>
+                ) : null}
+
+                <h3 className="mb-3 text-2xl font-bold">{option.title}</h3>
+
+                <p className="mb-3 text-4xl font-bold text-[#0f766e]">
+                  {option.price}
+                </p>
+
+                <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
+                  {option.note}
+                </p>
+
+                <div className="rounded-2xl border border-[#e8e4de] bg-white p-4">
+                  <p className="text-sm font-semibold text-[#1e1b2e]">
+                    Later price: $29/month AUD
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
+                    Join as a founding member to keep the early rate while your
+                    membership stays active.
+                  </p>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -304,17 +438,17 @@ export default function SubscribePage() {
 
         <section className="rounded-3xl border border-[#e8e4de] bg-white p-8 text-center shadow-sm md:p-10">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-            Want to know when it opens?
+            Want founding member access?
           </p>
 
           <h2 className="mx-auto mb-4 max-w-2xl text-3xl font-bold md:text-4xl">
-            Add your name now and I&apos;ll keep you in the loop.
+            Add your name now and I&apos;ll let you know when the $19/month rate opens.
           </h2>
 
           <p className="mx-auto mb-6 max-w-2xl text-base leading-relaxed text-[#6b6880]">
-            You can stay in the free community at /join, and add your name here
-            if you are interested in the deeper paid support space when it is
-            ready.
+            You can stay in the free community at /join now, and add your name
+            here if you are interested in the deeper paid support space when it
+            is ready.
           </p>
 
           <button
