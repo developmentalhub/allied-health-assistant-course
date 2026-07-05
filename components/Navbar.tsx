@@ -22,6 +22,10 @@ const navLinks = [
     href: "/topics",
   },
   {
+    label: "Manager pathway",
+    href: "/manager-pathway",
+  },
+  {
     label: "Contact",
     href: "/contact",
   },
@@ -46,7 +50,7 @@ export default function Navbar() {
           </div>
         </Link>
 
-        <div className="hidden items-center gap-6 lg:flex">
+        <div className="hidden items-center gap-5 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
