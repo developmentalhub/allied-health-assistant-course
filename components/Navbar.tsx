@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { createClient } from "@/utils/supabase/client";
 
 const navLinks = [
   {
@@ -19,8 +18,8 @@ const navLinks = [
     href: "/subscribe",
   },
   {
-    label: "Topic preview",
-    href: "/topics/understanding-aha-role",
+    label: "Topics",
+    href: "/topics",
   },
   {
     label: "Contact",
@@ -29,7 +28,6 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const supabase = useMemo(() => createClient(), []);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const closeMenu = () => setMenuOpen(false);
