@@ -32,13 +32,13 @@ const TOPICS = [
     available: true,
   },
   {
-    title: "Reflective practice and communication",
-    description:
-      "Build confidence with reflection, session notes, questions for therapists and professional communication.",
-    href: "#",
-    status: "Coming soon",
-    available: false,
-  },
+  title: "Reflective practice and communication",
+  description:
+    "Build confidence with reflection, observation language, questions for therapists and professional communication.",
+  href: "/topics/reflective-practice-and-communication",
+  status: "Preview available",
+  available: true,
+},
   {
     title: "Preparing for sessions and asking better questions",
     description:
