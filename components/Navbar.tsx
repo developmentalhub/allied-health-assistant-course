@@ -1,143 +1,125 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
+import { useMemo, useState } from "react";
+import { Menu, X } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
+
+const navLinks = [
+  {
+    label: "Home",
+    href: "/",
+  },
+  {
+    label: "Free community",
+    href: "/join",
+  },
+  {
+    label: "AHA PD options",
+    href: "/subscribe",
+  },
+  {
+    label: "Topic preview",
+    href: "/topics/understanding-aha-role",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+  },
+];
 
 export default function Navbar() {
   const supabase = useMemo(() => createClient(), []);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const [signedIn, setSignedIn] = useState(false);
-  const [checking, setChecking] = useState(true);
-
-  useEffect(() => {
-    let mounted = true;
-
-    async function checkUser() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (mounted) {
-        setSignedIn(Boolean(user));
-        setChecking(false);
-      }
-    }
-
-    checkUser();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      (_event: AuthChangeEvent, session: Session | null) => {
-        setSignedIn(Boolean(session?.user));
-        setChecking(false);
-      }
-    );
-
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
-  }, [supabase]);
+  const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#e8e4de] bg-[#faf8f5]/95 backdrop-blur">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 text-[#1e1b2e]">
-        <Link href="/" className="min-w-0">
-          <p className="text-lg font-bold leading-tight md:text-xl">
-            AHA Learning Community
-          </p>
-          <p className="hidden text-sm leading-tight text-[#5f5b73] sm:block">
-            Free community now · paid support coming soon
-          </p>
+    <header className="sticky top-0 z-50 border-b border-[#e8e4de] bg-white/95 backdrop-blur">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <Link href="/" className="group" onClick={closeMenu}>
+          <div>
+            <p className="text-lg font-bold leading-tight text-[#1e1b2e]">
+              AHA Professional Development
+            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0f766e]">
+              Foundation reflective PD
+            </p>
+          </div>
         </Link>
 
-        <div className="hidden items-center gap-6 text-base font-semibold md:flex">
-          <Link href="/" className="hover:text-[#0f766e]">
-            Home
-          </Link>
-
-          <Link href="/join" className="hover:text-[#0f766e]">
-            Free community
-          </Link>
-
-          <Link href="/subscribe" className="hover:text-[#0f766e]">
-            Paid space coming soon
-          </Link>
-
-          <Link href="/contact" className="hover:text-[#0f766e]">
-            Contact
-          </Link>
+        <div className="hidden items-center gap-6 lg:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm font-semibold text-[#6b6880] transition hover:text-[#0f766e]"
+            >
+              {link.label}
+            </Link>
+          ))}
         </div>
 
-        <div className="flex items-center gap-3">
-          {!checking && signedIn && (
-            <Link
-              href="/dashboard"
-              className="hidden rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1] sm:inline-flex"
-            >
-              Dashboard
-            </Link>
-          )}
-
-          {!checking && !signedIn && (
-            <Link
-              href="/login"
-              className="hidden rounded-full border border-[#e8e4de] bg-white px-5 py-3 text-sm font-semibold text-[#1e1b2e] transition hover:bg-[#f5f1eb] sm:inline-flex"
-            >
-              Login
-            </Link>
-          )}
-
+        <div className="hidden items-center gap-3 lg:flex">
           <Link
             href="/join"
-            className="hidden rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962] sm:inline-flex"
+            className="rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-2 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
           >
             Join free
           </Link>
 
           <Link
             href="/subscribe"
-            className="rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+            className="rounded-full bg-[#0f766e] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
           >
-            Waitlist
+            View PD options
           </Link>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setMenuOpen((current) => !current)}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#e8e4de] text-[#1e1b2e] lg:hidden"
+          aria-label="Toggle navigation menu"
+        >
+          {menuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </nav>
 
-      <div className="border-t border-[#e8e4de] px-6 py-3 md:hidden">
-        <div className="mx-auto flex max-w-7xl flex-wrap gap-4 text-sm font-semibold text-[#1e1b2e]">
-          <Link href="/" className="hover:text-[#0f766e]">
-            Home
-          </Link>
+      {menuOpen ? (
+        <div className="border-t border-[#e8e4de] bg-white px-6 py-4 lg:hidden">
+          <div className="mx-auto flex max-w-6xl flex-col gap-3">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={closeMenu}
+                className="rounded-2xl px-3 py-2 text-sm font-semibold text-[#6b6880] transition hover:bg-[#f0fdfa] hover:text-[#0f766e]"
+              >
+                {link.label}
+              </Link>
+            ))}
 
-          <Link href="/join" className="hover:text-[#0f766e]">
-            Free community
-          </Link>
+            <div className="mt-2 grid gap-2">
+              <Link
+                href="/join"
+                onClick={closeMenu}
+                className="rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-3 text-center text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+              >
+                Join free community
+              </Link>
 
-          <Link href="/subscribe" className="hover:text-[#0f766e]">
-            Waitlist
-          </Link>
-
-          <Link href="/contact" className="hover:text-[#0f766e]">
-            Contact
-          </Link>
-
-          {!checking && signedIn && (
-            <Link href="/dashboard" className="hover:text-[#0f766e]">
-              Dashboard
-            </Link>
-          )}
-
-          {!checking && !signedIn && (
-            <Link href="/login" className="hover:text-[#0f766e]">
-              Login
-            </Link>
-          )}
+              <Link
+                href="/subscribe"
+                onClick={closeMenu}
+                className="rounded-full bg-[#0f766e] px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                View AHA PD options
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : null}
     </header>
   );
 }
