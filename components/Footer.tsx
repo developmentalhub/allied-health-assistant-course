@@ -35,6 +35,10 @@ const footerLinks = [
     label: "Contact",
     href: "/contact",
   },
+  {
+    label: "Privacy",
+    href: "/privacy",
+  },
 ];
 
 export default function Footer() {
