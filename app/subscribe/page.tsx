@@ -160,7 +160,7 @@ const OPTIONS: OptionCard[] = [
       "Role, goal and context reviewed first",
       "Booking/payment details sent after review",
     ],
-    cta: "Register interest",
+    cta: "Complete reflection form",
   },
 ];
 
@@ -263,8 +263,10 @@ export default function SubscribePage() {
   return (
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
       <section className="mx-auto max-w-6xl px-6 py-14 md:py-20">
-        {/* Hero */}
-        <div className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
+        <div
+          id="top"
+          className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12"
+        >
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
             AHA Reflective PD Options
           </p>
@@ -528,7 +530,6 @@ export default function SubscribePage() {
           </div>
         </div>
 
-        {/* Options */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -595,6 +596,14 @@ export default function SubscribePage() {
                       {option.cta}
                       <ArrowRight size={15} />
                     </Link>
+                  ) : option.title === "1:1 Reflective Practice" ? (
+                    <Link
+                      href="/reflective-practice"
+                      className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+                    >
+                      {option.cta}
+                      <ArrowRight size={15} />
+                    </Link>
                   ) : (
                     <a
                       href="#top"
@@ -614,7 +623,6 @@ export default function SubscribePage() {
           </div>
         </section>
 
-        {/* Foundation library boundary */}
         <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
           <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
             <div>
@@ -674,7 +682,6 @@ export default function SubscribePage() {
           </div>
         </section>
 
-        {/* What belongs where */}
         <section className="mb-8 grid gap-6 lg:grid-cols-2">
           <div className="rounded-3xl border border-[#e8e4de] bg-white p-7 shadow-sm">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -731,7 +738,6 @@ export default function SubscribePage() {
           </div>
         </section>
 
-        {/* Reflective practice process */}
         <section className="mb-8 rounded-3xl bg-[#1e1b2e] p-8 text-white shadow-sm md:p-12">
           <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
             <div>
@@ -775,11 +781,18 @@ export default function SubscribePage() {
                   Reflection form required before booking details are sent.
                 </p>
               </div>
+
+              <Link
+                href="/reflective-practice"
+                className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
+              >
+                Complete reflection form
+                <ArrowRight size={17} />
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* Manager pathway */}
         <section className="mb-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-3xl border border-[#e8e4de] bg-white p-7 shadow-sm">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -814,7 +827,6 @@ export default function SubscribePage() {
           </div>
         </section>
 
-        {/* Bottom CTA */}
         <section className="rounded-3xl border border-[#e8e4de] bg-white p-8 text-center shadow-sm md:p-10">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
             Help shape what gets built first

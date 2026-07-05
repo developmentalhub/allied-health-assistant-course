@@ -11,7 +11,6 @@ import {
   MessageCircle,
   PlayCircle,
   ShieldCheck,
-  Sparkles,
   UserRoundCheck,
 } from "lucide-react";
 
@@ -36,7 +35,6 @@ const PMI_SPECIALIST_AREAS = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
-      {/* Hero */}
       <section className="mx-auto max-w-6xl px-6 py-14 text-center md:py-18">
         <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
           AHA Professional Development
@@ -64,7 +62,7 @@ export default function Home() {
                 Clear content boundary
               </p>
               <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                This AHA platform focuses on foundation reflective PD. Robyn’s
+                This AHA platform focuses on foundation reflective PD. Robyn&apos;s
                 deeper movement, regulation, play and child development training
                 remains within Play Move Improve.
               </p>
@@ -82,19 +80,17 @@ export default function Home() {
           </Link>
 
           <Link
-  href="/reflective-practice"
-  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
->
-  Complete reflection form
-  <ArrowRight size={16} />
-</Link>
+            href="/subscribe"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-7 py-4 text-base font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+          >
+            View AHA Reflective PD Options
+            <ArrowRight size={18} />
+          </Link>
         </div>
       </section>
 
-      {/* Offer pathways */}
       <section className="mx-auto max-w-6xl px-6 pb-12">
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Free community */}
           <div className="rounded-3xl border border-[#e8e4de] bg-white p-7 shadow-sm md:p-8">
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
               <MessageCircle size={24} />
@@ -135,7 +131,6 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* PD library */}
           <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-7 shadow-sm md:p-8">
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
               <BookOpen size={24} />
@@ -174,7 +169,6 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Reflective practice */}
           <div className="rounded-3xl border border-[#e8e4de] bg-white p-7 shadow-sm md:p-8">
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
               <UserRoundCheck size={24} />
@@ -204,17 +198,16 @@ export default function Home() {
             </div>
 
             <Link
-              href="/subscribe"
+              href="/reflective-practice"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
             >
-              Register interest
+              Complete reflection form
               <ArrowRight size={16} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Topic structure */}
       <section className="mx-auto max-w-6xl px-6 py-12">
         <div className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
@@ -277,7 +270,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Content boundary */}
       <section className="mx-auto max-w-6xl px-6 py-12">
         <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
@@ -292,8 +284,8 @@ export default function Home() {
 
             <p className="text-base leading-relaxed text-[#3f5f5a]">
               This keeps the AHA platform useful and clear without giving away
-              Robyn’s full Play Move Improve specialist frameworks, resources or
-              course content.
+              Robyn&apos;s full Play Move Improve specialist frameworks,
+              resources or course content.
             </p>
           </div>
 
@@ -347,7 +339,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Reflective practice process */}
       <section className="mx-auto max-w-6xl px-6 py-12">
         <div className="rounded-3xl bg-[#1e1b2e] p-8 text-white shadow-sm md:p-12">
           <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
@@ -387,18 +378,17 @@ export default function Home() {
               </p>
 
               <Link
-  href="/reflective-practice"
-  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
->
-  Complete reflection form
-  <ArrowRight size={17} />
-</Link>
+                href="/reflective-practice"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
+              >
+                Complete reflection form
+                <ArrowRight size={17} />
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Honest note */}
       <section className="mx-auto max-w-6xl px-6 pb-20">
         <div className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-7">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
