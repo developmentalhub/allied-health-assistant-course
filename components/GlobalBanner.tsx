@@ -1,29 +1,43 @@
 import Link from "next/link";
+import { ArrowRight, MessageCircle, ShieldCheck } from "lucide-react";
 
 export default function GlobalBanner() {
   return (
-    <div className="bg-[#1e1b2e] px-6 py-4">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 text-center md:flex-row md:gap-5">
-        <p className="m-0 text-base leading-relaxed text-slate-300">
-          <strong className="text-white">
-            Free AHA community open now.
-          </strong>{" "}
-          Join the live chat for free, then add your name for the paid members space coming soon.
-        </p>
+    <div className="border-b border-[#99f6e4] bg-[#f0fdfa] px-4 py-3 text-[#1e1b2e]">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#0f766e] text-white">
+            <ShieldCheck size={16} />
+          </div>
 
-        <div className="flex flex-col gap-2 sm:flex-row">
+          <div>
+            <p className="text-sm font-semibold text-[#0f766e]">
+              AHA Professional Development
+            </p>
+
+            <p className="text-sm leading-relaxed text-[#3f5f5a]">
+              Free community open now. Foundation AHA reflective PD options are
+              being shaped, with deeper specialist training staying with Play
+              Move Improve.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
           <Link
             href="/join"
-            className="whitespace-nowrap rounded-full bg-[#0f766e] px-5 py-2.5 text-base font-semibold text-white transition hover:bg-[#0d6962]"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
           >
             Join free community
+            <MessageCircle size={15} />
           </Link>
 
           <Link
             href="/subscribe"
-            className="whitespace-nowrap rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-2.5 text-base font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
           >
-            Paid space coming soon
+            View PD options
+            <ArrowRight size={15} />
           </Link>
         </div>
       </div>
