@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const baseUrl = "https://allied-health-assistant-course.vercel.app";
+import { siteConfig } from "@/lib/site";
 
 const routes = [
   "",
@@ -25,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const currentDate = new Date();
 
   return routes.map((route) => ({
-    url: `${baseUrl}${route}`,
+    url: `${siteConfig.url}${route}`,
     lastModified: currentDate,
     changeFrequency: route === "" ? "weekly" : "monthly",
     priority: route === "" ? 1 : route === "/topics" ? 0.9 : 0.7,
