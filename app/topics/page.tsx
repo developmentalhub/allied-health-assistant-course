@@ -48,13 +48,13 @@ const TOPICS = [
   available: true,
 },
   {
-    title: "Knowing when to seek clarification",
-    description:
-      "Reflect on situations where an AHA may need further direction, clearer instructions or workplace support.",
-    href: "#",
-    status: "Coming soon",
-    available: false,
-  },
+  title: "Knowing when to seek clarification",
+  description:
+    "Reflect on situations where an AHA may need further direction, clearer instructions or workplace support before continuing.",
+  href: "/topics/knowing-when-to-seek-clarification",
+  status: "Preview available",
+  available: true,
+},
   {
     title: "Thriving Kids and changing support roles",
     description:
