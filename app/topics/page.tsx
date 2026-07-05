@@ -56,13 +56,13 @@ const TOPICS = [
   available: true,
 },
   {
-    title: "Thriving Kids and changing support roles",
-    description:
-      "A foundation update space for reflecting on how changes in the support landscape may affect AHA roles.",
-    href: "#",
-    status: "Coming soon",
-    available: false,
-  },
+  title: "Thriving Kids and changing support roles",
+  description:
+    "A foundation update space for reflecting on role clarity, workplace expectations and changing support pathways.",
+  href: "/topics/thriving-kids-and-changing-support-roles",
+  status: "Preview available",
+  available: true,
+},
 ];
 
 const PAGE_FEATURES = [
