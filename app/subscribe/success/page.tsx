@@ -1,88 +1,191 @@
 import Link from "next/link";
-import { ArrowRight, Check, MessageCircle, Star, Users } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Check,
+  ClipboardList,
+  MessageCircle,
+  ShieldCheck,
+  UserRoundCheck,
+  Users,
+} from "lucide-react";
 
 export default function SubscribeSuccessPage() {
   return (
-    <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
-      <section className="mx-auto max-w-4xl">
-        <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 text-center shadow-sm md:p-12">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#0f766e] text-white">
-            <Check size={30} />
+    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
+      <section className="mx-auto max-w-5xl px-6 py-14 md:py-20">
+        <div className="rounded-3xl border border-[#e8e4de] bg-white p-8 text-center shadow-sm md:p-12">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#0f766e] text-white">
+            <Check size={32} />
           </div>
 
-          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-            You&apos;re on the list
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+            Interest received
           </p>
 
-          <h1 className="mx-auto mb-6 max-w-3xl text-4xl font-bold leading-tight md:text-5xl">
-            You&apos;ll be first to hear when founding member access opens.
+          <h1 className="mx-auto mb-5 max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
+            You&apos;re on the AHA Professional Development interest list.
           </h1>
 
-          <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-[#3f5f5a]">
-            Thank you for joining the waitlist for the paid AHA members space.
-            I&apos;ll let you know when the founding rate opens, what&apos;s
-            included, and how to lock in the early member price.
+          <p className="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-[#6b6880] md:text-lg">
+            Thank you. Your response helps shape the foundation AHA PD topics,
+            reflection tools, printable resources and reflective practice
+            pathways being built.
           </p>
 
-          <div className="mx-auto mb-8 grid max-w-3xl gap-4 md:grid-cols-2">
-            <div className="rounded-3xl border border-[#99f6e4] bg-white p-5 text-left">
+          <div className="mx-auto mb-8 max-w-3xl rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 text-left">
+            <div className="flex gap-3">
+              <ShieldCheck
+                size={22}
+                className="mt-0.5 shrink-0 text-[#0f766e]"
+              />
+
+              <div>
+                <p className="mb-1 text-sm font-semibold text-[#0f766e]">
+                  Professional boundary
+                </p>
+
+                <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                  This platform provides reflective professional development and
+                  reflective practice support. It does not replace the
+                  supervision, direction, delegation, clinical oversight or
+                  workplace responsibilities provided by the allied health
+                  professional, employer or service the AHA works under.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-4 text-left md:grid-cols-2">
+            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
               <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
-                <Star size={22} />
+                <MessageCircle size={22} />
               </div>
 
-              <h2 className="mb-2 text-xl font-bold">Founding rate</h2>
+              <h2 className="mb-2 text-lg font-bold">Free community</h2>
 
-              <p className="text-sm leading-relaxed text-[#6b6880]">
-                Early members will be able to join for $19/month AUD, or
-                $190/year AUD, before the price rises to $29/month.
+              <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
+                Browse quietly, introduce yourself if you want, read updates and
+                stay connected while the AHA PD options are being shaped.
               </p>
+
+              <Link
+                href="/join"
+                className="inline-flex items-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                Visit free community
+                <ArrowRight size={15} />
+              </Link>
             </div>
 
-            <div className="rounded-3xl border border-[#99f6e4] bg-white p-5 text-left">
+            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
+              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+                <BookOpen size={22} />
+              </div>
+
+              <h2 className="mb-2 text-lg font-bold">
+                Foundation AHA PD Library
+              </h2>
+
+              <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
+                The planned foundation library will include topic videos,
+                reflection prompts, printable PDFs and practical tools.
+              </p>
+
+              <Link
+                href="/topics"
+                className="inline-flex items-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+              >
+                View topic preview
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+
+            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
+              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+                <UserRoundCheck size={22} />
+              </div>
+
+              <h2 className="mb-2 text-lg font-bold">
+                1:1 Reflective Practice
+              </h2>
+
+              <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
+                For 1:1 reflective practice, the reflection form must be
+                submitted and reviewed before any booking or payment details are
+                sent.
+              </p>
+
+              <Link
+                href="/reflective-practice"
+                className="inline-flex items-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+              >
+                Complete reflection form
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+
+            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
               <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
                 <Users size={22} />
               </div>
 
-              <h2 className="mb-2 text-xl font-bold">What&apos;s coming</h2>
+              <h2 className="mb-2 text-lg font-bold">Manager pathway</h2>
 
-              <p className="text-sm leading-relaxed text-[#6b6880]">
-                Monthly live coaching, recorded sessions, AHA resources,
-                Thriving Kids updates, a private members feed and priority
-                question support.
+              <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
+                Managers and clinic owners can register interest in future team
+                options, topic bundles and foundation AHA PD support.
               </p>
+
+              <Link
+                href="/manager-pathway"
+                className="inline-flex items-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+              >
+                Manager pathway
+                <ArrowRight size={15} />
+              </Link>
             </div>
           </div>
 
-          <div className="flex flex-col justify-center gap-3 sm:flex-row">
-            <Link
-              href="/join"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
-            >
-              Join the free community now
-              <MessageCircle size={16} />
-            </Link>
+          <div className="mt-8 rounded-3xl bg-[#1e1b2e] p-6 text-left text-white">
+            <div className="flex gap-3">
+              <ClipboardList
+                size={22}
+                className="mt-0.5 shrink-0 text-[#99f6e4]"
+              />
 
+              <div>
+                <p className="mb-1 text-sm font-semibold text-[#99f6e4]">
+                  What happens next?
+                </p>
+
+                <p className="text-sm leading-relaxed text-[#d9d7e5]">
+                  The first priorities will be shaped by the questions and
+                  support needs people submit. The goal is to build foundation
+                  AHA PD that is practical, reflective and useful without
+                  replacing workplace supervision.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/subscribe"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-white px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
             >
-              Back to paid space details
-              <ArrowRight size={16} />
+              Back to AHA PD options
+              <ArrowRight size={15} />
+            </Link>
+
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+            >
+              Back to homepage
+              <ArrowRight size={15} />
             </Link>
           </div>
-        </div>
-
-        <div className="mt-8 rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm">
-          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
-            Honest note
-          </p>
-
-          <p className="text-sm leading-relaxed text-[#6b6880]">
-            This paid members space will provide professional development,
-            coaching, practical resources and community support. It is not an
-            official certification pathway, and joining does not guarantee
-            employment, contract work or referrals.
-          </p>
         </div>
       </section>
     </main>
