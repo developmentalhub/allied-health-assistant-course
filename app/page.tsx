@@ -12,6 +12,7 @@ import {
   PlayCircle,
   ShieldCheck,
   UserRoundCheck,
+  Users,
 } from "lucide-react";
 
 const FOUNDATION_TOPICS = [
@@ -385,6 +386,54 @@ export default function Home() {
                 <ArrowRight size={17} />
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="rounded-3xl border border-[#e8e4de] bg-white p-7 shadow-sm">
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+              <Users size={22} />
+            </div>
+
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              For managers and clinic owners
+            </p>
+
+            <h2 className="mb-3 text-2xl font-bold">
+              Support your AHAs with reflective professional development.
+            </h2>
+
+            <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
+              If you manage AHAs or therapy assistants, you can register
+              interest in foundation library access, topic bundles, reflective
+              tools or future team options.
+            </p>
+
+            <Link
+              href="/manager-pathway"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+            >
+              Manager pathway
+              <ArrowRight size={15} />
+            </Link>
+          </div>
+
+          <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-7">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Clear boundary
+            </p>
+
+            <h2 className="mb-3 text-2xl font-bold">
+              Reflective PD does not replace workplace supervision.
+            </h2>
+
+            <p className="text-sm leading-relaxed text-[#3f5f5a]">
+              Managers and employers remain responsible for appropriate
+              delegation, direction, supervision, scope, risk management and
+              clinical governance within their own service.
+            </p>
           </div>
         </div>
       </section>

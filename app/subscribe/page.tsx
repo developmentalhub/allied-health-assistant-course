@@ -803,11 +803,19 @@ export default function SubscribePage() {
               Support your AHAs with reflective professional development.
             </h2>
 
-            <p className="text-sm leading-relaxed text-[#6b6880]">
+            <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
               If you manage AHAs or therapy assistants, you can register
               interest in foundation library access, topic bundles, reflective
               tools or future team options.
             </p>
+
+            <Link
+              href="/manager-pathway"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+            >
+              Manager pathway
+              <ArrowRight size={15} />
+            </Link>
           </div>
 
           <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-7">
