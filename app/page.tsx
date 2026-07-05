@@ -6,12 +6,32 @@ import {
   BookOpen,
   Check,
   ClipboardList,
+  ExternalLink,
   FileText,
   MessageCircle,
   PlayCircle,
+  ShieldCheck,
   Sparkles,
   UserRoundCheck,
 } from "lucide-react";
+
+const FOUNDATION_TOPICS = [
+  "Understanding the AHA role and boundaries",
+  "Working under allied health direction",
+  "Reflective practice and communication with therapists",
+  "Preparing for sessions and asking better questions",
+  "Knowing when to seek clarification",
+  "Thriving Kids and what may change for support roles",
+];
+
+const PMI_SPECIALIST_AREAS = [
+  "Developmental movement and play-based intervention",
+  "Regulation, sensory and nervous system support",
+  "Screen dependency and developmental readiness",
+  "Reflexes, balance, coordination and core strength",
+  "Detailed child development strategies and resources",
+  "Play Move Improve specialist training and programs",
+];
 
 export default function Home() {
   return (
@@ -23,14 +43,34 @@ export default function Home() {
         </p>
 
         <h1 className="mx-auto mb-6 max-w-4xl text-4xl font-bold leading-tight md:text-6xl">
-          Reflective professional development for Allied Health Assistants.
+          Foundation reflective professional development for Allied Health
+          Assistants.
         </h1>
 
         <p className="mx-auto mb-8 max-w-3xl text-lg leading-relaxed text-[#6b6880] md:text-xl">
           A warm place for AHAs and the people working alongside them to access
-          practical learning, reflective tools, professional development
-          resources and optional 1:1 reflective practice support.
+          foundation learning, reflective tools, role clarity support and
+          optional 1:1 reflective practice.
         </p>
+
+        <div className="mx-auto mb-8 max-w-3xl rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 text-left">
+          <div className="flex gap-3">
+            <ShieldCheck
+              size={22}
+              className="mt-0.5 shrink-0 text-[#0f766e]"
+            />
+            <div>
+              <p className="mb-1 text-sm font-semibold text-[#0f766e]">
+                Clear content boundary
+              </p>
+              <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                This AHA platform focuses on foundation reflective PD. Robyn’s
+                deeper movement, regulation, play and child development training
+                remains within Play Move Improve.
+              </p>
+            </div>
+          </div>
+        </div>
 
         <div className="flex flex-col justify-center gap-3 sm:flex-row">
           <Link
@@ -64,9 +104,7 @@ export default function Home() {
               Free front door
             </p>
 
-            <h2 className="mb-4 text-2xl font-bold">
-              Free AHA Community
-            </h2>
+            <h2 className="mb-4 text-2xl font-bold">Free AHA Community</h2>
 
             <p className="mb-6 text-base leading-relaxed text-[#6b6880]">
               Join quietly, browse the feed, introduce yourself if you want, and
@@ -104,26 +142,26 @@ export default function Home() {
             </div>
 
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
-              2026 library
+              2026 foundation library
             </p>
 
             <h2 className="mb-4 text-2xl font-bold">
-              AHA Professional Development Library
+              Foundation AHA PD Library
             </h2>
 
             <p className="mb-6 text-base leading-relaxed text-[#3f5f5a]">
-              A growing 2026 library of pre-recorded reflective PD videos,
-              printable PDFs, practical tools and topic-based resources.
+              A growing 2026 library of foundation AHA professional development
+              videos, reflection prompts, printable PDFs and topic-based tools.
             </p>
 
             <div className="mb-6 rounded-2xl border border-[#99f6e4] bg-white p-4">
               <p className="text-sm font-semibold text-[#0f766e]">
-                Full library: $279 AUD
+                Full foundation library: $279 AUD
               </p>
               <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
-                12 months access from the day of purchase. Individual topic
-                videos may also be available from $7–$19 depending on length and
-                included resources.
+                12 months access from the day of purchase. Individual foundation
+                topic videos may also be available from $7–$19 depending on
+                length and included resources.
               </p>
             </div>
 
@@ -146,9 +184,7 @@ export default function Home() {
               1:1 support
             </p>
 
-            <h2 className="mb-4 text-2xl font-bold">
-              1:1 Reflective Practice
-            </h2>
+            <h2 className="mb-4 text-2xl font-bold">1:1 Reflective Practice</h2>
 
             <p className="mb-6 text-base leading-relaxed text-[#6b6880]">
               Reflective, practical and personal sessions for AHAs, students,
@@ -183,17 +219,18 @@ export default function Home() {
         <div className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
-              Built for practical learning
+              Built for practical reflection
             </p>
 
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              Each topic will combine video, reflection and practical tools.
+              Each foundation topic will combine video, reflection and practical
+              prompts.
             </h2>
 
             <p className="text-base leading-relaxed text-[#6b6880]">
-              The 2026 library will be built around real AHA questions and
-              practical topics, with unlisted YouTube videos embedded into the
-              site alongside printable resources and reflective tools.
+              The 2026 foundation library will be built around real AHA
+              questions, with unlisted YouTube videos embedded into the site
+              alongside printable reflection resources and simple tools.
             </p>
           </div>
 
@@ -203,12 +240,10 @@ export default function Home() {
                 <PlayCircle size={21} />
               </div>
 
-              <h3 className="mb-2 text-lg font-bold">
-                Embedded video lessons
-              </h3>
+              <h3 className="mb-2 text-lg font-bold">Embedded video lessons</h3>
 
               <p className="text-sm leading-relaxed text-[#6b6880]">
-                Pre-recorded topic videos hosted as unlisted YouTube videos and
+                Foundation topic videos hosted as unlisted YouTube videos and
                 embedded inside the learning pages.
               </p>
             </div>
@@ -218,13 +253,11 @@ export default function Home() {
                 <FileText size={21} />
               </div>
 
-              <h3 className="mb-2 text-lg font-bold">
-                Printable PDFs
-              </h3>
+              <h3 className="mb-2 text-lg font-bold">Printable PDFs</h3>
 
               <p className="text-sm leading-relaxed text-[#6b6880]">
                 Downloadable reflection prompts, checklists, summaries and
-                practical resources to support real-world application.
+                discussion sheets for foundation AHA professional development.
               </p>
             </div>
 
@@ -233,9 +266,7 @@ export default function Home() {
                 <ClipboardList size={21} />
               </div>
 
-              <h3 className="mb-2 text-lg font-bold">
-                Reflective tools
-              </h3>
+              <h3 className="mb-2 text-lg font-bold">Reflective tools</h3>
 
               <p className="text-sm leading-relaxed text-[#6b6880]">
                 Embedded tools and reflection forms to help AHAs prepare,
@@ -246,44 +277,72 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Planned topics */}
+      {/* Content boundary */}
       <section className="mx-auto max-w-6xl px-6 py-12">
         <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
-              Planned topics
+              What belongs where
             </p>
 
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              The first library topics will focus on the real foundations AHAs need.
+              Foundation AHA PD sits here. Deeper specialist training stays with
+              Play Move Improve.
             </h2>
 
             <p className="text-base leading-relaxed text-[#3f5f5a]">
-              These topics may shift as the community grows, but the early focus
-              will be on role clarity, reflective practice and practical support
-              in everyday settings.
+              This keeps the AHA platform useful and clear without giving away
+              Robyn’s full Play Move Improve specialist frameworks, resources or
+              course content.
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            {[
-              "Understanding the AHA role and boundaries",
-              "Working under allied health direction",
-              "Supporting regulation in everyday settings",
-              "Movement, play and child development foundations",
-              "Reflective practice and communication with therapists",
-              "Thriving Kids and what may change for support roles",
-            ].map((topic) => (
-              <div
-                key={topic}
-                className="flex gap-3 rounded-2xl border border-[#99f6e4] bg-white p-4"
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="rounded-3xl border border-[#99f6e4] bg-white p-6">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
+                Foundation AHA PD may include
+              </p>
+
+              <ul className="space-y-3 text-sm leading-relaxed text-[#6b6880]">
+                {FOUNDATION_TOPICS.map((topic) => (
+                  <li key={topic} className="flex gap-2">
+                    <Check
+                      size={16}
+                      className="mt-0.5 shrink-0 text-[#0f766e]"
+                    />
+                    {topic}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-3xl border border-[#99f6e4] bg-white p-6">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
+                Play Move Improve specialist pathway
+              </p>
+
+              <ul className="mb-6 space-y-3 text-sm leading-relaxed text-[#6b6880]">
+                {PMI_SPECIALIST_AREAS.map((area) => (
+                  <li key={area} className="flex gap-2">
+                    <Check
+                      size={16}
+                      className="mt-0.5 shrink-0 text-[#0f766e]"
+                    />
+                    {area}
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="https://www.playmoveimprove.com"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
               >
-                <Check size={18} className="mt-0.5 shrink-0 text-[#0f766e]" />
-                <p className="text-sm font-semibold leading-relaxed text-[#1e1b2e]">
-                  {topic}
-                </p>
-              </div>
-            ))}
+                Visit Play Move Improve
+                <ExternalLink size={15} />
+              </a>
+            </div>
           </div>
         </div>
       </section>
