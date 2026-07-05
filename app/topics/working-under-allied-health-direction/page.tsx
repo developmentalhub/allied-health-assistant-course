@@ -122,7 +122,7 @@ export default function WorkingUnderDirectionTopicPage() {
             </p>
           </div>
 
-          <div className="flex min-h-[280px] items-center justify-center rounded-3xl border border-dashed border-[#99f6e4] bg-[#f0fdfa] p-8 text-center">
+          <div className="flex min-h-70 items-center justify-center rounded-3xl border border-dashed border-[#99f6e4] bg-[#f0fdfa] p-8 text-center">
             <div>
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#0f766e] text-white">
                 <PlayCircle size={32} />
