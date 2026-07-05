@@ -82,12 +82,12 @@ export default function Home() {
           </Link>
 
           <Link
-            href="/subscribe"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-7 py-4 text-base font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
-          >
-            View AHA Reflective PD Options
-            <ArrowRight size={18} />
-          </Link>
+  href="/reflective-practice"
+  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+>
+  Complete reflection form
+  <ArrowRight size={16} />
+</Link>
         </div>
       </section>
 
@@ -387,12 +387,12 @@ export default function Home() {
               </p>
 
               <Link
-                href="/subscribe"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
-              >
-                Register interest
-                <ArrowRight size={17} />
-              </Link>
+  href="/reflective-practice"
+  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
+>
+  Complete reflection form
+  <ArrowRight size={17} />
+</Link>
             </div>
           </div>
         </div>
