@@ -12,7 +12,6 @@ import {
   MessageCircle,
   PlayCircle,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 
 const TOPICS = [
@@ -28,9 +27,9 @@ const TOPICS = [
     title: "Working under allied health direction",
     description:
       "Reflect on how AHAs work under therapist direction, communicate clearly and stay within role expectations.",
-    href: "#",
-    status: "Coming soon",
-    available: false,
+    href: "/topics/working-under-allied-health-direction",
+    status: "Preview available",
+    available: true,
   },
   {
     title: "Reflective practice and communication",
@@ -77,7 +76,6 @@ export default function TopicsPage() {
   return (
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
       <section className="mx-auto max-w-6xl px-6 py-12 md:py-16">
-        {/* Hero */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <div>
@@ -168,7 +166,6 @@ export default function TopicsPage() {
           </div>
         </section>
 
-        {/* Topic grid */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -240,7 +237,6 @@ export default function TopicsPage() {
           </div>
         </section>
 
-        {/* Topic page format */}
         <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -284,7 +280,6 @@ export default function TopicsPage() {
           </div>
         </section>
 
-        {/* PMI pathway */}
         <section className="rounded-3xl bg-[#1e1b2e] p-8 text-white shadow-sm md:p-12">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
