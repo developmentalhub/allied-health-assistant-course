@@ -40,13 +40,13 @@ const TOPICS = [
   available: true,
 },
   {
-    title: "Preparing for sessions and asking better questions",
-    description:
-      "Learn how to prepare for sessions so support is more purposeful, practical and aligned with the supervising professional.",
-    href: "#",
-    status: "Coming soon",
-    available: false,
-  },
+  title: "Preparing for sessions and asking better questions",
+  description:
+    "Learn how to prepare for sessions, identify what feels unclear and ask better questions before and after support activities.",
+  href: "/topics/preparing-for-sessions-and-asking-better-questions",
+  status: "Preview available",
+  available: true,
+},
   {
     title: "Knowing when to seek clarification",
     description:
