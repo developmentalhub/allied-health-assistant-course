@@ -7,17 +7,17 @@ import {
   BookOpen,
   Check,
   ClipboardList,
+  ExternalLink,
   FileText,
-  HelpCircle,
   Loader2,
   Mail,
   MessageCircle,
   PlayCircle,
   ShieldCheck,
-  Sparkles,
   UserRoundCheck,
   Users,
 } from "lucide-react";
+import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 
 type WaitlistForm = {
@@ -57,30 +57,31 @@ const ROLE_OPTIONS = [
 const SUPPORT_OPTIONS = [
   "Understanding the AHA role and boundaries",
   "Working under allied health direction",
-  "Supporting children’s regulation",
-  "Movement and play ideas",
   "Reflective practice and communication",
+  "Session preparation and confidence",
+  "Understanding delegation and supervision",
   "Thriving Kids updates",
-  "Building confidence in sessions",
-  "Finding work or understanding opportunities",
   "Manager/team support for AHAs",
+  "Knowing when to ask for clarification",
   "Something else",
 ];
 
 const INTEREST_OPTIONS = [
   "Free community",
-  "Individual topic videos",
-  "Full 2026 PD library",
+  "Individual foundation topic videos",
+  "Full 2026 foundation PD library",
   "1:1 reflective practice",
   "Manager/team pathway",
+  "Deeper Play Move Improve specialist training",
   "Not sure yet",
 ];
 
 const PRICING_OPTIONS = [
-  "Individual topic videos $7–$19",
-  "Full 2026 library $279",
+  "Individual foundation topic videos $7–$19",
+  "Full 2026 foundation library $279",
   "1:1 reflective practice $193",
   "Manager/team option",
+  "Deeper Play Move Improve specialist training",
   "Not sure yet",
 ];
 
@@ -117,32 +118,32 @@ const OPTIONS: OptionCard[] = [
     cta: "Join the free community",
   },
   {
-    title: "Individual Topic Videos",
+    title: "Individual Foundation Topics",
     eyebrow: "Small topic passes",
     price: "$7–$19 AUD",
     description:
-      "Short, practical reflective PD topics available individually depending on length, depth and included resources.",
+      "Short, practical foundation AHA PD topics available individually depending on length, depth and included resources.",
     icon: PlayCircle,
     highlights: [
       "Choose only the topics you need",
+      "Foundation AHA role and reflective practice content",
       "Embedded unlisted YouTube videos",
       "Printable PDFs where relevant",
-      "Reflection prompts and practical tools",
     ],
     cta: "Register interest",
   },
   {
-    title: "2026 AHA PD Library",
-    eyebrow: "Full library access",
+    title: "2026 Foundation AHA PD Library",
+    eyebrow: "Full foundation library access",
     price: "$279 AUD",
     description:
-      "12 months access from the day of purchase to the growing 2026 library of pre-recorded AHA professional development topics.",
+      "12 months access from the day of purchase to the growing 2026 foundation AHA professional development library.",
     icon: BookOpen,
     highlights: [
-      "Growing library across 2026",
-      "Pre-recorded reflective PD videos",
-      "Printable resources and tools",
-      "Topic pages with reflection activities",
+      "Foundation AHA PD across 2026",
+      "Role clarity, boundaries and reflective practice",
+      "Printable reflection tools and prompts",
+      "Does not include full PMI specialist training",
     ],
     cta: "Register interest",
   },
@@ -161,6 +162,24 @@ const OPTIONS: OptionCard[] = [
     ],
     cta: "Register interest",
   },
+];
+
+const FOUNDATION_AHA_TOPICS = [
+  "Understanding the AHA role and boundaries",
+  "Working under allied health direction",
+  "Reflective practice and communication with therapists",
+  "Preparing for sessions and asking better questions",
+  "Knowing when to seek clarification",
+  "Thriving Kids and what may change for support roles",
+];
+
+const PMI_SPECIALIST_AREAS = [
+  "Developmental movement and play-based intervention",
+  "Regulation, sensory and nervous system support",
+  "Screen dependency and developmental readiness",
+  "Reflexes, balance, coordination and core strength",
+  "Detailed child development strategies and resources",
+  "Play Move Improve specialist training and programs",
 ];
 
 export default function SubscribePage() {
@@ -253,27 +272,37 @@ export default function SubscribePage() {
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <div>
               <h1 className="mb-5 max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
-                Choose the level of AHA professional development support that
-                fits where you are now.
+                Foundation AHA professional development, with a pathway into
+                deeper specialist learning.
               </h1>
 
               <p className="mb-6 max-w-2xl text-base leading-relaxed text-[#6b6880] md:text-lg">
-                Start with the free community, choose individual topic videos,
-                register interest in the full 2026 AHA Professional Development
+                Start with the free community, choose individual foundation
+                topic videos, register interest in the 2026 Foundation AHA PD
                 Library, or apply for a 1:1 reflective practice session.
               </p>
 
               <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
-                <p className="mb-2 text-sm font-semibold text-[#0f766e]">
-                  Important professional note
-                </p>
-                <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                  This platform provides reflective professional development and
-                  reflective practice support. It does not replace the
-                  supervision, direction, delegation, clinical oversight or
-                  workplace responsibilities provided by the allied health
-                  professional, employer or service the AHA works under.
-                </p>
+                <div className="mb-2 flex items-start gap-3">
+                  <ShieldCheck
+                    size={21}
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                  />
+
+                  <div>
+                    <p className="mb-1 text-sm font-semibold text-[#0f766e]">
+                      Important professional note
+                    </p>
+
+                    <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                      This platform provides reflective professional development
+                      and reflective practice support. It does not replace the
+                      supervision, direction, delegation, clinical oversight or
+                      workplace responsibilities provided by the allied health
+                      professional, employer or service the AHA works under.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -286,8 +315,8 @@ export default function SubscribePage() {
 
               <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
                 Tell me what you are most interested in so I can build the
-                library, tools and reflective practice options around real AHA
-                needs.
+                foundation AHA PD topics, tools and reflective practice options
+                around real needs.
               </p>
 
               {submitted ? (
@@ -301,7 +330,7 @@ export default function SubscribePage() {
                   </h3>
 
                   <p className="text-sm leading-relaxed text-[#6b6880]">
-                    Thank you — your answers will help shape the AHA
+                    Thank you — your answers will help shape the foundation AHA
                     Professional Development library, topic tools and reflective
                     practice options.
                   </p>
@@ -507,14 +536,15 @@ export default function SubscribePage() {
             </p>
 
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              Start free, choose a topic, access the full library, or apply for
-              reflective practice.
+              Start free, choose a foundation topic, access the foundation
+              library, or apply for reflective practice.
             </h2>
 
             <p className="text-base leading-relaxed text-[#6b6880]">
               The aim is to make AHA professional development practical,
-              reflective and flexible, without locking people into a monthly
-              membership they may not need.
+              reflective and flexible, while protecting the difference between
+              foundation AHA PD and Robyn&apos;s deeper Play Move Improve
+              specialist training.
             </p>
           </div>
 
@@ -557,40 +587,63 @@ export default function SubscribePage() {
                     ))}
                   </ul>
 
-                  <a
-                    href="#top"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
-                  >
-                    {option.cta}
-                    <ArrowRight size={15} />
-                  </a>
+                  {option.title === "Free AHA Community" ? (
+                    <Link
+                      href="/join"
+                      className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+                    >
+                      {option.cta}
+                      <ArrowRight size={15} />
+                    </Link>
+                  ) : (
+                    <a
+                      href="#top"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+                    >
+                      {option.cta}
+                      <ArrowRight size={15} />
+                    </a>
+                  )}
                 </article>
               );
             })}
           </div>
         </section>
 
-        {/* Library detail */}
+        {/* Foundation library boundary */}
         <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
             <div>
               <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-                2026 AHA PD Library
+                Foundation AHA PD Library
               </p>
 
               <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                A growing library of reflective PD topics.
+                Useful foundation content, not the whole PMI method.
               </h2>
 
-              <p className="text-base leading-relaxed text-[#3f5f5a]">
-                Videos will be uploaded to YouTube as unlisted videos and
-                embedded inside the website. Each topic page can also house
-                printable PDFs, reflection prompts and embedded Netlify tools.
+              <p className="mb-5 text-base leading-relaxed text-[#3f5f5a]">
+                The 2026 Foundation AHA PD Library is designed to support role
+                clarity, reflective practice, communication and confidence. It
+                gives AHAs useful professional development without placing
+                Robyn&apos;s deeper Play Move Improve specialist frameworks into
+                the shared AHA platform.
               </p>
+
+              <div className="rounded-2xl border border-[#99f6e4] bg-white p-4">
+                <p className="text-sm font-semibold text-[#0f766e]">
+                  Full foundation library: $279 AUD
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
+                  12 months access from the day of purchase. Individual
+                  foundation topic videos may also be available from $7–$19
+                  depending on length and included resources.
+                </p>
+              </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
@@ -598,7 +651,7 @@ export default function SubscribePage() {
                 <PlayCircle className="mb-3 text-[#0f766e]" size={24} />
                 <h3 className="mb-2 font-bold">Video</h3>
                 <p className="text-sm leading-relaxed text-[#6b6880]">
-                  Embedded unlisted YouTube lessons.
+                  Embedded unlisted YouTube foundation lessons.
                 </p>
               </div>
 
@@ -606,7 +659,7 @@ export default function SubscribePage() {
                 <FileText className="mb-3 text-[#0f766e]" size={24} />
                 <h3 className="mb-2 font-bold">PDFs</h3>
                 <p className="text-sm leading-relaxed text-[#6b6880]">
-                  Printable resources and reflection sheets.
+                  Reflection sheets, checklists and discussion prompts.
                 </p>
               </div>
 
@@ -614,10 +667,67 @@ export default function SubscribePage() {
                 <ClipboardList className="mb-3 text-[#0f766e]" size={24} />
                 <h3 className="mb-2 font-bold">Tools</h3>
                 <p className="text-sm leading-relaxed text-[#6b6880]">
-                  Embedded Netlify tools for each topic.
+                  Embedded Netlify tools for reflection and preparation.
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* What belongs where */}
+        <section className="mb-8 grid gap-6 lg:grid-cols-2">
+          <div className="rounded-3xl border border-[#e8e4de] bg-white p-7 shadow-sm">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Foundation AHA PD may include
+            </p>
+
+            <h2 className="mb-5 text-2xl font-bold">
+              The content that belongs here.
+            </h2>
+
+            <ul className="space-y-3 text-sm leading-relaxed text-[#6b6880]">
+              {FOUNDATION_AHA_TOPICS.map((topic) => (
+                <li key={topic} className="flex gap-2">
+                  <Check
+                    size={16}
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                  />
+                  {topic}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-3xl border border-[#e8e4de] bg-white p-7 shadow-sm">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Play Move Improve specialist pathway
+            </p>
+
+            <h2 className="mb-5 text-2xl font-bold">
+              The deeper content stays with PMI.
+            </h2>
+
+            <ul className="mb-6 space-y-3 text-sm leading-relaxed text-[#6b6880]">
+              {PMI_SPECIALIST_AREAS.map((area) => (
+                <li key={area} className="flex gap-2">
+                  <Check
+                    size={16}
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                  />
+                  {area}
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href="https://www.playmoveimprove.com"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+            >
+              Visit Play Move Improve
+              <ExternalLink size={15} />
+            </a>
           </div>
         </section>
 
@@ -682,8 +792,8 @@ export default function SubscribePage() {
 
             <p className="text-sm leading-relaxed text-[#6b6880]">
               If you manage AHAs or therapy assistants, you can register
-              interest in library access, topic bundles, reflective tools or
-              future team options.
+              interest in foundation library access, topic bundles, reflective
+              tools or future team options.
             </p>
           </div>
 
@@ -715,8 +825,8 @@ export default function SubscribePage() {
           </h2>
 
           <p className="mx-auto mb-6 max-w-2xl text-base leading-relaxed text-[#6b6880]">
-            Your answers help decide which topics, tools, PDFs and reflective
-            practice options are prioritised first.
+            Your answers help decide which foundation topics, tools, PDFs and
+            reflective practice options are prioritised first.
           </p>
 
           <button
