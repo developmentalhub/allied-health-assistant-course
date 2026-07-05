@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
+  BookOpen,
   Check,
   Loader2,
   MapPin,
@@ -10,7 +11,7 @@ import {
   Pin,
   Send,
   Sparkles,
-  Star,
+  UserRoundCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
@@ -25,6 +26,7 @@ const ROLES = [
   "Early Childhood Educator",
   "Psychologist",
   "Student",
+  "Manager / Team Leader",
   "Other",
 ];
 
@@ -220,11 +222,12 @@ export default function JoinCommunity() {
   return (
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
       <section className="mx-auto max-w-6xl px-6 py-8 md:py-10">
+        {/* Smaller hero */}
         <div className="mb-6 rounded-3xl border border-[#e8e4de] bg-white p-5 shadow-sm md:p-7">
           <div className="grid gap-5 lg:grid-cols-[1fr_360px] lg:items-center">
             <div>
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
-                Free AHA community
+                Free AHA Community
               </p>
 
               <h1 className="mb-3 text-3xl font-bold leading-tight md:text-4xl">
@@ -232,9 +235,9 @@ export default function JoinCommunity() {
               </h1>
 
               <p className="max-w-2xl text-sm leading-relaxed text-[#6b6880] md:text-base">
-                Introduce yourself, see who else is here, and post in the free
-                community feed. This is a warm space for AHAs and the people
-                working alongside them.
+                Say hi if you&apos;d like — or just settle in and have a look
+                around. You can browse the feed and see who&apos;s here without
+                needing to post first.
               </p>
             </div>
 
@@ -246,32 +249,44 @@ export default function JoinCommunity() {
 
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0f766e]">
-                    Paid space coming soon
+                    AHA Professional Development
                   </p>
-                  <h2 className="text-lg font-bold">Want deeper support?</h2>
+                  <h2 className="text-lg font-bold">Want deeper learning?</h2>
                 </div>
               </div>
 
               <p className="mb-4 text-sm leading-relaxed text-[#3f5f5a]">
-                Monthly coaching, onboarding webinar, resources, Thriving Kids
-                updates and priority questions.
+                Explore individual topic videos, the 2026 AHA PD Library, or
+                register interest in 1:1 reflective practice.
               </p>
 
-              <div className="mb-4 rounded-2xl border border-[#99f6e4] bg-white p-3">
-                <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
-                  <Star size={14} />
-                  Founding rate: $19/month AUD
+              <div className="mb-4 grid gap-3">
+                <div className="rounded-2xl border border-[#99f6e4] bg-white p-3">
+                  <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
+                    <BookOpen size={14} />
+                    2026 PD Library — $279 AUD
+                  </div>
+                  <p className="text-xs leading-relaxed text-[#6b6880]">
+                    12 months access from the day of purchase.
+                  </p>
                 </div>
-                <p className="text-xs leading-relaxed text-[#6b6880]">
-                  Or $190/year AUD before the price rises to $29/month.
-                </p>
+
+                <div className="rounded-2xl border border-[#99f6e4] bg-white p-3">
+                  <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
+                    <UserRoundCheck size={14} />
+                    1:1 Reflective Practice — $193 AUD
+                  </div>
+                  <p className="text-xs leading-relaxed text-[#6b6880]">
+                    Reflection form reviewed before booking details are sent.
+                  </p>
+                </div>
               </div>
 
               <Link
                 href="/subscribe"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
               >
-                Join paid waitlist
+                View reflective PD options
                 <ArrowRight size={15} />
               </Link>
             </div>
@@ -290,7 +305,8 @@ export default function JoinCommunity() {
                   <div>
                     <h2 className="text-lg font-bold">You&apos;re in.</h2>
                     <p className="text-sm text-[#3f5f5a]">
-                      Welcome — you can now post in the free community feed.
+                      Welcome — you can now post if you&apos;d like, or simply
+                      read along.
                     </p>
                   </div>
                 </div>
@@ -300,7 +316,7 @@ export default function JoinCommunity() {
                 href="/subscribe"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
               >
-                Join paid waitlist
+                View PD options
                 <ArrowRight size={16} />
               </Link>
             </div>
@@ -320,23 +336,27 @@ export default function JoinCommunity() {
 
                   <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
                     Welcome — you&apos;re on the wall. Say something in the feed
-                    to get chatting.
+                    if you&apos;d like, or simply have a look around.
                   </p>
 
                   <Link
                     href="/subscribe"
                     className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
                   >
-                    Paid space waitlist
+                    AHA PD options
                     <ArrowRight size={15} />
                   </Link>
                 </div>
               ) : (
                 <>
-                  <h2 className="mb-1 text-xl font-bold">Say hello</h2>
+                  <h2 className="mb-1 text-xl font-bold">
+                    Introduce yourself if you&apos;d like
+                  </h2>
 
-                  <p className="mb-5 text-sm text-[#6b6880]">
-                    Tell us who you are.
+                  <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
+                    This is optional. You can browse the community first and
+                    come back to this later. Say hi if you&apos;d like — or just
+                    settle in and have a look around.
                   </p>
 
                   {joinError ? (
@@ -416,7 +436,7 @@ export default function JoinCommunity() {
                     rows={3}
                     value={form.intro}
                     onChange={(event) => set("intro", event.target.value)}
-                    placeholder="A line about you and what you're hoping for here."
+                    placeholder="A line about you and what you're hoping for here — if you'd like to add one."
                     className="mb-5 w-full resize-none rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-3 text-sm outline-none focus:border-[#0f766e]"
                   />
 
@@ -429,8 +449,13 @@ export default function JoinCommunity() {
                     {submitting ? (
                       <Loader2 size={16} className="animate-spin" />
                     ) : null}
-                    {submitting ? "Joining…" : "Join the free community"}
+                    {submitting ? "Saving…" : "Add your intro"}
                   </button>
+
+                  <p className="mt-3 text-xs leading-relaxed text-[#9a97a8]">
+                    Prefer to stay quiet for now? That&apos;s completely fine —
+                    you can scroll, read and come back later.
+                  </p>
                 </>
               )}
             </div>
@@ -442,7 +467,7 @@ export default function JoinCommunity() {
                 <div>
                   <h2 className="text-xl font-bold">Community feed</h2>
                   <p className="mt-1 text-sm text-[#6b6880]">
-                    Ask questions, share wins and connect with others.
+                    Read along quietly, or post if and when you feel ready.
                   </p>
                 </div>
 
@@ -450,12 +475,20 @@ export default function JoinCommunity() {
                   href="/subscribe"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-2.5 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
                 >
-                  Paid support coming soon
+                  View AHA PD options
                   <ArrowRight size={15} />
                 </Link>
               </div>
 
               <div className="mb-5 rounded-3xl border border-[#e8e4de] bg-white p-5 shadow-sm">
+                <div className="mb-4 rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4">
+                  <p className="text-sm leading-relaxed text-[#6b6880]">
+                    You do not need to post to belong here. If you&apos;d like
+                    to introduce yourself or ask something, you can use the
+                    boxes below. If not, you&apos;re welcome to just browse.
+                  </p>
+                </div>
+
                 {postError ? (
                   <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                     {postError}
@@ -515,11 +548,10 @@ export default function JoinCommunity() {
                 </div>
 
                 <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                  I&apos;m so glad you found us. This is a space to swap the
-                  real, everyday stuff of the work — the wins, the hard days,
-                  the questions — and to get ready for what&apos;s coming
-                  together. Pull up a chair and say hello. I can&apos;t wait to
-                  meet you.
+                  I&apos;m so glad you found us. This is a free front door into
+                  the AHA Professional Development space. Say hello if
+                  you&apos;d like, ask a question if you want to, or simply read
+                  along quietly. You are still welcome here.
                 </p>
               </article>
 
@@ -530,25 +562,25 @@ export default function JoinCommunity() {
                   </div>
 
                   <div>
-                    <p className="font-bold">Free now. Deeper support soon.</p>
+                    <p className="font-bold">Free community. Paid PD options.</p>
                     <p className="text-xs font-semibold text-[#0f766e]">
-                      Paid members space waitlist open
+                      Choose the level that fits you
                     </p>
                   </div>
                 </div>
 
                 <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
-                  The free community is open now. The paid members space is
-                  coming soon with monthly live coaching, the onboarding
-                  webinar, recorded sessions, AHA resources, Thriving Kids
-                  updates and priority answers to your questions.
+                  The free community is open now. The AHA Professional
+                  Development options will include individual topic videos,
+                  the 2026 PD Library, and 1:1 reflective practice sessions once
+                  reflection forms have been reviewed.
                 </p>
 
                 <Link
                   href="/subscribe"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
                 >
-                  Join the waitlist
+                  View reflective PD options
                   <ArrowRight size={15} />
                 </Link>
               </article>
@@ -559,7 +591,8 @@ export default function JoinCommunity() {
                 </div>
               ) : posts.length === 0 ? (
                 <div className="rounded-3xl border border-dashed border-[#d8d3cb] bg-white/50 py-12 text-center text-sm text-[#6b6880]">
-                  No posts yet. Be the first to say something.
+                  No posts yet. Be the first to say something — or simply have
+                  a look around.
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -593,10 +626,16 @@ export default function JoinCommunity() {
             </section>
 
             <section>
-              <div className="mb-5 flex items-baseline justify-between">
-                <h2 className="text-xl font-bold">Who&apos;s here</h2>
+              <div className="mb-5 flex items-baseline justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-bold">Who&apos;s here</h2>
+                  <p className="mt-1 text-sm text-[#6b6880]">
+                    A glimpse of the people who have chosen to introduce
+                    themselves so far.
+                  </p>
+                </div>
 
-                <span className="text-sm font-semibold text-[#6b6880]">
+                <span className="shrink-0 text-sm font-semibold text-[#6b6880]">
                   {loading
                     ? "…"
                     : `${members.length} ${
@@ -611,7 +650,8 @@ export default function JoinCommunity() {
                 </div>
               ) : members.length === 0 ? (
                 <div className="rounded-3xl border border-dashed border-[#d8d3cb] bg-white/50 py-12 text-center text-sm text-[#6b6880]">
-                  Be the first to introduce yourself.
+                  No one has introduced themselves yet. You&apos;re welcome to
+                  be the first — or just browse for now.
                 </div>
               ) : (
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -643,7 +683,11 @@ export default function JoinCommunity() {
                         <p className="text-sm leading-relaxed text-[#6b6880]">
                           {member.intro}
                         </p>
-                      ) : null}
+                      ) : (
+                        <p className="text-sm leading-relaxed text-[#9a97a8]">
+                          No intro added yet.
+                        </p>
+                      )}
                     </article>
                   ))}
                 </div>
