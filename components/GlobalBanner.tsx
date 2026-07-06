@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, MessageCircle, ShieldCheck } from "lucide-react";
+import { ArrowRight, Lock, MessageCircle, ShieldCheck } from "lucide-react";
 
 export default function GlobalBanner() {
   return (
@@ -16,9 +16,8 @@ export default function GlobalBanner() {
             </p>
 
             <p className="text-sm leading-relaxed text-[#3f5f5a]">
-              Free community open now. Foundation AHA reflective PD options are
-              being shaped, with deeper specialist training staying with Play
-              Move Improve.
+              Free community open now. Foundation AHA PD, topic videos and
+              AHA-specific member tools are being built for the paid library.
             </p>
           </div>
         </div>
@@ -30,6 +29,14 @@ export default function GlobalBanner() {
           >
             Join free community
             <MessageCircle size={15} />
+          </Link>
+
+          <Link
+            href="/tools"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-white px-4 py-2 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+          >
+            Member tools
+            <Lock size={15} />
           </Link>
 
           <Link
