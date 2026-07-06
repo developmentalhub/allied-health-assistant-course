@@ -18,10 +18,6 @@ const navLinks = [
     href: "/subscribe",
   },
   {
-    label: "Topics",
-    href: "/topics",
-  },
-  {
     label: "Manager pathway",
     href: "/manager-pathway",
   },
