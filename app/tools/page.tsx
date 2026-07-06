@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -11,6 +12,12 @@ import {
   Sparkles,
   UserRoundCheck,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Member Tools Coming Soon",
+  description:
+    "AHA-specific reflective tools are being built for the paid Foundation AHA Professional Development Library, including session feedback, preparation, supervisor questions and role boundary reflection.",
+};
 
 const tools = [
   {
