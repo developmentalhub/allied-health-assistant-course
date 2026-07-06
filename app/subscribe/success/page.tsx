@@ -28,7 +28,7 @@ export default function SubscribeSuccessPage() {
           </h1>
 
           <p className="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-[#6b6880] md:text-lg">
-            Thank you. Your response helps shape the foundation AHA PD topics,
+            Thank you. Your response helps shape the foundation AHA PD videos,
             reflection tools, printable resources and reflective practice
             pathways being built.
           </p>
@@ -89,14 +89,15 @@ export default function SubscribeSuccessPage() {
 
               <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
                 The planned foundation library will include topic videos,
-                reflection prompts, printable PDFs and practical tools.
+                reflection prompts, printable PDFs and practical tools once the
+                videos are ready.
               </p>
 
               <Link
-                href="/topics"
+                href="/subscribe"
                 className="inline-flex items-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
               >
-                View topic preview
+                View AHA PD options
                 <ArrowRight size={15} />
               </Link>
             </div>

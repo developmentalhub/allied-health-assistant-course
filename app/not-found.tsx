@@ -52,21 +52,22 @@ export default function NotFound() {
             </Link>
 
             <Link
-              href="/topics"
+              href="/subscribe"
               className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5 transition hover:border-[#99f6e4] hover:bg-[#f0fdfa]"
             >
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
                 <BookOpen size={22} />
               </div>
 
-              <h2 className="mb-2 text-lg font-bold">Topics</h2>
+              <h2 className="mb-2 text-lg font-bold">AHA PD options</h2>
 
               <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
-                View the foundation AHA PD topic library.
+                Register interest in foundation AHA PD, reflective practice or
+                future learning options.
               </p>
 
               <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
-                View topics
+                View options
                 <ArrowRight size={15} />
               </span>
             </Link>
