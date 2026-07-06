@@ -6,12 +6,16 @@ import {
   ArrowRight,
   BookOpen,
   Check,
+  ClipboardCheck,
   ClipboardList,
   ExternalLink,
   FileText,
+  HelpCircle,
   Loader2,
+  Lock,
   Mail,
   MessageCircle,
+  MessageSquareText,
   PlayCircle,
   ShieldCheck,
   UserRoundCheck,
@@ -43,6 +47,12 @@ type OptionCard = {
   cta: string;
 };
 
+type MemberTool = {
+  title: string;
+  description: string;
+  icon: ElementType;
+};
+
 const ROLE_OPTIONS = [
   "Allied Health Assistant",
   "Therapy Assistant",
@@ -60,6 +70,7 @@ const SUPPORT_OPTIONS = [
   "Reflective practice and communication",
   "Session preparation and confidence",
   "Understanding delegation and supervision",
+  "AHA-specific tools and templates",
   "Thriving Kids updates",
   "Manager/team support for AHAs",
   "Knowing when to ask for clarification",
@@ -70,6 +81,7 @@ const INTEREST_OPTIONS = [
   "Free community",
   "Individual foundation topic videos",
   "Full 2026 foundation PD library",
+  "Paid AHA-specific tools",
   "1:1 reflective practice",
   "Manager/team pathway",
   "Deeper Play Move Improve specialist training",
@@ -79,6 +91,7 @@ const INTEREST_OPTIONS = [
 const PRICING_OPTIONS = [
   "Individual foundation topic videos $7–$19",
   "Full 2026 foundation library $279",
+  "Paid AHA-specific tools included in membership",
   "1:1 reflective practice $193",
   "Manager/team option",
   "Deeper Play Move Improve specialist training",
@@ -129,6 +142,7 @@ const OPTIONS: OptionCard[] = [
       "Foundation AHA role and reflective practice content",
       "Embedded unlisted YouTube videos",
       "Printable PDFs where relevant",
+      "Best for focused topic learning",
     ],
     cta: "Register interest",
   },
@@ -143,6 +157,7 @@ const OPTIONS: OptionCard[] = [
       "Foundation AHA PD across 2026",
       "Role clarity, boundaries and reflective practice",
       "Printable reflection tools and prompts",
+      "AHA-specific member tools as they are released",
       "Does not include full PMI specialist training",
     ],
     cta: "Register interest",
@@ -161,6 +176,45 @@ const OPTIONS: OptionCard[] = [
       "Booking/payment details sent after review",
     ],
     cta: "Complete reflection form",
+  },
+];
+
+const MEMBER_TOOLS: MemberTool[] = [
+  {
+    title: "Clinic Session Feedback Tool",
+    description:
+      "Reflect after a clinic session, organise observations and prepare clearer feedback for the supervising professional.",
+    icon: ClipboardList,
+  },
+  {
+    title: "AHA Session Preparation Tool",
+    description:
+      "Clarify the session goal, materials, environment, safety considerations and what needs to be checked before starting.",
+    icon: ClipboardCheck,
+  },
+  {
+    title: "Supervisor Question Builder",
+    description:
+      "Turn uncertainty into respectful, clear questions to take back to the supervising allied health professional.",
+    icon: HelpCircle,
+  },
+  {
+    title: "AHA Role Boundary Reflection Tool",
+    description:
+      "Reflect on whether a task feels within your role, unclear or outside your role, and identify when to seek clarification.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Feedback to Therapist Tool",
+    description:
+      "Organise session feedback into clear professional language without stepping into clinical reasoning or interpretation.",
+    icon: MessageSquareText,
+  },
+  {
+    title: "Confidence and Clarification Tracker",
+    description:
+      "Track what you feel confident with, what keeps feeling unclear and what may need more professional development.",
+    icon: UserRoundCheck,
   },
 ];
 
@@ -284,6 +338,28 @@ export default function SubscribePage() {
                 Library, or apply for a 1:1 reflective practice session.
               </p>
 
+              <div className="mb-5 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+                <div className="flex items-start gap-3">
+                  <Lock
+                    size={21}
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                  />
+
+                  <div>
+                    <p className="mb-1 text-sm font-semibold text-[#0f766e]">
+                      Paid member tools are coming
+                    </p>
+
+                    <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                      The paid Foundation AHA PD Library will include
+                      AHA-specific reflective tools as they are released. These
+                      tools are being designed for members, not as free public
+                      tools.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
                 <div className="mb-2 flex items-start gap-3">
                   <ShieldCheck
@@ -313,7 +389,9 @@ export default function SubscribePage() {
                 <Users size={24} />
               </div>
 
-              <h2 className="mb-3 text-2xl font-bold">Register your interest</h2>
+              <h2 className="mb-3 text-2xl font-bold">
+                Register your interest
+              </h2>
 
               <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
                 Tell me what you are most interested in so I can build the
@@ -333,8 +411,8 @@ export default function SubscribePage() {
 
                   <p className="text-sm leading-relaxed text-[#6b6880]">
                     Thank you — your answers will help shape the foundation AHA
-                    Professional Development library, topic tools and reflective
-                    practice options.
+                    Professional Development library, member tools and
+                    reflective practice options.
                   </p>
                 </div>
               ) : (
@@ -351,7 +429,9 @@ export default function SubscribePage() {
                     </label>
                     <input
                       value={form.name}
-                      onChange={(event) => updateForm("name", event.target.value)}
+                      onChange={(event) =>
+                        updateForm("name", event.target.value)
+                      }
                       placeholder="First name is fine"
                       className="w-full rounded-2xl border border-[#e8e4de] bg-white p-3 text-sm outline-none transition focus:border-[#0f766e]"
                     />
@@ -364,7 +444,9 @@ export default function SubscribePage() {
                     <input
                       type="email"
                       value={form.email}
-                      onChange={(event) => updateForm("email", event.target.value)}
+                      onChange={(event) =>
+                        updateForm("email", event.target.value)
+                      }
                       placeholder="you@example.com"
                       className="w-full rounded-2xl border border-[#e8e4de] bg-white p-3 text-sm outline-none transition focus:border-[#0f766e]"
                     />
@@ -376,7 +458,9 @@ export default function SubscribePage() {
                     </label>
                     <select
                       value={form.role}
-                      onChange={(event) => updateForm("role", event.target.value)}
+                      onChange={(event) =>
+                        updateForm("role", event.target.value)
+                      }
                       className="w-full rounded-2xl border border-[#e8e4de] bg-white p-3 text-sm outline-none transition focus:border-[#0f766e]"
                     >
                       {ROLE_OPTIONS.map((role) => (
@@ -672,13 +756,104 @@ export default function SubscribePage() {
               </div>
 
               <div className="rounded-3xl border border-[#99f6e4] bg-white p-5">
-                <ClipboardList className="mb-3 text-[#0f766e]" size={24} />
-                <h3 className="mb-2 font-bold">Tools</h3>
+                <Lock className="mb-3 text-[#0f766e]" size={24} />
+                <h3 className="mb-2 font-bold">Member tools</h3>
                 <p className="text-sm leading-relaxed text-[#6b6880]">
-                  Embedded Netlify tools for reflection and preparation.
+                  Paid AHA-specific reflective tools released inside the member
+                  library.
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+          <div className="mb-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+                Member tools coming soon
+              </p>
+
+              <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+                AHA-specific tools will be part of the paid library.
+              </h2>
+
+              <p className="mb-5 text-base leading-relaxed text-[#6b6880]">
+                These tools are being created to help AHAs prepare, reflect,
+                communicate clearly and seek clarification. They are not free
+                public tools and will be released as part of the paid AHA PD
+                membership.
+              </p>
+
+              <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+                <div className="flex gap-3">
+                  <ShieldCheck
+                    size={21}
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                  />
+
+                  <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                    Tools support reflection and communication. They do not
+                    replace supervision, delegation, direction, clinical
+                    oversight, workplace documentation, incident reporting or
+                    employer responsibilities.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                <Lock size={24} />
+              </div>
+
+              <h3 className="mb-3 text-2xl font-bold">
+                Planned access for members
+              </h3>
+
+              <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
+                Foundation AHA PD Library members will receive access as the
+                first AHA-specific tools are released. The deeper movement,
+                regulation and postural tools will stay with the separate Play
+                Move Improve specialist pathway.
+              </p>
+
+              <Link
+                href="/tools"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                View planned member tools
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {MEMBER_TOOLS.map((tool) => {
+              const Icon = tool.icon;
+
+              return (
+                <article
+                  key={tool.title}
+                  className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5"
+                >
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+                    <Icon size={22} />
+                  </div>
+
+                  <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#6b6880]">
+                    <Lock size={13} />
+                    Member tool
+                  </div>
+
+                  <h3 className="mb-2 text-lg font-bold">{tool.title}</h3>
+
+                  <p className="text-sm leading-relaxed text-[#6b6880]">
+                    {tool.description}
+                  </p>
+                </article>
+              );
+            })}
           </div>
         </section>
 
@@ -757,8 +932,12 @@ export default function SubscribePage() {
 
               <div className="space-y-3 text-sm leading-relaxed text-[#d9d7e5] md:text-base">
                 <p>Step 1: Complete the reflection form.</p>
-                <p>Step 2: Robyn or the team reviews your role, context and goal.</p>
-                <p>Step 3: If appropriate, booking and payment details are sent.</p>
+                <p>
+                  Step 2: Robyn or the team reviews your role, context and goal.
+                </p>
+                <p>
+                  Step 3: If appropriate, booking and payment details are sent.
+                </p>
                 <p>Step 4: Attend your 1:1 reflective practice session.</p>
               </div>
             </div>
@@ -845,8 +1024,8 @@ export default function SubscribePage() {
           </h2>
 
           <p className="mx-auto mb-6 max-w-2xl text-base leading-relaxed text-[#6b6880]">
-            Your answers help decide which foundation topics, tools, PDFs and
-            reflective practice options are prioritised first.
+            Your answers help decide which foundation topics, member tools, PDFs
+            and reflective practice options are prioritised first.
           </p>
 
           <button
