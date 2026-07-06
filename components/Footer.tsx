@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   ExternalLink,
+  Lock,
   MessageCircle,
   ShieldCheck,
 } from "lucide-react";
@@ -109,6 +110,14 @@ export default function Footer() {
                 >
                   Join free community
                   <MessageCircle size={15} />
+                </Link>
+
+                <Link
+                  href="/tools"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-white px-4 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
+                >
+                  View member tools
+                  <Lock size={15} />
                 </Link>
 
                 <Link
