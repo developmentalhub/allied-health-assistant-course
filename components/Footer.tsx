@@ -20,6 +20,10 @@ const footerLinks = [
     href: "/subscribe",
   },
   {
+    label: "Member tools",
+    href: "/tools",
+  },
+  {
     label: "Reflective practice",
     href: "/reflective-practice",
   },
