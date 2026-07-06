@@ -7,6 +7,7 @@ const routes = [
   "/subscribe",
   "/subscribe/success",
   "/reflective-practice",
+  "/tools",
   "/manager-pathway",
   "/contact",
   "/privacy",
@@ -20,6 +21,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${siteConfig.url}${route}`,
     lastModified: currentDate,
     changeFrequency: route === "" ? "weekly" : "monthly",
-    priority: route === "" ? 1 : 0.7,
+    priority:
+      route === ""
+        ? 1
+        : route === "/subscribe"
+          ? 0.85
+          : route === "/tools"
+            ? 0.8
+            : route === "/reflective-practice"
+              ? 0.8
+              : 0.7,
   }));
 }
