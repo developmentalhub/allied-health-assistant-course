@@ -5,10 +5,14 @@ import {
   ArrowRight,
   BookOpen,
   Check,
+  ClipboardCheck,
   ClipboardList,
   ExternalLink,
   FileText,
+  HelpCircle,
+  Lock,
   MessageCircle,
+  MessageSquareText,
   PlayCircle,
   ShieldCheck,
   UserRoundCheck,
@@ -22,6 +26,45 @@ const FOUNDATION_TOPICS = [
   "Preparing for sessions and asking better questions",
   "Knowing when to seek clarification",
   "Thriving Kids and what may change for support roles",
+];
+
+const MEMBER_TOOLS = [
+  {
+    title: "Clinic Session Feedback Tool",
+    description:
+      "Reflect after a clinic session, organise observations and prepare clearer feedback for the supervising professional.",
+    icon: ClipboardList,
+  },
+  {
+    title: "AHA Session Preparation Tool",
+    description:
+      "Clarify the session goal, materials, environment, safety considerations and what needs to be checked before starting.",
+    icon: ClipboardCheck,
+  },
+  {
+    title: "Supervisor Question Builder",
+    description:
+      "Turn uncertainty into respectful, clear questions to take back to the supervising allied health professional.",
+    icon: HelpCircle,
+  },
+  {
+    title: "Role Boundary Reflection Tool",
+    description:
+      "Reflect on whether a task feels within your role, unclear or outside your role, and identify when to seek clarification.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Feedback to Therapist Tool",
+    description:
+      "Organise session feedback into clear professional language without stepping into clinical reasoning or interpretation.",
+    icon: MessageSquareText,
+  },
+  {
+    title: "Confidence and Clarification Tracker",
+    description:
+      "Track what you feel confident with, what keeps feeling unclear and what may need more professional development.",
+    icon: UserRoundCheck,
+  },
 ];
 
 const PMI_SPECIALIST_AREAS = [
@@ -48,9 +91,28 @@ export default function Home() {
 
         <p className="mx-auto mb-8 max-w-3xl text-lg leading-relaxed text-[#6b6880] md:text-xl">
           A warm place for AHAs and the people working alongside them to access
-          foundation learning, reflective tools, role clarity support and
-          optional 1:1 reflective practice.
+          foundation learning, role clarity support, reflective practice and
+          paid member tools as they are released.
         </p>
+
+        <div className="mx-auto mb-5 max-w-3xl rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 text-left">
+          <div className="flex gap-3">
+            <Lock size={22} className="mt-0.5 shrink-0 text-[#0f766e]" />
+
+            <div>
+              <p className="mb-1 text-sm font-semibold text-[#0f766e]">
+                AHA-specific tools are being built for paid members
+              </p>
+
+              <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                The Foundation AHA PD Library will include practical reflective
+                tools to help AHAs prepare, reflect, communicate clearly and
+                know when to seek clarification. These tools are planned as paid
+                member resources, not free public tools.
+              </p>
+            </div>
+          </div>
+        </div>
 
         <div className="mx-auto mb-8 max-w-3xl rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 text-left">
           <div className="flex gap-3">
@@ -58,14 +120,16 @@ export default function Home() {
               size={22}
               className="mt-0.5 shrink-0 text-[#0f766e]"
             />
+
             <div>
               <p className="mb-1 text-sm font-semibold text-[#0f766e]">
                 Clear content boundary
               </p>
+
               <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                This AHA platform focuses on foundation reflective PD. Robyn&apos;s
-                deeper movement, regulation, play and child development training
-                remains within Play Move Improve.
+                This AHA platform focuses on foundation reflective PD.
+                Robyn&apos;s deeper movement, regulation, play and child
+                development training remains within Play Move Improve.
               </p>
             </div>
           </div>
@@ -147,7 +211,8 @@ export default function Home() {
 
             <p className="mb-6 text-base leading-relaxed text-[#3f5f5a]">
               A growing 2026 library of foundation AHA professional development
-              videos, reflection prompts, printable PDFs and topic-based tools.
+              videos, reflection prompts, printable PDFs and paid member tools
+              as they are released.
             </p>
 
             <div className="mb-6 rounded-2xl border border-[#99f6e4] bg-white p-4">
@@ -158,6 +223,17 @@ export default function Home() {
                 12 months access from the day of purchase. Individual foundation
                 topic videos may also be available from $7–$19 depending on
                 length and included resources.
+              </p>
+            </div>
+
+            <div className="mb-6 rounded-2xl border border-[#99f6e4] bg-white p-4">
+              <p className="text-sm font-semibold text-[#0f766e]">
+                Member tools included as they are released
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
+                AHA-specific reflective tools are being built for paid library
+                members, including session preparation, feedback and role
+                boundary reflection tools.
               </p>
             </div>
 
@@ -224,7 +300,7 @@ export default function Home() {
             <p className="text-base leading-relaxed text-[#6b6880]">
               The 2026 foundation library will be built around real AHA
               questions, with unlisted YouTube videos embedded into the site
-              alongside printable reflection resources and simple tools.
+              alongside printable reflection resources and member-only tools.
             </p>
           </div>
 
@@ -257,16 +333,109 @@ export default function Home() {
 
             <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
               <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
-                <ClipboardList size={21} />
+                <Lock size={21} />
               </div>
 
-              <h3 className="mb-2 text-lg font-bold">Reflective tools</h3>
+              <h3 className="mb-2 text-lg font-bold">Member-only tools</h3>
 
               <p className="text-sm leading-relaxed text-[#6b6880]">
-                Embedded tools and reflection forms to help AHAs prepare,
-                notice, think and apply learning thoughtfully.
+                Paid reflective tools to help AHAs prepare, notice, organise
+                feedback and ask better questions.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <div className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+          <div className="mb-8 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
+                Member tools coming soon
+              </p>
+
+              <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+                AHA-specific tools will sit inside the paid Foundation AHA PD
+                Library.
+              </h2>
+
+              <p className="mb-5 text-base leading-relaxed text-[#6b6880]">
+                These tools are being created to help AHAs prepare for sessions,
+                reflect after sessions, communicate with supervising
+                professionals and notice when something needs clarification.
+              </p>
+
+              <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+                <div className="flex gap-3">
+                  <ShieldCheck
+                    size={21}
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                  />
+
+                  <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                    The tools support reflective professional development only.
+                    They do not replace workplace supervision, clinical
+                    supervision, delegation, direction, clinical reasoning,
+                    documentation, incident reporting or employer
+                    responsibilities.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                <Lock size={24} />
+              </div>
+
+              <h3 className="mb-3 text-2xl font-bold">
+                Not free public tools
+              </h3>
+
+              <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
+                The public site will show what is coming, but the working tools
+                will be released inside the paid membership once they are ready.
+                Deeper regulation, movement and postural tools will stay with
+                the separate Play Move Improve specialist pathway.
+              </p>
+
+              <Link
+                href="/tools"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                View planned member tools
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {MEMBER_TOOLS.map((tool) => {
+              const Icon = tool.icon;
+
+              return (
+                <article
+                  key={tool.title}
+                  className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5"
+                >
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+                    <Icon size={22} />
+                  </div>
+
+                  <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#6b6880]">
+                    <Lock size={13} />
+                    Paid member tool
+                  </div>
+
+                  <h3 className="mb-2 text-lg font-bold">{tool.title}</h3>
+
+                  <p className="text-sm leading-relaxed text-[#6b6880]">
+                    {tool.description}
+                  </p>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -362,7 +531,9 @@ export default function Home() {
               <div className="space-y-3 text-sm leading-relaxed text-[#d9d7e5] md:text-base">
                 <p>Step 1: Complete the reflection form.</p>
                 <p>Step 2: Robyn or the team reviews the reflection.</p>
-                <p>Step 3: If appropriate, booking and payment details are sent.</p>
+                <p>
+                  Step 3: If appropriate, booking and payment details are sent.
+                </p>
                 <p>Step 4: Attend the reflective practice session.</p>
               </div>
             </div>
