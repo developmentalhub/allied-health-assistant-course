@@ -23,6 +23,7 @@ export async function GET() {
       created_at,
       community_replies (
         id,
+        post_id,
         name,
         author_name,
         body,
