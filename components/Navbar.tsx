@@ -3,30 +3,13 @@ import { LogIn } from "lucide-react";
 import { siteConfig } from "@/lib/site";
 
 const navLinks = [
-  {
-    href: "/subscribe",
-    label: "Free Webinar",
-  },
-  {
-    href: "/tools",
-    label: "Tools",
-  },
-  {
-    href: "/reflective-practice",
-    label: "1:1 Support",
-  },
-  {
-    href: "/join",
-    label: "Free Community",
-  },
-  {
-    href: "/manager-pathway",
-    label: "For Managers",
-  },
-  {
-    href: "/member-library",
-    label: "Member Library",
-  },
+  { href: "/subscribe", label: "Free Webinar" },
+  { href: "/community", label: "Community" },
+  { href: "/tools", label: "Tools" },
+  { href: "/reflective-practice", label: "1:1 Support" },
+  { href: "/manager-pathway", label: "For Managers" },
+  { href: "/contact", label: "Contact" },
+  { href: "/member-library", label: "Member Library" },
 ];
 
 export default function Navbar() {
@@ -63,10 +46,10 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2 lg:hidden">
           <Link
-            href="/subscribe"
+            href="/community"
             className="rounded-full bg-[#0f766e] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
           >
-            Free Webinar
+            Community
           </Link>
 
           <Link
@@ -80,17 +63,15 @@ export default function Navbar() {
 
       <div className="border-t border-[#e8e4de] bg-white/70 px-6 py-3 lg:hidden">
         <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto">
-          {navLinks
-            .filter((link) => link.href !== "/subscribe")
-            .map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="shrink-0 rounded-full border border-[#e8e4de] bg-white px-4 py-2 text-sm font-semibold text-[#5f5b73]"
-              >
-                {link.label}
-              </Link>
-            ))}
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="shrink-0 rounded-full border border-[#e8e4de] bg-white px-4 py-2 text-sm font-semibold text-[#5f5b73]"
+            >
+              {link.label}
+            </Link>
+          ))}
         </div>
       </div>
     </header>
