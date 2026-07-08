@@ -9,13 +9,13 @@ import {
 } from "lucide-react";
 import { siteConfig } from "@/lib/site";
 
-// Homepage illustrations. Download the PNGs into /public/images/.
-// To serve from Supabase instead, make the bucket public and paste the
-// public URLs here (the /object/public/... version, NOT the signed /sign/ one).
+const IMAGE_BASE =
+  "https://aracabetvunmirlfgylv.supabase.co/storage/v1/object/public/website-images";
+
 const IMAGES = {
-  hero: "/images/hero-online-support.png",
-  scooter: "/images/scooter-board-mentoring.png",
-  community: "/images/community-connection.png",
+  hero: `${IMAGE_BASE}/hero-online-support.png`,
+  scooter: `${IMAGE_BASE}/scooter-board-mentoring.png`,
+  community: `${IMAGE_BASE}/community-connection.png`,
 };
 
 export default function HomePage() {
@@ -23,7 +23,6 @@ export default function HomePage() {
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
       <section className="px-6 py-14 md:py-20">
         <div className="mx-auto max-w-6xl">
-          {/* Hero illustration */}
           <div className="mb-8 overflow-hidden rounded-3xl border border-[#e8e4de] bg-white shadow-sm">
             <img
               src={IMAGES.hero}
@@ -36,6 +35,7 @@ export default function HomePage() {
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
               Built with AHAs, for AHAs
             </p>
+
             <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
               We are building this platform from scratch with feedback from
               Allied Health Assistants, managers and clinics. More content,
@@ -139,7 +139,6 @@ export default function HomePage() {
             </h2>
           </div>
 
-          {/* Scooter board illustration */}
           <div className="mb-8 overflow-hidden rounded-3xl border border-[#e8e4de] bg-white shadow-sm">
             <img
               src={IMAGES.scooter}
@@ -198,7 +197,6 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Community illustration */}
             <div className="overflow-hidden rounded-3xl border border-[#e8e4de] bg-[#faf8f5]">
               <img
                 src={IMAGES.community}
