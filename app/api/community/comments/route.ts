@@ -1,0 +1,1 @@
+export { POST } from "../../forum/comments/route";
