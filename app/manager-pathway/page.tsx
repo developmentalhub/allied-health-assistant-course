@@ -1,421 +1,373 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
-  Building2,
   CheckCircle2,
   ClipboardList,
-  Mail,
-  ShieldCheck,
-  Users,
+  MessageCircleHeart,
+  UsersRound,
+  Video,
 } from "lucide-react";
 import { submitManagerPathwayRequest } from "./actions";
 
-export const metadata: Metadata = {
-  title: "Manager Team Hub — AHA Professional Development",
-  description:
-    "Add team members, request AHA webinar series access, and register interest in future clinic induction and growth programs.",
-};
-
-type ManagerPathwayPageProps = {
+type PageProps = {
   searchParams?: Promise<{
     success?: string;
-    error?: string;
   }>;
 };
 
 export default async function ManagerPathwayPage({
   searchParams,
-}: ManagerPathwayPageProps) {
-  const params = await searchParams;
-  const success = params?.success === "true";
-  const error = params?.error;
+}: PageProps) {
+  const resolvedSearchParams = await searchParams;
+  const success = resolvedSearchParams?.success === "true";
 
   return (
     <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
       <section className="mx-auto max-w-6xl">
-        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
-          <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-            <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-                Manager and clinic hub
-              </p>
+        <div className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Built with AHAs, managers and clinics
+          </p>
+          <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
+            We are building this platform from scratch with feedback from AHAs,
+            clinic owners, managers and supervising professionals. More team
+            options, resources and support pathways are coming soon.
+          </p>
+        </div>
 
-              <h1 className="mb-5 text-4xl font-bold leading-tight md:text-6xl">
-                Manage AHA webinar access for your team in one place.
-              </h1>
+        <div className="grid gap-10 lg:grid-cols-[1fr_0.95fr] lg:items-start">
+          <section>
+            <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+              For managers and clinics
+            </p>
 
-              <p className="mb-6 max-w-2xl text-base leading-relaxed text-[#6b6880] md:text-lg">
-                This page is for clinic owners, practice managers and team
-                leaders who want to organise AHA Professional Development for
-                multiple staff members without sending everyone through
-                separately.
-              </p>
+            <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
+              Support your AHA team without building everything from scratch.
+            </h1>
 
-              <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
-                <div className="flex gap-3">
-                  <ShieldCheck
-                    size={22}
-                    className="mt-0.5 shrink-0 text-[#0f766e]"
-                  />
+            <p className="mb-8 max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
+              Give your AHAs access to practical monthly professional
+              development, reusable tools and reflective support options that
+              help them feel clearer, more confident and more connected in their
+              work.
+            </p>
 
-                  <div>
-                    <p className="mb-1 text-sm font-semibold text-[#0f766e]">
-                      Clear professional boundary
-                    </p>
-
-                    <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                      The AHA Professional Development membership provides
-                      reflective professional development, monthly webinars, PDF
-                      resources and recordings. It does not replace workplace
-                      supervision, clinical supervision, delegation, direction,
-                      clinical oversight or employer governance.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6 md:p-8">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
-                <Users size={24} />
-              </div>
-
-              <h2 className="mb-3 text-2xl font-bold">
-                What managers can use this for
-              </h2>
-
-              <div className="space-y-3 text-sm leading-relaxed text-[#3f5f5a]">
-                <p>Add individual AHA or educator email addresses.</p>
-                <p>Request team access to the monthly webinar series.</p>
-                <p>Check who still needs to sign up.</p>
-                <p>Register interest in future clinic induction programs.</p>
-                <p>Register interest in future clinic growth programs.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mb-8 grid gap-6 lg:grid-cols-3">
-          <FeatureCard
-            icon={<Mail size={22} />}
-            title="Add team emails"
-            description="Paste staff emails in one box so your team can be followed up together."
-          />
-
-          <FeatureCard
-            icon={<ClipboardList size={22} />}
-            title="Track webinar interest"
-            description="Use the manager hub to organise who needs access to the monthly webinar series."
-          />
-
-          <FeatureCard
-            icon={<Building2 size={22} />}
-            title="Future clinic programs"
-            description="Register interest in clinic induction and business growth pathways as they are developed."
-          />
-        </section>
-
-        <section className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          {success ? (
-            <div className="mx-auto max-w-2xl text-center">
-              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#0f766e] text-white">
-                <CheckCircle2 size={34} />
+            <div className="mb-8 rounded-4xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+                <UsersRound size={24} />
               </div>
 
               <h2 className="mb-4 text-3xl font-bold">
-                Your manager hub request has been received.
+                Small team access
               </h2>
 
-              <p className="mb-6 text-base leading-relaxed text-[#6b6880]">
-                Thank you. Your team details have been submitted. We’ll review
-                the request and use the email list to help organise access,
-                webinar sign-ups or team options.
+              <div className="mb-5 rounded-3xl bg-[#faf8f5] p-5">
+                <p className="text-sm font-semibold text-[#6b6880]">
+                  Up to 5 staff
+                </p>
+                <p className="mt-1 text-4xl font-bold">$57/month</p>
+                <p className="mt-2 text-sm leading-relaxed text-[#6b6880]">
+                  Suitable for small clinics or teams wanting access to the
+                  monthly AHA Professional Development webinars and member
+                  resources.
+                </p>
+              </div>
+
+              <div className="grid gap-3">
+                <CheckItem text="Monthly live AHA Professional Development webinars" />
+                <CheckItem text="Member library access for eligible staff" />
+                <CheckItem text="PDFs, recordings and tools as they are added" />
+                <CheckItem text="Designed to support AHAs with practical ideas and role clarity" />
+              </div>
+
+              <Link
+                href="/subscribe"
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                Start monthly access
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+
+            <div className="rounded-4xl border border-[#99f6e4] bg-[#f0fdfa] p-6 shadow-sm md:p-8">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                <MessageCircleHeart size={24} />
+              </div>
+
+              <h2 className="mb-4 text-3xl font-bold">
+                Need support for more than 5 staff?
+              </h2>
+
+              <p className="mb-5 text-base leading-relaxed text-[#3f5f5a]">
+                If your team is larger, mixed across disciplines, or you want to
+                combine monthly webinars with 1:1 reflective practice, complete
+                the team enquiry form. We will review your team needs and
+                organise a quote.
               </p>
 
-              <div className="flex flex-col justify-center gap-3 sm:flex-row">
-                <Link
-                  href="/subscribe"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
-                >
-                  View AHA membership
-                  <ArrowRight size={15} />
-                </Link>
-
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
-                >
-                  Contact us
-                  <ArrowRight size={15} />
-                </Link>
+              <div className="grid gap-3">
+                <CheckItem text="Tell us how many AHAs are in your team" />
+                <CheckItem text="Tell us which disciplines or supervising professionals are involved" />
+                <CheckItem text="Choose monthly webinars, 1:1 reflective practice, or both" />
+                <CheckItem text="We will follow up with a suitable quote" />
               </div>
             </div>
-          ) : (
-            <>
-              <div className="mb-8 max-w-3xl">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-                  Set up team access
-                </p>
+          </section>
 
-                <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                  Add your team details.
-                </h2>
-
-                <p className="text-base leading-relaxed text-[#6b6880]">
-                  Add your manager details, paste in your team’s email
-                  addresses, and choose what you want support with. This does not
-                  automatically charge your team. It creates a manager request
-                  so access can be organised properly.
-                </p>
-              </div>
-
-              {error ? (
-                <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm leading-relaxed text-red-700">
-                  {decodeURIComponent(error)}
-                </div>
-              ) : null}
-
-              <form action={submitManagerPathwayRequest} className="space-y-8">
-                <section>
-                  <h3 className="mb-4 text-2xl font-bold">
-                    Manager details
-                  </h3>
-
-                  <div className="grid gap-5 md:grid-cols-2">
-                    <TextInput
-                      label="Your name"
-                      name="fullName"
-                      placeholder="First and last name"
-                      required
-                    />
-
-                    <TextInput
-                      label="Your email"
-                      name="email"
-                      type="email"
-                      placeholder="you@example.com"
-                      required
-                    />
-
-                    <TextInput
-                      label="Phone"
-                      name="phone"
-                      placeholder="Optional"
-                    />
-
-                    <TextInput
-                      label="Clinic, organisation or service"
-                      name="organisation"
-                      placeholder="Organisation name"
-                      required
-                    />
-
-                    <TextInput
-                      label="Your role"
-                      name="role"
-                      placeholder="Clinic owner, manager, team leader"
-                    />
-
-                    <TextInput
-                      label="Approximate team size"
-                      name="teamSize"
-                      placeholder="For example: 3 AHAs, 8 educators, whole team"
-                    />
-                  </div>
-                </section>
-
-                <section className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
-                    <Mail size={24} />
+          <aside className="rounded-4xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
+            {success ? (
+              <SuccessBox />
+            ) : (
+              <>
+                <div className="mb-6">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+                    <ClipboardList size={24} />
                   </div>
 
-                  <h3 className="mb-3 text-2xl font-bold">
-                    Team email addresses
-                  </h3>
-
-                  <p className="mb-5 max-w-3xl text-sm leading-relaxed text-[#3f5f5a]">
-                    Paste each staff member’s email on a new line, or separate
-                    them with commas. These are the people you may want added to
-                    the AHA webinar series or future team access.
+                  <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+                    Team quote form
                   </p>
 
-                  <label
-                    htmlFor="teamEmails"
-                    className="mb-2 block text-sm font-semibold text-[#1e1b2e]"
-                  >
-                    Team emails
-                  </label>
+                  <h2 className="mb-3 text-3xl font-bold">
+                    Tell us about your AHA team.
+                  </h2>
 
-                  <textarea
-                    id="teamEmails"
+                  <p className="text-base leading-relaxed text-[#6b6880]">
+                    Keep it simple. This helps us understand whether you need
+                    monthly webinar access, 1:1 reflective practice, or a
+                    tailored team option.
+                  </p>
+                </div>
+
+                <form action={submitManagerPathwayRequest} className="grid gap-5">
+                  <TextField label="Your name" name="fullName" required />
+
+                  <TextField
+                    label="Email"
+                    name="email"
+                    type="email"
+                    required
+                  />
+
+                  <TextField
+                    label="Phone"
+                    name="phone"
+                    placeholder="Optional"
+                  />
+
+                  <TextField
+                    label="Clinic or organisation"
+                    name="organisation"
+                    required
+                  />
+
+                  <TextField
+                    label="Your role"
+                    name="role"
+                    placeholder="Manager, clinic owner, supervisor..."
+                  />
+
+                  <SelectField
+                    label="How many AHAs are in your team?"
+                    name="teamSize"
+                    required
+                    options={[
+                      { label: "Choose one", value: "" },
+                      { label: "1–5 staff", value: "1-5" },
+                      { label: "6–10 staff", value: "6-10" },
+                      { label: "11–20 staff", value: "11-20" },
+                      { label: "20+ staff", value: "20+" },
+                      { label: "Not sure yet", value: "Not sure" },
+                    ]}
+                  />
+
+                  <TextareaField
+                    label="Which disciplines are involved?"
+                    name="disciplines"
+                    placeholder="Example: Speech Pathology, OT, Physiotherapy, Exercise Physiology, Developmental Education..."
+                  />
+
+                  <SelectField
+                    label="What support are you interested in?"
+                    name="supportType"
+                    required
+                    options={[
+                      { label: "Choose one", value: "" },
+                      {
+                        label: "Monthly webinars only",
+                        value: "Monthly webinars only",
+                      },
+                      {
+                        label: "1:1 reflective practice only",
+                        value: "1:1 reflective practice only",
+                      },
+                      {
+                        label: "Monthly webinars and 1:1 reflective practice",
+                        value: "Monthly webinars and 1:1 reflective practice",
+                      },
+                      {
+                        label: "Not sure — help me choose",
+                        value: "Not sure",
+                      },
+                    ]}
+                  />
+
+                  <TextareaField
+                    label="Team emails, if you already know them"
                     name="teamEmails"
-                    rows={7}
-                    className="w-full rounded-2xl border border-[#99f6e4] bg-white px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:ring-2 focus:ring-[#99f6e4]"
-                    placeholder={`staff1@example.com\nstaff2@example.com\nstaff3@example.com`}
+                    placeholder="Optional. Add one email per line or separate with commas."
                   />
 
-                  <p className="mt-3 text-sm leading-relaxed text-[#3f5f5a]">
-                    You can submit this now even if you do not have every email
-                    yet. We can add more later.
-                  </p>
-                </section>
-
-                <section>
-                  <h3 className="mb-4 text-2xl font-bold">
-                    What are you interested in?
-                  </h3>
-
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <CheckboxCard
-                      name="wantsWebinarSeries"
-                      title="Monthly AHA webinar series"
-                      description="For managers who want their AHAs or educators added to the $57/month webinar, PDF and recording membership."
-                    />
-
-                    <CheckboxCard
-                      name="wantsTeamQuote"
-                      title="Team or clinic quote"
-                      description="For clinics wanting multiple seats or a simpler team access arrangement."
-                    />
-
-                    <CheckboxCard
-                      name="wantsClinicInduction"
-                      title="Future clinic induction program"
-                      description="Register interest in a future induction pathway for AHAs joining your clinic or service."
-                    />
-
-                    <CheckboxCard
-                      name="wantsGrowthProgram"
-                      title="Future clinic growth program"
-                      description="Register interest in future business, workforce or service growth programs connected to AHA team development."
-                    />
-                  </div>
-                </section>
-
-                <section>
-                  <label
-                    htmlFor="message"
-                    className="mb-2 block text-sm font-semibold text-[#1e1b2e]"
-                  >
-                    Notes for Robyn and Jess
-                  </label>
-
-                  <textarea
-                    id="message"
+                  <TextareaField
+                    label="Anything else we should know?"
                     name="message"
-                    rows={5}
-                    className="w-full rounded-2xl border border-[#e8e4de] bg-white px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:ring-2 focus:ring-[#99f6e4]"
-                    placeholder="For example: which team members need access first, whether you want to pay as a clinic, or what you want the future induction/growth program to include."
+                    placeholder="Optional. Tell us what would help your team most."
                   />
-                </section>
 
-                <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962]"
+                  >
+                    Request a team quote
+                    <ArrowRight size={18} />
+                  </button>
+
                   <p className="text-sm leading-relaxed text-[#6b6880]">
-                    Submitting this form does not automatically create paid
-                    accounts or charge your clinic. It creates a manager request
-                    so we can organise the right next step for your team.
+                    We will review your team details and follow up with the best
+                    next step.
                   </p>
-                </div>
-
-                <button
-                  type="submit"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962]"
-                >
-                  Submit manager hub request
-                  <ArrowRight size={16} />
-                </button>
-              </form>
-            </>
-          )}
-        </section>
+                </form>
+              </>
+            )}
+          </aside>
+        </div>
       </section>
     </main>
   );
 }
 
-function FeatureCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <article className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm">
-      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
-        {icon}
-      </div>
-
-      <h2 className="mb-3 text-xl font-bold">{title}</h2>
-
-      <p className="text-sm leading-relaxed text-[#6b6880]">{description}</p>
-    </article>
-  );
-}
-
-function TextInput({
-  label,
-  name,
-  placeholder,
-  type = "text",
-  required = false,
-}: {
-  label: string;
-  name: string;
-  placeholder: string;
-  type?: string;
-  required?: boolean;
-}) {
+function SuccessBox() {
   return (
     <div>
-      <label
-        htmlFor={name}
-        className="mb-2 block text-sm font-semibold text-[#1e1b2e]"
-      >
-        {label}
-      </label>
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+        <Video size={24} />
+      </div>
 
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required={required}
-        className="w-full rounded-2xl border border-[#e8e4de] bg-white px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:ring-2 focus:ring-[#99f6e4]"
-        placeholder={placeholder}
-      />
+      <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+        Request received
+      </p>
+
+      <h1 className="mb-4 text-3xl font-bold">
+        Thank you. Your team quote request has been sent.
+      </h1>
+
+      <p className="mb-6 text-base leading-relaxed text-[#6b6880]">
+        We will review your team size, disciplines and support preferences, then
+        follow up with the best next step.
+      </p>
+
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+        >
+          Back to home
+        </Link>
+
+        <Link
+          href="/subscribe"
+          className="inline-flex items-center justify-center rounded-full border border-[#0f766e] bg-white px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
+        >
+          View webinars
+        </Link>
+      </div>
     </div>
   );
 }
 
-function CheckboxCard({
+function CheckItem({ text }: { text: string }) {
+  return (
+    <div className="flex gap-3">
+      <CheckCircle2 className="mt-0.5 shrink-0 text-[#0f766e]" size={18} />
+      <p className="text-base leading-relaxed text-[#5f5b73]">{text}</p>
+    </div>
+  );
+}
+
+function TextField({
+  label,
   name,
-  title,
-  description,
+  type = "text",
+  placeholder,
+  required = false,
 }: {
+  label: string;
   name: string;
-  title: string;
-  description: string;
+  type?: string;
+  placeholder?: string;
+  required?: boolean;
 }) {
   return (
-    <label className="flex cursor-pointer gap-4 rounded-3xl border border-[#e8e4de] bg-white p-5 shadow-sm transition hover:border-[#99f6e4] hover:bg-[#f0fdfa]">
+    <label className="grid gap-2">
+      <span className="text-sm font-semibold text-[#1e1b2e]">{label}</span>
       <input
         name={name}
-        type="checkbox"
-        className="mt-1 h-5 w-5 shrink-0 rounded border-[#e8e4de] accent-[#0f766e]"
+        type={type}
+        placeholder={placeholder}
+        required={required}
+        className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:bg-white"
       />
+    </label>
+  );
+}
 
-      <span>
-        <span className="mb-1 block text-base font-bold text-[#1e1b2e]">
-          {title}
-        </span>
+function TextareaField({
+  label,
+  name,
+  placeholder,
+}: {
+  label: string;
+  name: string;
+  placeholder?: string;
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="text-sm font-semibold text-[#1e1b2e]">{label}</span>
+      <textarea
+        name={name}
+        placeholder={placeholder}
+        rows={4}
+        className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:bg-white"
+      />
+    </label>
+  );
+}
 
-        <span className="block text-sm leading-relaxed text-[#6b6880]">
-          {description}
-        </span>
-      </span>
+function SelectField({
+  label,
+  name,
+  options,
+  required = false,
+}: {
+  label: string;
+  name: string;
+  options: { label: string; value: string }[];
+  required?: boolean;
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="text-sm font-semibold text-[#1e1b2e]">{label}</span>
+      <select
+        name={name}
+        required={required}
+        className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:bg-white"
+      >
+        {options.map((option) => (
+          <option key={option.label} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }

@@ -3,12 +3,15 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase-server";
 
-function safeError(message: string) {
-  return encodeURIComponent(message);
+function cleanText(value: FormDataEntryValue | null) {
+  const text = String(value || "").trim();
+  return text.length > 0 ? text : null;
 }
 
-function parseTeamEmails(rawEmails: string) {
-  return rawEmails
+function parseTeamEmails(value: FormDataEntryValue | null) {
+  const text = String(value || "");
+
+  return text
     .split(/[\n,;]+/)
     .map((email) => email.trim().toLowerCase())
     .filter(Boolean)
@@ -18,39 +21,36 @@ function parseTeamEmails(rawEmails: string) {
 export async function submitManagerPathwayRequest(formData: FormData) {
   const fullName = String(formData.get("fullName") || "").trim();
   const email = String(formData.get("email") || "").trim().toLowerCase();
-  const phone = String(formData.get("phone") || "").trim();
-  const organisation = String(formData.get("organisation") || "").trim();
-  const role = String(formData.get("role") || "").trim();
-  const teamSize = String(formData.get("teamSize") || "").trim();
-  const teamEmailsRaw = String(formData.get("teamEmails") || "").trim();
-  const message = String(formData.get("message") || "").trim();
 
-  const wantsWebinarSeries = formData.get("wantsWebinarSeries") === "on";
-  const wantsClinicInduction = formData.get("wantsClinicInduction") === "on";
-  const wantsGrowthProgram = formData.get("wantsGrowthProgram") === "on";
-  const wantsTeamQuote = formData.get("wantsTeamQuote") === "on";
+  const phone = cleanText(formData.get("phone"));
+  const organisation = cleanText(formData.get("organisation"));
+  const role = cleanText(formData.get("role"));
+  const teamSize = cleanText(formData.get("teamSize"));
+  const disciplines = cleanText(formData.get("disciplines"));
+  const supportType = cleanText(formData.get("supportType"));
+  const message = cleanText(formData.get("message"));
+  const teamEmails = parseTeamEmails(formData.get("teamEmails"));
 
-  if (!fullName || !email || !organisation) {
-    redirect(
-      `/manager-pathway?error=${safeError(
-        "Please include your name, email and organisation."
-      )}`
-    );
+  if (!fullName || !email) {
+    throw new Error("Please add your name and email.");
   }
 
-  const teamEmails = parseTeamEmails(teamEmailsRaw);
+  if (!organisation) {
+    throw new Error("Please add your clinic or organisation.");
+  }
 
-  const interestSummary = [
-    wantsWebinarSeries ? "Webinar series access for team" : null,
-    wantsClinicInduction ? "Future clinic induction program" : null,
-    wantsGrowthProgram ? "Future clinic growth program" : null,
-    wantsTeamQuote ? "Team or clinic quote" : null,
-  ]
-    .filter(Boolean)
-    .join(", ");
+  if (!teamSize) {
+    throw new Error("Please choose your team size.");
+  }
+
+  if (!supportType) {
+    throw new Error("Please choose the support you are interested in.");
+  }
 
   const finalMessage = [
-    interestSummary ? `Interested in: ${interestSummary}` : null,
+    `Team size: ${teamSize}`,
+    disciplines ? `Disciplines involved: ${disciplines}` : null,
+    `Support requested: ${supportType}`,
     teamEmails.length > 0
       ? `Team emails submitted:\n${teamEmails.join("\n")}`
       : null,
@@ -61,46 +61,38 @@ export async function submitManagerPathwayRequest(formData: FormData) {
 
   const supabase = await createClient();
 
-  const { data: managerRequest, error: managerRequestError } = await supabase
+  const { data: managerRequest, error } = await supabase
     .from("manager_pathway_requests")
     .insert({
       full_name: fullName,
       email,
-      phone: phone || null,
+      phone,
       organisation,
-      role: role || null,
-      team_size: teamSize || null,
-      message: finalMessage || null,
+      role,
+      team_size: teamSize,
+      message: finalMessage,
       status: "new",
     })
     .select("id")
     .single();
 
-  if (managerRequestError) {
-    redirect(`/manager-pathway?error=${safeError(managerRequestError.message)}`);
+  if (error) {
+    throw new Error(error.message);
   }
 
-  if (!managerRequest?.id) {
-    redirect(
-      `/manager-pathway?error=${safeError(
-        "The manager request was not created properly. Please try again."
-      )}`
-    );
-  }
-
-  if (teamEmails.length > 0) {
+  if (teamEmails.length > 0 && managerRequest?.id) {
     const teamRows = teamEmails.map((teamEmail) => ({
       manager_request_id: managerRequest.id,
       email: teamEmail,
       status: "invited",
     }));
 
-    const { error: teamMembersError } = await supabase
+    const { error: teamError } = await supabase
       .from("manager_team_members")
       .insert(teamRows);
 
-    if (teamMembersError) {
-      redirect(`/manager-pathway?error=${safeError(teamMembersError.message)}`);
+    if (teamError) {
+      throw new Error(teamError.message);
     }
   }
 

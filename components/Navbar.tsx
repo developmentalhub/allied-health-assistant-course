@@ -1,125 +1,98 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { LogIn } from "lucide-react";
 import { siteConfig } from "@/lib/site";
 
 const navLinks = [
   {
-    label: "Home",
-    href: "/",
-  },
-  {
-    label: "Free community",
-    href: "/join",
-  },
-  {
-    label: "AHA PD options",
     href: "/subscribe",
+    label: "Free Webinar",
   },
   {
-    label: "Member tools",
     href: "/tools",
+    label: "Tools",
   },
   {
-    label: "Manager pathway",
+    href: "/reflective-practice",
+    label: "1:1 Support",
+  },
+  {
+    href: "/join",
+    label: "Free Community",
+  },
+  {
     href: "/manager-pathway",
+    label: "For Managers",
   },
   {
-    label: "Contact",
-    href: "/contact",
+    href: "/member-library",
+    label: "Member Library",
   },
 ];
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const closeMenu = () => setMenuOpen(false);
-
   return (
-    <header className="sticky top-0 z-50 border-b border-[#e8e4de] bg-white/95 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center">
-  <img
-    src={siteConfig.logoUrl}
-    alt="Allied Health Hive"
-    className="h-20 w-auto object-contain"
-  />
-</Link>
+    <header className="sticky top-0 z-50 border-b border-[#e8e4de] bg-[#faf8f5]/95 backdrop-blur">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
+        <Link href="/" className="flex shrink-0 items-center">
+          <img
+            src={siteConfig.logoUrl}
+            alt="Allied Health Hive"
+            className="h-14 w-auto object-contain"
+          />
+        </Link>
 
-        <div className="hidden items-center gap-5 lg:flex">
+        <div className="hidden items-center gap-1 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-semibold text-[#6b6880] transition hover:text-[#0f766e]"
+              className="rounded-full px-4 py-2 text-sm font-semibold text-[#5f5b73] transition hover:bg-[#f0fdfa] hover:text-[#0f766e]"
             >
               {link.label}
             </Link>
           ))}
         </div>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <Link
-            href="/join"
-            className="rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-2 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
-          >
-            Join free
-          </Link>
+        <Link
+          href="/login"
+          className="hidden items-center gap-2 rounded-full bg-[#0f766e] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d6962] sm:inline-flex"
+        >
+          <LogIn size={16} />
+          Sign In
+        </Link>
 
+        <div className="flex items-center gap-2 lg:hidden">
           <Link
             href="/subscribe"
             className="rounded-full bg-[#0f766e] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
           >
-            View PD options
+            Free Webinar
+          </Link>
+
+          <Link
+            href="/login"
+            className="rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-2 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+          >
+            Sign In
           </Link>
         </div>
-
-        <button
-          type="button"
-          onClick={() => setMenuOpen((current) => !current)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#e8e4de] text-[#1e1b2e] lg:hidden"
-          aria-label="Toggle navigation menu"
-        >
-          {menuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
       </nav>
 
-      {menuOpen ? (
-        <div className="border-t border-[#e8e4de] bg-white px-6 py-4 lg:hidden">
-          <div className="mx-auto flex max-w-6xl flex-col gap-3">
-            {navLinks.map((link) => (
+      <div className="border-t border-[#e8e4de] bg-white/70 px-6 py-3 lg:hidden">
+        <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto">
+          {navLinks
+            .filter((link) => link.href !== "/subscribe")
+            .map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={closeMenu}
-                className="rounded-2xl px-3 py-2 text-sm font-semibold text-[#6b6880] transition hover:bg-[#f0fdfa] hover:text-[#0f766e]"
+                className="shrink-0 rounded-full border border-[#e8e4de] bg-white px-4 py-2 text-sm font-semibold text-[#5f5b73]"
               >
                 {link.label}
               </Link>
             ))}
-
-            <div className="mt-2 grid gap-2">
-              <Link
-                href="/join"
-                onClick={closeMenu}
-                className="rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-3 text-center text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
-              >
-                Join free community
-              </Link>
-
-              <Link
-                href="/subscribe"
-                onClick={closeMenu}
-                className="rounded-full bg-[#0f766e] px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#0d6962]"
-              >
-                View AHA PD options
-              </Link>
-            </div>
-          </div>
         </div>
-      ) : null}
+      </div>
     </header>
   );
 }
