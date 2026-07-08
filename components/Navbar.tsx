@@ -40,21 +40,12 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-[#e8e4de] bg-white/95 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center">
   <img
     src={siteConfig.logoUrl}
-    alt="Allied Health Hive logo"
-    className="h-12 w-12 rounded-full object-contain"
+    alt="Allied Health Hive"
+    className="h-20 w-auto object-contain"
   />
-
-  <div className="leading-tight">
-    <p className="text-base font-bold text-[#1e1b2e]">
-      Allied Health Hive
-    </p>
-    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#0f766e]">
-      AHA Professional Development
-    </p>
-  </div>
 </Link>
 
         <div className="hidden items-center gap-5 lg:flex">
