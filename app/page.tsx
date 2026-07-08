@@ -44,7 +44,7 @@ const MEMBER_TOOLS = [
   {
     title: "Supervisor Question Builder",
     description:
-      "Turn uncertainty into respectful, clear questions to take back to the supervising allied health professional.",
+      "Turn the questions you can't always take to a busy therapist into clear, respectful ones you can.",
     icon: HelpCircle,
   },
   {
@@ -81,34 +81,35 @@ export default function Home() {
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
       <section className="mx-auto max-w-6xl px-6 py-14 text-center md:py-18">
         <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
-          AHA Professional Development
+          AHA Community &amp; Professional Development
         </p>
 
         <h1 className="mx-auto mb-6 max-w-4xl text-4xl font-bold leading-tight md:text-6xl">
-          Foundation reflective professional development for Allied Health
-          Assistants.
+          Thriving Kids is reshaping your work. You shouldn&apos;t have to figure
+          it out alone.
         </h1>
 
         <p className="mx-auto mb-8 max-w-3xl text-lg leading-relaxed text-[#6b6880] md:text-xl">
-          A warm place for AHAs and the people working alongside them to access
-          foundation learning, role clarity support, reflective practice and
-          paid member tools as they are released.
+          A community and practical professional development for Allied Health
+          Assistants &mdash; a place to bring the hard week, ask the questions
+          you can&apos;t always take to a slammed therapist, and steady each
+          other through the change.
         </p>
 
         <div className="mx-auto mb-5 max-w-3xl rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 text-left">
           <div className="flex gap-3">
-            <Lock size={22} className="mt-0.5 shrink-0 text-[#0f766e]" />
+            <MessageCircle size={22} className="mt-0.5 shrink-0 text-[#0f766e]" />
 
             <div>
               <p className="mb-1 text-sm font-semibold text-[#0f766e]">
-                AHA-specific tools are being built for paid members
+                Start with the community &mdash; it&apos;s free
               </p>
 
               <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                The Foundation AHA PD Library will include practical reflective
-                tools to help AHAs prepare, reflect, communicate clearly and
-                know when to seek clarification. These tools are planned as paid
-                member resources, not free public tools.
+                You don&apos;t need answers or a polished question to belong
+                here. Come in, read along, and lean on people who understand the
+                week you&apos;ve had. Practical member tools and PD build on top
+                of that when you&apos;re ready.
               </p>
             </div>
           </div>
@@ -123,13 +124,14 @@ export default function Home() {
 
             <div>
               <p className="mb-1 text-sm font-semibold text-[#0f766e]">
-                Clear content boundary
+                Where this fits
               </p>
 
               <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                This AHA platform focuses on foundation reflective PD.
-                Robyn&apos;s deeper movement, regulation, play and child
-                development training remains within Play Move Improve.
+                This platform is foundation reflective PD for AHAs navigating
+                change like Thriving Kids. Robyn&apos;s deeper movement,
+                regulation, play and child development training stays within Play
+                Move Improve.
               </p>
             </div>
           </div>
@@ -162,14 +164,15 @@ export default function Home() {
             </div>
 
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
-              Free front door
+              Where you&apos;re not alone
             </p>
 
             <h2 className="mb-4 text-2xl font-bold">Free AHA Community</h2>
 
             <p className="mb-6 text-base leading-relaxed text-[#6b6880]">
-              Join quietly, browse the feed, introduce yourself if you want, and
-              stay connected with others in the AHA space.
+              Bring the hard week, ask what you can&apos;t always take to a busy
+              therapist, and steady each other through the change. Browse quietly
+              or introduce yourself when you&apos;re ready.
             </p>
 
             <ul className="mb-7 space-y-3 text-sm leading-relaxed text-[#6b6880]">
@@ -179,11 +182,11 @@ export default function Home() {
               </li>
               <li className="flex gap-2">
                 <Check size={17} className="mt-0.5 shrink-0 text-[#0f766e]" />
-                Introduce yourself if you feel comfortable
+                Ask the questions a slammed therapist has no time for
               </li>
               <li className="flex gap-2">
                 <Check size={17} className="mt-0.5 shrink-0 text-[#0f766e]" />
-                Read updates and connect with others
+                Steady each other through Thriving Kids change
               </li>
             </ul>
 
@@ -210,9 +213,10 @@ export default function Home() {
             </h2>
 
             <p className="mb-6 text-base leading-relaxed text-[#3f5f5a]">
-              A growing 2026 library of foundation AHA professional development
-              videos, reflection prompts, printable PDFs and paid member tools
-              as they are released.
+              A growing 2026 library of practical AHA professional development
+              &mdash; videos, reflection prompts, printable PDFs and member tools
+              &mdash; built around the real questions AHAs are facing as the work
+              changes.
             </p>
 
             <div className="mb-6 rounded-2xl border border-[#99f6e4] bg-white p-4">
@@ -221,7 +225,7 @@ export default function Home() {
               </p>
               <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
                 12 months access from the day of purchase. Individual foundation
-                topic videos may also be available from $7–$19 depending on
+                topic videos may also be available from $7&ndash;$19 depending on
                 length and included resources.
               </p>
             </div>
@@ -231,9 +235,9 @@ export default function Home() {
                 Member tools included as they are released
               </p>
               <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
-                AHA-specific reflective tools are being built for paid library
-                members, including session preparation, feedback and role
-                boundary reflection tools.
+                Practical reflective tools built for members &mdash; session
+                preparation, feedback, and role boundary reflection &mdash; to
+                help you feel steadier in the work.
               </p>
             </div>
 
@@ -258,9 +262,10 @@ export default function Home() {
             <h2 className="mb-4 text-2xl font-bold">1:1 Reflective Practice</h2>
 
             <p className="mb-6 text-base leading-relaxed text-[#6b6880]">
-              Reflective, practical and personal sessions for AHAs, students,
-              educators, team leaders or professionals wanting to reflect on
-              practice, role clarity, communication, confidence or next steps.
+              Reflective, practical, personal sessions for AHAs, students,
+              educators or team leaders who want space to think through the
+              change, role clarity, communication with therapists, confidence or
+              next steps.
             </p>
 
             <div className="mb-6 rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4">
@@ -293,14 +298,15 @@ export default function Home() {
             </p>
 
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              Each foundation topic will combine video, reflection and practical
-              prompts.
+              Real questions from the floor &mdash; not theory you have to
+              translate later.
             </h2>
 
             <p className="text-base leading-relaxed text-[#6b6880]">
-              The 2026 foundation library will be built around real AHA
-              questions, with unlisted YouTube videos embedded into the site
-              alongside printable reflection resources and member-only tools.
+              The 2026 library is built around the questions that come up when
+              the work shifts and the therapist is flat out &mdash; with unlisted
+              YouTube videos embedded into the site alongside printable
+              reflection resources and member-only tools.
             </p>
           </div>
 
@@ -356,14 +362,13 @@ export default function Home() {
               </p>
 
               <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                AHA-specific tools will sit inside the paid Foundation AHA PD
-                Library.
+                Tools for the moments you&apos;d usually face alone.
               </h2>
 
               <p className="mb-5 text-base leading-relaxed text-[#6b6880]">
-                These tools are being created to help AHAs prepare for sessions,
-                reflect after sessions, communicate with supervising
-                professionals and notice when something needs clarification.
+                These tools are being created to help you prepare for sessions,
+                reflect afterwards, communicate with a supervising therapist who
+                is stretched thin, and notice when something needs clarification.
               </p>
 
               <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
@@ -573,13 +578,14 @@ export default function Home() {
             </p>
 
             <h2 className="mb-3 text-2xl font-bold">
-              Support your AHAs with reflective professional development.
+              Support your AHAs through the change &mdash; before it costs you
+              them.
             </h2>
 
             <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
-              If you manage AHAs or therapy assistants, you can register
-              interest in foundation library access, topic bundles, reflective
-              tools or future team options.
+              If you manage AHAs or therapy assistants navigating Thriving Kids,
+              you can register interest in foundation library access, topic
+              bundles, reflective tools or future team options.
             </p>
 
             <Link
