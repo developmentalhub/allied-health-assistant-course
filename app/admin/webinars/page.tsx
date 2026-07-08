@@ -6,10 +6,12 @@ import {
   FileText,
   LinkIcon,
   LockKeyhole,
+  Mail,
   PlayCircle,
   Video,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
+import { sendZoomDetailsToMembers } from "./actions";
 
 type Webinar = {
   id: string;
@@ -20,8 +22,13 @@ type Webinar = {
   access_type: "free" | "members";
   status: "upcoming" | "recorded" | "cancelled";
   zoom_url: string | null;
+  zoom_join_url: string | null;
   recording_url: string | null;
   resource_url: string | null;
+  bunny_video_id: string | null;
+  bunny_embed_url: string | null;
+  bunny_playback_url: string | null;
+  email_sent_at: string | null;
   created_at: string;
 };
 
@@ -49,7 +56,7 @@ export default async function AdminWebinarsPage() {
   const { data: webinars, error } = await supabase
     .from("webinars")
     .select(
-      "id, title, description, starts_at, ends_at, access_type, status, zoom_url, recording_url, resource_url, created_at"
+      "id, title, description, starts_at, ends_at, access_type, status, zoom_url, zoom_join_url, recording_url, resource_url, bunny_video_id, bunny_embed_url, bunny_playback_url, email_sent_at, created_at"
     )
     .order("starts_at", { ascending: true });
 
@@ -87,7 +94,7 @@ export default async function AdminWebinarsPage() {
 
           <p className="max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
             Use this page to keep track of monthly AHA Professional Development
-            webinars, topic PDFs, Zoom links and recordings.
+            webinars, topic PDFs, Zoom links, Bunny recordings and member emails.
           </p>
         </div>
 
@@ -102,16 +109,17 @@ export default async function AdminWebinarsPage() {
 
         <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
           <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
-            <CalendarDays size={24} />
+            <Video size={24} />
           </div>
 
-          <h2 className="mb-4 text-3xl font-bold">Quick admin note</h2>
+          <h2 className="mb-4 text-3xl font-bold">
+            Zoom live, Bunny for edited recordings
+          </h2>
 
           <p className="max-w-3xl text-base leading-relaxed text-[#3f5f5a]">
-            This first version is view-only. Add or edit webinar rows in
-            Supabase for now. Next, we can add simple admin forms so you and
-            Jess can update the topic, PDF link, Zoom link and recording link
-            directly from this page.
+            Zoom links are used for the live webinar. After the webinar, edit the
+            recording on your computer, upload the final version to Bunny Stream,
+            then paste the Bunny link into Supabase for that webinar.
           </p>
         </section>
 
@@ -140,7 +148,7 @@ export default async function AdminWebinarsPage() {
           <div className="mb-5">
             <h2 className="text-3xl font-bold">Past and recorded webinars</h2>
             <p className="mt-2 text-base leading-relaxed text-[#6b6880]">
-              Completed webinars, recordings and related PDF resources.
+              Completed webinars, Bunny recordings and related PDF resources.
             </p>
           </div>
 
@@ -183,6 +191,22 @@ function WebinarCard({ webinar }: { webinar: Webinar }) {
     timeZone: "Australia/Brisbane",
   }).format(endDate);
 
+  const zoomLink = webinar.zoom_join_url || webinar.zoom_url;
+  const bunnyLink =
+    webinar.bunny_embed_url || webinar.bunny_playback_url || webinar.recording_url;
+
+  const emailSentDate = webinar.email_sent_at
+    ? new Intl.DateTimeFormat("en-AU", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone: "Australia/Brisbane",
+      }).format(new Date(webinar.email_sent_at))
+    : null;
+
   return (
     <article className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
       <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -211,16 +235,16 @@ function WebinarCard({ webinar }: { webinar: Webinar }) {
           <p className="text-sm leading-relaxed text-[#1e1b2e]">
             {dateLabel}
             <br />
-            {startTime} to {endTime}
+            {startTime} to {endTime} QLD time
           </p>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="mb-4 grid gap-4 md:grid-cols-3">
         <ResourceStatus
           icon={<Video size={18} />}
-          label="Zoom link"
-          value={webinar.zoom_url}
+          label="Zoom live link"
+          value={zoomLink}
           emptyText="Not added yet"
         />
 
@@ -233,10 +257,50 @@ function WebinarCard({ webinar }: { webinar: Webinar }) {
 
         <ResourceStatus
           icon={<PlayCircle size={18} />}
-          label="Recording"
-          value={webinar.recording_url}
-          emptyText="Added after webinar"
+          label="Bunny recording"
+          value={bunnyLink}
+          emptyText="Add after editing"
         />
+      </div>
+
+      <div className="mb-4 rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4">
+        <p className="mb-2 text-sm font-semibold text-[#0f766e]">
+          Bunny Stream details
+        </p>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          <SmallInfo label="Bunny video ID" value={webinar.bunny_video_id} />
+          <SmallInfo label="Embed URL" value={webinar.bunny_embed_url} />
+          <SmallInfo label="Playback URL" value={webinar.bunny_playback_url} />
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-sm font-semibold text-[#0f766e]">
+              Zoom email status
+            </p>
+            <p className="text-sm leading-relaxed text-[#6b6880]">
+              {emailSentDate
+                ? `Last sent: ${emailSentDate}`
+                : "Not sent yet"}
+            </p>
+          </div>
+
+          <form action={sendZoomDetailsToMembers}>
+            <input type="hidden" name="webinarId" value={webinar.id} />
+
+            <button
+              type="submit"
+              disabled={!zoomLink}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <Mail size={15} />
+              Send Zoom details
+            </button>
+          </form>
+        </div>
       </div>
     </article>
   );
@@ -273,6 +337,25 @@ function ResourceStatus({
       ) : (
         <p className="text-sm text-[#6b6880]">{emptyText}</p>
       )}
+    </div>
+  );
+}
+
+function SmallInfo({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | null;
+}) {
+  return (
+    <div>
+      <p className="mb-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#6b6880]">
+        {label}
+      </p>
+      <p className="break-all text-sm leading-relaxed text-[#1e1b2e]">
+        {value || "Not added"}
+      </p>
     </div>
   );
 }
