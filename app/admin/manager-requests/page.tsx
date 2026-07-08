@@ -3,12 +3,15 @@ import { redirect } from "next/navigation";
 import {
   ArrowLeft,
   Building2,
+  CheckCircle2,
+  Clock,
   LockKeyhole,
   Mail,
   MessageSquareText,
   Phone,
   UserRound,
   Users,
+  XCircle,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
 
@@ -19,6 +22,17 @@ type ManagerTeamMember = {
   full_name: string | null;
   status: string;
   created_at: string;
+};
+
+type Subscription = {
+  email: string;
+  status: string;
+  current_period_end: string | null;
+};
+
+type TeamMemberWithSubscription = ManagerTeamMember & {
+  subscription_status: string | null;
+  current_period_end: string | null;
 };
 
 type ManagerPathwayRequest = {
@@ -67,11 +81,34 @@ export default async function AdminManagerRequestsPage() {
     .select("id, manager_request_id, email, full_name, status, created_at")
     .order("created_at", { ascending: true });
 
+  const { data: subscriptions, error: subscriptionsError } = await supabase
+    .from("aha_subscriptions")
+    .select("email, status, current_period_end");
+
   const typedRequests = (requests || []) as ManagerPathwayRequest[];
   const typedTeamMembers = (teamMembers || []) as ManagerTeamMember[];
+  const typedSubscriptions = (subscriptions || []) as Subscription[];
 
-  const teamMembersByRequestId = typedTeamMembers.reduce<
-    Record<string, ManagerTeamMember[]>
+  const subscriptionsByEmail = typedSubscriptions.reduce<
+    Record<string, Subscription>
+  >((groups, subscription) => {
+    groups[subscription.email.toLowerCase()] = subscription;
+    return groups;
+  }, {});
+
+  const teamMembersWithSubscription: TeamMemberWithSubscription[] =
+    typedTeamMembers.map((member) => {
+      const subscription = subscriptionsByEmail[member.email.toLowerCase()];
+
+      return {
+        ...member,
+        subscription_status: subscription?.status || null,
+        current_period_end: subscription?.current_period_end || null,
+      };
+    });
+
+  const teamMembersByRequestId = teamMembersWithSubscription.reduce<
+    Record<string, TeamMemberWithSubscription[]>
   >((groups, member) => {
     if (!groups[member.manager_request_id]) {
       groups[member.manager_request_id] = [];
@@ -103,8 +140,8 @@ export default async function AdminManagerRequestsPage() {
 
           <p className="max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
             Review clinic requests, see the team email addresses submitted by
-            managers, and track interest in the webinar series, clinic induction
-            program and future growth pathways.
+            managers, and check whether those staff have already signed up for
+            the AHA webinar membership.
           </p>
         </div>
 
@@ -122,6 +159,13 @@ export default async function AdminManagerRequestsPage() {
           />
         ) : null}
 
+        {subscriptionsError ? (
+          <ErrorBox
+            title="Could not load membership subscriptions"
+            message={subscriptionsError.message}
+          />
+        ) : null}
+
         <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
           <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
             <Building2 size={24} />
@@ -130,9 +174,9 @@ export default async function AdminManagerRequestsPage() {
           <h2 className="mb-4 text-3xl font-bold">Manager hub workflow</h2>
 
           <p className="max-w-3xl text-base leading-relaxed text-[#3f5f5a]">
-            When a manager submits this form, their clinic request appears here.
-            Any team emails they added are listed underneath the request so you
-            can follow up, check who has signed up, and organise team access.
+            When a manager submits team emails, this page compares those emails
+            with the AHA membership subscriptions table. This helps you see who
+            is already active, who is trialing, and who still needs follow-up.
           </p>
         </section>
 
@@ -159,7 +203,7 @@ function RequestCard({
   teamMembers,
 }: {
   request: ManagerPathwayRequest;
-  teamMembers: ManagerTeamMember[];
+  teamMembers: TeamMemberWithSubscription[];
 }) {
   const createdDate = new Intl.DateTimeFormat("en-AU", {
     weekday: "long",
@@ -168,6 +212,10 @@ function RequestCard({
     year: "numeric",
     timeZone: "Australia/Melbourne",
   }).format(new Date(request.created_at));
+
+  const signedUpCount = teamMembers.filter((member) =>
+    ["active", "trialing"].includes(member.subscription_status || "")
+  ).length;
 
   return (
     <article className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
@@ -236,11 +284,16 @@ function RequestCard({
         </div>
       </div>
 
-      <div className="mb-4 grid gap-4 md:grid-cols-2">
-        <InfoBox label="Organisation" value={request.organisation} />
-        <InfoBox label="Manager role" value={request.role} />
+      <div className="mb-4 grid gap-4 md:grid-cols-3">
         <InfoBox label="Team size" value={request.team_size} />
-        <InfoBox label="Team emails submitted" value={String(teamMembers.length)} />
+        <InfoBox
+          label="Team emails submitted"
+          value={String(teamMembers.length)}
+        />
+        <InfoBox
+          label="Signed up or trialing"
+          value={`${signedUpCount} of ${teamMembers.length}`}
+        />
       </div>
 
       <section className="mb-4 rounded-2xl border border-[#99f6e4] bg-[#f0fdfa] p-4">
@@ -252,21 +305,7 @@ function RequestCard({
         {teamMembers.length > 0 ? (
           <div className="grid gap-2 md:grid-cols-2">
             {teamMembers.map((member) => (
-              <div
-                key={member.id}
-                className="rounded-2xl border border-[#99f6e4] bg-white p-3"
-              >
-                <a
-                  href={`mailto:${member.email}`}
-                  className="break-all text-sm font-semibold text-[#1e1b2e] underline decoration-[#99f6e4] underline-offset-4"
-                >
-                  {member.email}
-                </a>
-
-                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#6b6880]">
-                  {member.status}
-                </p>
-              </div>
+              <TeamMemberCard key={member.id} member={member} />
             ))}
           </div>
         ) : (
@@ -287,6 +326,49 @@ function RequestCard({
         </p>
       </div>
     </article>
+  );
+}
+
+function TeamMemberCard({
+  member,
+}: {
+  member: TeamMemberWithSubscription;
+}) {
+  const status = member.subscription_status || "not signed up";
+
+  const isActive = ["active", "trialing"].includes(status);
+  const isCancelled = ["cancelled", "canceled", "unpaid"].includes(status);
+
+  return (
+    <div className="rounded-2xl border border-[#99f6e4] bg-white p-3">
+      <a
+        href={`mailto:${member.email}`}
+        className="break-all text-sm font-semibold text-[#1e1b2e] underline decoration-[#99f6e4] underline-offset-4"
+      >
+        {member.email}
+      </a>
+
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        <span className="inline-flex items-center gap-1 rounded-full bg-[#faf8f5] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#6b6880]">
+          Manager list: {member.status}
+        </span>
+
+        <span
+          className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${
+            isActive
+              ? "bg-[#f0fdfa] text-[#0f766e]"
+              : isCancelled
+                ? "bg-red-50 text-red-700"
+                : "bg-[#faf8f5] text-[#6b6880]"
+          }`}
+        >
+          {isActive ? <CheckCircle2 size={13} /> : null}
+          {isCancelled ? <XCircle size={13} /> : null}
+          {!isActive && !isCancelled ? <Clock size={13} /> : null}
+          Membership: {status}
+        </span>
+      </div>
+    </div>
   );
 }
 
