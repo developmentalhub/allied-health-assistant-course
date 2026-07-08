@@ -4,6 +4,7 @@ export const siteConfig = {
   title: "AHA Professional Development",
   description:
     "A community and professional development platform for Allied Health Assistants, created by Jess Foster and Robyn from Play Move Improve.",
+  creator: "Allied Health Hive",
   url:
     process.env.NEXT_PUBLIC_SITE_URL ||
     "https://allied-health-assistant-course.vercel.app",
