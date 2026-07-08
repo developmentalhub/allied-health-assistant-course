@@ -85,7 +85,7 @@ export default async function AdminPage() {
               <p className="mb-1 text-sm font-semibold text-[#0f766e]">
                 Time
               </p>
-              <p className="text-sm text-[#6b6880]">12pm to 1pm AEST</p>
+              <p className="text-sm text-[#6b6880]">12pm to 1pm QLD time</p>
             </div>
 
             <div className="rounded-2xl border border-[#99f6e4] bg-white p-5">

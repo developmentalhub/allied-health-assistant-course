@@ -168,19 +168,19 @@ function WebinarCard({ webinar }: { webinar: Webinar }) {
     day: "numeric",
     month: "long",
     year: "numeric",
-    timeZone: "Australia/Melbourne",
+    timeZone: "Australia/Brisbane",
   }).format(startDate);
 
   const startTime = new Intl.DateTimeFormat("en-AU", {
     hour: "numeric",
     minute: "2-digit",
-    timeZone: "Australia/Melbourne",
+    timeZone: "Australia/Brisbane",
   }).format(startDate);
 
   const endTime = new Intl.DateTimeFormat("en-AU", {
     hour: "numeric",
     minute: "2-digit",
-    timeZone: "Australia/Melbourne",
+    timeZone: "Australia/Brisbane",
   }).format(endDate);
 
   return (

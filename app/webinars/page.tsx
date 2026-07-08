@@ -122,7 +122,7 @@ export default async function WebinarsPage() {
                     className="mt-0.5 shrink-0 text-[#0f766e]"
                     size={18}
                   />
-                  <span>12pm to 1pm AEST/AEDT</span>
+                  <span>12pm to 1pm QLD time</span>
                 </li>
 
                 <li className="flex gap-3">
@@ -267,19 +267,19 @@ function WebinarCard({
     day: "numeric",
     month: "long",
     year: "numeric",
-    timeZone: "Australia/Melbourne",
+    timeZone: "Australia/Brisbane",
   }).format(startDate);
 
   const startTime = new Intl.DateTimeFormat("en-AU", {
     hour: "numeric",
     minute: "2-digit",
-    timeZone: "Australia/Melbourne",
+    timeZone: "Australia/Brisbane",
   }).format(startDate);
 
   const endTime = new Intl.DateTimeFormat("en-AU", {
     hour: "numeric",
     minute: "2-digit",
-    timeZone: "Australia/Melbourne",
+    timeZone: "Australia/Brisbane",
   }).format(endDate);
 
   return (
