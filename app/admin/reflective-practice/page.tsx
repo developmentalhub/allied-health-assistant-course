@@ -1,251 +1,250 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import {
   ArrowLeft,
-  CalendarDays,
-  LinkIcon,
-  LockKeyhole,
+  Building2,
   Mail,
-  MessageSquareText,
+  MessageCircleHeart,
   UserRound,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
 
 type ReflectivePracticeRequest = {
   id: string;
-  full_name: string | null;
+  name: string | null;
   email: string | null;
   role: string | null;
   organisation: string | null;
-  setting: string | null;
-  focus_area: string | null;
-  child_initials: string | null;
-  notes: string | null;
-  preferred_contact_method: string | null;
+  preferred_provider: string | null;
+  session_goal: string | null;
+  current_context: string | null;
+  supervision_context: string | null;
+  what_have_you_tried: string | null;
+  what_feels_unclear: string | null;
+  hoped_outcome: string | null;
+  understands_not_supervision: boolean | null;
   status: string | null;
-  created_at: string;
+  created_at: string | null;
 };
 
 export default async function AdminReflectivePracticePage() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/login?redirect=/admin/reflective-practice");
-  }
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-
-  if (profile?.role !== "admin" && profile?.role !== "superadmin") {
-    redirect("/dashboard");
-  }
-
-  const { data: requests, error } = await supabase
+  const { data, error } = await supabase
     .from("reflective_practice_requests")
     .select(
-      "id, full_name, email, role, organisation, setting, focus_area, child_initials, notes, preferred_contact_method, status, created_at"
+      "id, name, email, role, organisation, preferred_provider, session_goal, current_context, supervision_context, what_have_you_tried, what_feels_unclear, hoped_outcome, understands_not_supervision, status, created_at",
     )
     .order("created_at", { ascending: false });
 
-  const typedRequests = (requests || []) as ReflectivePracticeRequest[];
+  const requests = (data || []) as ReflectivePracticeRequest[];
 
   return (
-    <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
+    <main className="min-h-screen bg-[#faf8f5] px-6 py-12 text-[#1e1b2e]">
       <section className="mx-auto max-w-6xl">
         <div className="mb-8">
           <Link
             href="/admin"
-            className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e] transition hover:text-[#0d6962]"
+            className="mb-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e] hover:underline"
           >
             <ArrowLeft size={16} />
-            Back to admin dashboard
+            Back to admin
           </Link>
 
-          <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-            Admin reflective practice
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            1:1 reflective support
           </p>
 
-          <h1 className="mb-5 text-4xl font-bold leading-tight md:text-6xl">
-            1:1 reflective practice requests.
+          <h1 className="text-4xl font-bold md:text-5xl">
+            Reflective practice requests
           </h1>
 
-          <p className="max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
-            Review requests from AHAs, educators, managers or team members who
-            want reflective practice support.
+          <p className="mt-3 max-w-3xl text-base leading-relaxed text-[#6b6880]">
+            These are AHAs, managers or team members asking for 1:1 reflective
+            support. Use this page to quickly see what they need and who they
+            prefer to speak with.
           </p>
         </div>
 
         {error ? (
-          <div className="mb-8 rounded-3xl border border-red-200 bg-red-50 p-6 text-red-700">
-            <h2 className="mb-2 text-xl font-bold">
-              Could not load reflective practice requests
-            </h2>
-            <p className="text-sm leading-relaxed">{error.message}</p>
+          <div className="rounded-3xl border border-red-200 bg-red-50 p-6 text-red-800">
+            <h2 className="mb-2 text-xl font-bold">Something needs fixing</h2>
+            <p className="text-sm">{error.message}</p>
           </div>
         ) : null}
 
-        <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
-          <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
-            <CalendarDays size={24} />
+        {!error && requests.length === 0 ? (
+          <div className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm">
+            <h2 className="mb-2 text-2xl font-bold">
+              No reflective practice requests yet
+            </h2>
+            <p className="text-base leading-relaxed text-[#6b6880]">
+              When someone completes the 1:1 support form, their request will
+              appear here.
+            </p>
           </div>
+        ) : null}
 
-          <h2 className="mb-4 text-3xl font-bold">Team calendar</h2>
+        <div className="grid gap-6">
+          {requests.map((request) => (
+            <article
+              key={request.id}
+              className="rounded-4xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8"
+            >
+              <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div>
+                  <div className="mb-3 inline-flex rounded-full bg-[#f0fdfa] px-3 py-1 text-xs font-semibold text-[#0f766e]">
+                    {request.status || "reflection_received"}
+                  </div>
 
-          <p className="mb-6 max-w-3xl text-base leading-relaxed text-[#3f5f5a]">
-            For now, keep the shared Google Calendar as the source of truth for
-            booked 1:1 reflective practice sessions. Later, we can embed or sync
-            this directly.
-          </p>
+                  <h2 className="text-2xl font-bold">
+                    {request.name || "Unknown name"}
+                  </h2>
 
-          <a
-            href="https://calendar.google.com"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#0f766e] bg-white px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
-          >
-            Open Google Calendar
-            <LinkIcon size={15} />
-          </a>
-        </section>
+                  <p className="mt-1 text-base text-[#6b6880]">
+                    {request.role || "Role not added"}
+                    {request.organisation
+                      ? ` · ${request.organisation}`
+                      : ""}
+                  </p>
+                </div>
 
-        {typedRequests.length > 0 ? (
-          <section className="grid gap-5">
-            {typedRequests.map((request) => (
-              <RequestCard key={request.id} request={request} />
-            ))}
-          </section>
-        ) : (
-          <EmptyState message="No reflective practice requests have been submitted yet." />
-        )}
+                <div className="rounded-3xl bg-[#faf8f5] px-5 py-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+                    Preferred provider
+                  </p>
+                  <p className="mt-1 text-lg font-bold">
+                    {request.preferred_provider || "Not selected"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mb-6 grid gap-3 md:grid-cols-3">
+                <InfoCard
+                  icon={<Mail size={18} />}
+                  label="Email"
+                  value={request.email || "Not added"}
+                />
+
+                <InfoCard
+                  icon={<UserRound size={18} />}
+                  label="Role"
+                  value={request.role || "Not added"}
+                />
+
+                <InfoCard
+                  icon={<Building2 size={18} />}
+                  label="Organisation"
+                  value={request.organisation || "Not added"}
+                />
+              </div>
+
+              <div className="mb-6 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+                <div className="mb-3 flex items-center gap-2">
+                  <MessageCircleHeart
+                    size={18}
+                    className="text-[#0f766e]"
+                  />
+                  <p className="text-sm font-semibold text-[#0f766e]">
+                    Support focus
+                  </p>
+                </div>
+
+                <p className="text-base font-semibold text-[#1e1b2e]">
+                  {request.session_goal || "No focus added"}
+                </p>
+              </div>
+
+              <DetailsBlock
+                label="Current context"
+                value={request.current_context}
+              />
+
+              <DetailsBlock
+                label="Supervision context"
+                value={request.supervision_context}
+              />
+
+              <DetailsBlock
+                label="What have they tried?"
+                value={request.what_have_you_tried}
+              />
+
+              <DetailsBlock
+                label="What feels unclear?"
+                value={request.what_feels_unclear}
+              />
+
+              <DetailsBlock
+                label="Hoped outcome"
+                value={request.hoped_outcome}
+              />
+
+              <div className="mt-6 rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
+                <p className="text-sm font-semibold text-[#0f766e]">
+                  Reflective practice disclaimer accepted
+                </p>
+                <p className="mt-1 text-sm text-[#6b6880]">
+                  {request.understands_not_supervision ? "Yes" : "Not recorded"}
+                </p>
+              </div>
+
+              <p className="mt-4 text-xs text-[#8a8798]">
+                Submitted:{" "}
+                {request.created_at
+                  ? new Date(request.created_at).toLocaleString("en-AU")
+                  : "Unknown"}
+              </p>
+            </article>
+          ))}
+        </div>
       </section>
     </main>
   );
 }
 
-function RequestCard({
-  request,
+function InfoCard({
+  icon,
+  label,
+  value,
 }: {
-  request: ReflectivePracticeRequest;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
 }) {
-  const createdDate = new Intl.DateTimeFormat("en-AU", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "Australia/Melbourne",
-  }).format(new Date(request.created_at));
-
   return (
-    <article className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
-      <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-        <div>
-          <div className="mb-3 flex flex-wrap gap-2">
-            <span className="inline-flex items-center rounded-full bg-[#f0fdfa] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#0f766e]">
-              {request.status || "New"}
-            </span>
-
-            {request.role ? (
-              <span className="inline-flex items-center rounded-full bg-[#faf8f5] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#6b6880]">
-                {request.role}
-              </span>
-            ) : null}
-          </div>
-
-          <h2 className="mb-3 text-2xl font-bold">
-            {request.full_name || "Name not supplied"}
-          </h2>
-
-          <div className="space-y-2 text-base leading-relaxed text-[#6b6880]">
-            {request.email ? (
-              <p className="flex items-start gap-2">
-                <Mail className="mt-1 shrink-0 text-[#0f766e]" size={16} />
-                <a
-                  href={`mailto:${request.email}`}
-                  className="font-semibold text-[#1e1b2e] underline decoration-[#99f6e4] underline-offset-4"
-                >
-                  {request.email}
-                </a>
-              </p>
-            ) : null}
-
-            {request.organisation ? (
-              <p className="flex items-start gap-2">
-                <UserRound
-                  className="mt-1 shrink-0 text-[#0f766e]"
-                  size={16}
-                />
-                <span>{request.organisation}</span>
-              </p>
-            ) : null}
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4 md:min-w-60">
-          <p className="mb-1 text-sm font-semibold text-[#0f766e]">
-            Submitted
-          </p>
-          <p className="text-sm leading-relaxed text-[#1e1b2e]">
-            {createdDate}
-          </p>
-        </div>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <InfoBox label="Setting" value={request.setting} />
-        <InfoBox label="Focus area" value={request.focus_area} />
-        <InfoBox label="Child initials only" value={request.child_initials} />
-        <InfoBox
-          label="Preferred contact"
-          value={request.preferred_contact_method}
-        />
-      </div>
-
-      <div className="mt-4 rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4">
-        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
-          <MessageSquareText size={18} />
-          Notes
-        </div>
-
-        <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#6b6880]">
-          {request.notes || "No notes supplied."}
+    <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-4">
+      <div className="mb-2 flex items-center gap-2 text-[#0f766e]">
+        {icon}
+        <p className="text-xs font-semibold uppercase tracking-[0.12em]">
+          {label}
         </p>
       </div>
-    </article>
+
+      <p className="wrap-break-word text-sm font-semibold text-[#1e1b2e]">
+        {value}
+      </p>
+    </div>
   );
 }
 
-function InfoBox({
+function DetailsBlock({
   label,
   value,
 }: {
   label: string;
   value: string | null;
 }) {
+  if (!value) {
+    return null;
+  }
+
   return (
-    <div className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4">
-      <p className="mb-1 text-sm font-semibold text-[#0f766e]">{label}</p>
-      <p className="text-sm leading-relaxed text-[#1e1b2e]">
-        {value || "Not supplied"}
+    <div className="mb-4 rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
+      <p className="mb-2 text-sm font-semibold text-[#0f766e]">{label}</p>
+
+      <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#5f5b73]">
+        {value}
       </p>
-    </div>
-  );
-}
-
-function EmptyState({ message }: { message: string }) {
-  return (
-    <div className="rounded-3xl border border-dashed border-[#e8e4de] bg-white p-8 text-center">
-      <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
-        <LockKeyhole size={24} />
-      </div>
-
-      <p className="text-base leading-relaxed text-[#6b6880]">{message}</p>
     </div>
   );
 }
