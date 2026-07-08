@@ -27,7 +27,7 @@ export default function SubscribePage() {
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div>
               <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-                AHA Professional Development
+                AHA Professional Development Membership
               </p>
 
               <h1 className="mb-5 max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
@@ -41,13 +41,32 @@ export default function SubscribePage() {
                 in paediatric and allied health settings.
               </p>
 
+              <div className="mb-6 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                    <Sparkles size={20} />
+                  </div>
+
+                  <h2 className="text-xl font-bold">
+                    August launch webinar is free
+                  </h2>
+                </div>
+
+                <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                  Join now and get access to the Tuesday 4 August 2026 launch
+                  webinar free. Your card is added at checkout, but your first
+                  $57 monthly payment is not taken until Tuesday 1 September
+                  2026.
+                </p>
+              </div>
+
               <div className="flex flex-col gap-3 sm:flex-row">
                 <form action="/api/stripe/monthly-webinar-checkout" method="POST">
                   <button
                     type="submit"
                     className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962] sm:w-auto"
                   >
-                    Start membership
+                    Join with August free
                     <ArrowRight size={18} />
                   </button>
                 </form>
@@ -77,26 +96,53 @@ export default function SubscribePage() {
                 <span className="pb-2 text-base text-[#6b6880]">per month</span>
               </div>
 
-              <p className="mb-6 text-sm leading-relaxed text-[#3f5f5a]">
+              <p className="mb-4 text-sm leading-relaxed text-[#3f5f5a]">
                 Includes monthly live webinars, topic PDFs, practical reflection
                 resources, and access to recordings from your member library.
               </p>
 
+              <div className="mb-6 rounded-2xl border border-[#99f6e4] bg-white p-4">
+                <p className="text-sm font-semibold text-[#1e1b2e]">
+                  First month free:
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
+                  August webinar access is included free. First payment is due
+                  on Tuesday 1 September 2026.
+                </p>
+              </div>
+
               <ul className="mb-6 space-y-3 text-sm leading-relaxed text-[#1e1b2e]">
                 <li className="flex gap-3">
-                  <CheckCircle2 className="mt-0.5 shrink-0 text-[#0f766e]" size={18} />
+                  <CheckCircle2
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                    size={18}
+                  />
                   <span>Monthly live AHA professional development webinar</span>
                 </li>
+
                 <li className="flex gap-3">
-                  <CheckCircle2 className="mt-0.5 shrink-0 text-[#0f766e]" size={18} />
+                  <CheckCircle2
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                    size={18}
+                  />
                   <span>PDF resources linked to each webinar topic</span>
                 </li>
+
                 <li className="flex gap-3">
-                  <CheckCircle2 className="mt-0.5 shrink-0 text-[#0f766e]" size={18} />
-                  <span>Recordings saved under each topic after the live session</span>
+                  <CheckCircle2
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                    size={18}
+                  />
+                  <span>
+                    Recordings saved under each topic after the live session
+                  </span>
                 </li>
+
                 <li className="flex gap-3">
-                  <CheckCircle2 className="mt-0.5 shrink-0 text-[#0f766e]" size={18} />
+                  <CheckCircle2
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                    size={18}
+                  />
                   <span>First webinar promo starts Tuesday 4 August 2026</span>
                 </li>
               </ul>
@@ -106,7 +152,7 @@ export default function SubscribePage() {
                   type="submit"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-4 text-center text-base font-semibold text-white transition hover:bg-[#0d6962]"
                 >
-                  Join for $57/month
+                  Start membership with August free
                   <ArrowRight size={16} />
                 </button>
               </form>
@@ -142,8 +188,8 @@ export default function SubscribePage() {
               <h3 className="mb-3 text-xl font-bold">Monthly live webinar</h3>
 
               <p className="text-sm leading-relaxed text-[#6b6880]">
-                Webinars run on the first Tuesday of each month from 12pm to 1pm.
-                Each session focuses on a practical AHA topic.
+                Webinars run on the first Tuesday of each month from 12pm to
+                1pm. Each session focuses on a practical AHA topic.
               </p>
             </article>
 
@@ -204,17 +250,19 @@ export default function SubscribePage() {
               </h3>
 
               <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
-                12pm to 1pm AEST. A free introduction to the monthly AHA
-                Professional Development Membership.
+                12pm to 1pm AEST. Your first payment is not taken until Tuesday
+                1 September 2026.
               </p>
 
-              <Link
-                href="/webinars"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
-              >
-                View first webinar
-                <ArrowRight size={15} />
-              </Link>
+              <form action="/api/stripe/monthly-webinar-checkout" method="POST">
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+                >
+                  Join and get August free
+                  <ArrowRight size={15} />
+                </button>
+              </form>
             </div>
           </div>
         </section>
@@ -247,7 +295,8 @@ export default function SubscribePage() {
 
               <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
                 Subscribe yourself and access the monthly webinar, PDFs and
-                recordings.
+                recordings. Your first payment is not taken until Tuesday 1
+                September 2026.
               </p>
 
               <form action="/api/stripe/monthly-webinar-checkout" method="POST">
@@ -255,7 +304,7 @@ export default function SubscribePage() {
                   type="submit"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
                 >
-                  Pay monthly
+                  Join with August free
                   <ArrowRight size={15} />
                 </button>
               </form>
@@ -274,7 +323,7 @@ export default function SubscribePage() {
               </p>
 
               <a
-                href="mailto:?subject=AHA Professional Development Membership&body=Hi, I found this monthly AHA Professional Development Membership and wondered if our clinic would consider covering it. It includes monthly live webinars, PDF resources and recordings for $57/month. Here is the page link:"
+                href="mailto:?subject=AHA Professional Development Membership&body=Hi, I found this monthly AHA Professional Development Membership and wondered if our clinic would consider covering it. It includes monthly live webinars, PDF resources and recordings for $57/month. The August 4 launch webinar is free, and the first payment is not taken until September 1, 2026. Here is the page link: https://allied-health-assistant-course.vercel.app/subscribe"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#0f766e] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
               >
                 Email manager
@@ -322,8 +371,8 @@ export default function SubscribePage() {
 
             <div className="rounded-3xl border border-white/10 bg-white/10 p-6">
               <p className="mb-5 text-sm leading-relaxed text-[#d9d7e5]">
-                Join monthly, attend live when you can, and access the topic
-                resources and recordings as they are added.
+                Join now for the August launch webinar free. Your $57/month
+                membership begins on Tuesday 1 September 2026.
               </p>
 
               <form action="/api/stripe/monthly-webinar-checkout" method="POST">
@@ -331,7 +380,7 @@ export default function SubscribePage() {
                   type="submit"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
                 >
-                  Start $57/month membership
+                  Start with August free
                   <ArrowRight size={16} />
                 </button>
               </form>
