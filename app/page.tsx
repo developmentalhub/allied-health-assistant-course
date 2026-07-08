@@ -9,11 +9,29 @@ import {
 } from "lucide-react";
 import { siteConfig } from "@/lib/site";
 
+// Homepage illustrations. Download the PNGs into /public/images/.
+// To serve from Supabase instead, make the bucket public and paste the
+// public URLs here (the /object/public/... version, NOT the signed /sign/ one).
+const IMAGES = {
+  hero: "/images/hero-online-support.png",
+  scooter: "/images/scooter-board-mentoring.png",
+  community: "/images/community-connection.png",
+};
+
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
       <section className="px-6 py-14 md:py-20">
         <div className="mx-auto max-w-6xl">
+          {/* Hero illustration */}
+          <div className="mb-8 overflow-hidden rounded-3xl border border-[#e8e4de] bg-white shadow-sm">
+            <img
+              src={IMAGES.hero}
+              alt="An allied health assistant supported online by a mentor in a clinic therapy room"
+              className="h-auto w-full object-cover"
+            />
+          </div>
+
           <div className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 text-[#1e1b2e]">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
               Built with AHAs, for AHAs
@@ -73,7 +91,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="rounded-[2rem] border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
+            <div className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
               <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
                 Start here
               </p>
@@ -121,6 +139,16 @@ export default function HomePage() {
             </h2>
           </div>
 
+          {/* Scooter board illustration */}
+          <div className="mb-8 overflow-hidden rounded-3xl border border-[#e8e4de] bg-white shadow-sm">
+            <img
+              src={IMAGES.scooter}
+              alt="A mentor online guiding an assistant trying a scooter board activity in the therapy room"
+              loading="lazy"
+              className="h-auto w-full object-cover"
+            />
+          </div>
+
           <div className="grid gap-5 md:grid-cols-3">
             <FeatureCard
               icon={<Lightbulb size={24} />}
@@ -144,8 +172,8 @@ export default function HomePage() {
       </section>
 
       <section className="px-6 pb-20">
-        <div className="mx-auto max-w-6xl rounded-[2rem] border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+        <div className="mx-auto max-w-6xl rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+          <div className="grid gap-8 md:grid-cols-[1fr_0.8fr] md:items-center">
             <div>
               <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
                 For managers and clinics
@@ -155,20 +183,30 @@ export default function HomePage() {
                 Want your AHA team to feel more supported?
               </h2>
 
-              <p className="max-w-3xl text-base leading-relaxed text-[#6b6880]">
+              <p className="mb-6 max-w-3xl text-base leading-relaxed text-[#6b6880]">
                 Add your team, enquire about monthly webinar access, and let us
                 know what kind of induction, reflective practice or clinic
                 support would help your AHAs thrive.
               </p>
+
+              <Link
+                href="/manager-pathway"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-base font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                Support my AHA team
+                <ArrowRight size={18} />
+              </Link>
             </div>
 
-            <Link
-              href="/manager-pathway"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-base font-semibold text-white transition hover:bg-[#0d6962]"
-            >
-              Support my AHA team
-              <ArrowRight size={18} />
-            </Link>
+            {/* Community illustration */}
+            <div className="overflow-hidden rounded-3xl border border-[#e8e4de] bg-[#faf8f5]">
+              <img
+                src={IMAGES.community}
+                alt="Allied health assistants connecting online as a supportive community"
+                loading="lazy"
+                className="h-auto w-full object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>
