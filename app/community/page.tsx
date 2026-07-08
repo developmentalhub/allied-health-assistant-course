@@ -1,300 +1,272 @@
-"use client";
+import Link from "next/link";
+import {
+  ArrowRight,
+  CheckCircle2,
+  ClipboardList,
+  MessageCircleHeart,
+  UsersRound,
+  Video,
+} from "lucide-react";
+import CommunityFeed from "@/components/CommunityFeed";
+import CommunityMembers from "@/components/CommunityMembers";
 
-import { useEffect, useState } from "react";
-import { MessageCircle, Send } from "lucide-react";
+const freeTools = [
+  {
+    title: "AHA Course Tools Preview",
+    description:
+      "Explore the starter AHA tools and get a feel for the kind of support being built inside the hive.",
+    href: "https://allied-health-assistant-course.netlify.app/",
+  },
+  {
+    title: "Clinic Session Feedback Tool",
+    description:
+      "Reflect after a clinic session, organise observations and prepare clearer feedback for the supervising professional.",
+    href: "https://aha-clinic-session-feedback.netlify.app/",
+  },
+];
 
-type Reply = {
-  id: string;
-  body?: string | null;
-  content?: string | null;
-  message?: string | null;
-  author_name?: string | null;
-  name?: string | null;
-  created_at?: string | null;
-};
-
-type Post = {
-  id: string;
-  title?: string | null;
-  body?: string | null;
-  content?: string | null;
-  message?: string | null;
-  author_name?: string | null;
-  name?: string | null;
-  created_at?: string | null;
-  replies?: Reply[];
-  comments?: Reply[];
-};
-
-function getText(item: Post | Reply) {
-  return item.body || item.content || item.message || "";
-}
-
-function getName(item: Post | Reply) {
-  return item.author_name || item.name || "AHA community member";
-}
-
-export default function CommunityFeed() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [authorName, setAuthorName] = useState("");
-  const [newPost, setNewPost] = useState("");
-  const [replyText, setReplyText] = useState<Record<string, string>>({});
-  const [openReplies, setOpenReplies] = useState<Record<string, boolean>>({});
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-
-  async function loadPosts() {
-    setLoading(true);
-
-    try {
-      const response = await fetch("/api/forum/posts", {
-        cache: "no-store",
-      });
-
-      if (!response.ok) {
-        throw new Error("Could not load community posts.");
-      }
-
-      const data = await response.json();
-      const possiblePosts = data.posts || data.data || data || [];
-
-      setPosts(Array.isArray(possiblePosts) ? possiblePosts : []);
-    } catch {
-      setPosts([]);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadPosts();
-  }, []);
-
-  async function submitPost(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (!newPost.trim()) {
-      return;
-    }
-
-    setSaving(true);
-
-    try {
-      await fetch("/api/forum/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          body: newPost.trim(),
-          content: newPost.trim(),
-          message: newPost.trim(),
-          authorName: authorName.trim() || "AHA community member",
-          author_name: authorName.trim() || "AHA community member",
-          name: authorName.trim() || "AHA community member",
-        }),
-      });
-
-      setNewPost("");
-      await loadPosts();
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  async function submitReply(postId: string) {
-    const text = replyText[postId]?.trim();
-
-    if (!text) {
-      return;
-    }
-
-    setSaving(true);
-
-    try {
-      await fetch("/api/forum/comments", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          postId,
-          post_id: postId,
-          body: text,
-          content: text,
-          message: text,
-          authorName: authorName.trim() || "AHA community member",
-          author_name: authorName.trim() || "AHA community member",
-          name: authorName.trim() || "AHA community member",
-        }),
-      });
-
-      setReplyText((current) => ({
-        ...current,
-        [postId]: "",
-      }));
-
-      setOpenReplies((current) => ({
-        ...current,
-        [postId]: true,
-      }));
-
-      await loadPosts();
-    } finally {
-      setSaving(false);
-    }
-  }
-
+export default function CommunityPage() {
   return (
-    <div className="grid gap-6">
-      <form
-        onSubmit={submitPost}
-        className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5"
-      >
-        <p className="mb-3 text-sm font-semibold text-[#0f766e]">
-          Share something with the community
-        </p>
+    <main className="min-h-screen bg-[#faf8f5] px-6 py-12 text-[#1e1b2e] md:py-16">
+      <section className="mx-auto max-w-5xl">
+        <div className="mb-6 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Free AHA community
+          </p>
 
-        <div className="mb-3 grid gap-3 md:grid-cols-[0.45fr_1fr]">
-          <input
-            value={authorName}
-            onChange={(event) => setAuthorName(event.target.value)}
-            placeholder="Your name, or leave blank"
-            className="rounded-2xl border border-[#e8e4de] bg-white px-4 py-3 text-sm outline-none focus:border-[#0f766e]"
-          />
-
-          <input
-            value={newPost}
-            onChange={(event) => setNewPost(event.target.value)}
-            placeholder="Write a question, reflection or useful idea..."
-            className="rounded-2xl border border-[#e8e4de] bg-white px-4 py-3 text-sm outline-none focus:border-[#0f766e]"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={saving}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962] disabled:opacity-60"
-        >
-          Post to community
-          <Send size={15} />
-        </button>
-      </form>
-
-      {loading ? (
-        <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6">
-          <p className="text-sm text-[#6b6880]">Loading community posts...</p>
-        </div>
-      ) : null}
-
-      {!loading && posts.length === 0 ? (
-        <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6">
-          <p className="mb-2 text-lg font-bold">No posts yet.</p>
-          <p className="text-sm leading-relaxed text-[#6b6880]">
-            This community is still being built. You can be the first to add a
-            question, reflection or useful idea.
+          <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
+            A low-pressure place to start. Browse quietly, access the free
+            starter tools, register for the free August webinar, or join the
+            community conversation when you are ready.
           </p>
         </div>
-      ) : null}
 
-      {posts.map((post) => {
-        const replies = post.replies || post.comments || [];
-        const isReplyOpen = openReplies[post.id] || false;
-
-        return (
-          <article
-            key={post.id}
-            className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5"
-          >
-            <div className="mb-3">
-              <p className="text-sm font-semibold text-[#0f766e]">
-                {getName(post)}
+        <section className="mb-6 rounded-4xl border border-[#e8e4de] bg-white p-7 shadow-sm md:p-10">
+          <div className="grid gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-start">
+            <div>
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+                Welcome to the hive
               </p>
 
-              {post.created_at ? (
-                <p className="text-xs text-[#8a8798]">
-                  {new Date(post.created_at).toLocaleString("en-AU")}
-                </p>
-              ) : null}
+              <h1 className="mb-5 text-4xl font-bold leading-tight md:text-5xl">
+                Your free AHA community space.
+              </h1>
+
+              <p className="mb-7 text-lg leading-relaxed text-[#5f5b73]">
+                Start with the free tools, browse the feed quietly, see who else
+                is joining, or reply when you feel ready.
+              </p>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="#community-feed"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+                >
+                  Go to community feed
+                  <ArrowRight size={16} />
+                </a>
+
+                <a
+                  href="#free-tools"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+                >
+                  Open free tools
+                  <ArrowRight size={16} />
+                </a>
+              </div>
             </div>
 
-            {post.title ? (
-              <h3 className="mb-2 text-xl font-bold">{post.title}</h3>
-            ) : null}
+            <aside className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                <UsersRound size={24} />
+              </div>
 
-            <p className="whitespace-pre-wrap text-base leading-relaxed text-[#5f5b73]">
-              {getText(post)}
+              <h2 className="mb-4 text-2xl font-bold">
+                What you can do here
+              </h2>
+
+              <div className="grid gap-3">
+                <CheckItem text="Use the two free starter tools." />
+                <CheckItem text="Browse quietly without needing to post." />
+                <CheckItem text="Read community updates and replies." />
+                <CheckItem text="Register for the free August webinar." />
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <div className="mb-6 grid gap-6 lg:grid-cols-[0.68fr_0.32fr] lg:items-start">
+          <section
+            id="community-feed"
+            className="rounded-4xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8"
+          >
+            <div className="mb-6">
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+                Community feed
+              </p>
+
+              <h2 className="mb-3 text-3xl font-bold">
+                Read, reply or quietly follow along.
+              </h2>
+
+              <p className="max-w-3xl text-base leading-relaxed text-[#6b6880]">
+                You do not need to post to belong here. You can read updates,
+                reply when something feels useful, or simply use the tools and
+                come back later.
+              </p>
+            </div>
+
+            <CommunityFeed />
+          </section>
+
+          <CommunityMembers />
+        </div>
+
+        <section
+          id="free-tools"
+          className="mb-6 rounded-4xl border border-[#e8e4de] bg-white p-7 shadow-sm md:p-8"
+        >
+          <div className="mb-6">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+              Free starter tools
             </p>
 
-            <div className="mt-5 flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={() =>
-                  setOpenReplies((current) => ({
-                    ...current,
-                    [post.id]: !isReplyOpen,
-                  }))
-                }
-                className="inline-flex items-center gap-2 rounded-full border border-[#99f6e4] bg-white px-4 py-2 text-sm font-semibold text-[#0f766e]"
+            <h2 className="mb-3 text-3xl font-bold">
+              Start here with your free tools.
+            </h2>
+
+            <p className="max-w-3xl text-base leading-relaxed text-[#6b6880]">
+              These tools are a small taste of the practical support being built
+              for AHAs. The full member tool library will sit inside the
+              $57/month AHA Professional Development membership.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {freeTools.map((tool) => (
+              <a
+                key={tool.href}
+                href={tool.href}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6 transition hover:border-[#0f766e] hover:bg-white"
               >
-                <MessageCircle size={15} />
-                {isReplyOpen ? "Hide replies" : "Reply"}
-              </button>
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#0f766e]">
+                  <ClipboardList size={24} />
+                </div>
+
+                <h3 className="mb-2 text-xl font-bold">{tool.title}</h3>
+
+                <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
+                  {tool.description}
+                </p>
+
+                <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
+                  Open free tool
+                  <span aria-hidden="true">→</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-6 grid gap-5 md:grid-cols-3">
+          <PathwayCard
+            icon={<Video size={24} />}
+            title="Free August webinar"
+            text="Start with the free August webinar, then continue monthly from September if it feels helpful."
+            href="/subscribe"
+            linkText="Register free"
+          />
+
+          <PathwayCard
+            icon={<ClipboardList size={24} />}
+            title="$57/month membership"
+            text="Monthly live webinars, replays, PDFs and reusable member tools as the library grows."
+            href="/subscribe"
+            linkText="View membership"
+          />
+
+          <PathwayCard
+            icon={<MessageCircleHeart size={24} />}
+            title="1:1 reflective support"
+            text="Request support when you want to talk through confidence, role clarity or practical session ideas."
+            href="/reflective-practice"
+            linkText="Request support"
+          />
+        </section>
+
+        <section className="rounded-4xl bg-[#1e1b2e] p-8 text-white shadow-sm md:p-10">
+          <div className="grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-center">
+            <div>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#99f6e4]">
+                For managers
+              </p>
+
+              <h2 className="mb-4 text-3xl font-bold">
+                Supporting a team of AHAs?
+              </h2>
+
+              <p className="max-w-3xl text-base leading-relaxed text-[#d9d7e5]">
+                Team access starts at $57/month for up to 5 staff. Larger teams
+                or clinics wanting monthly webinars and 1:1 reflective practice
+                can request a team quote.
+              </p>
             </div>
 
-            {isReplyOpen ? (
-              <div className="mt-5 grid gap-4">
-                {replies.length > 0 ? (
-                  <div className="grid gap-3">
-                    {replies.map((reply) => (
-                      <div
-                        key={reply.id}
-                        className="rounded-2xl border border-[#e8e4de] bg-white p-4"
-                      >
-                        <p className="mb-1 text-sm font-semibold text-[#0f766e]">
-                          {getName(reply)}
-                        </p>
+            <Link
+              href="/manager-pathway"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+            >
+              View manager pathway
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </section>
+      </section>
+    </main>
+  );
+}
 
-                        <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#5f5b73]">
-                          {getText(reply)}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-sm text-[#6b6880]">
-                    No replies yet. You can start the conversation.
-                  </p>
-                )}
-
-                <div className="grid gap-3 md:grid-cols-[1fr_auto]">
-                  <input
-                    value={replyText[post.id] || ""}
-                    onChange={(event) =>
-                      setReplyText((current) => ({
-                        ...current,
-                        [post.id]: event.target.value,
-                      }))
-                    }
-                    placeholder="Write a reply..."
-                    className="rounded-2xl border border-[#e8e4de] bg-white px-4 py-3 text-sm outline-none focus:border-[#0f766e]"
-                  />
-
-                  <button
-                    type="button"
-                    disabled={saving}
-                    onClick={() => submitReply(post.id)}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962] disabled:opacity-60"
-                  >
-                    Send reply
-                    <Send size={15} />
-                  </button>
-                </div>
-              </div>
-            ) : null}
-          </article>
-        );
-      })}
+function CheckItem({ text }: { text: string }) {
+  return (
+    <div className="flex gap-3">
+      <CheckCircle2 className="mt-0.5 shrink-0 text-[#0f766e]" size={18} />
+      <p className="text-sm leading-relaxed text-[#3f5f5a]">{text}</p>
     </div>
+  );
+}
+
+function PathwayCard({
+  icon,
+  title,
+  text,
+  href,
+  linkText,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+  href: string;
+  linkText: string;
+}) {
+  return (
+    <article className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm">
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+        {icon}
+      </div>
+
+      <h3 className="mb-2 text-xl font-bold">{title}</h3>
+
+      <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">{text}</p>
+
+      <Link
+        href={href}
+        className="inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e]"
+      >
+        {linkText}
+        <ArrowRight size={14} />
+      </Link>
+    </article>
   );
 }
