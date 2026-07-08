@@ -1,18 +1,32 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
+  Heart,
   Mail,
   MessageCircle,
-  ShieldCheck,
   UserRoundCheck,
   Users,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Contact — Allied Health & Educator Resource Academy",
+  description:
+    "Get in touch with Play Move Improve about the Allied Health & Educator Resource Academy, course access, waitlist updates, or future training pathways.",
+};
+
+// Headshots live in the Supabase "website-images" bucket.
+// Filenames must match EXACTLY, including capitalisation.
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
+const jessPhoto = `${SUPABASE_URL}/storage/v1/object/public/website-images/headshots/Jess%20Spectrum%20Village%20headshot.jpg`;
+const robynPhoto = `${SUPABASE_URL}/storage/v1/object/public/website-images/headshots/Robyn%20Play%20Move%20Improve%20headshot.jpg`;
 
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
       <section className="mx-auto max-w-6xl px-6 py-14 md:py-20">
+        {/* HERO */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <div>
@@ -21,37 +35,16 @@ export default function ContactPage() {
               </p>
 
               <h1 className="mb-5 max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
-                Questions about AHA Professional Development?
+                Two Developmental Educators, joining forces for Allied Health
+                Assistants.
               </h1>
 
               <p className="mb-6 max-w-2xl text-base leading-relaxed text-[#6b6880] md:text-lg">
-                This space is being built for Allied Health Assistants, therapy
-                assistants, students, educators, managers and the professionals
-                working alongside them. Use the links below to choose the best
-                next step.
+                Jess from Spectrum Village and Robyn from Play Move Improve are
+                building this community together — because the work we do simply
+                isn&apos;t possible without skilled, confident AHAs beside us.
+                Have a question, or want to get involved? Start below.
               </p>
-
-              <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
-                <div className="flex gap-3">
-                  <ShieldCheck
-                    size={22}
-                    className="mt-0.5 shrink-0 text-[#0f766e]"
-                  />
-
-                  <div>
-                    <p className="mb-1 text-sm font-semibold text-[#0f766e]">
-                      Professional boundary
-                    </p>
-
-                    <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                      This platform provides reflective professional development
-                      and reflective practice support. It does not replace
-                      workplace supervision, clinical supervision, delegation,
-                      direction, clinical oversight or workplace responsibilities.
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
@@ -62,22 +55,98 @@ export default function ContactPage() {
               <h2 className="mb-3 text-2xl font-bold">Email Robyn</h2>
 
               <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
-                For general questions about the AHA PD platform, foundation
-                topics, reflective practice, team options or Play Move Improve
-                pathways, email Robyn directly.
+                For questions about the community, foundation AHA PD, webinars,
+                1:1 reflective practice or team options, email Robyn directly.
               </p>
 
               <a
-                href="mailto:playmoveimprove@gmail.com?subject=AHA Professional Development enquiry"
+                href="mailto:robyn@playmoveimprove.com.au?subject=AHA community enquiry"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-4 text-center text-base font-semibold text-white transition hover:bg-[#0d6962]"
               >
-                Email playmoveimprove@gmail.com
+                Email robyn@playmoveimprove.com.au
                 <ArrowRight size={16} />
               </a>
             </div>
           </div>
         </section>
 
+        {/* MEET JESS & ROBYN */}
+        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+          <div className="mb-8 max-w-3xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Meet the founders
+            </p>
+
+            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+              Two clinics, one shared belief.
+            </h2>
+
+            <p className="text-base leading-relaxed text-[#6b6880]">
+              We work either side of the same truth: as Developmental Educators
+              in allied health, we couldn&apos;t do our jobs without Allied
+              Health Assistants. AHAs are the ones who turn a therapy plan into
+              real progress, week after week. This community is our way of
+              investing back in the people who make it all happen.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            {/* Jess */}
+            <article className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6">
+              <div className="mb-5 flex items-center gap-4">
+                <img
+                  src={jessPhoto}
+                  alt="Jess Foster, founder of Spectrum Village"
+                  className="h-20 w-20 rounded-full border border-[#e8e4de] object-cover"
+                />
+
+                <div>
+                  <h3 className="text-xl font-bold">Jess Foster</h3>
+                  <p className="text-sm text-[#0f766e]">
+                    Founder, Spectrum Village
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-sm leading-relaxed text-[#6b6880]">
+                Jess is the founder of Spectrum Village, an NDIS-registered
+                autism learning centre on the Fraser Coast in Hervey Bay. Her
+                team supports children and families through a holistic,
+                strengths-based approach — and, like Robyn, she knows first-hand
+                how much of that support is carried by skilled therapy
+                assistants working alongside the clinical team.
+              </p>
+            </article>
+
+            {/* Robyn */}
+            <article className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6">
+              <div className="mb-5 flex items-center gap-4">
+                <img
+                  src={robynPhoto}
+                  alt="Robyn, Developmental Educator and founder of Play Move Improve"
+                  className="h-20 w-20 rounded-full border border-[#e8e4de] object-cover"
+                />
+
+                <div>
+                  <h3 className="text-xl font-bold">Robyn</h3>
+                  <p className="text-sm text-[#0f766e]">
+                    Developmental Educator, Play Move Improve
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-sm leading-relaxed text-[#6b6880]">
+                Robyn is a Developmental Educator and the founder of Play Move
+                Improve, supporting children&apos;s movement, regulation and
+                development. She started this community to give AHAs the
+                practical, honest professional development she wished existed
+                when she was building her own team.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        {/* CHOOSE YOUR PATHWAY */}
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -85,13 +154,13 @@ export default function ContactPage() {
             </p>
 
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              The fastest way to get to the right place.
+              The fastest way to the right place.
             </h2>
 
             <p className="text-base leading-relaxed text-[#6b6880]">
-              Different people will need different entry points. You may want to
-              join the free community, register interest in foundation AHA PD,
-              submit a reflection form, or enquire about team support.
+              Different people need different starting points — join the free
+              community, register interest in AHA PD, book a 1:1, or enquire
+              about team support.
             </p>
           </div>
 
@@ -104,8 +173,8 @@ export default function ContactPage() {
               <h3 className="mb-3 text-2xl font-bold">Free AHA Community</h3>
 
               <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
-                Join quietly, browse the feed, introduce yourself if you want
-                and stay connected as the AHA PD options grow.
+                Join quietly, browse the feed, introduce yourself if you want,
+                and connect with other AHAs.
               </p>
 
               <Link
@@ -125,8 +194,8 @@ export default function ContactPage() {
               <h3 className="mb-3 text-2xl font-bold">AHA PD Options</h3>
 
               <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
-                Register interest in individual foundation topics, the 2026
-                Foundation AHA PD Library or future learning options.
+                Register interest in individual foundation topics, webinars, or
+                future learning options.
               </p>
 
               <Link
@@ -149,7 +218,7 @@ export default function ContactPage() {
 
               <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
                 Complete the reflection form first. Booking and payment details
-                are only sent after the reflection has been reviewed.
+                are sent once your reflection has been reviewed.
               </p>
 
               <Link
@@ -169,8 +238,8 @@ export default function ContactPage() {
               <h3 className="mb-3 text-2xl font-bold">Manager pathway</h3>
 
               <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
-                For clinic owners, managers, team leaders and services wanting
-                foundation AHA PD or future team support options.
+                For clinic owners and managers wanting AHA PD or team support
+                for their service.
               </p>
 
               <Link
@@ -184,40 +253,52 @@ export default function ContactPage() {
           </div>
         </section>
 
+        {/* WHY WE BUILT THIS */}
         <section className="rounded-3xl bg-[#1e1b2e] p-8 text-white shadow-sm md:p-12">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
-                Play Move Improve
-              </p>
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#99f6e4] text-[#1e1b2e]">
+                <Heart size={24} />
+              </div>
 
               <h2 className="mb-5 text-3xl font-bold md:text-5xl">
-                Looking for Robyn&apos;s deeper specialist training?
+                Built for the people who make therapy happen.
               </h2>
 
               <p className="text-base leading-relaxed text-[#d9d7e5] md:text-lg">
-                The AHA platform focuses on foundation reflective professional
-                development. Deeper specialist learning around movement,
-                regulation, play, child development, screen dependency, reflexes
-                and intervention resources stays within Play Move Improve.
+                Allied Health Assistants are already at capacity, and with
+                Thriving Kids reshaping the work, the pressure is only growing.
+                This is a place to steady each other, share what actually works,
+                and grow — together.
               </p>
             </div>
 
             <div className="rounded-3xl border border-white/10 bg-white/10 p-6">
               <p className="mb-5 text-sm leading-relaxed text-[#d9d7e5]">
-                Once the Allied Health page is finished, we can build a more
-                specific Play Move Improve professional pathway page.
+                Learn more about the clinics behind the community.
               </p>
 
-              <a
-                href="https://www.playmoveimprove.com"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
-              >
-                Visit Play Move Improve
-                <ArrowRight size={16} />
-              </a>
+              <div className="space-y-3">
+                <a
+                  href="https://www.playmoveimprove.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-center text-sm font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
+                >
+                  Visit Play Move Improve
+                  <ArrowRight size={15} />
+                </a>
+
+                <a
+                  href="https://spectrumvillage.com.au"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/30 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10"
+                >
+                  Visit Spectrum Village
+                  <ArrowRight size={15} />
+                </a>
+              </div>
             </div>
           </div>
         </section>
