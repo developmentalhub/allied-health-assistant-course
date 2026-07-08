@@ -12,6 +12,15 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
 
+type ManagerTeamMember = {
+  id: string;
+  manager_request_id: string;
+  email: string;
+  full_name: string | null;
+  status: string;
+  created_at: string;
+};
+
 type ManagerPathwayRequest = {
   id: string;
   full_name: string | null;
@@ -46,14 +55,31 @@ export default async function AdminManagerRequestsPage() {
     redirect("/dashboard");
   }
 
-  const { data: requests, error } = await supabase
+  const { data: requests, error: requestsError } = await supabase
     .from("manager_pathway_requests")
     .select(
       "id, full_name, email, phone, organisation, role, team_size, message, status, created_at"
     )
     .order("created_at", { ascending: false });
 
+  const { data: teamMembers, error: teamMembersError } = await supabase
+    .from("manager_team_members")
+    .select("id, manager_request_id, email, full_name, status, created_at")
+    .order("created_at", { ascending: true });
+
   const typedRequests = (requests || []) as ManagerPathwayRequest[];
+  const typedTeamMembers = (teamMembers || []) as ManagerTeamMember[];
+
+  const teamMembersByRequestId = typedTeamMembers.reduce<
+    Record<string, ManagerTeamMember[]>
+  >((groups, member) => {
+    if (!groups[member.manager_request_id]) {
+      groups[member.manager_request_id] = [];
+    }
+
+    groups[member.manager_request_id].push(member);
+    return groups;
+  }, {});
 
   return (
     <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
@@ -72,22 +98,28 @@ export default async function AdminManagerRequestsPage() {
           </p>
 
           <h1 className="mb-5 text-4xl font-bold leading-tight md:text-6xl">
-            Manager and clinic enquiries.
+            Manager and clinic hub requests.
           </h1>
 
           <p className="max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
-            Review enquiries from clinic owners, team leaders and managers who
-            are interested in AHA Professional Development for their service.
+            Review clinic requests, see the team email addresses submitted by
+            managers, and track interest in the webinar series, clinic induction
+            program and future growth pathways.
           </p>
         </div>
 
-        {error ? (
-          <div className="mb-8 rounded-3xl border border-red-200 bg-red-50 p-6 text-red-700">
-            <h2 className="mb-2 text-xl font-bold">
-              Could not load manager requests
-            </h2>
-            <p className="text-sm leading-relaxed">{error.message}</p>
-          </div>
+        {requestsError ? (
+          <ErrorBox
+            title="Could not load manager requests"
+            message={requestsError.message}
+          />
+        ) : null}
+
+        {teamMembersError ? (
+          <ErrorBox
+            title="Could not load team email addresses"
+            message={teamMembersError.message}
+          />
         ) : null}
 
         <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
@@ -95,30 +127,40 @@ export default async function AdminManagerRequestsPage() {
             <Building2 size={24} />
           </div>
 
-          <h2 className="mb-4 text-3xl font-bold">Team quote workflow</h2>
+          <h2 className="mb-4 text-3xl font-bold">Manager hub workflow</h2>
 
           <p className="max-w-3xl text-base leading-relaxed text-[#3f5f5a]">
-            For now, use this page as the simple enquiry list. When a clinic is
-            interested, contact them directly and decide whether they need
-            individual $57/month memberships or a custom team quote.
+            When a manager submits this form, their clinic request appears here.
+            Any team emails they added are listed underneath the request so you
+            can follow up, check who has signed up, and organise team access.
           </p>
         </section>
 
         {typedRequests.length > 0 ? (
           <section className="grid gap-5">
             {typedRequests.map((request) => (
-              <RequestCard key={request.id} request={request} />
+              <RequestCard
+                key={request.id}
+                request={request}
+                teamMembers={teamMembersByRequestId[request.id] || []}
+              />
             ))}
           </section>
         ) : (
-          <EmptyState message="No manager or clinic enquiries have been submitted yet." />
+          <EmptyState message="No manager or clinic hub requests have been submitted yet." />
         )}
       </section>
     </main>
   );
 }
 
-function RequestCard({ request }: { request: ManagerPathwayRequest }) {
+function RequestCard({
+  request,
+  teamMembers,
+}: {
+  request: ManagerPathwayRequest;
+  teamMembers: ManagerTeamMember[];
+}) {
   const createdDate = new Intl.DateTimeFormat("en-AU", {
     weekday: "long",
     day: "numeric",
@@ -144,10 +186,20 @@ function RequestCard({ request }: { request: ManagerPathwayRequest }) {
           </div>
 
           <h2 className="mb-3 text-2xl font-bold">
-            {request.full_name || "Name not supplied"}
+            {request.organisation || "Organisation not supplied"}
           </h2>
 
           <div className="space-y-2 text-base leading-relaxed text-[#6b6880]">
+            {request.full_name ? (
+              <p className="flex items-start gap-2">
+                <UserRound
+                  className="mt-1 shrink-0 text-[#0f766e]"
+                  size={16}
+                />
+                <span>{request.full_name}</span>
+              </p>
+            ) : null}
+
             {request.email ? (
               <p className="flex items-start gap-2">
                 <Mail className="mt-1 shrink-0 text-[#0f766e]" size={16} />
@@ -171,16 +223,6 @@ function RequestCard({ request }: { request: ManagerPathwayRequest }) {
                 </a>
               </p>
             ) : null}
-
-            {request.organisation ? (
-              <p className="flex items-start gap-2">
-                <Building2
-                  className="mt-1 shrink-0 text-[#0f766e]"
-                  size={16}
-                />
-                <span>{request.organisation}</span>
-              </p>
-            ) : null}
           </div>
         </div>
 
@@ -194,17 +236,50 @@ function RequestCard({ request }: { request: ManagerPathwayRequest }) {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="mb-4 grid gap-4 md:grid-cols-2">
         <InfoBox label="Organisation" value={request.organisation} />
-        <InfoBox label="Role" value={request.role} />
+        <InfoBox label="Manager role" value={request.role} />
         <InfoBox label="Team size" value={request.team_size} />
-        <InfoBox label="Contact person" value={request.full_name} />
+        <InfoBox label="Team emails submitted" value={String(teamMembers.length)} />
       </div>
 
-      <div className="mt-4 rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4">
+      <section className="mb-4 rounded-2xl border border-[#99f6e4] bg-[#f0fdfa] p-4">
+        <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
+          <Users size={18} />
+          Team email addresses
+        </div>
+
+        {teamMembers.length > 0 ? (
+          <div className="grid gap-2 md:grid-cols-2">
+            {teamMembers.map((member) => (
+              <div
+                key={member.id}
+                className="rounded-2xl border border-[#99f6e4] bg-white p-3"
+              >
+                <a
+                  href={`mailto:${member.email}`}
+                  className="break-all text-sm font-semibold text-[#1e1b2e] underline decoration-[#99f6e4] underline-offset-4"
+                >
+                  {member.email}
+                </a>
+
+                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#6b6880]">
+                  {member.status}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm leading-relaxed text-[#3f5f5a]">
+            No individual team email addresses were submitted with this request.
+          </p>
+        )}
+      </section>
+
+      <div className="rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4">
         <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
           <MessageSquareText size={18} />
-          Message
+          Manager notes and interests
         </div>
 
         <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#6b6880]">
@@ -228,6 +303,15 @@ function InfoBox({
       <p className="text-sm leading-relaxed text-[#1e1b2e]">
         {value || "Not supplied"}
       </p>
+    </div>
+  );
+}
+
+function ErrorBox({ title, message }: { title: string; message: string }) {
+  return (
+    <div className="mb-8 rounded-3xl border border-red-200 bg-red-50 p-6 text-red-700">
+      <h2 className="mb-2 text-xl font-bold">{title}</h2>
+      <p className="text-sm leading-relaxed">{message}</p>
     </div>
   );
 }
