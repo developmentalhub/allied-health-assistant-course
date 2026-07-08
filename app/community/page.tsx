@@ -1,202 +1,244 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase";
+import {
+  ArrowRight,
+  CheckCircle2,
+  ClipboardList,
+  MessageCircleHeart,
+  UsersRound,
+  Video,
+} from "lucide-react";
 
-type Reply = {
-  id: string;
-  post_id: string;
-  author: string;
-  body: string;
-  created_at: string;
-};
-
-type Post = {
-  id: string;
-  author: string;
-  body: string;
-  pinned: boolean;
-  created_at: string;
-  community_replies: Reply[];
-};
+const freeTools = [
+  {
+    title: "AHA Course Tools Preview",
+    description:
+      "Explore the starter AHA tools and get a feel for the kind of support being built inside the hive.",
+    href: "https://allied-health-assistant-course.netlify.app/",
+  },
+  {
+    title: "Clinic Session Feedback Tool",
+    description:
+      "Reflect after a clinic session, organise observations and prepare clearer feedback for the supervising professional.",
+    href: "https://aha-clinic-session-feedback.netlify.app/",
+  },
+];
 
 export default function CommunityPage() {
-  const supabase = createClient();
-
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [name, setName] = useState("");
-  const [replyDrafts, setReplyDrafts] = useState<Record<string, string>>({});
-  const [postDraft, setPostDraft] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  useEffect(() => {
-    setName(localStorage.getItem("aha_name") || "");
-    fetchPosts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (name) localStorage.setItem("aha_name", name);
-  }, [name]);
-
-  async function fetchPosts() {
-    setLoading(true);
-    const { data } = await supabase
-      .from("community_posts")
-      .select("*, community_replies(*)")
-      .order("pinned", { ascending: false })
-      .order("created_at", { ascending: false });
-    const rows = (data || []) as Post[];
-    rows.forEach((p) =>
-      p.community_replies?.sort(
-        (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      )
-    );
-    setPosts(rows);
-    setLoading(false);
-  }
-
-  async function submitReply(postId: string) {
-    const text = (replyDrafts[postId] || "").trim();
-    if (!text) return;
-    if (!name.trim()) return alert("Add your first name so we know who's replying.");
-    setBusy(true);
-    await supabase.from("community_replies").insert({
-      post_id: postId,
-      author: name.trim(),
-      body: text,
-      status: "approved",
-    });
-    setReplyDrafts((d) => ({ ...d, [postId]: "" }));
-    await fetchPosts();
-    setBusy(false);
-  }
-
-  async function submitPost() {
-    if (!postDraft.trim()) return;
-    if (!name.trim()) return alert("Add your first name first.");
-    setBusy(true);
-    await supabase.from("community_posts").insert({
-      author: name.trim(),
-      body: postDraft.trim(),
-      pinned: false,
-    });
-    setPostDraft("");
-    await fetchPosts();
-    setBusy(false);
-  }
-
   return (
-    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
-      <section className="mx-auto max-w-6xl px-6 py-14">
-        <div className="mb-8">
-          <Link href="/" className="text-sm font-semibold text-[#0f766e] hover:underline">
-            ← Back to academy
-          </Link>
-        </div>
-
-        <div className="mb-10 rounded-3xl border border-[#e8e4de] bg-white p-8 md:p-10">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-            Community
+    <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
+      <section className="mx-auto max-w-6xl">
+        <div className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+            Free AHA community
           </p>
-          <h1 className="mb-5 text-4xl font-bold md:text-5xl">AHA Community Hub</h1>
-          <p className="max-w-3xl text-base leading-relaxed text-[#6b6880]">
-            A space for Allied Health Assistants to connect, ask questions, and steady
-            each other through the change.
+          <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
+            A low-pressure place to start. Browse quietly, access the free
+            starter tools, register for the free August webinar, or explore
+            monthly support when you are ready.
           </p>
         </div>
 
-        <div className="mb-6 rounded-3xl border border-[#e8e4de] bg-white p-6">
-          <label className="mb-2 block text-sm font-semibold">Your first name</label>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Sam"
-            className="w-full max-w-sm rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-3 text-sm outline-none focus:border-[#0f766e]"
-          />
-        </div>
-
-        <div className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-6">
-          <label className="mb-3 block text-sm font-semibold">Start a post</label>
-          <textarea
-            rows={3}
-            value={postDraft}
-            onChange={(e) => setPostDraft(e.target.value)}
-            placeholder="Write a question, update or reflection..."
-            className="w-full resize-none rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-4 text-sm outline-none focus:border-[#0f766e]"
-          />
-          <div className="mt-4 flex justify-end">
-            <button
-              onClick={submitPost}
-              disabled={busy || !postDraft.trim()}
-              className="rounded-full bg-[#0f766e] px-5 py-2 text-sm font-semibold text-white disabled:opacity-40"
-            >
-              Post
-            </button>
-          </div>
-        </div>
-
-        {loading && <p className="text-sm text-[#6b6880]">Loading the feed…</p>}
-
-        <div className="space-y-5">
-          {posts.map((post) => (
-            <article
-              key={post.id}
-              className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm"
-            >
-              <div className="mb-4 flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-sm font-bold">{post.author}</p>
-                  <p className="text-xs text-[#6b6880]">
-                    {post.pinned ? "Host" : "Member"}
-                  </p>
-                </div>
-                {post.pinned && (
-                  <span className="rounded-full bg-[#f0fdfa] px-3 py-1 text-xs font-semibold text-[#0f766e]">
-                    📌 Pinned
-                  </span>
-                )}
-              </div>
-
-              <p className="mb-5 whitespace-pre-wrap text-sm leading-relaxed text-[#6b6880]">
-                {post.body}
+        <section className="mb-8 rounded-4xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
+          <div className="grid gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-start">
+            <div>
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+                Welcome to the hive
               </p>
 
-              <div className="space-y-3 border-t border-[#e8e4de] pt-4">
-                {post.community_replies?.map((r) => (
-                  <div key={r.id} className="rounded-2xl bg-[#faf8f5] px-4 py-3">
-                    <p className="text-xs font-bold">{r.author}</p>
-                    <p className="whitespace-pre-wrap text-sm text-[#6b6880]">{r.body}</p>
-                  </div>
-                ))}
-                {(!post.community_replies || post.community_replies.length === 0) && (
-                  <p className="text-xs text-[#b0acbf]">Be the first to reply.</p>
-                )}
+              <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
+                Your free AHA community space.
+              </h1>
 
-                <div className="flex gap-2 pt-1">
-                  <input
-                    value={replyDrafts[post.id] || ""}
-                    onChange={(e) =>
-                      setReplyDrafts((d) => ({ ...d, [post.id]: e.target.value }))
-                    }
-                    placeholder="Write a reply…"
-                    className="flex-1 rounded-full border border-[#e8e4de] bg-[#faf8f5] px-4 py-2 text-sm outline-none focus:border-[#0f766e]"
-                  />
-                  <button
-                    onClick={() => submitReply(post.id)}
-                    disabled={busy}
-                    className="rounded-full bg-[#0f766e] px-4 py-2 text-xs font-semibold text-white disabled:opacity-40"
-                  >
-                    Reply
-                  </button>
-                </div>
+              <p className="mb-8 text-xl leading-relaxed text-[#5f5b73]">
+                This is the free starting point for AHAs who want practical
+                ideas, encouragement and a sense that they are not doing this
+                work alone. You can start with the free tools below and join in
+                more when you feel ready.
+              </p>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="#free-tools"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+                >
+                  Open free tools
+                  <ArrowRight size={16} />
+                </a>
+
+                <Link
+                  href="/subscribe"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+                >
+                  Register for free August webinar
+                  <ArrowRight size={16} />
+                </Link>
               </div>
-            </article>
-          ))}
-        </div>
+            </div>
+
+            <aside className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                <UsersRound size={24} />
+              </div>
+
+              <h2 className="mb-4 text-2xl font-bold">
+                What you can do here
+              </h2>
+
+              <div className="grid gap-3">
+                <CheckItem text="Use the two free starter tools." />
+                <CheckItem text="Browse quietly without needing to post." />
+                <CheckItem text="Register for the free August webinar." />
+                <CheckItem text="Explore the $57/month membership when you want more support." />
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section
+          id="free-tools"
+          className="mb-8 rounded-4xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10"
+        >
+          <div className="mb-6">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+              Free starter tools
+            </p>
+
+            <h2 className="mb-4 text-3xl font-bold">
+              Start here with your free tools.
+            </h2>
+
+            <p className="max-w-3xl text-base leading-relaxed text-[#6b6880]">
+              These tools are a small taste of the practical support being built
+              for AHAs. The full member tool library will sit inside the
+              $57/month AHA Professional Development membership.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {freeTools.map((tool) => (
+              <a
+                key={tool.href}
+                href={tool.href}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6 transition hover:border-[#0f766e] hover:bg-white"
+              >
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#0f766e]">
+                  <ClipboardList size={24} />
+                </div>
+
+                <h3 className="mb-2 text-xl font-bold">{tool.title}</h3>
+
+                <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
+                  {tool.description}
+                </p>
+
+                <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
+                  Open free tool
+                  <span aria-hidden="true">→</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-8 grid gap-5 md:grid-cols-3">
+          <PathwayCard
+            icon={<Video size={24} />}
+            title="Free August webinar"
+            text="Start with the free August webinar, then continue monthly from September if it feels helpful."
+            href="/subscribe"
+            linkText="Register free"
+          />
+
+          <PathwayCard
+            icon={<ClipboardList size={24} />}
+            title="$57/month membership"
+            text="Monthly live webinars, replays, PDFs and reusable member tools as the library grows."
+            href="/subscribe"
+            linkText="View membership"
+          />
+
+          <PathwayCard
+            icon={<MessageCircleHeart size={24} />}
+            title="1:1 reflective support"
+            text="Request support when you want to talk through confidence, role clarity or practical session ideas."
+            href="/reflective-practice"
+            linkText="Request support"
+          />
+        </section>
+
+        <section className="rounded-4xl bg-[#1e1b2e] p-8 text-white shadow-sm md:p-10">
+          <div className="grid gap-6 lg:grid-cols-[1fr_0.65fr] lg:items-center">
+            <div>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#99f6e4]">
+                For managers
+              </p>
+
+              <h2 className="mb-4 text-3xl font-bold">
+                Supporting a team of AHAs?
+              </h2>
+
+              <p className="max-w-3xl text-base leading-relaxed text-[#d9d7e5]">
+                Team access starts at $57/month for up to 5 staff. Larger teams
+                or clinics wanting monthly webinars and 1:1 reflective practice
+                can request a team quote.
+              </p>
+            </div>
+
+            <Link
+              href="/manager-pathway"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+            >
+              View manager pathway
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </section>
       </section>
     </main>
+  );
+}
+
+function CheckItem({ text }: { text: string }) {
+  return (
+    <div className="flex gap-3">
+      <CheckCircle2 className="mt-0.5 shrink-0 text-[#0f766e]" size={18} />
+      <p className="text-sm leading-relaxed text-[#3f5f5a]">{text}</p>
+    </div>
+  );
+}
+
+function PathwayCard({
+  icon,
+  title,
+  text,
+  href,
+  linkText,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+  href: string;
+  linkText: string;
+}) {
+  return (
+    <article className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm">
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+        {icon}
+      </div>
+
+      <h3 className="mb-2 text-xl font-bold">{title}</h3>
+
+      <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">{text}</p>
+
+      <Link
+        href={href}
+        className="inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e]"
+      >
+        {linkText}
+        <ArrowRight size={14} />
+      </Link>
+    </article>
   );
 }
