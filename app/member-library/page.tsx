@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient as createSupabaseAdminClient } from "@supabase/supabase-js";
 import { CalendarDays, FileText, LockKeyhole, PlayCircle, Video } from "lucide-react";
+import MemberToolsCard from "@/components/MemberToolsCard";
 import { createClient } from "@/lib/supabase-server";
 
 type Webinar = {
@@ -125,7 +126,7 @@ export default async function MemberLibraryPage() {
   return (
     <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
       <section className="mx-auto max-w-6xl">
-        <div className="mb-10 rounded-[2rem] border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
+        <div className="mb-10 rounded-4x1 border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
           <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
             Member library
           </p>
@@ -172,6 +173,8 @@ export default async function MemberLibraryPage() {
             <EmptyState message="No upcoming webinars have been added yet." />
           )}
         </section>
+
+<MemberToolsCard />
 
         <section>
           <div className="mb-5 flex items-center gap-3">
