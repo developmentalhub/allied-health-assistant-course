@@ -1,5 +1,6 @@
 export const siteConfig = {
   name: "AHA Professional Development",
+  businessName: "Allied Health Hive",
   title: "AHA Professional Development",
   description:
     "A community and professional development platform for Allied Health Assistants, created by Jess Foster and Robyn from Play Move Improve.",
