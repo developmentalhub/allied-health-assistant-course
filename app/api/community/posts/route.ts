@@ -6,11 +6,51 @@ function cleanText(value: unknown) {
   return text.length > 0 ? text : null;
 }
 
+export async function GET() {
+  const supabase = await createClient();
+
+  const { data: posts, error } = await supabase
+    .from("community_posts")
+    .select(
+      `
+      id,
+      name,
+      author_name,
+      title,
+      body,
+      content,
+      message,
+      created_at,
+      community_replies (
+        id,
+        name,
+        author_name,
+        body,
+        content,
+        message,
+        created_at
+      )
+    `,
+    )
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  const formattedPosts =
+    posts?.map((post) => ({
+      ...post,
+      replies: post.community_replies || [],
+      comments: post.community_replies || [],
+    })) || [];
+
+  return NextResponse.json({ posts: formattedPosts });
+}
+
 export async function POST(request: Request) {
   const supabase = await createClient();
   const body = await request.json();
-
-  const postId = cleanText(body.postId) || cleanText(body.post_id);
 
   const name =
     cleanText(body.authorName) ||
@@ -21,24 +61,16 @@ export async function POST(request: Request) {
   const message =
     cleanText(body.body) || cleanText(body.content) || cleanText(body.message);
 
-  if (!postId) {
-    return NextResponse.json(
-      { error: "Missing community post ID." },
-      { status: 400 },
-    );
-  }
-
   if (!message) {
     return NextResponse.json(
-      { error: "Please write something before replying." },
+      { error: "Please write something before posting." },
       { status: 400 },
     );
   }
 
   const { data, error } = await supabase
-    .from("community_replies")
+    .from("community_posts")
     .insert({
-      post_id: postId,
       name,
       author_name: name,
       body: message,
@@ -52,5 +84,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ reply: data });
+  return NextResponse.json({ post: data });
 }
