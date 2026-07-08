@@ -288,18 +288,28 @@ function WebinarCard({ webinar }: { webinar: Webinar }) {
             </p>
           </div>
 
-          <form action={sendZoomDetailsToMembers}>
-            <input type="hidden" name="webinarId" value={webinar.id} />
+          <div className="flex flex-col gap-3 sm:flex-row">
+  <Link
+    href={`/admin/webinars/${webinar.id}/edit`}
+    className="inline-flex items-center justify-center gap-2 rounded-full border border-[#0f766e] bg-white px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
+  >
+    <LinkIcon size={15} />
+    Edit webinar
+  </Link>
 
-            <button
-              type="submit"
-              disabled={!zoomLink}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962] disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <Mail size={15} />
-              Send Zoom details
-            </button>
-          </form>
+  <form action={sendZoomDetailsToMembers}>
+    <input type="hidden" name="webinarId" value={webinar.id} />
+
+    <button
+      type="submit"
+      disabled={!zoomLink}
+      className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962] disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      <Mail size={15} />
+      Send Zoom details
+    </button>
+  </form>
+</div>
         </div>
       </div>
     </article>

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { createClient as createSupabaseAdminClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase-server";
 import { resend, getResendFromEmail } from "@/lib/resend";
@@ -64,8 +65,22 @@ async function requireAdmin() {
   }
 
   if (profile?.role !== "admin" && profile?.role !== "superadmin") {
-    throw new Error("You do not have permission to send webinar emails.");
+    throw new Error("You do not have permission to do this.");
   }
+}
+
+function cleanOptionalUrl(value: FormDataEntryValue | null) {
+  const text = String(value || "").trim();
+  return text.length > 0 ? text : null;
+}
+
+function cleanOptionalText(value: FormDataEntryValue | null) {
+  const text = String(value || "").trim();
+  return text.length > 0 ? text : null;
+}
+
+function buildDateTimeWithQueenslandOffset(date: string, time: string) {
+  return `${date}T${time}:00+10:00`;
 }
 
 function formatWebinarDate(startsAt: string, endsAt: string) {
@@ -136,11 +151,7 @@ Robyn and Jess`;
         <p style="margin: 0;"><strong>Zoom link:</strong> <a href="${zoomLink}">${zoomLink}</a></p>
       </div>
 
-      ${
-        webinar.description
-          ? `<p>${webinar.description}</p>`
-          : ""
-      }
+      ${webinar.description ? `<p>${webinar.description}</p>` : ""}
 
       <p>This professional development session is designed to support AHAs with practical ideas, reflective practice and confidence in their work.</p>
 
@@ -149,6 +160,87 @@ Robyn and Jess`;
   `;
 
   return { subject, text, html };
+}
+
+export async function updateWebinar(formData: FormData) {
+  await requireAdmin();
+
+  const webinarId = String(formData.get("webinarId") || "").trim();
+
+  if (!webinarId) {
+    throw new Error("Missing webinar ID.");
+  }
+
+  const title = String(formData.get("title") || "").trim();
+  const description = cleanOptionalText(formData.get("description"));
+
+  const date = String(formData.get("date") || "").trim();
+  const startTime = String(formData.get("startTime") || "").trim();
+  const endTime = String(formData.get("endTime") || "").trim();
+
+  const accessType = String(formData.get("accessType") || "members");
+  const status = String(formData.get("status") || "upcoming");
+
+  if (!title) {
+    throw new Error("Webinar title is required.");
+  }
+
+  if (!date || !startTime || !endTime) {
+    throw new Error("Date, start time and end time are required.");
+  }
+
+  if (!["free", "members"].includes(accessType)) {
+    throw new Error("Invalid access type.");
+  }
+
+  if (!["upcoming", "recorded", "cancelled"].includes(status)) {
+    throw new Error("Invalid webinar status.");
+  }
+
+  const startsAt = buildDateTimeWithQueenslandOffset(date, startTime);
+  const endsAt = buildDateTimeWithQueenslandOffset(date, endTime);
+
+  const zoomJoinUrl = cleanOptionalUrl(formData.get("zoomJoinUrl"));
+  const zoomUrl = zoomJoinUrl;
+
+  const resourceUrl = cleanOptionalUrl(formData.get("resourceUrl"));
+  const recordingUrl = cleanOptionalUrl(formData.get("recordingUrl"));
+
+  const bunnyVideoId = cleanOptionalText(formData.get("bunnyVideoId"));
+  const bunnyEmbedUrl = cleanOptionalUrl(formData.get("bunnyEmbedUrl"));
+  const bunnyPlaybackUrl = cleanOptionalUrl(formData.get("bunnyPlaybackUrl"));
+
+  const supabaseAdmin = getSupabaseAdmin();
+
+  const { error } = await supabaseAdmin
+    .from("webinars")
+    .update({
+      title,
+      description,
+      starts_at: startsAt,
+      ends_at: endsAt,
+      access_type: accessType,
+      status,
+      zoom_join_url: zoomJoinUrl,
+      zoom_url: zoomUrl,
+      resource_url: resourceUrl,
+      recording_url: recordingUrl,
+      bunny_video_id: bunnyVideoId,
+      bunny_embed_url: bunnyEmbedUrl,
+      bunny_playback_url: bunnyPlaybackUrl,
+    })
+    .eq("id", webinarId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/admin/webinars");
+  revalidatePath(`/admin/webinars/${webinarId}/edit`);
+  revalidatePath("/webinars");
+  revalidatePath("/member-library");
+
+  redirect("/admin/webinars");
 }
 
 export async function sendZoomDetailsToMembers(formData: FormData) {
@@ -225,9 +317,7 @@ export async function sendZoomDetailsToMembers(formData: FormData) {
     });
 
     if (error) {
-      throw new Error(
-        `Resend failed for ${recipient.email}: ${error.message}`
-      );
+      throw new Error(`Resend failed for ${recipient.email}: ${error.message}`);
     }
   }
 
