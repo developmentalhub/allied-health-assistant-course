@@ -16,11 +16,11 @@ export const metadata: Metadata = {
     "Get in touch with Play Move Improve about the Allied Health & Educator Resource Academy, course access, waitlist updates, or future training pathways.",
 };
 
-// Headshots live in the Supabase "website-images" bucket.
-// Filenames must match EXACTLY, including capitalisation.
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
-const jessPhoto = `${SUPABASE_URL}/storage/v1/object/public/website-images/headshots/Jess%20Spectrum%20Village%20headshot.jpg`;
-const robynPhoto = `${SUPABASE_URL}/storage/v1/object/public/website-images/headshots/Robyn%20Play%20Move%20Improve%20headshot.jpg`;
+const IMAGE_BASE =
+  "https://aracabetvunmirlfgylv.supabase.co/storage/v1/object/public/website-images";
+
+const jessPhoto = `${IMAGE_BASE}/headshots/Jess%20Spectrum%20Village%20headshot.jpg`;
+const robynPhoto = `${IMAGE_BASE}/headshots/Robyn%20Play%20Move%20Improve%20headshot.jpg`;
 
 export default function ContactPage() {
   return (

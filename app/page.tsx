@@ -139,14 +139,14 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="mx-auto mb-8 max-w-4xl overflow-hidden rounded-3xl border border-[#e8e4de] bg-white shadow-sm">
-  <img
-    src={IMAGES.scooter}
-    alt="A mentor online guiding an assistant trying a scooter board activity in the therapy room"
-    loading="lazy"
-    className="h-72 w-full object-cover object-center md:h-80"
-  />
-</div>
+          <div className="mb-8 overflow-hidden rounded-3xl border border-[#e8e4de] bg-white shadow-sm">
+            <img
+              src={IMAGES.scooter}
+              alt="A mentor online guiding an assistant trying a scooter board activity in the therapy room"
+              loading="lazy"
+              className="h-auto w-full object-cover"
+            />
+          </div>
 
           <div className="grid gap-5 md:grid-cols-3">
             <FeatureCard
