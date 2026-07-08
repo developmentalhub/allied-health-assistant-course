@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 const IMAGE_BASE =
   "https://aracabetvunmirlfgylv.supabase.co/storage/v1/object/public/website-images";
 
-const jessPhoto = `${IMAGE_BASE}/headshots/Jess%20Spectrum%20Village%20headshot.jpg`;
-const robynPhoto = `${IMAGE_BASE}/headshots/Robyn%20Play%20Move%20Improve%20headshot.jpg`;
+const jessPhoto = "https://aracabetvunmirlfgylv.supabase.co/storage/v1/object/public/website-images/Headshots/Jess%20Spectrum%20Village%20headshot.jpg";
+const robynPhoto = "https://aracabetvunmirlfgylv.supabase.co/storage/v1/object/public/website-images/Headshots/Robyn%20Play%20Move%20Improve%20headshot.jpg";
 
 export default function ContactPage() {
   return (
