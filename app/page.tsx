@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { siteConfig } from "@/lib/site";
 import {
   ArrowRight,
   BookOpen,
@@ -18,6 +19,14 @@ import {
   UserRoundCheck,
   Users,
 } from "lucide-react";
+
+<div className="mb-6 flex justify-center">
+  <img
+    src={siteConfig.logoUrl}
+    alt="Allied Health Hive logo"
+    className="h-24 w-24 rounded-full object-contain shadow-sm"
+  />
+</div>
 
 const FOUNDATION_TOPICS = [
   "Understanding the AHA role and boundaries",
@@ -88,6 +97,22 @@ export default function Home() {
           Thriving Kids is reshaping your work. You shouldn&apos;t have to figure
           it out alone.
         </h1>
+
+        <h1 className="mb-5 text-4xl font-bold leading-tight md:text-6xl">
+  AHA Professional Support
+</h1>
+
+<div className="mb-6 flex justify-center md:justify-start">
+  <img
+    src={siteConfig.logoUrl}
+    alt="Allied Health Hive logo"
+    className="h-24 w-24 rounded-full object-contain shadow-sm"
+  />
+</div>
+
+<p className="max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
+  Practical, reflective professional development for Allied Health Assistants.
+</p>
 
         <p className="mx-auto mb-8 max-w-3xl text-lg leading-relaxed text-[#6b6880] md:text-xl">
           A community and practical professional development for Allied Health

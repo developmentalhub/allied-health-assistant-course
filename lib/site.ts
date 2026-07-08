@@ -8,6 +8,8 @@ export const siteConfig = {
   url:
     process.env.NEXT_PUBLIC_SITE_URL ||
     "https://allied-health-assistant-course.vercel.app",
+  logoUrl:
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/website-images/allied-health-hive-logo.png`,
   ogImage: "/og-image.png",
   links: {
     home: "/",

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { siteConfig } from "@/lib/site";
 
 const navLinks = [
   {
@@ -39,16 +40,22 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-[#e8e4de] bg-white/95 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="group" onClick={closeMenu}>
-          <div>
-            <p className="text-lg font-bold leading-tight text-[#1e1b2e]">
-              AHA Professional Development
-            </p>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0f766e]">
-              Foundation reflective PD
-            </p>
-          </div>
-        </Link>
+        <Link href="/" className="flex items-center gap-3">
+  <img
+    src={siteConfig.logoUrl}
+    alt="Allied Health Hive logo"
+    className="h-12 w-12 rounded-full object-contain"
+  />
+
+  <div className="leading-tight">
+    <p className="text-base font-bold text-[#1e1b2e]">
+      Allied Health Hive
+    </p>
+    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#0f766e]">
+      AHA Professional Development
+    </p>
+  </div>
+</Link>
 
         <div className="hidden items-center gap-5 lg:flex">
           {navLinks.map((link) => (
