@@ -9,6 +9,7 @@ const navLinks = [
   { href: "/reflective-practice", label: "1:1 Support" },
   { href: "/manager-pathway", label: "For Managers" },
   { href: "/contact", label: "Contact" },
+  { href: "/resource-shop", label: "Resource Shop" },
   { href: "/member-library", label: "Member Library" },
 ];
 
