@@ -19,33 +19,72 @@ const premiumPacks = [
     title: "AHA Framework Pack",
     price: "From $1,497",
     description:
-      "A structured framework to help clinics clarify the AHA role, delegation pathways, session expectations and therapist communication.",
+      "For teams who need everyone to understand what AHAs can do, what needs therapist direction, and how support should flow across the week.",
     icon: <UsersRound size={26} />,
     includes: [
-      "AHA role framework",
+      "AHA role clarity framework",
       "Delegation and communication pathways",
       "Session preparation expectations",
-      "Team implementation templates",
+      "Templates to help AHAs know where to start",
     ],
   },
   {
     title: "Therapist Framework Pack",
     price: "From $1,497",
     description:
-      "Templates and systems to help therapists delegate clearly, review AHA work and keep therapy plans moving safely.",
+      "For therapists who want to delegate more clearly, reduce repeated explaining, and feel confident that therapy plans are being followed safely.",
     icon: <ClipboardList size={26} />,
     includes: [
-      "Therapist delegation framework",
-      "Treatment plan handover templates",
+      "Delegation templates",
+      "Treatment plan handover tools",
       "Review and feedback systems",
       "Clinical communication templates",
+    ],
+  },
+  {
+    title: "Clinical Template Pack",
+    price: "From $497",
+    description:
+      "For teams who are tired of starting from a blank page when writing notes, summaries, emails, referrals or parent updates.",
+    icon: <FileText size={26} />,
+    includes: [
+      "SOAP and progress note templates",
+      "Parent consultation templates",
+      "Referral and email templates",
+      "Session summary and letter templates",
+    ],
+  },
+  {
+    title: "Assessment and Screener Pack",
+    price: "From $797",
+    description:
+      "For clinics wanting clearer pathways around what AHAs can observe, what therapists need to assess, and how information should be reported.",
+    icon: <ClipboardList size={26} />,
+    includes: [
+      "Suggested AHA screeners",
+      "Therapist standardised assessment lists",
+      "Assessment flowcharts",
+      "Reporting expectation templates",
+    ],
+  },
+  {
+    title: "Therapy Area Resource Packs",
+    price: "From $297",
+    description:
+      "For AHAs who want practical ideas ready to go when a child is disengaged, the plan is not working, or the session needs a different entry point.",
+    icon: <Sparkles size={26} />,
+    includes: [
+      "Emotional regulation resources",
+      "Fine and gross motor activity ideas",
+      "Sensory and self-care supports",
+      "Communication and social skills resources",
     ],
   },
   {
     title: "Clinic Systems Pack",
     price: "From $2,497",
     description:
-      "A practical operating system for clinics wanting stronger AHA workflows, accountability, reporting and team structure.",
+      "For managers who know their team needs better systems, but do not have the time to build every workflow, checklist and process from scratch.",
     icon: <Building2 size={26} />,
     includes: [
       "Clinic workflow maps",
@@ -58,7 +97,7 @@ const premiumPacks = [
     title: "Compliance and Governance Pack",
     price: "From $2,997",
     description:
-      "High-value templates for clinics needing clearer policies, risk processes, documentation standards and governance systems.",
+      "For organisations wanting clearer documentation, safer processes and stronger systems around risk, privacy, records and clinical governance.",
     icon: <ShieldCheck size={26} />,
     includes: [
       "Policy and procedure templates",
@@ -71,7 +110,7 @@ const premiumPacks = [
     title: "Spreadsheet Systems Pack",
     price: "From $1,497",
     description:
-      "Editable trackers and dashboards to help clinics monitor treatment plans, waitlists, capacity, KPIs and reporting.",
+      "For managers who need easier ways to track treatment plans, capacity, waitlists, KPIs and reporting without rebuilding spreadsheets every month.",
     icon: <Table2 size={26} />,
     includes: [
       "Treatment plan expiry tracker",
@@ -84,13 +123,26 @@ const premiumPacks = [
     title: "Employer Hub Pack",
     price: "From $1,997",
     description:
-      "Templates for clinic owners and managers supporting recruitment, onboarding, induction, reviews and team accountability.",
-    icon: <FileText size={26} />,
+      "For clinic owners and managers who want recruitment, onboarding, induction and staff review processes to feel more organised and repeatable.",
+    icon: <UsersRound size={26} />,
     includes: [
       "Position description templates",
       "Interview and induction checklists",
       "Performance review templates",
       "Employer flowchart templates",
+    ],
+  },
+  {
+    title: "AI Systems and Prompt Library",
+    price: "From $497",
+    description:
+      "For teams who want to use AI carefully to reduce admin load, organise ideas, draft communication and make documentation feel less overwhelming.",
+    icon: <Mail size={26} />,
+    includes: [
+      "Documentation prompts",
+      "Report and home program prompts",
+      "Email and communication prompts",
+      "Workflow and admin prompt systems",
     ],
   },
 ];
@@ -114,9 +166,8 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
           </p>
 
           <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
-            Premium clinic systems, frameworks, templates and trackers are being
-            organised for Allied Health Assistant teams, therapists, managers
-            and clinic owners.
+            For AHA teams, therapists and managers who want the working day to
+            feel clearer, calmer and easier to organise.
           </p>
         </div>
 
@@ -125,18 +176,25 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
             <div className="p-8 md:p-12">
               <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-[#f0fdfa] px-4 py-2 text-sm font-semibold text-[#0f766e]">
                 <Lock size={16} />
-                Premium clinic resources
+                Premium systems and practical resources
               </div>
 
               <h1 className="mb-5 text-4xl font-bold leading-tight md:text-5xl">
-                Clinic systems that are too valuable to sit inside a standard
-                membership.
+                When the work feels important, but the systems around it feel
+                messy.
               </h1>
 
+              <p className="mb-5 max-w-3xl text-lg leading-relaxed text-[#5f5b73]">
+                AHAs often want to do a good job, but can feel unsure where to
+                start, what to write down, how to adapt a session, or when to go
+                back to the therapist for direction.
+              </p>
+
               <p className="mb-7 max-w-3xl text-lg leading-relaxed text-[#5f5b73]">
-                The AHAH resource shop will house the deeper frameworks,
-                templates, spreadsheets and organisational systems that help
-                teams work with more clarity, consistency and confidence.
+                Managers and therapists can also feel stretched. They are trying
+                to support staff, meet compliance expectations, keep treatment
+                plans moving and create consistency across the team without
+                building every template from scratch.
               </p>
 
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -152,7 +210,7 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
                   href="/subscribe"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
                 >
-                  View AHA membership
+                  Start with the membership
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -162,17 +220,37 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
               <Sparkles className="mb-5 text-[#99f6e4]" size={34} />
 
               <h2 className="mb-4 text-2xl font-bold">
-                What will be different about the shop?
+                Start with support. Add systems when you are ready.
               </h2>
 
               <div className="grid gap-4">
-                <CheckItem text="Premium systems will be sold separately from the $57/month membership." />
-                <CheckItem text="Resources will be designed for teams, clinics and managers." />
-                <CheckItem text="Packs will support implementation, not just information." />
-                <CheckItem text="AHA teams on the waitlist will be first to know when packs open." />
+                <CheckItem text="The membership helps AHAs build confidence, skills and reflective practice." />
+                <CheckItem text="The resource shop will help teams run the day with clearer templates, trackers and systems." />
+                <CheckItem text="Managers will be able to choose the packs that match their team’s pressure points." />
+                <CheckItem text="Premium clinic systems will stay separate from the $57/month membership." />
               </div>
             </aside>
           </div>
+        </section>
+
+        <section className="mb-8 grid gap-5 md:grid-cols-3">
+          <JourneyCard
+            step="Step 1"
+            title="Join the free community"
+            text="Start gently. Browse, use the free starter tools, attend the free webinar and get a feel for the support available."
+          />
+
+          <JourneyCard
+            step="Step 2"
+            title="Build confidence through membership"
+            text="Use the monthly webinars, recordings, reflection tools and starter templates to strengthen AHA skills and confidence."
+          />
+
+          <JourneyCard
+            step="Step 3"
+            title="Make the workday easier with resource packs"
+            text="Choose the premium templates, frameworks, trackers and systems that help your team run sessions and clinic processes more smoothly."
+          />
         </section>
 
         <section className="mb-8">
@@ -182,12 +260,13 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
             </p>
 
             <h2 className="text-3xl font-bold md:text-4xl">
-              Premium resource packs being prepared.
+              Resource packs for the parts of the work that slow teams down.
             </h2>
 
             <p className="mt-3 max-w-3xl text-base leading-relaxed text-[#6b6880]">
-              These are higher-value clinic resources for organisations that
-              want systems they can adapt, implement and build from.
+              These packs are being prepared for teams who want practical,
+              editable resources they can adapt into their own clinic or
+              organisation.
             </p>
           </div>
 
@@ -243,6 +322,47 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
           </div>
         </section>
 
+        <section className="mb-8 rounded-4xl border border-[#e8e4de] bg-white p-7 shadow-sm md:p-10">
+          <div className="grid gap-6 lg:grid-cols-[0.72fr_1fr] lg:items-start">
+            <div>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+                Membership and resource shop
+              </p>
+
+              <h2 className="mb-4 text-3xl font-bold">
+                They support different parts of the same problem.
+              </h2>
+
+              <p className="text-base leading-relaxed text-[#6b6880]">
+                The membership supports the person. The resource shop supports
+                the systems around the person.
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-3xl bg-[#f0fdfa] p-5">
+                <h3 className="mb-3 text-xl font-bold text-[#0f766e]">
+                  AHA membership
+                </h3>
+                <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                  For building confidence, learning practical strategies,
+                  reflecting on sessions and feeling less alone in the role.
+                </p>
+              </div>
+
+              <div className="rounded-3xl bg-[#faf8f5] p-5">
+                <h3 className="mb-3 text-xl font-bold">
+                  Resource shop
+                </h3>
+                <p className="text-sm leading-relaxed text-[#5f5b73]">
+                  For making the running of the day easier through templates,
+                  frameworks, trackers, processes and clinic systems.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section
           id="waitlist"
           className="grid gap-6 rounded-4xl border border-[#e8e4de] bg-white p-7 shadow-sm lg:grid-cols-[0.82fr_1fr] md:p-10"
@@ -257,20 +377,20 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
             </p>
 
             <h2 className="mb-4 text-3xl font-bold">
-              Be first to know when the premium resource shop opens.
+              Be first to know when the resource shop opens.
             </h2>
 
             <p className="mb-5 text-base leading-relaxed text-[#6b6880]">
-              This waitlist is for AHA teams, therapists, managers and clinic
-              owners who want early updates when the premium packs are ready.
+              Join the waitlist if your team is looking for clearer templates,
+              better systems, easier planning, stronger delegation pathways or
+              practical resources that reduce the daily overwhelm.
             </p>
 
             <div className="rounded-3xl bg-[#faf8f5] p-5">
               <p className="text-sm leading-relaxed text-[#5f5b73]">
-                The $57/month AHA Professional Development membership will stay
-                focused on webinars, reflection tools, starter templates and AHA
-                support. These premium packs are separate, higher-value clinic
-                systems.
+                You do not need to know exactly what you need yet. Tell us what
+                feels messy, time-consuming or unclear in your team, and we will
+                use that feedback to shape the first packs released.
               </p>
             </div>
           </div>
@@ -280,7 +400,7 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
               <div className="mb-5 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 text-[#0f766e]">
                 <p className="font-semibold">You are on the waitlist.</p>
                 <p className="mt-1 text-sm leading-relaxed">
-                  We will let you know when the premium resource shop is ready.
+                  We will let you know when the resource shop is ready.
                 </p>
               </div>
             ) : null}
@@ -368,6 +488,15 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
                     <option value="Therapist Framework Pack">
                       Therapist Framework Pack
                     </option>
+                    <option value="Clinical Template Pack">
+                      Clinical Template Pack
+                    </option>
+                    <option value="Assessment and Screener Pack">
+                      Assessment and Screener Pack
+                    </option>
+                    <option value="Therapy Area Resource Packs">
+                      Therapy Area Resource Packs
+                    </option>
                     <option value="Clinic Systems Pack">
                       Clinic Systems Pack
                     </option>
@@ -380,6 +509,9 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
                     <option value="Employer Hub Pack">
                       Employer Hub Pack
                     </option>
+                    <option value="AI Systems and Prompt Library">
+                      AI Systems and Prompt Library
+                    </option>
                     <option value="Several packs">Several packs</option>
                     <option value="Not sure yet">Not sure yet</option>
                   </select>
@@ -388,13 +520,13 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
 
               <label className="grid gap-2">
                 <span className="text-sm font-semibold">
-                  What would be most helpful for your team?
+                  What feels hardest to organise in your team right now?
                 </span>
                 <textarea
                   name="message"
                   rows={5}
                   className="rounded-2xl border border-[#d8d3ca] bg-white px-4 py-3 text-sm outline-none focus:border-[#0f766e]"
-                  placeholder="Tell us what systems, templates or supports your team is looking for."
+                  placeholder="For example: delegation, treatment plan tracking, session planning, documentation, onboarding, compliance, reporting, knowing what AHAs can do, or keeping everyone consistent."
                 />
               </label>
 
@@ -419,5 +551,27 @@ function CheckItem({ text }: { text: string }) {
       <CheckCircle2 className="mt-0.5 shrink-0 text-[#99f6e4]" size={18} />
       <p className="text-sm leading-relaxed text-[#d9d7e5]">{text}</p>
     </div>
+  );
+}
+
+function JourneyCard({
+  step,
+  title,
+  text,
+}: {
+  step: string;
+  title: string;
+  text: string;
+}) {
+  return (
+    <article className="rounded-4xl border border-[#e8e4de] bg-white p-6 shadow-sm">
+      <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+        {step}
+      </p>
+
+      <h2 className="mb-3 text-2xl font-bold">{title}</h2>
+
+      <p className="text-sm leading-relaxed text-[#6b6880]">{text}</p>
+    </article>
   );
 }
