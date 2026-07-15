@@ -2,10 +2,10 @@ import {
   ArrowRight,
   CalendarDays,
   CheckCircle2,
-  FileText,
-  HeartHandshake,
-  PlayCircle,
-  Video,
+  Mic,
+  MessageCircleQuestion,
+  Sparkles,
+  Users,
 } from "lucide-react";
 
 export default function SubscribePage() {
@@ -18,117 +18,166 @@ export default function SubscribePage() {
           </p>
           <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
             We are building this platform from scratch with feedback from AHAs,
-            managers and clinics. More topics, resources and support options are
-            coming soon.
+            managers and clinics. This first webinar is completely free. No
+            payment details, no membership, no catch.
           </p>
         </div>
 
         <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div>
             <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-              Free August launch webinar
+              Free launch webinar
             </p>
 
             <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
-              Start with simple therapy ideas that help children feel motivated,
-              connected and ready to join in.
+              A free hour to meet us, ask questions and hear what we are
+              building for AHAs.
             </h1>
 
             <p className="mb-8 max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
-              This free launch webinar is for Allied Health Assistants who want
-              fresh ideas, more confidence and a supportive hive around them as
-              they help children thrive.
+              This is a taster, not a sales pitch. We will spend part of the
+              hour introducing who we are and why this space is being built, and
+              part of the hour answering the questions AHAs actually have.
             </p>
 
-            <div className="mb-8 rounded-4x1 border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
+            <div className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
                 <CalendarDays size={24} />
               </div>
 
               <h2 className="mb-3 text-3xl font-bold">
-                August topic: Simple Activities and Games to Motivate Children
-                in Therapy Sessions
+                Free webinar: Meet Us + Your Questions, Answered
               </h2>
 
               <p className="mb-5 text-base leading-relaxed text-[#6b6880]">
-                Tuesday 4 August 2026, 12pm to 1pm QLD time.
+                Tuesday 4 August 2026, 12pm to 1pm QLD time. Free to attend.
+                Nothing to pay and nothing to cancel later.
               </p>
 
-              <form action="/api/stripe/monthly-webinar-checkout" method="POST">
+              <ul className="mb-6 grid gap-2 text-sm text-[#5f5b73]">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                    size={16}
+                  />
+                  Meet Robyn and hear why this AHA space is being built
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                    size={16}
+                  />
+                  Submit your questions in advance so we can answer them
+                  properly
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                    size={16}
+                  />
+                  Hear what is coming next, including future webinars, tools,
+                  podcast plans and the AHA course
+                </li>
+              </ul>
+
+              <form
+                action="/api/webinar-registration"
+                method="POST"
+                className="grid gap-4"
+              >
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Your name"
+                    required
+                    className="rounded-full border border-[#e8e4de] bg-[#faf8f5] px-5 py-3 text-base outline-none focus:border-[#0f766e]"
+                  />
+
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Your email"
+                    required
+                    className="rounded-full border border-[#e8e4de] bg-[#faf8f5] px-5 py-3 text-base outline-none focus:border-[#0f766e]"
+                  />
+                </div>
+
+                <textarea
+                  name="question"
+                  placeholder="What is your biggest question about being an AHA? Optional. We will answer as many as we can on the day."
+                  rows={3}
+                  className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] px-5 py-4 text-base outline-none focus:border-[#0f766e]"
+                />
+
                 <button
                   type="submit"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962] sm:w-auto"
                 >
-                  Register for the free August webinar
+                  Register for the free webinar
                   <ArrowRight size={18} />
                 </button>
               </form>
 
               <p className="mt-4 text-sm leading-relaxed text-[#6b6880]">
-                Your first payment is not due until 1 September 2026. You can
-                start with the free launch webinar and decide if the monthly
-                support is right for you.
+                No payment required. We will email you the joining link and a
+                reminder closer to the date.
               </p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <SmallCard
-                icon={<Video size={22} />}
-                title="Live monthly webinars"
-                text="Practical topics for real AHA sessions, therapy days and clinic life."
+                icon={<Users size={22} />}
+                title="Get to know us first"
+                text="Before anything else, this is a real introduction to who we are and why we are building this space for AHAs."
               />
 
               <SmallCard
-                icon={<FileText size={22} />}
-                title="PDF resources"
-                text="Simple handouts and resources to help you come back to the ideas later."
+                icon={<MessageCircleQuestion size={22} />}
+                title="Ask the real questions"
+                text="Scope, confidence, supervision, communication and role clarity. Submit your question in advance so it can be answered thoughtfully."
               />
 
               <SmallCard
-                icon={<PlayCircle size={22} />}
-                title="Recordings"
-                text="Edited webinar recordings added to the member library after each session."
+                icon={<Sparkles size={22} />}
+                title="See what is coming"
+                text="You will hear what we are planning next, including future webinars, reflective resources, tools and the AHA course."
               />
 
               <SmallCard
-                icon={<HeartHandshake size={22} />}
-                title="Reflective support"
-                text="A supportive professional development space that respects the skill and compassion AHAs bring."
+                icon={<Mic size={22} />}
+                title="No pressure, no pitch"
+                text="This first hour is free because we want it to be useful and supportive, not a hard sell."
               />
             </div>
           </div>
 
-          <aside className="rounded-4x1 border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
+          <aside className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-              Membership after August
+              What this is
             </p>
 
             <h2 className="mb-4 text-3xl font-bold">
-              Continue with monthly AHA Professional Development.
+              A free starting point for AHAs.
             </h2>
 
-            <div className="mb-6 rounded-3xl bg-[#faf8f5] p-5">
-              <p className="text-sm font-semibold text-[#6b6880]">
-                From September
-              </p>
-              <p className="mt-1 text-4xl font-bold">$57/month</p>
-              <p className="mt-2 text-sm leading-relaxed text-[#6b6880]">
-                Includes live monthly webinars, PDF resources and recordings.
-              </p>
-            </div>
+            <p className="mb-6 text-base leading-relaxed text-[#6b6880]">
+              This webinar is the first step while the broader AHA resources are
+              being built. We are not opening paid access or a membership offer
+              on this page right now.
+            </p>
 
             <div className="grid gap-3">
-              <CheckItem text="Free August launch webinar included" />
-              <CheckItem text="First Tuesday of every month" />
-              <CheckItem text="12pm to 1pm QLD time" />
-              <CheckItem text="Practical ideas for therapy sessions" />
-              <CheckItem text="Member library access" />
-              <CheckItem text="PDFs and recordings as they are added" />
+              <CheckItem text="Free to register" />
+              <CheckItem text="No payment details required" />
+              <CheckItem text="Questions can be submitted in advance" />
+              <CheckItem text="Future webinars and tools will be shaped by AHA feedback" />
+              <CheckItem text="The full AHA course is coming soon as a separate course pathway" />
             </div>
 
             <div className="mt-7 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
               <p className="text-sm font-semibold text-[#0f766e]">
-                Looking for 1:1 support instead?
+                Want 1:1 support in the meantime?
               </p>
 
               <p className="mt-2 text-sm leading-relaxed text-[#3f5f5a]">
