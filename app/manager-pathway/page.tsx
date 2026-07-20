@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   ClipboardList,
   MessageCircleHeart,
+  Store,
   UsersRound,
   Video,
 } from "lucide-react";
@@ -28,10 +29,12 @@ export default async function ManagerPathwayPage({
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
             Built with AHAs, managers and clinics
           </p>
+
           <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
-            We are building this platform from scratch with feedback from AHAs,
-            clinic owners, managers and supervising professionals. More team
-            options, resources and support pathways are coming soon.
+            Robyn and Jess are building this platform from scratch with feedback
+            from AHAs, clinic owners, managers and supervising professionals.
+            Team support, resource options and custom pathways are being shaped
+            around what services actually need.
           </p>
         </div>
 
@@ -42,14 +45,14 @@ export default async function ManagerPathwayPage({
             </p>
 
             <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
-              Support your AHA team without building everything from scratch.
+              Support your AHA team without building every process from scratch.
             </h1>
 
             <p className="mb-8 max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
-              Give your AHAs access to practical monthly professional
-              development, reusable tools and reflective support options that
-              help them feel clearer, more confident and more connected in their
-              work.
+              If your AHAs are doing important work but the systems around them
+              feel unclear, this pathway helps you think through practical
+              support, team resources, reflective practice options and custom
+              documentation needs.
             </p>
 
             <div className="mb-8 rounded-4xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
@@ -58,35 +61,37 @@ export default async function ManagerPathwayPage({
               </div>
 
               <h2 className="mb-4 text-3xl font-bold">
-                Small team access
+                Team support options
               </h2>
 
               <div className="mb-5 rounded-3xl bg-[#faf8f5] p-5">
                 <p className="text-sm font-semibold text-[#6b6880]">
-                  Up to 5 staff
+                  For clinics, organisations and service teams
                 </p>
-                <p className="mt-1 text-4xl font-bold">$57/month</p>
+
+                <p className="mt-1 text-4xl font-bold">Request a quote</p>
+
                 <p className="mt-2 text-sm leading-relaxed text-[#6b6880]">
-                  Suitable for small clinics or teams wanting access to the
-                  monthly AHA Professional Development webinars and member
-                  resources.
+                  Suitable for managers who want clearer AHA role support,
+                  reflective practice options, resource pathways, team
+                  documentation or clinic-specific tools.
                 </p>
               </div>
 
               <div className="grid gap-3">
-                <CheckItem text="Monthly live AHA Professional Development webinars" />
-                <CheckItem text="Member library access for eligible staff" />
-                <CheckItem text="PDFs, recordings and tools as they are added" />
-                <CheckItem text="Designed to support AHAs with practical ideas and role clarity" />
+                <CheckItem text="Team support for AHAs, managers and supervising professionals" />
+                <CheckItem text="Reflective practice options for role clarity and confidence" />
+                <CheckItem text="Resource shop packs, templates and trackers as they are released" />
+                <CheckItem text="Custom build options for teams needing tailored documentation or systems" />
               </div>
 
-              <Link
-                href="/subscribe"
+              <a
+                href="#team-quote-form"
                 className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
               >
-                Start monthly access
+                Request a team quote
                 <ArrowRight size={16} />
-              </Link>
+              </a>
             </div>
 
             <div className="rounded-4xl border border-[#99f6e4] bg-[#f0fdfa] p-6 shadow-sm md:p-8">
@@ -95,26 +100,47 @@ export default async function ManagerPathwayPage({
               </div>
 
               <h2 className="mb-4 text-3xl font-bold">
-                Need support for more than 5 staff?
+                Not sure what your team needs yet?
               </h2>
 
               <p className="mb-5 text-base leading-relaxed text-[#3f5f5a]">
-                If your team is larger, mixed across disciplines, or you want to
-                combine monthly webinars with 1:1 reflective practice, complete
-                the team enquiry form. We will review your team needs and
-                organise a quote.
+                That is completely fine. You can use the form to tell us what
+                feels hardest to organise, where your AHAs need more clarity, or
+                which systems are taking too much manager time. We can then
+                suggest the best next step.
               </p>
 
               <div className="grid gap-3">
                 <CheckItem text="Tell us how many AHAs are in your team" />
                 <CheckItem text="Tell us which disciplines or supervising professionals are involved" />
-                <CheckItem text="Choose monthly webinars, 1:1 reflective practice, or both" />
-                <CheckItem text="We will follow up with a suitable quote" />
+                <CheckItem text="Choose reflective practice, resource packs, custom support, or help deciding" />
+                <CheckItem text="We will follow up with a suitable next step or quote" />
               </div>
+            </div>
+
+            <div className="mt-8 grid gap-5 md:grid-cols-2">
+              <SupportCard
+                icon={<Video size={23} />}
+                title="Free webinar first"
+                text="Managers can register for the free launch webinar to hear what is being built and decide whether it suits their team."
+                href="/subscribe"
+                linkText="Register for free webinar"
+              />
+
+              <SupportCard
+                icon={<Store size={23} />}
+                title="Resource shop"
+                text="Join the resource shop waitlist or request a custom quote for templates, trackers, documentation or clinic-specific resources."
+                href="/resource-shop"
+                linkText="View resource shop"
+              />
             </div>
           </section>
 
-          <aside className="rounded-4xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
+          <aside
+            id="team-quote-form"
+            className="rounded-4xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8"
+          >
             {success ? (
               <SuccessBox />
             ) : (
@@ -125,7 +151,7 @@ export default async function ManagerPathwayPage({
                   </div>
 
                   <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-                    Team quote form
+                    Team support enquiry
                   </p>
 
                   <h2 className="mb-3 text-3xl font-bold">
@@ -134,8 +160,8 @@ export default async function ManagerPathwayPage({
 
                   <p className="text-base leading-relaxed text-[#6b6880]">
                     Keep it simple. This helps us understand whether you need
-                    monthly webinar access, 1:1 reflective practice, or a
-                    tailored team option.
+                    reflective practice, resource packs, custom documentation,
+                    team support or help choosing the right starting point.
                   </p>
                 </div>
 
@@ -173,9 +199,9 @@ export default async function ManagerPathwayPage({
                     required
                     options={[
                       { label: "Choose one", value: "" },
-                      { label: "1–5 staff", value: "1-5" },
-                      { label: "6–10 staff", value: "6-10" },
-                      { label: "11–20 staff", value: "11-20" },
+                      { label: "1-5 staff", value: "1-5" },
+                      { label: "6-10 staff", value: "6-10" },
+                      { label: "11-20 staff", value: "11-20" },
                       { label: "20+ staff", value: "20+" },
                       { label: "Not sure yet", value: "Not sure" },
                     ]}
@@ -194,16 +220,24 @@ export default async function ManagerPathwayPage({
                     options={[
                       { label: "Choose one", value: "" },
                       {
-                        label: "Monthly webinars only",
-                        value: "Monthly webinars only",
+                        label: "Free webinar first",
+                        value: "Free webinar first",
                       },
                       {
-                        label: "1:1 reflective practice only",
-                        value: "1:1 reflective practice only",
+                        label: "1:1 reflective practice",
+                        value: "1:1 reflective practice",
                       },
                       {
-                        label: "Monthly webinars and 1:1 reflective practice",
-                        value: "Monthly webinars and 1:1 reflective practice",
+                        label: "Resource shop packs",
+                        value: "Resource shop packs",
+                      },
+                      {
+                        label: "Custom build / request a quote",
+                        value: "Custom build / request a quote",
+                      },
+                      {
+                        label: "Team support options",
+                        value: "Team support options",
                       },
                       {
                         label: "Not sure — help me choose",
@@ -228,7 +262,7 @@ export default async function ManagerPathwayPage({
                     type="submit"
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962]"
                   >
-                    Request a team quote
+                    Send team support enquiry
                     <ArrowRight size={18} />
                   </button>
 
@@ -258,7 +292,7 @@ function SuccessBox() {
       </p>
 
       <h1 className="mb-4 text-3xl font-bold">
-        Thank you. Your team quote request has been sent.
+        Thank you. Your team support enquiry has been sent.
       </h1>
 
       <p className="mb-6 text-base leading-relaxed text-[#6b6880]">
@@ -278,10 +312,44 @@ function SuccessBox() {
           href="/subscribe"
           className="inline-flex items-center justify-center rounded-full border border-[#0f766e] bg-white px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
         >
-          View webinars
+          Free webinar
         </Link>
       </div>
     </div>
+  );
+}
+
+function SupportCard({
+  icon,
+  title,
+  text,
+  href,
+  linkText,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+  href: string;
+  linkText: string;
+}) {
+  return (
+    <article className="rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm">
+      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+        {icon}
+      </div>
+
+      <h3 className="mb-2 text-xl font-bold">{title}</h3>
+
+      <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">{text}</p>
+
+      <Link
+        href={href}
+        className="inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e]"
+      >
+        {linkText}
+        <ArrowRight size={14} />
+      </Link>
+    </article>
   );
 }
 
@@ -310,6 +378,7 @@ function TextField({
   return (
     <label className="grid gap-2">
       <span className="text-sm font-semibold text-[#1e1b2e]">{label}</span>
+
       <input
         name={name}
         type={type}
@@ -333,6 +402,7 @@ function TextareaField({
   return (
     <label className="grid gap-2">
       <span className="text-sm font-semibold text-[#1e1b2e]">{label}</span>
+
       <textarea
         name={name}
         placeholder={placeholder}
@@ -357,6 +427,7 @@ function SelectField({
   return (
     <label className="grid gap-2">
       <span className="text-sm font-semibold text-[#1e1b2e]">{label}</span>
+
       <select
         name={name}
         required={required}
