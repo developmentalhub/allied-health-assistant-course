@@ -8,7 +8,6 @@ import {
   ClipboardList,
   ExternalLink,
   FileText,
-  Lock,
   MessageCircle,
   PlayCircle,
   Repeat,
@@ -76,13 +75,13 @@ const TOOL_PREVIEWS = [
   },
 ];
 
-const INCLUDED_FEATURES = [
-  "Monthly live AHA Professional Development webinars",
-  "Replay access inside the member library",
-  "PDF handouts and reflection prompts",
-  "Tool previews and full member tools as they are added",
-  "Tools can be used multiple times across different sessions",
-  "More content added as the platform grows",
+const PLANNED_FEATURES = [
+  "Free launch webinar first",
+  "Topic previews as the pathway grows",
+  "PDF handouts and reflection prompts when released",
+  "Reusable tools shaped by AHA feedback",
+  "Resources that can be used across different sessions",
+  "More content added as the platform develops",
 ];
 
 export default function TopicsPage() {
@@ -93,10 +92,11 @@ export default function TopicsPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
             Built with AHAs, for AHAs
           </p>
+
           <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
-            We are building this platform from scratch with feedback from AHAs,
-            managers and clinics. More tools, previews, videos and resources are
-            coming soon.
+            Robyn and Jess are building this platform from scratch with feedback
+            from AHAs, managers and clinics. More tools, previews, videos and
+            resources are coming soon.
           </p>
         </section>
 
@@ -104,18 +104,18 @@ export default function TopicsPage() {
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
             <div>
               <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-                AHA tools and topic previews
+                AHA topic pathway
               </p>
 
               <h1 className="mb-5 text-4xl font-bold leading-tight md:text-6xl">
-                Practical tools you can come back to again and again.
+                Practical topics, tools and reflective resources are being built.
               </h1>
 
               <p className="mb-6 max-w-3xl text-base leading-relaxed text-[#6b6880] md:text-lg">
-                These tools are being created to help AHAs feel inspired,
-                prepared and supported in real therapy sessions. You will be
-                able to use them multiple times as different children, sessions
-                and situations come up.
+                These topic pathways are being created to help AHAs feel
+                inspired, prepared and supported in real therapy sessions. The
+                first step is the free launch webinar, then more topic previews,
+                tools and resources will be added as the platform grows.
               </p>
 
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -123,7 +123,7 @@ export default function TopicsPage() {
                   href="/subscribe"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
                 >
-                  Register for monthly access
+                  Register for the free webinar
                   <ArrowRight size={16} />
                 </Link>
 
@@ -143,17 +143,17 @@ export default function TopicsPage() {
               </div>
 
               <h2 className="mb-3 text-2xl font-bold">
-                Included in the $57/month membership
+                Topic pathway coming soon
               </h2>
 
               <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
-                The monthly membership includes live webinars, recordings, PDF
-                resources and access to member tools as they are added. Tools
-                are designed to be reused whenever you need them.
+                The topic pathway is not being opened as monthly access right
+                now. The first priority is the free launch webinar, listening to
+                AHAs and building the most useful resources first.
               </p>
 
               <ul className="space-y-3 text-sm leading-relaxed text-[#3f5f5a]">
-                {INCLUDED_FEATURES.map((feature) => (
+                {PLANNED_FEATURES.map((feature) => (
                   <li key={feature} className="flex gap-2">
                     <Check
                       size={16}
@@ -167,6 +167,28 @@ export default function TopicsPage() {
           </div>
         </section>
 
+        <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6 shadow-sm">
+          <div className="flex gap-3">
+            <ShieldCheck
+              size={22}
+              className="mt-0.5 shrink-0 text-[#0f766e]"
+            />
+
+            <div>
+              <p className="mb-1 text-sm font-semibold text-[#0f766e]">
+                Professional boundary
+              </p>
+
+              <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                Topic resources support reflective professional development.
+                They do not replace workplace supervision, clinical supervision,
+                delegation, clinical oversight, workplace documentation,
+                incident reporting or employer responsibilities.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -174,13 +196,13 @@ export default function TopicsPage() {
             </p>
 
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              See the kind of support being built, without opening the full tool.
+              See the kind of support being built.
             </h2>
 
             <p className="text-base leading-relaxed text-[#6b6880]">
               These previews show the purpose of each tool. The full interactive
-              versions will sit inside the member library as part of the monthly
-              AHA Professional Development access.
+              versions and downloadable resources will be released when the
+              pathway is ready.
             </p>
           </div>
 
@@ -204,14 +226,15 @@ export default function TopicsPage() {
                   <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
                     Preview only
                   </p>
+
                   <p className="text-sm leading-relaxed text-[#6b6880]">
                     {tool.preview}
                   </p>
                 </div>
 
                 <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
-                  <Lock size={15} />
-                  Full tool included for members
+                  <Sparkles size={15} />
+                  Full tool pathway coming soon
                 </div>
               </article>
             ))}
@@ -221,16 +244,17 @@ export default function TopicsPage() {
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-              Monthly webinar topics
+              Planned topic themes
             </p>
 
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              Tools will connect with the monthly webinar themes.
+              Topic previews will connect with real AHA questions.
             </h2>
 
             <p className="text-base leading-relaxed text-[#6b6880]">
-              Each month will focus on practical support for real therapy
-              sessions. Tools and resources will grow alongside the webinars.
+              Each topic is being shaped around practical support for real
+              therapy sessions. Tools and resources will grow alongside future
+              webinars and feedback from AHAs.
             </p>
           </div>
 
@@ -264,7 +288,7 @@ export default function TopicsPage() {
                   href="/subscribe"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
                 >
-                  Included in membership
+                  Start with free webinar
                   <ArrowRight size={15} />
                 </Link>
               </article>
@@ -288,10 +312,11 @@ export default function TopicsPage() {
               </h2>
 
               <p className="max-w-3xl text-base leading-relaxed text-[#3f5f5a]">
-                The tools are designed to be used repeatedly. An AHA might use
-                the same tool before a tricky session, after a session that did
-                not go to plan, when preparing questions for a therapist, or
-                when reflecting on how to support a different child.
+                The planned tools are designed to be used repeatedly. An AHA
+                might use the same tool before a tricky session, after a session
+                that did not go to plan, when preparing questions for a
+                therapist, or when reflecting on how to support a different
+                child.
               </p>
             </div>
           </div>
@@ -300,36 +325,45 @@ export default function TopicsPage() {
         <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <div className="mb-8 max-w-3xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-              What members will see
+              Planned pathway
             </p>
 
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              A simple member pathway for each topic.
+              A simple support pathway for each topic.
             </h2>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
               <PlayCircle className="mb-3 text-[#0f766e]" size={24} />
+
               <h3 className="mb-2 font-bold">Watch</h3>
+
               <p className="text-sm leading-relaxed text-[#6b6880]">
-                Live webinar first, then edited replay in the member library.
+                Free launch webinar first, then future topic videos or live
+                sessions as the pathway grows.
               </p>
             </div>
 
             <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
               <FileText className="mb-3 text-[#0f766e]" size={24} />
+
               <h3 className="mb-2 font-bold">Download</h3>
+
               <p className="text-sm leading-relaxed text-[#6b6880]">
-                PDF resources, reflection prompts and session support sheets.
+                PDF resources, reflection prompts and session support sheets
+                when they are released.
               </p>
             </div>
 
             <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
               <ClipboardList className="mb-3 text-[#0f766e]" size={24} />
+
               <h3 className="mb-2 font-bold">Use the tool</h3>
+
               <p className="text-sm leading-relaxed text-[#6b6880]">
-                Interactive Netlify tools embedded where they support the topic.
+                Interactive tools or resource prompts where they genuinely
+                support the topic.
               </p>
             </div>
           </div>
@@ -343,19 +377,20 @@ export default function TopicsPage() {
               </p>
 
               <h2 className="mb-5 text-3xl font-bold md:text-5xl">
-                Start with the free August webinar, then keep building your
-                toolkit.
+                Start with the free webinar, then help shape what comes next.
               </h2>
 
               <p className="text-base leading-relaxed text-[#d9d7e5] md:text-lg">
-                The monthly membership gives AHAs a place to come back to for
-                ideas, reflection, tools and support as the platform grows.
+                The topic pathway will grow around the questions AHAs and
+                managers actually bring. The first step is listening, answering
+                real questions and building the most useful resources first.
               </p>
             </div>
 
             <div className="rounded-3xl border border-white/10 bg-white/10 p-6">
               <div className="mb-5 flex items-start gap-3">
                 <Sparkles className="mt-1 shrink-0 text-[#99f6e4]" size={22} />
+
                 <p className="text-sm leading-relaxed text-[#d9d7e5]">
                   More tools and resources will be added as we learn what AHAs
                   need most from the hive.
@@ -366,7 +401,7 @@ export default function TopicsPage() {
                 href="/subscribe"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
               >
-                Register for monthly access
+                Register for the free webinar
                 <ArrowRight size={16} />
               </Link>
 
