@@ -11,6 +11,7 @@ import {
   Sparkles,
   Table2,
   UsersRound,
+  Wand2,
 } from "lucide-react";
 import { joinResourceShopWaitlist } from "./actions";
 
@@ -145,6 +146,19 @@ const premiumPacks = [
       "Workflow and admin prompt systems",
     ],
   },
+  {
+    title: "Custom Build / Request a Quote",
+    price: "Quoted individually",
+    description:
+      "For clinics, teams or organisations who need something tailored rather than a packaged resource.",
+    icon: <Wand2 size={26} />,
+    includes: [
+      "Custom induction or onboarding packs",
+      "Clinic-specific AHA documentation",
+      "Supervisor checklists and handover tools",
+      "Tailored templates, trackers or resource bundles",
+    ],
+  },
 ];
 
 type PageProps = {
@@ -166,8 +180,9 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
           </p>
 
           <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
-            For AHA teams, therapists and managers who want the working day to
-            feel clearer, calmer and easier to organise.
+            Robyn and Jess are preparing practical documentation, templates and
+            systems for AHA teams, therapists, managers and clinics who want the
+            working day to feel clearer, calmer and easier to organise.
           </p>
         </div>
 
@@ -210,7 +225,7 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
                   href="/subscribe"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
                 >
-                  Start with the membership
+                  Start with the free webinar
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -224,10 +239,10 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
               </h2>
 
               <div className="grid gap-4">
-                <CheckItem text="The membership helps AHAs build confidence, skills and reflective practice." />
+                <CheckItem text="The free webinar helps AHAs, managers and clinics understand what is being built." />
                 <CheckItem text="The resource shop will help teams run the day with clearer templates, trackers and systems." />
                 <CheckItem text="Managers will be able to choose the packs that match their team’s pressure points." />
-                <CheckItem text="Premium clinic systems will stay separate from the $57/month membership." />
+                <CheckItem text="Custom builds will be available for teams needing something more tailored." />
               </div>
             </aside>
           </div>
@@ -236,20 +251,20 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
         <section className="mb-8 grid gap-5 md:grid-cols-3">
           <JourneyCard
             step="Step 1"
-            title="Join the free community"
-            text="Start gently. Browse, use the free starter tools, attend the free webinar and get a feel for the support available."
+            title="Start with the free webinar"
+            text="Meet Robyn and Jess, ask questions and get a feel for the AHA support space being built."
           />
 
           <JourneyCard
             step="Step 2"
-            title="Build confidence through membership"
-            text="Use the monthly webinars, recordings, reflection tools and starter templates to strengthen AHA skills and confidence."
+            title="Join the free community"
+            text="Start gently. Browse, use starter tools as they become available and connect with other AHAs."
           />
 
           <JourneyCard
             step="Step 3"
-            title="Make the workday easier with resource packs"
-            text="Choose the premium templates, frameworks, trackers and systems that help your team run sessions and clinic processes more smoothly."
+            title="Request resources or custom support"
+            text="Choose a planned pack, join the waitlist, or request a custom quote if your clinic needs something tailored."
           />
         </section>
 
@@ -302,6 +317,7 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
                           size={16}
                           className="mt-0.5 shrink-0 text-[#0f766e]"
                         />
+
                         <p className="text-sm leading-relaxed text-[#5f5b73]">
                           {item}
                         </p>
@@ -314,7 +330,9 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
                   href="#waitlist"
                   className="mt-5 inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
                 >
-                  Join waitlist for this pack
+                  {pack.title === "Custom Build / Request a Quote"
+                    ? "Request a custom quote"
+                    : "Join waitlist for this pack"}
                   <ArrowRight size={15} />
                 </a>
               </article>
@@ -326,37 +344,39 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
           <div className="grid gap-6 lg:grid-cols-[0.72fr_1fr] lg:items-start">
             <div>
               <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-                Membership and resource shop
+                Packaged or custom
               </p>
 
               <h2 className="mb-4 text-3xl font-bold">
-                They support different parts of the same problem.
+                Choose a ready-made direction, or request something tailored.
               </h2>
 
               <p className="text-base leading-relaxed text-[#6b6880]">
-                The membership supports the person. The resource shop supports
-                the systems around the person.
+                Some teams need a clear template pack. Others need something
+                more specific to their clinic, team structure, documentation
+                expectations or service model.
               </p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <div className="rounded-3xl bg-[#f0fdfa] p-5">
                 <h3 className="mb-3 text-xl font-bold text-[#0f766e]">
-                  AHA membership
+                  Resource packs
                 </h3>
+
                 <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                  For building confidence, learning practical strategies,
-                  reflecting on sessions and feeling less alone in the role.
+                  For teams who want practical templates, frameworks, trackers,
+                  processes and support materials they can adapt and use.
                 </p>
               </div>
 
               <div className="rounded-3xl bg-[#faf8f5] p-5">
-                <h3 className="mb-3 text-xl font-bold">
-                  Resource shop
-                </h3>
+                <h3 className="mb-3 text-xl font-bold">Custom build</h3>
+
                 <p className="text-sm leading-relaxed text-[#5f5b73]">
-                  For making the running of the day easier through templates,
-                  frameworks, trackers, processes and clinic systems.
+                  For teams who need a tailored documentation pack, clinic
+                  workflow, supervisor resource, induction system or resource
+                  bundle built around their needs.
                 </p>
               </div>
             </div>
@@ -373,11 +393,11 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
             </div>
 
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-              Join the waitlist
+              Join the waitlist or request a quote
             </p>
 
             <h2 className="mb-4 text-3xl font-bold">
-              Be first to know when the resource shop opens.
+              Tell us what your team needs.
             </h2>
 
             <p className="mb-5 text-base leading-relaxed text-[#6b6880]">
@@ -389,8 +409,9 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
             <div className="rounded-3xl bg-[#faf8f5] p-5">
               <p className="text-sm leading-relaxed text-[#5f5b73]">
                 You do not need to know exactly what you need yet. Tell us what
-                feels messy, time-consuming or unclear in your team, and we will
-                use that feedback to shape the first packs released.
+                feels messy, time-consuming or unclear in your team. If you need
+                something custom-built, choose Custom Build in the form and give
+                us a short description.
               </p>
             </div>
           </div>
@@ -398,9 +419,10 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
           <div>
             {success ? (
               <div className="mb-5 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 text-[#0f766e]">
-                <p className="font-semibold">You are on the waitlist.</p>
+                <p className="font-semibold">Your enquiry has been received.</p>
                 <p className="mt-1 text-sm leading-relaxed">
-                  We will let you know when the resource shop is ready.
+                  We will let you know when the resource shop is ready, or
+                  follow up if your enquiry is about a custom quote.
                 </p>
               </div>
             ) : null}
@@ -480,7 +502,7 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
                     defaultValue=""
                   >
                     <option value="" disabled>
-                      Select a pack
+                      Select an option
                     </option>
                     <option value="AHA Framework Pack">
                       AHA Framework Pack
@@ -512,6 +534,9 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
                     <option value="AI Systems and Prompt Library">
                       AI Systems and Prompt Library
                     </option>
+                    <option value="Custom Build / Request a Quote">
+                      Custom Build / Request a Quote
+                    </option>
                     <option value="Several packs">Several packs</option>
                     <option value="Not sure yet">Not sure yet</option>
                   </select>
@@ -522,11 +547,12 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
                 <span className="text-sm font-semibold">
                   What feels hardest to organise in your team right now?
                 </span>
+
                 <textarea
                   name="message"
                   rows={5}
                   className="rounded-2xl border border-[#d8d3ca] bg-white px-4 py-3 text-sm outline-none focus:border-[#0f766e]"
-                  placeholder="For example: delegation, treatment plan tracking, session planning, documentation, onboarding, compliance, reporting, knowing what AHAs can do, or keeping everyone consistent."
+                  placeholder="For example: delegation, treatment plan tracking, session planning, documentation, onboarding, compliance, reporting, knowing what AHAs can do, or needing a custom pack for your clinic."
                 />
               </label>
 
@@ -534,7 +560,7 @@ export default async function ResourceShopPage({ searchParams }: PageProps) {
                 type="submit"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
               >
-                Join the resource shop waitlist
+                Send resource enquiry
                 <ArrowRight size={16} />
               </button>
             </form>
@@ -549,6 +575,7 @@ function CheckItem({ text }: { text: string }) {
   return (
     <div className="flex gap-3">
       <CheckCircle2 className="mt-0.5 shrink-0 text-[#99f6e4]" size={18} />
+
       <p className="text-sm leading-relaxed text-[#d9d7e5]">{text}</p>
     </div>
   );

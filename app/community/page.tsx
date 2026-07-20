@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   ClipboardList,
   MessageCircleHeart,
+  Store,
   UsersRound,
   Video,
 } from "lucide-react";
@@ -14,7 +15,7 @@ const freeTools = [
   {
     title: "AHA Course Tools Preview",
     description:
-      "Explore the starter AHA tools and get a feel for the kind of support being built inside the hive.",
+      "Explore the starter AHA tools and get a feel for the kind of practical support being built inside the hive.",
     href: "https://allied-health-assistant-course.netlify.app/",
   },
   {
@@ -36,7 +37,7 @@ export default function CommunityPage() {
 
           <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
             A low-pressure place to start. Browse quietly, access the free
-            starter tools, register for the free August webinar, or join the
+            starter tools, register for the free launch webinar, or join the
             community conversation when you are ready.
           </p>
         </div>
@@ -54,7 +55,9 @@ export default function CommunityPage() {
 
               <p className="mb-7 text-lg leading-relaxed text-[#5f5b73]">
                 Start with the free tools, browse the feed quietly, see who else
-                is joining, or reply when you feel ready.
+                is joining, or reply when you feel ready. This space is being
+                shaped by Robyn and Jess with feedback from AHAs, managers and
+                clinics.
               </p>
 
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -81,15 +84,13 @@ export default function CommunityPage() {
                 <UsersRound size={24} />
               </div>
 
-              <h2 className="mb-4 text-2xl font-bold">
-                What you can do here
-              </h2>
+              <h2 className="mb-4 text-2xl font-bold">What you can do here</h2>
 
               <div className="grid gap-3">
                 <CheckItem text="Use the two free starter tools." />
                 <CheckItem text="Browse quietly without needing to post." />
                 <CheckItem text="Read community updates and replies." />
-                <CheckItem text="Register for the free August webinar." />
+                <CheckItem text="Register for the free launch webinar." />
               </div>
             </aside>
           </div>
@@ -137,8 +138,8 @@ export default function CommunityPage() {
 
             <p className="max-w-3xl text-base leading-relaxed text-[#6b6880]">
               These tools are a small taste of the practical support being built
-              for AHAs. The full member tool library will sit inside the
-              $57/month AHA Professional Development membership.
+              for AHAs. More tools and resources will be shaped by feedback from
+              AHAs, managers, supervising professionals and clinics.
             </p>
           </div>
 
@@ -173,18 +174,18 @@ export default function CommunityPage() {
         <section className="mb-6 grid gap-5 md:grid-cols-3">
           <PathwayCard
             icon={<Video size={24} />}
-            title="Free August webinar"
-            text="Start with the free August webinar, then continue monthly from September if it feels helpful."
+            title="Free launch webinar"
+            text="Meet Robyn and Jess, ask questions and hear what is being built for AHAs."
             href="/subscribe"
             linkText="Register free"
           />
 
           <PathwayCard
-            icon={<ClipboardList size={24} />}
-            title="$57/month membership"
-            text="Monthly live webinars, replays, PDFs and reusable member tools as the library grows."
-            href="/subscribe"
-            linkText="View membership"
+            icon={<Store size={24} />}
+            title="Resource shop"
+            text="Join the waitlist or request a custom quote for templates, tools, trackers or clinic-specific resources."
+            href="/resource-shop"
+            linkText="View resource shop"
           />
 
           <PathwayCard
@@ -208,9 +209,9 @@ export default function CommunityPage() {
               </h2>
 
               <p className="max-w-3xl text-base leading-relaxed text-[#d9d7e5]">
-                Team access starts at $57/month for up to 5 staff. Larger teams
-                or clinics wanting monthly webinars and 1:1 reflective practice
-                can request a team quote.
+                Managers and clinic owners can view the manager pathway for team
+                support, resource options, reflective practice enquiries and
+                future AHA professional development updates.
               </p>
             </div>
 

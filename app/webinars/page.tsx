@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
-  CalendarDays,
   CheckCircle2,
   FileText,
   LockKeyhole,
@@ -65,13 +64,14 @@ export default async function WebinarsPage() {
               </p>
 
               <h1 className="mb-5 max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
-                Monthly professional development for AHAs.
+                Live professional development and practical conversations for
+                AHAs.
               </h1>
 
               <p className="mb-6 max-w-2xl text-base leading-relaxed text-[#6b6880] md:text-lg">
-                Join Jess and Robyn for monthly live AHA Professional
-                Development webinars. Each monthly topic is supported by PDF
-                resources and a recording added after the session.
+                Join Jess and Robyn for practical AHA Professional Development
+                conversations that focus on real questions, role clarity,
+                communication, confidence and everyday support.
               </p>
 
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -79,7 +79,7 @@ export default async function WebinarsPage() {
                   href="/subscribe"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962]"
                 >
-                  Join with August free
+                  Register for the free webinar
                   <ArrowRight size={18} />
                 </Link>
 
@@ -87,7 +87,7 @@ export default async function WebinarsPage() {
                   href="/manager-pathway"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-[#0f766e] px-6 py-4 text-base font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
                 >
-                  Manager team access
+                  Manager pathway
                   <ArrowRight size={18} />
                 </Link>
               </div>
@@ -99,13 +99,13 @@ export default async function WebinarsPage() {
               </div>
 
               <h2 className="mb-3 text-2xl font-bold">
-                August launch webinar is free
+                The launch webinar is free
               </h2>
 
               <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
-                Join now and get access to the Tuesday 4 August 2026 launch
-                webinar free. Your first $57 monthly payment is not taken until
-                Tuesday 1 September 2026.
+                The first webinar is a free introduction to meet Robyn and Jess,
+                ask questions and hear what is being built for AHAs. No payment
+                details are required.
               </p>
 
               <ul className="space-y-3 text-sm leading-relaxed text-[#1e1b2e]">
@@ -114,7 +114,7 @@ export default async function WebinarsPage() {
                     className="mt-0.5 shrink-0 text-[#0f766e]"
                     size={18}
                   />
-                  <span>First Tuesday of each month</span>
+                  <span>Tuesday 4 August 2026</span>
                 </li>
 
                 <li className="flex gap-3">
@@ -130,7 +130,7 @@ export default async function WebinarsPage() {
                     className="mt-0.5 shrink-0 text-[#0f766e]"
                     size={18}
                   />
-                  <span>PDFs and recordings organised by topic</span>
+                  <span>Questions can be submitted in advance</span>
                 </li>
               </ul>
             </div>
@@ -142,6 +142,7 @@ export default async function WebinarsPage() {
             <h2 className="mb-2 text-xl font-bold">
               Could not load webinars
             </h2>
+
             <p className="text-sm leading-relaxed">{error.message}</p>
           </div>
         ) : null}
@@ -157,8 +158,9 @@ export default async function WebinarsPage() {
             </h2>
 
             <p className="max-w-3xl text-base leading-relaxed text-[#6b6880]">
-              Live webinars are held monthly. The first launch webinar is free,
-              then the monthly membership continues from September.
+              Upcoming webinars will be added as the AHA Professional
+              Development pathway grows. The current priority is the free launch
+              webinar with Robyn and Jess.
             </p>
           </div>
 
@@ -168,7 +170,7 @@ export default async function WebinarsPage() {
                 <WebinarCard
                   key={webinar.id}
                   webinar={webinar}
-                  showMemberLinks={false}
+                  showResourceLinks={false}
                 />
               ))}
             </div>
@@ -188,8 +190,8 @@ export default async function WebinarsPage() {
             </h2>
 
             <p className="max-w-3xl text-base leading-relaxed text-[#6b6880]">
-              After each live webinar, the recording and related PDF resources
-              will be added under the topic for members.
+              Recordings and related resources will be added here once webinars
+              are running and the resource pathway is ready.
             </p>
           </div>
 
@@ -199,7 +201,7 @@ export default async function WebinarsPage() {
                 <WebinarCard
                   key={webinar.id}
                   webinar={webinar}
-                  showMemberLinks={false}
+                  showResourceLinks={false}
                 />
               ))}
             </div>
@@ -212,19 +214,20 @@ export default async function WebinarsPage() {
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <h2 className="mb-5 text-3xl font-bold md:text-5xl">
-                Pay yourself, or send it to your manager.
+                Start with the free webinar.
               </h2>
 
               <p className="text-base leading-relaxed text-[#d9d7e5] md:text-lg">
-                AHAs can join directly, and managers can organise team access in
-                one place. Many clinics cover professional development for AHAs.
+                This first session is designed to introduce the AHA space, hear
+                what AHAs and managers need, and answer real questions before
+                the broader webinar and resource pathway is built.
               </p>
             </div>
 
             <div className="rounded-3xl border border-white/10 bg-white/10 p-6">
               <p className="mb-5 text-sm leading-relaxed text-[#d9d7e5]">
-                The membership includes monthly webinars, PDF topic resources
-                and webinar recordings.
+                Register for the free launch webinar, or view the manager
+                pathway if you are looking at support for a team.
               </p>
 
               <div className="flex flex-col gap-3">
@@ -232,7 +235,7 @@ export default async function WebinarsPage() {
                   href="/subscribe"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
                 >
-                  Join monthly membership
+                  Register for free webinar
                   <ArrowRight size={16} />
                 </Link>
 
@@ -240,7 +243,7 @@ export default async function WebinarsPage() {
                   href="/manager-pathway"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/30 px-5 py-4 text-center text-base font-semibold text-white transition hover:bg-white/10"
                 >
-                  Manager team hub
+                  Manager pathway
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -254,10 +257,10 @@ export default async function WebinarsPage() {
 
 function WebinarCard({
   webinar,
-  showMemberLinks,
+  showResourceLinks,
 }: {
   webinar: Webinar;
-  showMemberLinks: boolean;
+  showResourceLinks: boolean;
 }) {
   const startDate = new Date(webinar.starts_at);
   const endDate = new Date(webinar.ends_at);
@@ -288,7 +291,7 @@ function WebinarCard({
         <div>
           <div className="mb-3 flex flex-wrap gap-2">
             <span className="inline-flex items-center rounded-full bg-[#f0fdfa] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#0f766e]">
-              {webinar.access_type === "free" ? "Free" : "Members"}
+              {webinar.access_type === "free" ? "Free" : "Professional development"}
             </span>
 
             <span className="inline-flex items-center rounded-full bg-[#faf8f5] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#6b6880]">
@@ -320,19 +323,19 @@ function WebinarCard({
         <ResourceStatus
           icon={<Video size={18} />}
           label="Live link"
-          hasValue={Boolean(showMemberLinks && webinar.zoom_url)}
+          hasValue={Boolean(showResourceLinks && webinar.zoom_url)}
           value={webinar.zoom_url}
           emptyText={
             webinar.access_type === "free"
               ? "Sent after registration"
-              : "Members only"
+              : "Available when released"
           }
         />
 
         <ResourceStatus
           icon={<FileText size={18} />}
           label="PDF resource"
-          hasValue={Boolean(showMemberLinks && webinar.resource_url)}
+          hasValue={Boolean(showResourceLinks && webinar.resource_url)}
           value={webinar.resource_url}
           emptyText="Added with topic"
         />
@@ -340,7 +343,7 @@ function WebinarCard({
         <ResourceStatus
           icon={<PlayCircle size={18} />}
           label="Recording"
-          hasValue={Boolean(showMemberLinks && webinar.recording_url)}
+          hasValue={Boolean(showResourceLinks && webinar.recording_url)}
           value={webinar.recording_url}
           emptyText="Added after webinar"
         />
