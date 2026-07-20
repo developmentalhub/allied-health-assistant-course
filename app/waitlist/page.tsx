@@ -4,16 +4,20 @@ import { useState } from "react";
 import Link from "next/link";
 
 const pathways = [
-  "Allied Health",
-  "Educator",
-  "AHA monthly membership",
+  "Allied Health Assistant pathway",
+  "Educator pathway",
+  "Resource shop updates",
+  "Reflective practice options",
   "Not sure yet",
 ];
 
 const interests = [
-  "Allied Health course access",
-  "AHA monthly membership",
-  "Monthly live Zooms",
+  "Free webinar updates",
+  "Future AHA resources",
+  "Reflective PD options",
+  "Resource shop releases",
+  "Custom build / request a quote",
+  "AHA course pathway updates",
   "Community hub",
   "Educator pathway",
   "Joyful Educator tools",
@@ -45,7 +49,9 @@ export default function WaitlistPage() {
   const [error, setError] = useState("");
 
   function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
@@ -99,7 +105,9 @@ export default function WaitlistPage() {
           </h1>
 
           <p className="mx-auto mb-8 max-w-2xl text-xl leading-relaxed text-[#5f5b73]">
-            We&apos;ll let you know when the matching academy access, membership option, or pathway update is ready.
+            We&apos;ll let you know when future AHA resources, webinar updates,
+            reflective PD options, resource shop releases or course pathway
+            updates are ready.
           </p>
 
           <div className="flex flex-wrap justify-center gap-3">
@@ -144,7 +152,9 @@ export default function WaitlistPage() {
           </h1>
 
           <p className="text-xl leading-relaxed text-[#5f5b73]">
-            Join the waitlist for academy access, membership updates, or future pathway releases.
+            Join the waitlist for future AHA resources, free webinar updates,
+            reflective PD options, resource shop releases and course pathway
+            updates.
           </p>
         </header>
 
@@ -295,7 +305,8 @@ export default function WaitlistPage() {
         </section>
 
         <p className="mt-6 text-center text-base leading-relaxed text-[#5f5b73]">
-          We'll only contact you about academy updates connected to your interest.
+          We&apos;ll only contact you about academy updates connected to your
+          interest.
         </p>
       </section>
     </main>
