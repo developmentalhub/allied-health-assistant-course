@@ -147,10 +147,10 @@ export default function TopicsPage() {
               </h2>
 
               <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
-                The topic pathway is not being opened as monthly access right
-                now. The first priority is the free launch webinar, listening to
-                AHAs and building the most useful resources first.
-              </p>
+  The topic pathway is being built carefully. The first priority is
+  the free launch webinar, listening to AHAs and building the most
+  useful resources first.
+</p>
 
               <ul className="space-y-3 text-sm leading-relaxed text-[#3f5f5a]">
                 {PLANNED_FEATURES.map((feature) => (
