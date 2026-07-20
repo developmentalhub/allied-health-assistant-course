@@ -32,37 +32,37 @@ const TOPICS = [
     available: true,
   },
   {
-  title: "Reflective practice and communication",
-  description:
-    "Build confidence with reflection, observation language, questions for therapists and professional communication.",
-  href: "/topics/reflective-practice-and-communication",
-  status: "Preview available",
-  available: true,
-},
+    title: "Reflective practice and communication",
+    description:
+      "Build confidence with reflection, observation language, questions for therapists and professional communication.",
+    href: "/topics/reflective-practice-and-communication",
+    status: "Preview available",
+    available: true,
+  },
   {
-  title: "Preparing for sessions and asking better questions",
-  description:
-    "Learn how to prepare for sessions, identify what feels unclear and ask better questions before and after support activities.",
-  href: "/topics/preparing-for-sessions-and-asking-better-questions",
-  status: "Preview available",
-  available: true,
-},
+    title: "Preparing for sessions and asking better questions",
+    description:
+      "Learn how to prepare for sessions, identify what feels unclear and ask better questions before and after support activities.",
+    href: "/topics/preparing-for-sessions-and-asking-better-questions",
+    status: "Preview available",
+    available: true,
+  },
   {
-  title: "Knowing when to seek clarification",
-  description:
-    "Reflect on situations where an AHA may need further direction, clearer instructions or workplace support before continuing.",
-  href: "/topics/knowing-when-to-seek-clarification",
-  status: "Preview available",
-  available: true,
-},
+    title: "Knowing when to seek clarification",
+    description:
+      "Reflect on situations where an AHA may need further direction, clearer instructions or workplace support before continuing.",
+    href: "/topics/knowing-when-to-seek-clarification",
+    status: "Preview available",
+    available: true,
+  },
   {
-  title: "Thriving Kids and changing support roles",
-  description:
-    "A foundation update space for reflecting on role clarity, workplace expectations and changing support pathways.",
-  href: "/topics/thriving-kids-and-changing-support-roles",
-  status: "Preview available",
-  available: true,
-},
+    title: "Thriving Kids and changing support roles",
+    description:
+      "A foundation update space for reflecting on role clarity, workplace expectations and changing support pathways.",
+    href: "/topics/thriving-kids-and-changing-support-roles",
+    status: "Preview available",
+    available: true,
+  },
 ];
 
 const PAGE_FEATURES = [
@@ -80,7 +80,7 @@ export default function TopicsPage() {
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <div>
               <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-                Foundation AHA PD Topics
+                Foundation AHA PD topics
               </p>
 
               <h1 className="mb-5 text-4xl font-bold leading-tight md:text-6xl">
@@ -121,7 +121,7 @@ export default function TopicsPage() {
                   href="/subscribe"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
                 >
-                  Register interest
+                  Register for the free webinar
                   <ArrowRight size={16} />
                 </Link>
 
@@ -141,14 +141,13 @@ export default function TopicsPage() {
               </div>
 
               <h2 className="mb-3 text-2xl font-bold">
-                2026 Foundation AHA PD Library
+                Foundation AHA PD pathway
               </h2>
 
               <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
-                The full foundation library will be $279 AUD for 12 months
-                access from the day of purchase. Individual topic videos may be
-                available from $7–$19 depending on length and included
-                resources.
+                The full foundation library is planned as a future paid pathway.
+                For now, the best starting point is the free launch webinar and
+                the topic previews already being prepared.
               </p>
 
               <ul className="space-y-3 text-sm leading-relaxed text-[#3f5f5a]">
@@ -228,7 +227,7 @@ export default function TopicsPage() {
                     href="/subscribe"
                     className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
                   >
-                    Register interest
+                    Register for free webinar
                     <ArrowRight size={15} />
                   </Link>
                 )}
