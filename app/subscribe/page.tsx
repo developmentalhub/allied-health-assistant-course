@@ -1,12 +1,16 @@
+import type { ReactNode } from "react";
 import {
   ArrowRight,
   CalendarDays,
   CheckCircle2,
+  Mail,
   Mic,
   MessageCircleQuestion,
   Sparkles,
   Users,
 } from "lucide-react";
+
+const JESS_EMAIL = "jess@spectrumvillage.com.au";
 
 export default function SubscribePage() {
   return (
@@ -16,10 +20,11 @@ export default function SubscribePage() {
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
             Built with AHAs, for AHAs
           </p>
+
           <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
-            We are building this platform from scratch with feedback from AHAs,
-            managers and clinics. This first webinar is completely free. No
-            payment details, no membership, no catch.
+            Robyn and Jess are building this AHA space from scratch with
+            feedback from AHAs, managers and clinics. This first webinar is
+            completely free. No payment details, no membership, no catch.
           </p>
         </div>
 
@@ -30,8 +35,8 @@ export default function SubscribePage() {
             </p>
 
             <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
-              A free hour to meet us, ask questions and hear what we are
-              building for AHAs.
+              A free hour to meet Robyn and Jess, ask questions and hear what is
+              being built for AHAs.
             </h1>
 
             <p className="mb-8 max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
@@ -46,7 +51,7 @@ export default function SubscribePage() {
               </div>
 
               <h2 className="mb-3 text-3xl font-bold">
-                Free webinar: Meet Us + Your Questions, Answered
+                Free webinar: Meet Robyn and Jess + Your Questions, Answered
               </h2>
 
               <p className="mb-5 text-base leading-relaxed text-[#6b6880]">
@@ -60,8 +65,9 @@ export default function SubscribePage() {
                     className="mt-0.5 shrink-0 text-[#0f766e]"
                     size={16}
                   />
-                  Meet Robyn and hear why this AHA space is being built
+                  Meet Robyn and Jess and hear why this AHA space is being built
                 </li>
+
                 <li className="flex items-start gap-2">
                   <CheckCircle2
                     className="mt-0.5 shrink-0 text-[#0f766e]"
@@ -70,6 +76,7 @@ export default function SubscribePage() {
                   Submit your questions in advance so we can answer them
                   properly
                 </li>
+
                 <li className="flex items-start gap-2">
                   <CheckCircle2
                     className="mt-0.5 shrink-0 text-[#0f766e]"
@@ -128,8 +135,8 @@ export default function SubscribePage() {
             <div className="grid gap-4 md:grid-cols-2">
               <SmallCard
                 icon={<Users size={22} />}
-                title="Get to know us first"
-                text="Before anything else, this is a real introduction to who we are and why we are building this space for AHAs."
+                title="Meet the founders"
+                text="Before anything else, this is a real introduction to Robyn and Jess and why we are building this space for AHAs."
               />
 
               <SmallCard
@@ -176,11 +183,34 @@ export default function SubscribePage() {
             </div>
 
             <div className="mt-7 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#0f766e]">
+                <Mail size={20} />
+              </div>
+
               <p className="text-sm font-semibold text-[#0f766e]">
-                Want 1:1 support in the meantime?
+                AHA enquiries
               </p>
 
               <p className="mt-2 text-sm leading-relaxed text-[#3f5f5a]">
+                For now, AHA enquiries are being directed to Jess while a shared
+                partnership inbox is being set up.
+              </p>
+
+              <a
+                href={`mailto:${JESS_EMAIL}`}
+                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e]"
+              >
+                Email Jess
+                <ArrowRight size={15} />
+              </a>
+            </div>
+
+            <div className="mt-5 rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
+              <p className="text-sm font-semibold text-[#1e1b2e]">
+                Want 1:1 support in the meantime?
+              </p>
+
+              <p className="mt-2 text-sm leading-relaxed text-[#6b6880]">
                 You can also book reflective practice support to talk through a
                 real session, role question or confidence worry.
               </p>
@@ -205,7 +235,7 @@ function SmallCard({
   title,
   text,
 }: {
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
   text: string;
 }) {
