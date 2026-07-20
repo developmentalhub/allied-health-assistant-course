@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient as createSupabaseAdminClient } from "@supabase/supabase-js";
-import { CalendarDays, FileText, LockKeyhole, PlayCircle, Video } from "lucide-react";
+import {
+  CalendarDays,
+  FileText,
+  LockKeyhole,
+  PlayCircle,
+  Video,
+} from "lucide-react";
 import MemberToolsCard from "@/components/MemberToolsCard";
 import { createClient } from "@/lib/supabase-server";
 
@@ -120,15 +126,19 @@ export default async function MemberLibraryPage() {
   const recordedWebinars = typedWebinars.filter(
     (webinar) =>
       webinar.status === "recorded" ||
-      Boolean(webinar.bunny_embed_url || webinar.bunny_playback_url || webinar.recording_url)
+      Boolean(
+        webinar.bunny_embed_url ||
+          webinar.bunny_playback_url ||
+          webinar.recording_url
+      )
   );
 
   return (
     <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
       <section className="mx-auto max-w-6xl">
-        <div className="mb-10 rounded-4x1 border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
+        <div className="mb-10 rounded-4xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
           <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-            Member library
+            Private library
           </p>
 
           <h1 className="mb-5 text-4xl font-bold leading-tight md:text-6xl">
@@ -136,12 +146,12 @@ export default async function MemberLibraryPage() {
           </h1>
 
           <p className="max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
-            Access upcoming Zoom details, webinar PDFs and edited recordings
-            from your AHA Professional Development membership.
+            Access upcoming webinar details, downloadable PDFs, edited
+            recordings and private AHA resources when they are released.
           </p>
 
           <div className="mt-6 inline-flex rounded-full bg-[#f0fdfa] px-4 py-2 text-sm font-semibold text-[#0f766e]">
-            Membership status: {subscription.status}
+            Access status: {subscription.status}
           </div>
         </div>
 
@@ -154,7 +164,8 @@ export default async function MemberLibraryPage() {
             <div>
               <h2 className="text-3xl font-bold">Upcoming live webinars</h2>
               <p className="mt-1 text-base leading-relaxed text-[#6b6880]">
-                First Tuesday of every month, 12pm to 1pm QLD time.
+                Webinar dates and access details will appear here as they are
+                added.
               </p>
             </div>
           </div>
@@ -174,7 +185,7 @@ export default async function MemberLibraryPage() {
           )}
         </section>
 
-<MemberToolsCard />
+        <MemberToolsCard />
 
         <section>
           <div className="mb-5 flex items-center gap-3">
@@ -219,7 +230,9 @@ function MemberWebinarCard({
 }) {
   const zoomLink = webinar.zoom_join_url || webinar.zoom_url;
   const recordingLink =
-    webinar.bunny_embed_url || webinar.bunny_playback_url || webinar.recording_url;
+    webinar.bunny_embed_url ||
+    webinar.bunny_playback_url ||
+    webinar.recording_url;
 
   const dateTime = formatWebinarDate(webinar.starts_at, webinar.ends_at);
 
@@ -229,7 +242,9 @@ function MemberWebinarCard({
         <div>
           <div className="mb-3 flex flex-wrap gap-2">
             <span className="inline-flex rounded-full bg-[#f0fdfa] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#0f766e]">
-              {webinar.access_type === "free" ? "Free launch webinar" : "Members"}
+              {webinar.access_type === "free"
+                ? "Free launch webinar"
+                : "Private access"}
             </span>
 
             <span className="inline-flex rounded-full bg-[#faf8f5] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#6b6880]">
@@ -249,6 +264,7 @@ function MemberWebinarCard({
             <CalendarDays size={17} />
             Date and time
           </div>
+
           <p className="text-sm leading-relaxed text-[#1e1b2e]">{dateTime}</p>
         </div>
       </div>
@@ -297,6 +313,7 @@ function MemberResourceButton({
           {icon}
           {label}
         </div>
+
         <p className="text-sm text-[#6b6880]">{emptyText}</p>
       </div>
     );
@@ -313,6 +330,7 @@ function MemberResourceButton({
         {icon}
         {label}
       </div>
+
       <p className="text-sm font-semibold text-[#1e1b2e]">Open link</p>
     </Link>
   );
