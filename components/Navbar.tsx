@@ -4,13 +4,12 @@ import { siteConfig } from "@/lib/site";
 
 const navLinks = [
   { href: "/subscribe", label: "Free Webinar" },
-  { href: "/community", label: "Community" },
-  { href: "/tools", label: "Tools" },
-  { href: "/reflective-practice", label: "1:1 Support" },
+  { href: "/community", label: "Free Community" },
+  { href: "/tools", label: "AHA Tools" },
+  { href: "/resource-shop", label: "Resource Shop" },
+  { href: "/reflective-practice", label: "Reflective Practice" },
   { href: "/manager-pathway", label: "For Managers" },
   { href: "/contact", label: "Contact" },
-  { href: "/resource-shop", label: "Resource Shop" },
-  { href: "/member-library", label: "Member Library" },
 ];
 
 export default function Navbar() {
@@ -47,10 +46,10 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2 lg:hidden">
           <Link
-            href="/community"
+            href="/subscribe"
             className="rounded-full bg-[#0f766e] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
           >
-            Community
+            Free Webinar
           </Link>
 
           <Link
