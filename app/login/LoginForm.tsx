@@ -54,8 +54,8 @@ export default function LoginForm() {
         </h1>
 
         <p className="text-base leading-relaxed text-[#6b6880]">
-          Sign in to access your AHA Professional Development member library,
-          admin tools or community account.
+          Sign in to access your AHA community account, admin tools or private
+          resource areas if you have been given access.
         </p>
       </div>
 
@@ -64,6 +64,7 @@ export default function LoginForm() {
           <span className="text-sm font-semibold text-[#1e1b2e]">
             Email
           </span>
+
           <input
             type="email"
             value={email}
@@ -122,16 +123,25 @@ export default function LoginForm() {
         </div>
 
         <p className="mb-4 text-sm leading-relaxed text-[#3f5f5a]">
-          Register for the AHA Professional Development membership to access the
-          member library, Zoom links, PDFs and recordings.
+          Start with the free launch webinar or join the free AHA community.
+          No payment details are required.
         </p>
 
-        <Link
-          href="/subscribe"
-          className="inline-flex w-full items-center justify-center rounded-full border border-[#0f766e] bg-white px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#faf8f5]"
-        >
-          Register for membership
-        </Link>
+        <div className="grid gap-3">
+          <Link
+            href="/subscribe"
+            className="inline-flex w-full items-center justify-center rounded-full border border-[#0f766e] bg-white px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#faf8f5]"
+          >
+            Register for the free webinar
+          </Link>
+
+          <Link
+            href="/join"
+            className="inline-flex w-full items-center justify-center rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+          >
+            Join the free community
+          </Link>
+        </div>
       </div>
 
       <div className="mt-4 rounded-2xl border border-[#e8e4de] bg-[#faf8f5] p-5">
