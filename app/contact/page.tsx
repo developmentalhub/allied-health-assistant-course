@@ -36,16 +36,21 @@ export default function ContactPage() {
               </p>
 
               <h1 className="mb-5 max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
-                Robyn and Jess are building this AHA space together.
-              </h1>
+  Practical support for AHAs who want more clarity, confidence and connection.
+</h1>
 
-              <p className="mb-6 max-w-2xl text-base leading-relaxed text-[#6b6880] md:text-lg">
-                Jess from Spectrum Village and Robyn from Play Move Improve are
-                joining forces to create a practical, supportive space for
-                Allied Health Assistants, managers and clinics. If you have a
-                question, want to get involved, or would like to enquire about
-                future resources, start here.
-              </p>
+<p className="mb-6 max-w-2xl text-base leading-relaxed text-[#6b6880] md:text-lg">
+  Whether you are unsure what to write down, when to ask for help, how to
+  prepare for a session, or how to feel more confident in your role, this space
+  is being built to support the real questions AHAs carry every week.
+</p>
+
+<p className="mb-6 max-w-2xl text-base leading-relaxed text-[#6b6880] md:text-lg">
+  Jess from Spectrum Village and Robyn from Play Move Improve have teamed up to
+  create practical support for Allied Health Assistants, managers and clinics.
+  If you have a question, want to get involved, or would like to enquire about
+  future resources, start here.
+</p>
             </div>
 
             <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
