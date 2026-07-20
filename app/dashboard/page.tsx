@@ -32,38 +32,35 @@ export default async function DashboardPage() {
           </h1>
 
           <p className="max-w-2xl text-base leading-relaxed text-[#6b6880]">
-            Choose which wing of the academy you want to open.
+            Choose the area you want to open.
           </p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-2">
-          {/* Allied Health */}
           <section className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f0fdfa] text-2xl">
-              🧠
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f0fdfa]">
+              <span className="text-sm font-bold text-[#0f766e]">AHA</span>
             </div>
 
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-              Allied Health wing
+              Allied Health pathway
             </p>
 
-            <h2 className="mb-5 text-3xl font-bold">
-              Allied Health
-            </h2>
+            <h2 className="mb-5 text-3xl font-bold">Allied Health</h2>
 
             <div className="space-y-3 text-sm leading-relaxed text-[#6b6880]">
-              <p>Foundations module</p>
-              <p>Developmental milestones series</p>
-              <p>Specialty tracks</p>
-              <p>Business partnership module</p>
+              <p>Foundation role clarity topics</p>
+              <p>Reflective professional development</p>
+              <p>Community support</p>
+              <p>Future AHA resources and tools</p>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                href="/allied-health/foundations/welcome-to-aha-role"
+                href="/topics"
                 className="rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
               >
-                Open first topic
+                Open AHA topics
               </Link>
 
               <Link
@@ -75,19 +72,16 @@ export default async function DashboardPage() {
             </div>
           </section>
 
-          {/* Educator */}
           <section className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eef2ff] text-2xl">
-              🌿
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eef2ff]">
+              <span className="text-sm font-bold text-[#3730a3]">EDU</span>
             </div>
 
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#3730a3]">
-              Educator wing
+              Educator pathway
             </p>
 
-            <h2 className="mb-5 text-3xl font-bold">
-              Educator
-            </h2>
+            <h2 className="mb-5 text-3xl font-bold">Educator</h2>
 
             <div className="space-y-3 text-sm leading-relaxed text-[#6b6880]">
               <p>Educator pathway</p>
@@ -101,7 +95,7 @@ export default async function DashboardPage() {
                 href="/educator"
                 className="rounded-full bg-[#3730a3] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2e288a]"
               >
-                Open educator wing
+                Open educator pathway
               </Link>
 
               <a
@@ -118,17 +112,15 @@ export default async function DashboardPage() {
 
         <section className="mt-8 rounded-3xl border border-[#e8e4de] bg-white p-8">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#6b6880]">
-            Membership area
+            Private access area
           </p>
 
-          <h2 className="mb-5 text-3xl font-bold">
-            AHA Community Hub
-          </h2>
+          <h2 className="mb-5 text-3xl font-bold">AHA Community Hub</h2>
 
           <div className="grid gap-4 md:grid-cols-4">
             {[
               "Community feed",
-              "Monthly Zooms",
+              "Webinar updates",
               "Recording library",
               "Shared resources",
             ].map((item) => (
@@ -145,7 +137,7 @@ export default async function DashboardPage() {
             href="/community"
             className="mt-8 inline-block rounded-full bg-[#1e1b2e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#3730a3]"
           >
-            View membership hub
+            View community hub
           </Link>
         </section>
       </section>
