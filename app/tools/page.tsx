@@ -20,11 +20,11 @@ export const metadata: Metadata = {
     "AHA-specific reflective tools and previews being built for Allied Health Assistants, including preparation, feedback, supervisor questions and role boundary reflection.",
 };
 
-const freeStarterTools = [
+const starterTools = [
   {
     title: "AHA Course Tools Preview",
     description:
-      "A starter preview of the kinds of tools being created to help AHAs prepare, reflect and feel more supported in their work.",
+      "A starter preview of the kinds of tools Robyn and Jess are creating to help AHAs prepare, reflect and feel more supported in their work.",
     imageUrl:
       "https://aracabetvunmirlfgylv.supabase.co/storage/v1/object/public/website-images/aha-course-tools-preview.png",
     icon: ClipboardList,
@@ -94,10 +94,11 @@ export default function ToolsComingSoonPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
             Built with AHAs, for AHAs
           </p>
+
           <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
-            We are building this platform from scratch with feedback from AHAs,
-            managers and clinics. More tools, examples and resources are coming
-            soon as the AHA space grows.
+            Robyn and Jess are building this platform from scratch with feedback
+            from AHAs, managers and clinics. More tools, examples and resources
+            are coming soon as the AHA space grows.
           </p>
         </section>
 
@@ -150,8 +151,8 @@ export default function ToolsComingSoonPage() {
 
               <p className="mb-4 text-sm leading-relaxed text-[#3f5f5a]">
                 The tools are not being sold as a membership offer right now.
-                The first priority is listening to AHAs, running the free
-                webinar and building the most useful tools first.
+                The first priority is listening to AHAs, running the free webinar
+                and building the most useful tools first.
               </p>
 
               <div className="grid gap-3">
@@ -161,6 +162,7 @@ export default function ToolsComingSoonPage() {
                       size={16}
                       className="mt-0.5 shrink-0 text-[#0f766e]"
                     />
+
                     <p className="text-sm leading-relaxed text-[#3f5f5a]">
                       {item}
                     </p>
@@ -203,9 +205,11 @@ export default function ToolsComingSoonPage() {
               <p className="text-sm font-semibold text-[#0f766e]">
                 Starter tools
               </p>
+
               <h2 className="text-2xl font-bold md:text-3xl">
                 These first AHA tools are being prepared as the platform grows.
               </h2>
+
               <p className="mt-2 max-w-3xl text-sm leading-relaxed text-[#6b6880] md:text-base">
                 These tools are a first taste of what is being built. The free
                 webinar will help shape which tools and topics are prioritised
@@ -215,7 +219,7 @@ export default function ToolsComingSoonPage() {
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
-            {freeStarterTools.map((tool) => {
+            {starterTools.map((tool) => {
               const Icon = tool.icon;
 
               return (
@@ -341,7 +345,7 @@ export default function ToolsComingSoonPage() {
               <p className="max-w-2xl text-sm leading-relaxed text-[#d9d7e5] md:text-base">
                 The tools will be shaped around what AHAs, managers and
                 supervising professionals say is most useful. The best starting
-                point right now is the free launch webinar.
+                point right now is the free launch webinar with Robyn and Jess.
               </p>
             </div>
 
