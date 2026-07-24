@@ -25,23 +25,6 @@ export async function POST(request: Request) {
 
   const supabase = await createClient();
 
-  const { data: existingRegistration, error: existingError } = await supabase
-    .from("webinar_registrations")
-    .select("id,email")
-    .ilike("email", email)
-    .maybeSingle();
-
-  if (existingError) {
-    console.error("Could not check existing webinar registration:", existingError);
-  }
-
-  if (existingRegistration) {
-    return NextResponse.redirect(
-      new URL("/subscribe?webinar=already-registered", request.url),
-      303
-    );
-  }
-
   const { error: insertError } = await supabase
     .from("webinar_registrations")
     .insert({
@@ -54,6 +37,13 @@ export async function POST(request: Request) {
 
   if (insertError) {
     console.error("Could not save webinar registration:", insertError);
+
+    if (insertError.code === "23505") {
+      return NextResponse.redirect(
+        new URL("/subscribe?webinar=already-registered", request.url),
+        303
+      );
+    }
 
     return NextResponse.redirect(
       new URL("/subscribe?webinar=save-error", request.url),
