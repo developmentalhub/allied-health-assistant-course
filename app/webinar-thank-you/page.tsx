@@ -51,7 +51,7 @@ export default async function WebinarThankYouPage({
             </h2>
 
             <p className="text-base leading-relaxed text-[#6b6880]">
-              Tuesday 4 August 2026, 12pm to 1pm QLD time. Free to attend.
+              Tuesday 8th September 2026, 12pm to 1pm QLD time. Free to attend.
             </p>
           </div>
 

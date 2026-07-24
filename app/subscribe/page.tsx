@@ -62,7 +62,7 @@ export default async function SubscribePage({
               </h2>
 
               <p className="mb-5 text-base leading-relaxed text-[#6b6880]">
-                Tuesday 4 August 2026, 12pm to 1pm QLD time. Free to attend.
+                Tuesday 8th September 2026, 12pm to 1pm QLD time. Free to attend.
                 Nothing to pay and nothing to cancel later.
               </p>
 
