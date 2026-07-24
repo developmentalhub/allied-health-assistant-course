@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase-server";
+import { createClient } from "@supabase/supabase-js";
 
 const ROBYN_EMAIL = "robyn@playmoveimprove.com.au";
 const JESS_EMAIL = "jess@spectrumvillage.com.au";
@@ -23,7 +23,24 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = await createClient();
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    console.error("Missing Supabase service role environment variables");
+
+    return NextResponse.redirect(
+      new URL("/subscribe?webinar=save-error", request.url),
+      303
+    );
+  }
+
+  const supabase = createClient(supabaseUrl, serviceRoleKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
 
   const { error: insertError } = await supabase
     .from("webinar_registrations")
@@ -40,7 +57,7 @@ export async function POST(request: Request) {
 
     if (insertError.code === "23505") {
       return NextResponse.redirect(
-        new URL("/subscribe?webinar=already-registered", request.url),
+        new URL("/webinar-thank-you?status=already-registered", request.url),
         303
       );
     }
@@ -81,7 +98,7 @@ export async function POST(request: Request) {
             "Question:",
             question || "No question submitted.",
             "",
-            "This registration has also been saved in Supabase.",
+            "This registration has been saved in Supabase.",
           ].join("\n"),
         }),
       });
@@ -97,7 +114,7 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.redirect(
-    new URL("/subscribe?webinar=registered", request.url),
+    new URL("/webinar-thank-you?status=registered", request.url),
     303
   );
 }

@@ -94,32 +94,6 @@ export default async function SubscribePage({
                 </li>
               </ul>
 
-              {webinarStatus === "registered" && (
-                <div className="mb-5 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
-                  <p className="text-base font-semibold text-[#0f766e]">
-                    You’re registered for the free webinar.
-                  </p>
-
-                  <p className="mt-2 text-sm leading-relaxed text-[#3f5f5a]">
-                    We’ll email you the webinar link and reminder closer to the
-                    date. Your details have also been saved for Robyn and Jess.
-                  </p>
-                </div>
-              )}
-
-              {webinarStatus === "already-registered" && (
-                <div className="mb-5 rounded-3xl border border-[#fde68a] bg-[#fffbeb] p-5">
-                  <p className="text-base font-semibold text-[#92400e]">
-                    You’re already registered.
-                  </p>
-
-                  <p className="mt-2 text-sm leading-relaxed text-[#78350f]">
-                    This email address is already on the webinar list, so there
-                    is nothing else you need to do.
-                  </p>
-                </div>
-              )}
-
               {webinarStatus === "missing-details" && (
                 <div className="mb-5 rounded-3xl border border-[#fecaca] bg-[#fef2f2] p-5">
                   <p className="text-base font-semibold text-[#991b1b]">
