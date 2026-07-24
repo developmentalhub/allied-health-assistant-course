@@ -12,7 +12,14 @@ import {
 
 const JESS_EMAIL = "jess@spectrumvillage.com.au";
 
-export default function SubscribePage() {
+export default async function SubscribePage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ webinar?: string }>;
+}) {
+  const params = await searchParams;
+  const webinarStatus = params?.webinar;
+
   return (
     <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
       <section className="mx-auto max-w-6xl">
@@ -86,6 +93,57 @@ export default function SubscribePage() {
                   podcast plans and the AHA course
                 </li>
               </ul>
+
+              {webinarStatus === "registered" && (
+                <div className="mb-5 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+                  <p className="text-base font-semibold text-[#0f766e]">
+                    You’re registered for the free webinar.
+                  </p>
+
+                  <p className="mt-2 text-sm leading-relaxed text-[#3f5f5a]">
+                    We’ll email you the webinar link and reminder closer to the
+                    date. Your details have also been saved for Robyn and Jess.
+                  </p>
+                </div>
+              )}
+
+              {webinarStatus === "already-registered" && (
+                <div className="mb-5 rounded-3xl border border-[#fde68a] bg-[#fffbeb] p-5">
+                  <p className="text-base font-semibold text-[#92400e]">
+                    You’re already registered.
+                  </p>
+
+                  <p className="mt-2 text-sm leading-relaxed text-[#78350f]">
+                    This email address is already on the webinar list, so there
+                    is nothing else you need to do.
+                  </p>
+                </div>
+              )}
+
+              {webinarStatus === "missing-details" && (
+                <div className="mb-5 rounded-3xl border border-[#fecaca] bg-[#fef2f2] p-5">
+                  <p className="text-base font-semibold text-[#991b1b]">
+                    Please add your name and email address.
+                  </p>
+
+                  <p className="mt-2 text-sm leading-relaxed text-[#7f1d1d]">
+                    Then submit the form again so we can register you properly.
+                  </p>
+                </div>
+              )}
+
+              {webinarStatus === "save-error" && (
+                <div className="mb-5 rounded-3xl border border-[#fecaca] bg-[#fef2f2] p-5">
+                  <p className="text-base font-semibold text-[#991b1b]">
+                    Something went wrong.
+                  </p>
+
+                  <p className="mt-2 text-sm leading-relaxed text-[#7f1d1d]">
+                    Your registration could not be saved. Please try again or
+                    email Jess directly.
+                  </p>
+                </div>
+              )}
 
               <form
                 action="/api/webinar-registration"
