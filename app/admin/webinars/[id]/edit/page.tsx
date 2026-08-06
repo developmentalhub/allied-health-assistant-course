@@ -128,7 +128,7 @@ export default async function EditWebinarPage({ params }: PageProps) {
           Back to webinars
         </Link>
 
-        <div className="mb-8 rounded-[2rem] border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+        <div className="mb-8 rounded-4x1 border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
           <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
             Edit webinar
           </p>

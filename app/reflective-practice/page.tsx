@@ -1,373 +1,400 @@
 import Link from "next/link";
 import {
+  ArrowLeft,
   ArrowRight,
-  CheckCircle2,
-  HeartHandshake,
-  MessageCircleHeart,
+  BookOpen,
+  Check,
+  ClipboardList,
+  ExternalLink,
+  FileText,
+  HelpCircle,
+  PlayCircle,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
-import { submitReflectivePracticeRequest } from "./actions";
 
-type PageProps = {
-  searchParams?: Promise<{
-    success?: string;
-  }>;
-};
+const REFLECTION_QUESTIONS = [
+  "What do you currently do before a session or support activity?",
+  "What information helps you feel prepared and clear?",
+  "What do you usually do when the session plan feels unclear?",
+  "What questions could you ask before the session begins?",
+  "What questions could you ask after the session to improve next time?",
+];
 
-export default async function ReflectivePracticePage({
-  searchParams,
-}: PageProps) {
-  const resolvedSearchParams = await searchParams;
-  const success = resolvedSearchParams?.success === "true";
+const FOUNDATION_POINTS = [
+  "Preparing for sessions using the information provided by the allied health professional",
+  "Understanding the goal or purpose of the activity before supporting it",
+  "Knowing what materials, environment or setup may be needed",
+  "Identifying what feels unclear before the session begins",
+  "Asking better questions without stepping outside the AHA role",
+  "Reflecting after the session so communication is clearer next time",
+];
 
+const QUESTION_EXAMPLES = [
+  {
+    title: "Before the session",
+    example:
+      "What is the main focus you would like me to support in this session?",
+  },
+  {
+    title: "When instructions feel unclear",
+    example:
+      "Can I check what you would like me to do if the person does not engage with the activity?",
+  },
+  {
+    title: "When preparing materials",
+    example:
+      "Are there any specific resources, setup or safety considerations I should prepare first?",
+  },
+  {
+    title: "After the session",
+    example:
+      "What observations would be most useful for me to bring back to you after future sessions?",
+  },
+];
+
+const NOT_INCLUDED = [
+  "Creating independent therapy plans",
+  "Changing therapy goals without direction",
+  "Making clinical decisions about progression",
+  "Replacing instructions from the supervising professional",
+  "Play Move Improve specialist intervention planning frameworks",
+];
+
+export default function PreparingSessionsTopicPage() {
   return (
-    <main className="min-h-screen bg-[#faf8f5] px-6 py-14 text-[#1e1b2e] md:py-20">
-      <section className="mx-auto max-w-6xl">
-        <div className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-            Built with AHAs, for AHAs
-          </p>
-          <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
-            We are building this platform from scratch with feedback from AHAs,
-            managers and clinics. More reflective practice options, resources
-            and provider pathways are coming soon.
-          </p>
+    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
+      <section className="mx-auto max-w-6xl px-6 py-10 md:py-14">
+        <div className="mb-6">
+          <Link
+            href="/topics"
+            className="inline-flex items-center gap-2 rounded-full border border-[#e8e4de] bg-white px-4 py-2 text-sm font-semibold text-[#6b6880] transition hover:border-[#99f6e4] hover:bg-[#f0fdfa] hover:text-[#0f766e]"
+          >
+            <ArrowLeft size={15} />
+            Back to topics
+          </Link>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <div>
-            <p className="mb-4 text-base font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-              1:1 reflective support
-            </p>
+        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+            <div>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+                Foundation AHA Professional Development
+              </p>
 
-            <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
-              Talk through the work with someone who understands the pressure,
-              care and skill AHAs bring.
-            </h1>
+              <h1 className="mb-5 text-4xl font-bold leading-tight md:text-6xl">
+                Preparing for sessions and asking better questions.
+              </h1>
 
-            <p className="mb-8 max-w-3xl text-xl leading-relaxed text-[#5f5b73]">
-              Book a 1:1 reflective practice request if you want support with a
-              real session, a child you are thinking about, your confidence, your
-              role, your clinic work or the way you support children to thrive.
-            </p>
+              <p className="mb-6 max-w-3xl text-base leading-relaxed text-[#6b6880] md:text-lg">
+                This topic helps AHAs reflect on how they prepare for sessions,
+                understand the purpose of support activities and ask clearer
+                questions before and after sessions.
+              </p>
 
-            <div className="mb-8 rounded-[2rem] border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
-                <HeartHandshake size={24} />
-              </div>
+              <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+                <div className="flex gap-3">
+                  <ShieldCheck
+                    size={22}
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                  />
 
-              <h2 className="mb-4 text-3xl font-bold">
-                What a 1:1 session can support
-              </h2>
+                  <div>
+                    <p className="mb-1 text-sm font-semibold text-[#0f766e]">
+                      Foundation topic only
+                    </p>
 
-              <div className="grid gap-3">
-                <CheckItem text="Therapy session ideas when you feel stuck" />
-                <CheckItem text="Confidence when Plan A does not go to plan" />
-                <CheckItem text="Role clarity and communication in the clinic" />
-                <CheckItem text="Supporting children with skill and compassion" />
-                <CheckItem text="Reflecting on what worked, what felt hard, and what to try next" />
+                    <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                      This page supports reflective AHA professional
+                      development. It does not replace workplace supervision,
+                      clinical supervision, session direction, delegation,
+                      clinical oversight or the responsibilities of the allied
+                      health professional or employer.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="rounded-[2rem] border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
-                <ShieldCheck size={24} />
+            <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                <HelpCircle size={24} />
               </div>
 
-              <h2 className="mb-4 text-2xl font-bold">
-                Important note
-              </h2>
+              <h2 className="mb-3 text-2xl font-bold">Topic structure</h2>
 
-              <p className="text-base leading-relaxed text-[#6b6880]">
-                Reflective practice does not replace clinical supervision or
-                direction from the supervising allied health professional. It is
-                designed to support confidence, reflection, communication, role
-                clarity and practical thinking.
+              <div className="space-y-3 text-sm leading-relaxed text-[#3f5f5a]">
+                <p>1. Watch the foundation video.</p>
+                <p>2. Reflect on your current preparation routine.</p>
+                <p>3. Practise asking clearer questions.</p>
+                <p>4. Identify what you need before your next session.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+          <div className="mb-6 max-w-3xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Video lesson
+            </p>
+
+            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+              Embedded video placeholder
+            </h2>
+
+            <p className="text-base leading-relaxed text-[#6b6880]">
+              This is where the unlisted YouTube video for this foundation topic
+              will be embedded when ready.
+            </p>
+          </div>
+
+          <div className="flex min-h-70 items-center justify-center rounded-3xl border border-dashed border-[#99f6e4] bg-[#f0fdfa] p-8 text-center">
+            <div>
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                <PlayCircle size={32} />
+              </div>
+
+              <h3 className="mb-2 text-2xl font-bold">Video coming soon</h3>
+
+              <p className="mx-auto max-w-xl text-sm leading-relaxed text-[#3f5f5a]">
+                Add the embedded YouTube iframe here once the topic video has
+                been recorded and uploaded as unlisted.
               </p>
             </div>
           </div>
+        </section>
 
-          <div className="rounded-[2rem] border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
-            {success ? (
-              <SuccessBox />
-            ) : (
-              <>
-                <div className="mb-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
-                    <MessageCircleHeart size={24} />
-                  </div>
+        <section className="mb-8 grid gap-6 lg:grid-cols-2">
+          <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
+              <ClipboardList size={24} />
+            </div>
 
-                  <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-                    Request 1:1 support
-                  </p>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Reflection questions
+            </p>
 
-                  <h2 className="mb-3 text-3xl font-bold">
-                    Tell us what kind of support you are looking for.
-                  </h2>
+            <h2 className="mb-5 text-3xl font-bold">
+              Questions to think through.
+            </h2>
 
-                  <p className="text-base leading-relaxed text-[#6b6880]">
-                    Keep it simple. You do not need to write a long explanation.
-                    We will follow up with the next step.
-                  </p>
-                </div>
-
-                <form action={submitReflectivePracticeRequest} className="grid gap-5">
-                  <TextField
-                    label="Full name"
-                    name="fullName"
-                    required
+            <ul className="space-y-3 text-sm leading-relaxed text-[#3f5f5a]">
+              {REFLECTION_QUESTIONS.map((question) => (
+                <li key={question} className="flex gap-2">
+                  <Check
+                    size={16}
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
                   />
+                  {question}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-                  <TextField
-                    label="Email"
-                    name="email"
-                    type="email"
-                    required
+          <div className="rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+              <FileText size={24} />
+            </div>
+
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Printable resource
+            </p>
+
+            <h2 className="mb-5 text-3xl font-bold">
+              Session preparation prompt sheet.
+            </h2>
+
+            <p className="mb-5 text-sm leading-relaxed text-[#6b6880]">
+              This printable will help AHAs prepare before a session, identify
+              what feels unclear and write down questions to ask the supervising
+              professional.
+            </p>
+
+            <div className="rounded-2xl border border-dashed border-[#99f6e4] bg-[#faf8f5] p-5">
+              <p className="text-sm font-semibold text-[#0f766e]">
+                PDF placeholder
+              </p>
+
+              <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
+                Add the download link here once the PDF has been created.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+          <div className="mb-8 max-w-3xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Better question examples
+            </p>
+
+            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+              Questions that help you prepare without stepping outside your role.
+            </h2>
+
+            <p className="text-base leading-relaxed text-[#6b6880]">
+              These examples are prompts only. Always follow the communication
+              process, documentation requirements and supervision expectations
+              of your workplace.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {QUESTION_EXAMPLES.map((item) => (
+              <article
+                key={item.title}
+                className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5"
+              >
+                <p className="mb-2 text-sm font-semibold text-[#0f766e]">
+                  {item.title}
+                </p>
+
+                <p className="text-sm leading-relaxed text-[#6b6880]">
+                  {item.example}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
+          <div className="mb-8 max-w-3xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+              Foundation learning points
+            </p>
+
+            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+              What this topic can help build.
+            </h2>
+
+            <p className="text-base leading-relaxed text-[#3f5f5a]">
+              This topic supports preparation and communication. It does not
+              teach AHAs to independently plan or change therapy.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {FOUNDATION_POINTS.map((point) => (
+              <div
+                key={point}
+                className="rounded-3xl border border-[#99f6e4] bg-white p-5"
+              >
+                <div className="flex gap-3">
+                  <Check
+                    size={18}
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
                   />
-
-                  <TextField
-                    label="Role"
-                    name="role"
-                    placeholder="AHA, therapy assistant, educator, manager..."
-                  />
-
-                  <TextField
-                    label="Clinic or organisation"
-                    name="organisation"
-                    placeholder="Optional"
-                  />
-
-                  <SelectField
-                    label="Preferred session provider"
-                    name="preferredProvider"
-                    required
-                    options={[
-                      {
-                        label: "Choose a preferred session provider",
-                        value: "",
-                      },
-                      {
-                        label: "Developmental Educator",
-                        value: "Developmental Educator",
-                      },
-                      {
-                        label: "Speech Pathologist",
-                        value: "Speech Pathologist",
-                      },
-                      {
-                        label: "Clinic Business Coach",
-                        value: "Clinic Business Coach",
-                      },
-                      {
-                        label: "Exercise Physiologist",
-                        value: "Exercise Physiologist",
-                      },
-                    ]}
-                  />
-
-                  <SelectField
-                    label="What support are you looking for?"
-                    name="supportFocus"
-                    required
-                    options={[
-                      {
-                        label: "Choose one",
-                        value: "",
-                      },
-                      {
-                        label: "Ideas for therapy sessions",
-                        value: "Ideas for therapy sessions",
-                      },
-                      {
-                        label: "Confidence and reflective practice",
-                        value: "Confidence and reflective practice",
-                      },
-                      {
-                        label: "Supporting a child with autism",
-                        value: "Supporting a child with autism",
-                      },
-                      {
-                        label: "Role clarity or communication",
-                        value: "Role clarity or communication",
-                      },
-                      {
-                        label: "Clinic or business support",
-                        value: "Clinic or business support",
-                      },
-                    ]}
-                  />
-
-                  <SelectField
-                    label="Preferred contact method"
-                    name="preferredContactMethod"
-                    options={[
-                      {
-                        label: "Email is fine",
-                        value: "Email",
-                      },
-                      {
-                        label: "Phone",
-                        value: "Phone",
-                      },
-                      {
-                        label: "Zoom",
-                        value: "Zoom",
-                      },
-                    ]}
-                  />
-
-                  <TextareaField
-                    label="Anything else you want us to know?"
-                    name="notes"
-                    placeholder="Optional. A few words is enough."
-                  />
-
-                  <button
-                    type="submit"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962]"
-                  >
-                    Request 1:1 support
-                    <ArrowRight size={18} />
-                  </button>
 
                   <p className="text-sm leading-relaxed text-[#6b6880]">
-                    We will review your request and follow up with the best next
-                    step. More booking and payment options are coming soon as the
-                    platform grows.
+                    {point}
                   </p>
-                </form>
-              </>
-            )}
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
+        </section>
+
+        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
+          <div className="grid gap-8 lg:grid-cols-2">
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
+                Content boundary
+              </p>
+
+              <h2 className="mb-4 text-3xl font-bold">
+                What is not included in this foundation topic.
+              </h2>
+
+              <p className="text-base leading-relaxed text-[#6b6880]">
+                This keeps the topic focused on foundation AHA preparation,
+                reflection and communication rather than clinical planning.
+              </p>
+            </div>
+
+            <ul className="space-y-3 text-sm leading-relaxed text-[#6b6880]">
+              {NOT_INCLUDED.map((item) => (
+                <li key={item} className="flex gap-2">
+                  <Check
+                    size={16}
+                    className="mt-0.5 shrink-0 text-[#0f766e]"
+                  />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section className="rounded-3xl bg-[#1e1b2e] p-8 text-white shadow-sm md:p-12">
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div>
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
+                Deeper specialist pathway
+              </p>
+
+              <h2 className="mb-5 text-3xl font-bold md:text-5xl">
+                Need deeper movement, regulation or child development training?
+              </h2>
+
+              <p className="text-base leading-relaxed text-[#d9d7e5] md:text-lg">
+                Deeper Play Move Improve training remains separate from this
+                foundation AHA PD topic library.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/10 p-6">
+              <p className="mb-5 text-sm leading-relaxed text-[#d9d7e5]">
+                This topic helps with foundation AHA preparation and question
+                asking. Specialist Play Move Improve training can be explored
+                separately.
+              </p>
+
+              <a
+                href="https://www.playmoveimprove.com"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
+              >
+                Visit Play Move Improve
+                <ExternalLink size={16} />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-3xl border border-[#e8e4de] bg-white p-6 shadow-sm">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold text-[#1e1b2e]">
+                Ready to keep exploring?
+              </p>
+
+              <p className="text-sm leading-relaxed text-[#6b6880]">
+                View the topic library or register interest in the 2026
+                Foundation AHA PD Library.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Link
+                href="/topics"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-5 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+              >
+                View topics
+                <ArrowRight size={15} />
+              </Link>
+
+              <Link
+                href="/subscribe"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                Register interest
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+          </div>
+        </section>
       </section>
     </main>
-  );
-}
-
-function SuccessBox() {
-  return (
-    <div>
-      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
-        <Sparkles size={24} />
-      </div>
-
-      <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-        Request received
-      </p>
-
-      <h1 className="mb-4 text-3xl font-bold">
-        Thank you. Your 1:1 reflective practice request has been sent.
-      </h1>
-
-      <p className="mb-6 text-base leading-relaxed text-[#6b6880]">
-        We will review your request and follow up with the next step. You do not
-        need to submit the form again.
-      </p>
-
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <Link
-          href="/"
-          className="inline-flex items-center justify-center rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
-        >
-          Back to home
-        </Link>
-
-        <Link
-          href="/subscribe"
-          className="inline-flex items-center justify-center rounded-full border border-[#0f766e] bg-white px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
-        >
-          View free webinar
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function CheckItem({ text }: { text: string }) {
-  return (
-    <div className="flex gap-3">
-      <CheckCircle2 className="mt-0.5 shrink-0 text-[#0f766e]" size={18} />
-      <p className="text-base leading-relaxed text-[#5f5b73]">{text}</p>
-    </div>
-  );
-}
-
-function TextField({
-  label,
-  name,
-  type = "text",
-  placeholder,
-  required = false,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  placeholder?: string;
-  required?: boolean;
-}) {
-  return (
-    <label className="grid gap-2">
-      <span className="text-sm font-semibold text-[#1e1b2e]">{label}</span>
-      <input
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        required={required}
-        className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:bg-white"
-      />
-    </label>
-  );
-}
-
-function TextareaField({
-  label,
-  name,
-  placeholder,
-}: {
-  label: string;
-  name: string;
-  placeholder?: string;
-}) {
-  return (
-    <label className="grid gap-2">
-      <span className="text-sm font-semibold text-[#1e1b2e]">{label}</span>
-      <textarea
-        name={name}
-        placeholder={placeholder}
-        rows={4}
-        className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:bg-white"
-      />
-    </label>
-  );
-}
-
-function SelectField({
-  label,
-  name,
-  options,
-  required = false,
-}: {
-  label: string;
-  name: string;
-  options: { label: string; value: string }[];
-  required?: boolean;
-}) {
-  return (
-    <label className="grid gap-2">
-      <span className="text-sm font-semibold text-[#1e1b2e]">{label}</span>
-      <select
-        name={name}
-        required={required}
-        className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:bg-white"
-      >
-        {options.map((option) => (
-          <option key={option.label} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </label>
   );
 }
