@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "AHA Professional Development",
-  businessName: "Allied Health Hive",
-  title: "AHA Professional Development",
+  name: "Allied Health Hive",
+  businessName: "Workforce Development",
+  title: "Allied Health Hive | AHA Workforce Development",
   description:
-    "A community and professional development platform for Allied Health Assistants, created by Jess Foster and Robyn from Play Move Improve.",
+    "Practical workforce development, creative session ideas, reflective tools, live learning and community support for Allied Health Assistants and their teams.",
   creator: "Allied Health Hive",
   url:
     process.env.NEXT_PUBLIC_SITE_URL ||
@@ -13,9 +13,13 @@ export const siteConfig = {
   ogImage: "/og-image.png",
   links: {
     home: "/",
+    community: "/community",
     join: "/join",
+    tools: "/tools",
     subscribe: "/subscribe",
     webinars: "/webinars",
+    resources: "/resource-shop",
+    reflectivePractice: "/reflective-practice",
     contact: "/contact",
     managerPathway: "/manager-pathway",
   },

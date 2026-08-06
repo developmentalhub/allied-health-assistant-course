@@ -2,90 +2,94 @@ import Link from "next/link";
 import {
   ArrowRight,
   ExternalLink,
-  Lock,
+  HeartHandshake,
   MessageCircle,
   ShieldCheck,
 } from "lucide-react";
+import { siteConfig } from "@/lib/site";
 
 const footerLinks = [
-  {
-    label: "Home",
-    href: "/",
-  },
-  {
-    label: "Free community",
-    href: "/join",
-  },
-  {
-    label: "AHA PD options",
-    href: "/subscribe",
-  },
-  {
-    label: "Member tools",
-    href: "/tools",
-  },
-  {
-    label: "Reflective practice",
-    href: "/reflective-practice",
-  },
-  {
-    label: "Manager pathway",
-    href: "/manager-pathway",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-  },
-  {
-    label: "Privacy",
-    href: "/privacy",
-  },
-  {
-    label: "Terms",
-    href: "/terms",
-  },
+  { label: "Home", href: "/" },
+  { label: "For Allied Health Assistants", href: "/community" },
+  { label: "For managers and supervisors", href: "/manager-pathway" },
+  { label: "Practical AHA tools", href: "/tools" },
+  { label: "Webinars", href: "/webinars" },
+  { label: "Resource shop", href: "/resource-shop" },
+  { label: "Reflective support", href: "/reflective-practice" },
+  { label: "Contact", href: "/contact" },
+  { label: "Privacy", href: "/privacy" },
+  { label: "Terms", href: "/terms" },
 ];
 
 export default function Footer() {
   return (
     <footer className="border-t border-[#e8e4de] bg-white text-[#1e1b2e]">
-      <section className="mx-auto max-w-6xl px-6 py-10">
-        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+      <section className="mx-auto max-w-7xl px-5 py-12 sm:px-6">
+        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <div>
-            <p className="mb-2 text-lg font-bold">
-              AHA Professional Development
+            <img
+              src={siteConfig.logoUrl}
+              alt="Allied Health Hive"
+              className="mb-5 h-16 w-auto object-contain"
+            />
+
+            <p className="text-xl font-bold">Allied Health Hive</p>
+
+            <p className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+              Workforce Development
             </p>
 
-            <p className="mb-4 max-w-2xl text-sm leading-relaxed text-[#6b6880]">
-              Foundation reflective professional development for Allied Health
-              Assistants, therapy assistants, students, educators, managers and
-              the professionals working alongside them.
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#6b6880]">
+              Practical learning, creative session ideas, reflective tools and
+              supportive workforce development for Allied Health Assistants and
+              the teams who guide them.
             </p>
 
-            <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-4">
+            <div className="mt-6 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
+              <div className="flex gap-3">
+                <HeartHandshake
+                  size={21}
+                  className="mt-0.5 shrink-0 text-[#0f766e]"
+                />
+
+                <div>
+                  <p className="mb-1 font-semibold text-[#1e1b2e]">
+                    Learning without judgement
+                  </p>
+
+                  <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                    AHAs are not expected to know everything. Confidence grows
+                    through experience, reflection, practical learning and
+                    supportive conversations.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
               <div className="flex gap-3">
                 <ShieldCheck
                   size={20}
                   className="mt-0.5 shrink-0 text-[#0f766e]"
                 />
 
-                <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                  This platform provides reflective professional development and
-                  reflective practice support. It does not replace workplace
-                  supervision, clinical supervision, delegation, direction,
-                  clinical oversight or workplace responsibilities.
+                <p className="text-xs leading-relaxed text-[#6b6880]">
+                  Allied Health Hive provides workforce development and
+                  reflective support. It does not replace workplace supervision,
+                  clinical supervision, delegation, direction, clinical
+                  oversight, incident reporting or employer responsibilities.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid gap-8 sm:grid-cols-2">
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
-                Site links
+              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
+                Explore the Hive
               </p>
 
-              <div className="grid gap-2">
+              <div className="grid gap-3">
                 {footerLinks.map((link) => (
                   <Link
                     key={link.href}
@@ -99,32 +103,32 @@ export default function Footer() {
             </div>
 
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
-                Next steps
+              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
+                Start here
               </p>
 
               <div className="grid gap-3">
                 <Link
-                  href="/join"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+                  href="/community"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
                 >
-                  Join free community
+                  Explore support for AHAs
                   <MessageCircle size={15} />
                 </Link>
 
                 <Link
                   href="/tools"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-white px-4 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
                 >
-                  View member tools
-                  <Lock size={15} />
+                  Use practical tools
+                  <ArrowRight size={15} />
                 </Link>
 
                 <Link
-                  href="/subscribe"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+                  href="/manager-pathway"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#0f766e] bg-white px-4 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
                 >
-                  View AHA PD options
+                  Support my AHA team
                   <ArrowRight size={15} />
                 </Link>
 
@@ -142,11 +146,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-[#e8e4de] pt-5">
+        <div className="mt-10 border-t border-[#e8e4de] pt-6">
           <p className="text-xs leading-relaxed text-[#6b6880]">
-            © {new Date().getFullYear()} Play Move Improve. AHA Professional
-            Development is a foundation reflective professional development
-            pathway created by Robyn Papworth.
+            © {new Date().getFullYear()} Allied Health Hive. Workforce
+            development for Allied Health Assistants and their teams. Created
+            by Jess Foster and Robyn Papworth.
           </p>
         </div>
       </section>

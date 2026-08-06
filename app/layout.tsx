@@ -6,19 +6,26 @@ import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
+
   title: {
-    default: `${siteConfig.name} | ${siteConfig.businessName}`,
-    template: `%s | ${siteConfig.name}`,
+    default: "Allied Health Hive | AHA Workforce Development",
+    template: "%s | Allied Health Hive",
   },
-  description: siteConfig.description,
+
+  description:
+    "Practical workforce development, creative session ideas, reflective tools, live learning and community support for Allied Health Assistants and their teams.",
+
   creator: siteConfig.creator,
+
   openGraph: {
-    title: `${siteConfig.name} | ${siteConfig.businessName}`,
-    description: siteConfig.description,
+    title: "Allied Health Hive | AHA Workforce Development",
+    description:
+      "Practical workforce development, creative session ideas, reflective tools, live learning and community support for Allied Health Assistants and their teams.",
     url: siteConfig.url,
-    siteName: siteConfig.name,
+    siteName: "Allied Health Hive",
     type: "website",
   },
+
   robots: {
     index: true,
     follow: true,
@@ -31,10 +38,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en-AU">
       <body>
         <Navbar />
+
         {children}
+
         <Footer />
       </body>
     </html>
