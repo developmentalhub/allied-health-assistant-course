@@ -4,291 +4,238 @@ import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
-  Check,
+  CheckCircle2,
   ClipboardList,
   ExternalLink,
   FileText,
-  MessageCircle,
+  HeartHandshake,
+  Lightbulb,
+  MessageCircleHeart,
   PlayCircle,
-  Repeat,
-  ShieldCheck,
   Sparkles,
-  Video,
 } from "lucide-react";
 
 const TOPICS = [
   {
-    title: "Simple activities and games",
+    title: "Feel clearer about your AHA role",
     description:
-      "Practical ways to motivate children in therapy sessions using simple play, movement and connection.",
-    href: "/topics/simple-activities-and-games",
-    status: "Preview coming soon",
-    available: false,
+      "Build confidence in your role, understand where guidance comes from and recognise when it is time to pause and ask.",
+    href: "/topics/understanding-aha-role",
+    tag: "Role confidence",
   },
   {
-    title: "Therapy sessions on a budget",
+    title: "Working well with supervising professionals",
     description:
-      "Plan flexible sessions with socks, scrap paper, rice, masking tape, beach balls and everyday clinic resources.",
-    href: "/topics/therapy-sessions-on-a-budget",
-    status: "Preview coming soon",
-    available: false,
+      "Strengthen communication, understand direction and build a supportive working relationship with the professionals guiding your work.",
+    href: "/topics/working-under-allied-health-direction",
+    tag: "Teamwork",
+  },
+  {
+    title: "Reflective practice and communication",
+    description:
+      "Reflect without judgement, organise what you noticed and communicate more clearly after sessions.",
+    href: "/topics/reflective-practice-and-communication",
+    tag: "Reflection",
+  },
+  {
+    title: "Preparing for sessions and asking better questions",
+    description:
+      "Feel more prepared before sessions and develop useful questions when the plan, purpose or next step feels unclear.",
+    href: "/topics/preparing-for-sessions-and-asking-better-questions",
+    tag: "Preparation",
+  },
+  {
+    title: "Knowing when to ask for clarification",
+    description:
+      "Recognise when you have enough information to continue and when you need clearer direction or workplace support.",
+    href: "/topics/knowing-when-to-seek-clarification",
+    tag: "Confidence",
+  },
+  {
+    title: "Thriving Kids and changing support roles",
+    description:
+      "Reflect on changing expectations, service pathways and the important contribution AHAs make within evolving teams.",
+    href: "/topics/thriving-kids-and-changing-support-roles",
+    tag: "Workforce change",
+  },
+];
+
+const PRACTICAL_THEMES = [
+  {
+    title: "Simple activity ideas",
+    text: "Use everyday equipment such as masking tape, cups, balls and paper to create engaging session activities.",
+    icon: Lightbulb,
   },
   {
     title: "When Plan A does not work",
-    description:
-      "Build a toolkit of ideas so you can adapt with confidence when a child needs something different.",
-    href: "/topics/when-plan-a-does-not-work",
-    status: "Preview coming soon",
-    available: false,
+    text: "Explore compassionate ways to change the activity, pace, instructions or environment.",
+    icon: Sparkles,
   },
   {
-    title: "Supporting children with autism",
-    description:
-      "Think about the environment, your body position and the way you set children up to feel safe and supported.",
-    href: "/topics/supporting-children-with-autism",
-    status: "Preview coming soon",
-    available: false,
-  },
-];
-
-const TOOL_PREVIEWS = [
-  {
-    title: "Session idea builder",
-    description:
-      "A guided tool to help you turn a simple resource into a therapy activity idea.",
-    preview:
-      "Preview example: choose a resource such as masking tape, socks or scrap paper, then reflect on how it could support movement, attention, communication or play.",
+    title: "Clearer conversations",
+    text: "Prepare useful observations and questions for supervising allied health professionals.",
+    icon: MessageCircleHeart,
   },
   {
-    title: "Plan B reflection tool",
-    description:
-      "A reflective tool for moments when the child does not respond to your original plan.",
-    preview:
-      "Preview example: what did the child show you, what changed in the environment, and what could you try next?",
+    title: "Reflection without judgement",
+    text: "Use difficult moments as opportunities to learn, ask for support and build confidence.",
+    icon: HeartHandshake,
   },
-  {
-    title: "Environment setup checklist",
-    description:
-      "A practical prompt tool for thinking about space, positioning, sensory load and engagement.",
-    preview:
-      "Preview example: where are you sitting, what can the child see, what is distracting, and how can the setup feel safer?",
-  },
-];
-
-const PLANNED_FEATURES = [
-  "Free launch webinar first",
-  "Topic previews as the pathway grows",
-  "PDF handouts and reflection prompts when released",
-  "Reusable tools shaped by AHA feedback",
-  "Resources that can be used across different sessions",
-  "More content added as the platform develops",
 ];
 
 export default function TopicsPage() {
   return (
-    <main className="min-h-screen bg-[#faf8f5] text-[#1e1b2e]">
-      <section className="mx-auto max-w-6xl px-6 py-12 md:py-16">
-        <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-            Built with AHAs, for AHAs
-          </p>
-
-          <p className="mt-2 text-base leading-relaxed text-[#3f5f5a]">
-            Robyn and Jess are building this platform from scratch with feedback
-            from AHAs, managers and clinics. More tools, previews, videos and
-            resources are coming soon.
-          </p>
-        </section>
-
-        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-12">
-          <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+    <main className="min-h-screen bg-[#fffaf3] text-[#1e1b2e]">
+      <section className="mx-auto max-w-7xl px-5 py-12 sm:px-6 md:py-16">
+        <section className="mb-8 overflow-hidden rounded-4xl border border-[#f4d9a6] bg-white shadow-sm">
+          <div className="grid gap-9 bg-linear-to-br from-[#fff7df] via-white to-[#f0fdfa] p-7 md:p-12 lg:grid-cols-[1fr_0.72fr] lg:items-center">
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-                AHA topic pathway
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-[#0f766e]">
+                Allied Health Hive | Workforce Development
               </p>
 
-              <h1 className="mb-5 text-4xl font-bold leading-tight md:text-6xl">
-                Practical topics, tools and reflective resources are being built.
+              <h1 className="max-w-4xl text-4xl font-bold leading-tight md:text-6xl">
+                Practical learning that helps AHAs feel more confident and supported.
               </h1>
 
-              <p className="mb-6 max-w-3xl text-base leading-relaxed text-[#6b6880] md:text-lg">
-                These topic pathways are being created to help AHAs feel
-                inspired, prepared and supported in real therapy sessions. The
-                first step is the free launch webinar, then more topic previews,
-                tools and resources will be added as the platform grows.
+              <p className="mt-6 max-w-3xl text-lg leading-relaxed text-[#5f5b73]">
+                Explore topics designed around real AHA experiences, including
+                preparing for sessions, communicating clearly, reflecting after
+                difficult moments and knowing when to ask for guidance.
               </p>
 
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/subscribe"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+              <p className="mt-4 max-w-3xl text-base leading-relaxed text-[#5f5b73]">
+                You are not expected to know everything. These topics are here to
+                help you learn, reflect and feel clearer about your next step.
+              </p>
+
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="#topic-library"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-7 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962]"
                 >
-                  Register for the free webinar
-                  <ArrowRight size={16} />
-                </Link>
+                  Explore the topics
+                  <ArrowRight size={18} />
+                </a>
 
                 <Link
-                  href="/join"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-6 py-3 text-sm font-semibold text-[#0f766e] transition hover:bg-[#ccfbf1]"
+                  href="/tools"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#0f766e] bg-white px-7 py-4 text-base font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
                 >
-                  Join free community
-                  <MessageCircle size={16} />
+                  Use practical tools
+                  <ClipboardList size={18} />
                 </Link>
               </div>
             </div>
 
-            <div className="rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-white">
-                <BookOpen size={24} />
+            <aside className="rounded-4xl border border-[#99f6e4] bg-[#f0fdfa] p-6 md:p-8">
+              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[#0f766e] text-white">
+                <BookOpen size={27} />
               </div>
 
-              <h2 className="mb-3 text-2xl font-bold">
-                Topic pathway coming soon
+              <h2 className="mb-4 text-2xl font-bold">
+                Learning that connects with real work
               </h2>
 
-              <p className="mb-5 text-sm leading-relaxed text-[#3f5f5a]">
-  The topic pathway is being built carefully. The first priority is
-  the free launch webinar, listening to AHAs and building the most
-  useful resources first.
-</p>
-
-              <ul className="space-y-3 text-sm leading-relaxed text-[#3f5f5a]">
-                {PLANNED_FEATURES.map((feature) => (
-                  <li key={feature} className="flex gap-2">
-                    <Check
-                      size={16}
-                      className="mt-0.5 shrink-0 text-[#0f766e]"
-                    />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
+              <div className="grid gap-3">
+                <CheckItem text="Short topic previews you can explore now" />
+                <CheckItem text="Practical reflection questions" />
+                <CheckItem text="Preparation and communication prompts" />
+                <CheckItem text="Supportive language for asking questions" />
+                <CheckItem text="More practical resources as the Hive grows" />
+              </div>
+            </aside>
           </div>
         </section>
 
-        <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6 shadow-sm">
-          <div className="flex gap-3">
-            <ShieldCheck
-              size={22}
-              className="mt-0.5 shrink-0 text-[#0f766e]"
-            />
-
-            <div>
-              <p className="mb-1 text-sm font-semibold text-[#0f766e]">
-                Professional boundary
-              </p>
-
-              <p className="text-sm leading-relaxed text-[#3f5f5a]">
-                Topic resources support reflective professional development.
-                They do not replace workplace supervision, clinical supervision,
-                delegation, clinical oversight, workplace documentation,
-                incident reporting or employer responsibilities.
-              </p>
+        <section className="mb-8 rounded-4xl border border-[#e8e4de] bg-white p-7 shadow-sm md:p-10">
+          <div className="mb-8 max-w-4xl">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#f0fdfa] px-4 py-2 text-sm font-semibold text-[#0f766e]">
+              <Sparkles size={16} />
+              Practical learning themes
             </div>
-          </div>
-        </section>
 
-        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <div className="mb-8 max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-              Tool previews
-            </p>
-
-            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              See the kind of support being built.
+            <h2 className="text-3xl font-bold leading-tight md:text-5xl">
+              Learning should help in your next session, not just give you more to read.
             </h2>
 
-            <p className="text-base leading-relaxed text-[#6b6880]">
-              These previews show the purpose of each tool. The full interactive
-              versions and downloadable resources will be released when the
-              pathway is ready.
-            </p>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-3">
-            {TOOL_PREVIEWS.map((tool) => (
-              <article
-                key={tool.title}
-                className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6"
-              >
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
-                  <ClipboardList size={22} />
-                </div>
-
-                <h3 className="mb-3 text-xl font-bold">{tool.title}</h3>
-
-                <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
-                  {tool.description}
-                </p>
-
-                <div className="rounded-2xl border border-[#99f6e4] bg-white p-4">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-                    Preview only
-                  </p>
-
-                  <p className="text-sm leading-relaxed text-[#6b6880]">
-                    {tool.preview}
-                  </p>
-                </div>
-
-                <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-[#0f766e]">
-                  <Sparkles size={15} />
-                  Full tool pathway coming soon
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <div className="mb-8 max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-              Planned topic themes
-            </p>
-
-            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              Topic previews will connect with real AHA questions.
-            </h2>
-
-            <p className="text-base leading-relaxed text-[#6b6880]">
-              Each topic is being shaped around practical support for real
-              therapy sessions. Tools and resources will grow alongside future
-              webinars and feedback from AHAs.
+            <p className="mt-4 text-base leading-relaxed text-[#6b6880] md:text-lg">
+              The Allied Health Hive combines professional reflection with
+              practical ideas AHAs can use in real workplace settings.
             </p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {PRACTICAL_THEMES.map((theme) => {
+              const Icon = theme.icon;
+
+              return (
+                <article
+                  key={theme.title}
+                  className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6"
+                >
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#0f766e]">
+                    <Icon size={23} />
+                  </div>
+
+                  <h3 className="mb-3 text-xl font-bold">{theme.title}</h3>
+
+                  <p className="text-sm leading-relaxed text-[#6b6880]">
+                    {theme.text}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section
+          id="topic-library"
+          className="mb-8 scroll-mt-24 rounded-4xl border border-[#e8e4de] bg-white p-7 shadow-sm md:p-10"
+        >
+          <div className="mb-8 max-w-4xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+              Topic library
+            </p>
+
+            <h2 className="text-3xl font-bold leading-tight md:text-5xl">
+              Choose the topic that feels most useful right now.
+            </h2>
+
+            <p className="mt-4 text-base leading-relaxed text-[#6b6880]">
+              Start anywhere. You do not need to complete the topics in order.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {TOPICS.map((topic) => (
               <article
                 key={topic.title}
                 className="flex flex-col rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-6"
               >
-                <div className="mb-4 flex items-start justify-between gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
-                    {topic.available ? (
-                      <PlayCircle size={22} />
-                    ) : (
-                      <Video size={21} />
-                    )}
+                <div className="mb-5 flex items-start justify-between gap-3">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+                    <PlayCircle size={23} />
                   </div>
 
-                  <span className="rounded-full bg-[#f0fdfa] px-3 py-1 text-xs font-semibold text-[#0f766e]">
-                    {topic.status}
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#0f766e]">
+                    {topic.tag}
                   </span>
                 </div>
 
-                <h3 className="mb-3 text-xl font-bold">{topic.title}</h3>
+                <h3 className="mb-3 text-xl font-bold leading-tight">
+                  {topic.title}
+                </h3>
 
-                <p className="mb-5 flex-1 text-sm leading-relaxed text-[#6b6880]">
+                <p className="mb-6 flex-1 text-sm leading-relaxed text-[#6b6880]">
                   {topic.description}
                 </p>
 
                 <Link
-                  href="/subscribe"
+                  href={topic.href}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
                 >
-                  Start with free webinar
+                  Explore this topic
                   <ArrowRight size={15} />
                 </Link>
               </article>
@@ -296,112 +243,94 @@ export default function TopicsPage() {
           </div>
         </section>
 
-        <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-8 shadow-sm md:p-10">
-          <div className="grid gap-6 md:grid-cols-[auto_1fr] md:items-start">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#0f766e] text-white">
-              <Repeat size={26} />
-            </div>
-
-            <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-                Use more than once
-              </p>
-
-              <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                These are not one-time worksheets.
-              </h2>
-
-              <p className="max-w-3xl text-base leading-relaxed text-[#3f5f5a]">
-                The planned tools are designed to be used repeatedly. An AHA
-                might use the same tool before a tricky session, after a session
-                that did not go to plan, when preparing questions for a
-                therapist, or when reflecting on how to support a different
-                child.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="mb-8 rounded-3xl border border-[#e8e4de] bg-white p-8 shadow-sm md:p-10">
-          <div className="mb-8 max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
-              Planned pathway
+        <section className="mb-8 rounded-4xl border border-[#99f6e4] bg-[#f0fdfa] p-7 shadow-sm md:p-10">
+          <div className="mb-7 max-w-4xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+              How each topic supports learning
             </p>
 
-            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              A simple support pathway for each topic.
+            <h2 className="text-3xl font-bold leading-tight md:text-4xl">
+              Watch, reflect and use what feels relevant.
             </h2>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
-              <PlayCircle className="mb-3 text-[#0f766e]" size={24} />
+          <div className="grid gap-5 md:grid-cols-3">
+            <LearningCard
+              icon={<PlayCircle size={24} />}
+              title="Explore"
+              text="Read or watch a short topic lesson connected to real AHA experiences."
+            />
 
-              <h3 className="mb-2 font-bold">Watch</h3>
+            <LearningCard
+              icon={<FileText size={24} />}
+              title="Reflect"
+              text="Consider what the topic means for your role, workplace and current confidence."
+            />
 
-              <p className="text-sm leading-relaxed text-[#6b6880]">
-                Free launch webinar first, then future topic videos or live
-                sessions as the pathway grows.
-              </p>
+            <LearningCard
+              icon={<ClipboardList size={24} />}
+              title="Use"
+              text="Take practical prompts, questions or tools into your next workplace conversation."
+            />
+          </div>
+        </section>
+
+        <section className="mb-8 rounded-4xl border border-[#e8e4de] bg-white p-7 shadow-sm md:p-10">
+          <div className="grid gap-7 md:grid-cols-[auto_1fr] md:items-start">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#f0fdfa] text-[#0f766e]">
+              <HeartHandshake size={27} />
             </div>
 
-            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
-              <FileText className="mb-3 text-[#0f766e]" size={24} />
-
-              <h3 className="mb-2 font-bold">Download</h3>
-
-              <p className="text-sm leading-relaxed text-[#6b6880]">
-                PDF resources, reflection prompts and session support sheets
-                when they are released.
+            <div>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+                Professional support
               </p>
-            </div>
 
-            <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
-              <ClipboardList className="mb-3 text-[#0f766e]" size={24} />
+              <h2 className="text-3xl font-bold">
+                Reflection is part of learning, not a sign that you have failed.
+              </h2>
 
-              <h3 className="mb-2 font-bold">Use the tool</h3>
-
-              <p className="text-sm leading-relaxed text-[#6b6880]">
-                Interactive tools or resource prompts where they genuinely
-                support the topic.
+              <p className="mt-4 max-w-4xl text-base leading-relaxed text-[#6b6880]">
+                These topics support workforce development and reflective
+                learning. They do not replace workplace supervision, clinical
+                supervision, delegation, direction, incident reporting or
+                employer responsibilities.
               </p>
             </div>
           </div>
         </section>
 
-        <section className="rounded-3xl bg-[#1e1b2e] p-8 text-white shadow-sm md:p-12">
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <section className="rounded-4xl bg-[#1e1b2e] p-8 text-white shadow-sm md:p-12">
+          <div className="grid gap-8 lg:grid-cols-[1fr_0.58fr] lg:items-center">
             <div>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-[#99f6e4]">
-                AHA Professional Development
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#99f6e4]">
+                Keep learning with the Hive
               </p>
 
-              <h2 className="mb-5 text-3xl font-bold md:text-5xl">
-                Start with the free webinar, then help shape what comes next.
+              <h2 className="text-3xl font-bold leading-tight md:text-5xl">
+                Practical ideas, supportive conversations and tools you can return to.
               </h2>
 
-              <p className="text-base leading-relaxed text-[#d9d7e5] md:text-lg">
-                The topic pathway will grow around the questions AHAs and
-                managers actually bring. The first step is listening, answering
-                real questions and building the most useful resources first.
+              <p className="mt-5 max-w-3xl text-base leading-relaxed text-[#d9d7e5] md:text-lg">
+                Join the community, use the practical tools or attend a live
+                webinar when you are ready.
               </p>
             </div>
 
             <div className="rounded-3xl border border-white/10 bg-white/10 p-6">
-              <div className="mb-5 flex items-start gap-3">
-                <Sparkles className="mt-1 shrink-0 text-[#99f6e4]" size={22} />
-
-                <p className="text-sm leading-relaxed text-[#d9d7e5]">
-                  More tools and resources will be added as we learn what AHAs
-                  need most from the hive.
-                </p>
-              </div>
+              <Link
+                href="/community"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0f766e] px-5 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962]"
+              >
+                Visit the AHA community
+                <ArrowRight size={16} />
+              </Link>
 
               <Link
-                href="/subscribe"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-4 text-center text-base font-semibold text-[#1e1b2e] transition hover:bg-[#f5f3ff]"
+                href="/webinars"
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/30 px-5 py-4 text-base font-semibold text-white transition hover:bg-white/10"
               >
-                Register for the free webinar
+                Explore webinars
                 <ArrowRight size={16} />
               </Link>
 
@@ -409,7 +338,7 @@ export default function TopicsPage() {
                 href="https://www.playmoveimprove.com"
                 target="_blank"
                 rel="noreferrer"
-                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 px-5 py-4 text-center text-base font-semibold text-white transition hover:bg-white/10"
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 px-5 py-4 text-base font-semibold text-white transition hover:bg-white/10"
               >
                 Visit Play Move Improve
                 <ExternalLink size={16} />
@@ -419,5 +348,38 @@ export default function TopicsPage() {
         </section>
       </section>
     </main>
+  );
+}
+
+function CheckItem({ text }: { text: string }) {
+  return (
+    <div className="flex gap-3">
+      <CheckCircle2
+        size={18}
+        className="mt-0.5 shrink-0 text-[#0f766e]"
+      />
+
+      <p className="text-sm leading-relaxed text-[#3f5f5a]">{text}</p>
+    </div>
+  );
+}
+
+function LearningCard({
+  icon,
+  title,
+  text,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+}) {
+  return (
+    <article className="rounded-3xl border border-[#99f6e4] bg-white p-6">
+      <div className="mb-4 text-[#0f766e]">{icon}</div>
+
+      <h3 className="mb-2 text-xl font-bold">{title}</h3>
+
+      <p className="text-sm leading-relaxed text-[#6b6880]">{text}</p>
+    </article>
   );
 }
