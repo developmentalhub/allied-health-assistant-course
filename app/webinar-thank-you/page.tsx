@@ -23,7 +23,7 @@ export default async function WebinarThankYouPage({
     <main className="min-h-screen bg-[#fffaf3] px-5 py-12 text-[#1e1b2e] sm:px-6 md:py-20">
       <section className="mx-auto max-w-5xl">
         <div className="overflow-hidden rounded-4xl border border-[#f4d9a6] bg-white shadow-sm">
-          <div className="bg-gradient-to-br from-[#fff7df] via-[#f0fdfa] to-white p-8 md:p-12">
+          <div className="bg-linear-to-br from-[#fff7df] via-[#f0fdfa] to-white p-8 md:p-12">
             <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#0f766e] text-white shadow-sm">
               <CheckCircle2 size={34} />
             </div>

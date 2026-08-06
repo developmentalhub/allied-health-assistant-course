@@ -136,7 +136,7 @@ export default function EmbeddedFreeTools() {
                   src={tool.url}
                   title={tool.title}
                   loading="lazy"
-                  className="h-[760px] w-full border-0 md:h-[850px]"
+                  className="h-190 w-full border-0 md:h-212.5"
                   allow="clipboard-read; clipboard-write"
                 />
               </div>
