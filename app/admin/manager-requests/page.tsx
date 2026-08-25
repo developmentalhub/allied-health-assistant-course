@@ -463,7 +463,7 @@ function ManagerRequestCard({
                   {member.email}
                 </p>
 
-                <p className="mt-1 text-xs uppercase tracking-[0.1em] text-[#6b6880]">
+                <p className="mt-1 text-xs uppercase tracking-widest text-[#6b6880]">
                   {member.status || "invited"}
                 </p>
               </a>

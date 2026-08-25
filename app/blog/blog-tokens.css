@@ -1,0 +1,78 @@
+/* Allied Health Hive — Blog design tokens
+   Import this in app/blog/layout.tsx (or merge into your existing globals.css).
+   If you already load Fraunces/Inter/IBM Plex Mono elsewhere, drop the @import
+   and just wire the font-family vars to your existing next/font setup. */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+.hive-blog {
+  --hive-paper: #faf6ef;
+  --hive-ink: #22302b;
+  --hive-pine: #3f6b58;
+  --hive-pine-dark: #2e4f40;
+  --hive-ochre: #d9a441;
+  --hive-dusk: #6e8fa3;
+  --hive-card: #ffffff;
+  --hive-tape: #efe2c8;
+  --hive-border: #e4dcc9;
+
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  background: var(--hive-paper);
+  color: var(--hive-ink);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+.hive-blog h1,
+.hive-blog h2,
+.hive-blog h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--hive-ink);
+}
+
+.hive-blog .hive-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hive-dusk);
+}
+
+.hive-blog a.hive-link {
+  color: var(--hive-pine);
+  text-decoration: underline;
+  text-decoration-color: var(--hive-ochre);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+.hive-blog a.hive-link:hover {
+  color: var(--hive-pine-dark);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hive-comment-enter {
+    animation: hive-comment-in 180ms ease-out;
+  }
+}
+
+@keyframes hive-comment-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hive-blog :focus-visible {
+  outline: 2px solid var(--hive-pine);
+  outline-offset: 2px;
+}

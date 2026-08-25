@@ -16,6 +16,7 @@ const footerLinks = [
   { label: "Webinars", href: "/webinars" },
   { label: "Resource shop", href: "/resource-shop" },
   { label: "Reflective support", href: "/reflective-practice" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
   { label: "Privacy", href: "/privacy" },
   { label: "Terms", href: "/terms" },

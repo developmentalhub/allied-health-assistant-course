@@ -9,6 +9,7 @@ const navLinks = [
   { href: "/webinars", label: "Webinars" },
   { href: "/resource-shop", label: "Resources" },
   { href: "/reflective-practice", label: "Reflective Support" },
+  { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -27,6 +28,7 @@ export default function Navbar() {
             <p className="text-sm font-bold text-[#1e1b2e]">
               Allied Health Hive
             </p>
+
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#0f766e]">
               Workforce Development
             </p>
