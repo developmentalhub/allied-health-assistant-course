@@ -2,12 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
-  Balloon,
   BookOpen,
   CheckCircle2,
   ClipboardCheck,
+  FileQuestion,
   FileText,
-  Footprints,
   HeartHandshake,
   Lightbulb,
   LockKeyhole,
@@ -21,11 +20,12 @@ import {
   Video,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
+import { submitWebinarQuestion } from "./actions";
 
 export const metadata: Metadata = {
   title: "AHA Webinars | Allied Health Hive Workforce Development",
   description:
-    "Practical workforce development for Allied Health Assistants covering regulation, documentation, session planning, family support and creative therapy ideas.",
+    "Free and practical webinars for Allied Health Assistants and allied health professionals through Allied Health Hive.",
 };
 
 type Webinar = {
@@ -40,6 +40,12 @@ type Webinar = {
   recording_url: string | null;
   resource_url: string | null;
   created_at: string;
+};
+
+type PageProps = {
+  searchParams?: Promise<{
+    question?: string;
+  }>;
 };
 
 const FUTURE_LEARNING_AREAS = [
@@ -75,7 +81,13 @@ const FUTURE_LEARNING_AREAS = [
   },
 ];
 
-export default async function WebinarsPage() {
+export default async function WebinarsPage({
+  searchParams,
+}: PageProps) {
+  const resolvedSearchParams = await searchParams;
+  const questionReceived =
+    resolvedSearchParams?.question === "received";
+
   const supabase = await createClient();
 
   const { data: webinars, error } = await supabase
@@ -90,12 +102,14 @@ export default async function WebinarsPage() {
 
   const upcomingWebinars = typedWebinars.filter(
     (webinar) =>
-      webinar.status !== "cancelled" && new Date(webinar.starts_at) >= now,
+      webinar.status !== "cancelled" &&
+      new Date(webinar.starts_at) >= now,
   );
 
   const pastWebinars = typedWebinars.filter(
     (webinar) =>
-      webinar.status !== "cancelled" && new Date(webinar.starts_at) < now,
+      webinar.status !== "cancelled" &&
+      new Date(webinar.starts_at) < now,
   );
 
   return (
@@ -110,30 +124,26 @@ export default async function WebinarsPage() {
 
               <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0f766e] shadow-sm">
                 <Sparkles size={16} />
-                Free live webinar for Allied Health Assistants
+                Free live webinar for Allied Health Assistants and allied
+                health professionals
               </div>
 
               <h1 className="max-w-4xl text-4xl font-bold leading-tight md:text-6xl">
-                Practical ideas are only the beginning.
+                Inside The Allied Health Hive: Your Top 5 Questions Answered
               </h1>
 
               <p className="mt-6 max-w-3xl text-lg leading-relaxed text-[#5f5b73] md:text-xl">
-                Join Robyn and Jess for a practical introduction to the kind of
-                workforce development Allied Health Assistants have been asking
-                for.
+                Join Robyn and Jess as we introduce The Allied Health Hive
+                and answer five of the questions we hear most often from
+                Allied Health Assistants and the professionals supporting
+                them.
               </p>
 
               <p className="mt-4 max-w-3xl text-base leading-relaxed text-[#5f5b73]">
-                We understand that AHA work involves much more than finding
-                another activity. You are preparing sessions, responding to
-                regulation needs, recording useful observations, communicating
-                with supervising professionals and helping families feel
-                capable of continuing strategies at home.
-              </p>
-
-              <p className="mt-4 max-w-3xl text-base font-semibold leading-relaxed text-[#1e1b2e]">
-                The Allied Health Hive is being built to support all of these
-                parts of your role.
+                We will talk about what the Hive is, who it is for, how the
+                webinars and resources work, what reflective support looks
+                like and how we hope to make the everyday AHA role feel a
+                little less isolating.
               </p>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -146,11 +156,11 @@ export default async function WebinarsPage() {
                 </Link>
 
                 <a
-                  href="#what-we-will-explore"
+                  href="#webinar-question"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-[#0f766e] bg-white px-7 py-4 text-base font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
                 >
-                  See what we understand
-                  <ArrowRight size={18} />
+                  Ask us a question
+                  <FileQuestion size={18} />
                 </a>
               </div>
             </div>
@@ -165,16 +175,16 @@ export default async function WebinarsPage() {
               </p>
 
               <h2 className="mb-4 text-3xl font-bold">
-                Creative and practical ideas for more engaging AHA sessions
+                Meet The Hive and bring us your questions
               </h2>
 
               <div className="grid gap-3">
                 <Detail text="Tuesday 8 September 2026" />
                 <Detail text="12:00 pm to 1:00 pm Queensland time" />
                 <Detail text="Live online and free to attend" />
-                <Detail text="Practical examples you can adapt immediately" />
-                <Detail text="Questions can be submitted in advance" />
-                <Detail text="No payment details required" />
+                <Detail text="Meet Robyn and Jess" />
+                <Detail text="Your top 5 Hive questions answered" />
+                <Detail text="Submit your own question before the webinar" />
               </div>
             </aside>
           </div>
@@ -184,99 +194,220 @@ export default async function WebinarsPage() {
           <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
             <div>
               <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-                We understand the AHA role
+                Our first Hive conversation
               </p>
 
               <h2 className="text-3xl font-bold leading-tight md:text-5xl">
-                AHA sessions rarely follow a perfectly predictable plan.
+                We want you to understand what we are building before we ask
+                you to become part of it.
               </h2>
             </div>
 
             <div>
               <p className="text-lg leading-relaxed text-[#5f5b73]">
-                You may receive a therapy plan but still need to work out how to
-                prepare the space, explain the activity, support engagement,
-                notice meaningful changes and communicate what happened.
+                Allied Health Assistants often tell us they want practical
+                ideas, somewhere to ask questions, more connection with
+                others doing similar work and support that understands the
+                realities of busy therapy sessions.
               </p>
 
               <p className="mt-4 text-base leading-relaxed text-[#6b6880]">
-                You may also be supporting children who are tired, anxious,
-                dysregulated, avoidant or simply not interested in the original
-                activity. At the same time, you need to stay within your role,
-                follow professional direction and provide useful feedback.
+                The Allied Health Hive is our response to that. Our first
+                webinar is a chance to show you what we are creating, explain
+                how it will work and answer the questions you have before
+                deciding whether the Hive is useful for you or your team.
               </p>
-
-              <div className="mt-6 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
-                <p className="font-semibold text-[#0f766e]">
-                  This is the reality our learning will be built around.
-                </p>
-
-                <p className="mt-2 text-sm leading-relaxed text-[#3f5f5a]">
-                  Not generic training. Not passive videos. Practical learning
-                  designed around the decisions, questions and challenges AHAs
-                  experience during real sessions.
-                </p>
-              </div>
             </div>
           </div>
         </section>
 
-        <section
-          id="what-we-will-explore"
-          className="mb-8 scroll-mt-24 rounded-4xl border border-[#e8e4de] bg-white p-7 shadow-sm md:p-10"
-        >
+        <section className="mb-8 rounded-4xl border border-[#e8e4de] bg-white p-7 shadow-sm md:p-10">
           <div className="mb-8 max-w-4xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
               Inside the free webinar
             </p>
 
             <h2 className="text-3xl font-bold leading-tight md:text-5xl">
-              Fresh ideas you can adapt in your next session.
+              Five questions we are going to answer honestly.
             </h2>
-
-            <p className="mt-4 text-base leading-relaxed text-[#6b6880] md:text-lg">
-              The first webinar will show the practical and creative style of
-              Allied Health Hive learning while introducing the wider support
-              still to come.
-            </p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
             <FeatureCard
-              icon={<Route size={25} />}
-              title="Masking tape movement games"
-              text="Use tape lines, pathways, targets and shapes to support crossing the midline, balance, coordination, visual attention and motor planning."
+              icon={<UsersRound size={25} />}
+              title="1. Who is The Allied Health Hive actually for?"
+              text="We will explain how the Hive supports Allied Health Assistants while also including supervising professionals, managers and wider allied health teams."
             />
 
             <FeatureCard
-              icon={<Balloon size={25} />}
-              title="Low-cost equipment ideas"
-              text="Turn balls, cups, balloons, paper, socks and everyday items into movement, matching, throwing, catching and communication activities."
-            />
-
-            <FeatureCard
-              icon={<Footprints size={25} />}
-              title="Strategies when participation drops"
-              text="Explore ways to change the pace, instructions, body position, equipment, environment or challenge level when a child disengages."
-            />
-
-            <FeatureCard
-              icon={<HeartHandshake size={25} />}
-              title="Supporting regulation before performance"
-              text="Consider what may be underneath avoidance, frustration or refusal and how connection can help a child feel safe enough to participate."
-            />
-
-            <FeatureCard
-              icon={<Lightbulb size={25} />}
-              title="Adapting when Plan A does not work"
-              text="Learn how small changes can make an activity more achievable while still following the intended session direction."
+              icon={<BookOpen size={25} />}
+              title="2. What will I actually get inside the Hive?"
+              text="We will walk through the community, practical tools, webinars, recordings, resources and reflective support being developed."
             />
 
             <FeatureCard
               icon={<MessageCircleHeart size={25} />}
-              title="Observing and communicating clearly"
-              text="Think about what to notice during an activity and how to bring useful observations back to the supervising professional."
+              title="3. Is this supervision?"
+              text="We will explain the difference between reflective support, workforce learning and the clinical supervision and delegation provided by your workplace."
             />
+
+            <FeatureCard
+              icon={<Route size={25} />}
+              title="4. How will this help with real sessions?"
+              text="We will show how Hive learning will focus on practical session problems, confidence, communication, regulation, planning and adapting when Plan A changes."
+            />
+
+            <FeatureCard
+              icon={<HeartHandshake size={25} />}
+              title="5. What happens after the free webinar?"
+              text="We will show you how you can stay connected, what learning is coming next and how individuals and organisations can use the Hive."
+            />
+
+            <FeatureCard
+              icon={<FileQuestion size={25} />}
+              title="Plus your questions"
+              text="If there is something you want us to answer, submit it below and it may become one of the questions we discuss live."
+            />
+          </div>
+        </section>
+
+        <section
+          id="webinar-question"
+          className="mb-8 scroll-mt-24 rounded-4xl border border-[#99f6e4] bg-[#f0fdfa] p-7 shadow-sm md:p-10"
+        >
+          <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+            <div>
+              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#0f766e]">
+                <FileQuestion size={27} />
+              </div>
+
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
+                Your question matters
+              </p>
+
+              <h2 className="text-3xl font-bold leading-tight md:text-4xl">
+                What would you like us to answer on 8 September?
+              </h2>
+
+              <p className="mt-4 text-base leading-relaxed text-[#3f5f5a]">
+                Ask us anything about The Allied Health Hive, the AHA role,
+                our community, reflective support, webinars, resources or
+                how the Hive might work for your team.
+              </p>
+            </div>
+
+            <div className="rounded-4xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
+              {questionReceived ? (
+                <div>
+                  <CheckCircle2
+                    size={34}
+                    className="mb-4 text-[#0f766e]"
+                  />
+
+                  <h3 className="text-2xl font-bold">
+                    Your question has been received.
+                  </h3>
+
+                  <p className="mt-3 text-base leading-relaxed text-[#6b6880]">
+                    Thank you. Robyn and Jess will review the questions
+                    submitted before the live webinar.
+                  </p>
+
+                  <Link
+                    href="/subscribe"
+                    className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-3 text-sm font-semibold text-white"
+                  >
+                    Save my free webinar place
+                    <ArrowRight size={16} />
+                  </Link>
+                </div>
+              ) : (
+                <form
+                  action={submitWebinarQuestion}
+                  className="grid gap-5"
+                >
+                  <TextField
+                    label="Your name"
+                    name="fullName"
+                    required
+                  />
+
+                  <TextField
+                    label="Email"
+                    name="email"
+                    type="email"
+                    required
+                  />
+
+                  <SelectField
+                    label="Which best describes you?"
+                    name="role"
+                    options={[
+                      {
+                        label: "Choose one",
+                        value: "",
+                      },
+                      {
+                        label: "Allied Health Assistant",
+                        value: "Allied Health Assistant",
+                      },
+                      {
+                        label: "Allied health professional",
+                        value: "Allied health professional",
+                      },
+                      {
+                        label: "Manager or supervisor",
+                        value: "Manager or supervisor",
+                      },
+                      {
+                        label: "Student",
+                        value: "Student",
+                      },
+                      {
+                        label: "Other",
+                        value: "Other",
+                      },
+                    ]}
+                  />
+
+                  <label className="grid gap-2">
+                    <span className="text-sm font-semibold">
+                      What would you like Robyn and Jess to answer?
+                    </span>
+
+                    <textarea
+                      name="question"
+                      rows={5}
+                      required
+                      placeholder="Ask us anything about The Hive, the AHA role, sessions, support, resources or how it all works..."
+                      className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:bg-white"
+                    />
+                  </label>
+
+                  <label className="flex items-start gap-3 rounded-2xl bg-[#faf8f5] p-4">
+                    <input
+                      type="checkbox"
+                      name="canShare"
+                      defaultChecked
+                      className="mt-1 h-4 w-4"
+                    />
+
+                    <span className="text-sm leading-relaxed text-[#5f5b73]">
+                      You can mention my question during the webinar. We will
+                      not share my email address.
+                    </span>
+                  </label>
+
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0f766e] px-6 py-4 text-base font-semibold text-white transition hover:bg-[#0d6962]"
+                  >
+                    Send my question
+                    <ArrowRight size={18} />
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </section>
 
@@ -287,14 +418,9 @@ export default async function WebinarsPage() {
             </p>
 
             <h2 className="text-3xl font-bold leading-tight md:text-5xl">
-              A growing workforce development pathway for AHAs and their teams.
+              A growing workforce development pathway for AHAs and their
+              teams.
             </h2>
-
-            <p className="mt-4 text-base leading-relaxed text-[#3f5f5a] md:text-lg">
-              Future webinars, tools and resources will go beyond individual
-              activity ideas and support the wider capabilities AHAs need in
-              their daily work.
-            </p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -307,38 +433,15 @@ export default async function WebinarsPage() {
                   {area.icon}
                 </div>
 
-                <h3 className="mb-3 text-xl font-bold">{area.title}</h3>
+                <h3 className="mb-3 text-xl font-bold">
+                  {area.title}
+                </h3>
 
                 <p className="text-sm leading-relaxed text-[#6b6880]">
                   {area.text}
                 </p>
               </article>
             ))}
-          </div>
-        </section>
-
-        <section className="mb-8 rounded-4xl border border-[#f4d9a6] bg-[#fffaf0] p-7 shadow-sm md:p-10">
-          <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-            <div>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#b45309]">
-                This webinar may be for you
-              </p>
-
-              <h2 className="text-3xl font-bold leading-tight md:text-4xl">
-                Have you ever wondered whether you are doing enough?
-              </h2>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              <Thought text="I am running out of fresh activity ideas." />
-              <Thought text="The child does not want to participate." />
-              <Thought text="I am unsure how much I can adapt." />
-              <Thought text="I do not know what to document." />
-              <Thought text="I want to give more useful feedback." />
-              <Thought text="I need clearer session preparation strategies." />
-              <Thought text="I want to support families more confidently." />
-              <Thought text="I would love to hear what other AHAs try." />
-            </div>
           </div>
         </section>
 
@@ -350,15 +453,15 @@ export default async function WebinarsPage() {
 
             <div>
               <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-                Professional learning with clear boundaries
+                Clear professional boundaries
               </p>
 
               <h2 className="text-3xl font-bold">
-                Confidence includes knowing when to ask.
+                The Hive supports your role. It does not replace supervision.
               </h2>
 
               <p className="mt-4 max-w-4xl text-base leading-relaxed text-[#6b6880]">
-                Allied Health Hive learning supports preparation, reflection,
+                Allied Health Hive supports preparation, reflection,
                 communication and practical skill development. It does not
                 replace workplace supervision, allied health direction,
                 delegation, clinical decision-making, incident reporting or
@@ -374,7 +477,9 @@ export default async function WebinarsPage() {
               The webinar list could not be loaded
             </h2>
 
-            <p className="text-sm leading-relaxed">{error.message}</p>
+            <p className="text-sm leading-relaxed">
+              {error.message}
+            </p>
           </div>
         ) : null}
 
@@ -387,11 +492,6 @@ export default async function WebinarsPage() {
             <h2 className="text-3xl font-bold md:text-4xl">
               Join the next AHA learning conversation.
             </h2>
-
-            <p className="mt-3 max-w-3xl text-base leading-relaxed text-[#6b6880]">
-              New sessions will be shaped around the practical workforce needs
-              shared by AHAs, managers and supervising professionals.
-            </p>
           </div>
 
           {upcomingWebinars.length > 0 ? (
@@ -418,11 +518,6 @@ export default async function WebinarsPage() {
             <h2 className="text-3xl font-bold md:text-4xl">
               Return to useful ideas after each session.
             </h2>
-
-            <p className="mt-3 max-w-3xl text-base leading-relaxed text-[#6b6880]">
-              Recordings, preparation prompts, activity ideas and related
-              resources will appear here as the learning library grows.
-            </p>
           </div>
 
           {pastWebinars.length > 0 ? (
@@ -448,14 +543,13 @@ export default async function WebinarsPage() {
               </p>
 
               <h2 className="text-3xl font-bold leading-tight md:text-5xl">
-                See how well we understand the realities of AHA work.
+                Come and meet The Hive on 8 September.
               </h2>
 
               <p className="mt-5 max-w-3xl text-base leading-relaxed text-[#d9d7e5] md:text-lg">
-                Bring your questions, your difficult sessions and the areas
-                where you want more confidence. Leave with practical ideas and
-                a clearer picture of the support being built through the Allied
-                Health Hive.
+                Bring your questions and hear what we are building for Allied
+                Health Assistants and the allied health teams supporting
+                them.
               </p>
             </div>
 
@@ -468,21 +562,13 @@ export default async function WebinarsPage() {
                 <ArrowRight size={17} />
               </Link>
 
-              <Link
-                href="/topics"
+              <a
+                href="#webinar-question"
                 className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/30 px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-white/10"
               >
-                Explore the topic library
-                <BookOpen size={17} />
-              </Link>
-
-              <Link
-                href="/community"
-                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/30 px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-white/10"
-              >
-                Visit the free community
-                <ArrowRight size={17} />
-              </Link>
+                Submit a question
+                <FileQuestion size={17} />
+              </a>
             </div>
           </div>
         </section>
@@ -499,7 +585,7 @@ function Detail({ text }: { text: string }) {
         size={18}
       />
 
-      <p className="text-sm leading-relaxed text-[#1e1b2e]">{text}</p>
+      <p className="text-sm leading-relaxed">{text}</p>
     </div>
   );
 }
@@ -521,21 +607,10 @@ function FeatureCard({
 
       <h3 className="mb-3 text-xl font-bold">{title}</h3>
 
-      <p className="text-sm leading-relaxed text-[#6b6880]">{text}</p>
+      <p className="text-sm leading-relaxed text-[#6b6880]">
+        {text}
+      </p>
     </article>
-  );
-}
-
-function Thought({ text }: { text: string }) {
-  return (
-    <div className="flex gap-3 rounded-2xl bg-white p-4">
-      <CheckCircle2
-        className="mt-0.5 shrink-0 text-[#b45309]"
-        size={18}
-      />
-
-      <p className="text-sm leading-relaxed text-[#5f5b73]">{text}</p>
-    </div>
   );
 }
 
@@ -574,13 +649,13 @@ function WebinarCard({
       <div className="mb-6 flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
         <div className="max-w-3xl">
           <div className="mb-3 flex flex-wrap gap-2">
-            <span className="inline-flex items-center rounded-full bg-[#f0fdfa] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#0f766e]">
+            <span className="rounded-full bg-[#f0fdfa] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#0f766e]">
               {webinar.access_type === "free"
                 ? "Free live session"
                 : "AHA learning session"}
             </span>
 
-            <span className="inline-flex items-center rounded-full bg-[#fffaf0] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#b45309]">
+            <span className="rounded-full bg-[#fffaf0] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#b45309]">
               {webinar.status}
             </span>
           </div>
@@ -600,7 +675,7 @@ function WebinarCard({
             Date and time
           </p>
 
-          <p className="text-sm leading-relaxed text-[#1e1b2e]">
+          <p className="text-sm leading-relaxed">
             {dateLabel}
             <br />
             {startTime} to {endTime} QLD time
@@ -624,7 +699,9 @@ function WebinarCard({
         <ResourceStatus
           icon={<FileText size={18} />}
           label="Practical resource"
-          hasValue={Boolean(showResourceLinks && webinar.resource_url)}
+          hasValue={Boolean(
+            showResourceLinks && webinar.resource_url,
+          )}
           value={webinar.resource_url}
           emptyText="Added with the session"
         />
@@ -632,7 +709,9 @@ function WebinarCard({
         <ResourceStatus
           icon={<PlayCircle size={18} />}
           label="Recording"
-          hasValue={Boolean(showResourceLinks && webinar.recording_url)}
+          hasValue={Boolean(
+            showResourceLinks && webinar.recording_url,
+          )}
           value={webinar.recording_url}
           emptyText="Added after the webinar"
         />
@@ -666,7 +745,7 @@ function ResourceStatus({
           href={value}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 break-all text-sm font-semibold text-[#1e1b2e] underline decoration-[#99f6e4] underline-offset-4"
+          className="inline-flex items-center gap-2 text-sm font-semibold underline"
         >
           Open
           <ArrowRight size={14} />
@@ -678,6 +757,58 @@ function ResourceStatus({
   );
 }
 
+function TextField({
+  label,
+  name,
+  type = "text",
+  required = false,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="text-sm font-semibold">{label}</span>
+
+      <input
+        name={name}
+        type={type}
+        required={required}
+        className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:bg-white"
+      />
+    </label>
+  );
+}
+
+function SelectField({
+  label,
+  name,
+  options,
+}: {
+  label: string;
+  name: string;
+  options: { label: string; value: string }[];
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="text-sm font-semibold">{label}</span>
+
+      <select
+        name={name}
+        className="w-full rounded-2xl border border-[#e8e4de] bg-[#faf8f5] px-4 py-3 text-base outline-none transition focus:border-[#0f766e] focus:bg-white"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 function EmptyState({ message }: { message: string }) {
   return (
     <div className="rounded-4xl border border-dashed border-[#e8e4de] bg-white p-8 text-center">
@@ -685,7 +816,9 @@ function EmptyState({ message }: { message: string }) {
         <LockKeyhole size={24} />
       </div>
 
-      <p className="text-base leading-relaxed text-[#6b6880]">{message}</p>
+      <p className="text-base leading-relaxed text-[#6b6880]">
+        {message}
+      </p>
     </div>
   );
 }
