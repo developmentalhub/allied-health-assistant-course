@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { Headphones } from 'lucide-react';
 import { getPostBySlug, getAllPostSlugs } from '@/lib/blog-posts';
 import { siteConfig } from '@/lib/site';
 import ArticleBody from '@/components/blog/ArticleBody';
@@ -189,6 +190,40 @@ export default async function BlogPostPage({
         >
           By Jess Foster and Robyn Papworth
         </p>
+
+        {post.audioUrl ? (
+          <section className="mt-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 sm:p-6">
+            <div className="flex items-start gap-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[#0f766e]">
+                <Headphones size={21} />
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#0f766e]">
+                  Prefer to listen?
+                </p>
+
+                <h2 className="mt-1 text-xl font-semibold text-[#1e1b2e]">
+                  {post.audioTitle || 'Listen to this article'}
+                </h2>
+
+                <p className="mt-2 text-sm leading-relaxed text-[#5f5b73]">
+                  Listen while you drive, take a break between sessions or
+                  catch up when reading is not convenient.
+                </p>
+
+                <audio
+                  controls
+                  preload="metadata"
+                  className="mt-4 w-full"
+                >
+                  <source src={post.audioUrl} type="audio/mpeg" />
+                  Your browser does not support the audio player.
+                </audio>
+              </div>
+            </div>
+          </section>
+        ) : null}
 
         <div className="mt-8">
           <ArticleBody blocks={post.body} />
