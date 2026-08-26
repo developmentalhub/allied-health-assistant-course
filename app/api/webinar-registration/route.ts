@@ -5,21 +5,26 @@ const ROBYN_EMAIL = "robyn@playmoveimprove.com.au";
 const JESS_EMAIL = "jess@spectrumvillage.com.au";
 
 const WEBINAR_TITLE =
-  "Free webinar: Meet Robyn and Jess + Your Questions, Answered";
+  "Inside The Allied Health Hive: Your Top 5 Questions Answered";
 
-const WEBINAR_DATE = "Tuesday 4 August 2026, 12pm to 1pm QLD time";
+const WEBINAR_DATE =
+  "Tuesday 8 September 2026, 12:00 pm to 1:00 pm Queensland time";
 
 export async function POST(request: Request) {
   const formData = await request.formData();
 
   const name = String(formData.get("name") || "").trim();
-  const email = String(formData.get("email") || "").trim().toLowerCase();
+  const email = String(formData.get("email") || "")
+    .trim()
+    .toLowerCase();
+
+  const role = String(formData.get("role") || "").trim();
   const question = String(formData.get("question") || "").trim();
 
   if (!name || !email) {
     return NextResponse.redirect(
       new URL("/subscribe?webinar=missing-details", request.url),
-      303
+      303,
     );
   }
 
@@ -31,7 +36,7 @@ export async function POST(request: Request) {
 
     return NextResponse.redirect(
       new URL("/subscribe?webinar=save-error", request.url),
-      303
+      303,
     );
   }
 
@@ -57,68 +62,95 @@ export async function POST(request: Request) {
 
     if (insertError.code === "23505") {
       return NextResponse.redirect(
-        new URL("/webinar-thank-you?status=already-registered", request.url),
-        303
+        new URL(
+          "/webinar-thank-you?status=already-registered",
+          request.url,
+        ),
+        303,
       );
     }
 
     return NextResponse.redirect(
       new URL("/subscribe?webinar=save-error", request.url),
-      303
+      303,
     );
   }
 
   const resendApiKey = process.env.RESEND_API_KEY;
+
   const fromEmail =
     process.env.RESEND_FROM_EMAIL ||
-    "AHA Professional Development <onboarding@resend.dev>";
+    "Allied Health Hive <onboarding@resend.dev>";
 
   if (resendApiKey) {
     try {
-      await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${resendApiKey}`,
-          "Content-Type": "application/json",
+      const emailResponse = await fetch(
+        "https://api.resend.com/emails",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: fromEmail,
+            to: [JESS_EMAIL, ROBYN_EMAIL],
+            reply_to: email,
+            subject: `New Allied Health Hive webinar registration from ${name}`,
+            text: [
+              "New Allied Health Hive webinar registration",
+              "",
+              `Webinar: ${WEBINAR_TITLE}`,
+              `Date: ${WEBINAR_DATE}`,
+              "",
+              `Name: ${name}`,
+              `Email: ${email}`,
+              `Role: ${role || "Not provided"}`,
+              "",
+              "Question for Robyn and Jess:",
+              question || "No question submitted.",
+              "",
+              "This registration has been saved in Supabase.",
+            ].join("\n"),
+          }),
         },
-        body: JSON.stringify({
-          from: fromEmail,
-          to: [JESS_EMAIL, ROBYN_EMAIL],
-          reply_to: email,
-          subject: `New AHA webinar registration from ${name}`,
-          text: [
-            "New AHA webinar registration",
-            "",
-            `Webinar: ${WEBINAR_TITLE}`,
-            `Date: ${WEBINAR_DATE}`,
-            "",
-            `Name: ${name}`,
-            `Email: ${email}`,
-            "",
-            "Question:",
-            question || "No question submitted.",
-            "",
-            "This registration has been saved in Supabase.",
-          ].join("\n"),
-        }),
-      });
+      );
+
+      if (!emailResponse.ok) {
+        const responseText = await emailResponse.text();
+
+        console.error(
+          "Webinar registration email was not accepted by Resend:",
+          responseText,
+        );
+      }
     } catch (error) {
       console.error("Webinar registration email failed:", error);
     }
   } else {
-    console.log("New AHA webinar registration saved without email:", {
-      name,
-      email,
-      question,
-    });
+    console.log(
+      "New Allied Health Hive webinar registration saved without email:",
+      {
+        name,
+        email,
+        role,
+        question,
+      },
+    );
   }
 
   return NextResponse.redirect(
-    new URL("/webinar-thank-you?status=registered", request.url),
-    303
+    new URL(
+      "/webinar-thank-you?status=registered",
+      request.url,
+    ),
+    303,
   );
 }
 
 export async function GET(request: Request) {
-  return NextResponse.redirect(new URL("/subscribe", request.url), 303);
+  return NextResponse.redirect(
+    new URL("/subscribe", request.url),
+    303,
+  );
 }

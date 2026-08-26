@@ -37,6 +37,12 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
   coverAlt:
     'An Allied Health Professional and Allied Health Assistant having a supportive supervision conversation together',
 
+  audioUrl:
+    'https://pub-7275a28c3128474fa61664efb190a963.r2.dev/How%20do%20we%20give%20feedback%20without%20knocking%20someone%E2%80%99s%20confidence.mp3',
+
+  audioTitle:
+    'Listen to this article',
+
   body: [
     {
       type: 'p',
@@ -74,15 +80,15 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "That would not be particularly supportive either.",
+      text: 'That would not be particularly supportive either.',
     },
     {
       type: 'p',
-      text: "If an AHA is missing something important, doing something incorrectly, stepping outside an agreed boundary or simply needs another way to approach a task, the AHP needs to be able to talk about it.",
+      text: 'If an AHA is missing something important, doing something incorrectly, stepping outside an agreed boundary or simply needs another way to approach a task, the AHP needs to be able to talk about it.',
     },
     {
       type: 'p',
-      text: "The question is whether that conversation helps the person learn or just makes them scared of getting it wrong again.",
+      text: 'The question is whether that conversation helps the person learn or just makes them scared of getting it wrong again.',
     },
 
     {
@@ -96,11 +102,11 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "Okay.",
+      text: 'Okay.',
     },
     {
       type: 'p',
-      text: "But what do you actually do with that tomorrow?",
+      text: 'But what do you actually do with that tomorrow?',
     },
     {
       type: 'p',
@@ -112,7 +118,7 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "Useful feedback tends to work much better when it is about something the person actually did, said or could change, rather than making a judgement about who they are.",
+      text: 'Useful feedback tends to work much better when it is about something the person actually did, said or could change, rather than making a judgement about who they are.',
     },
 
     {
@@ -122,11 +128,11 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
 
     {
       type: 'p',
-      text: "This is worth remembering.",
+      text: 'This is worth remembering.',
     },
     {
       type: 'p',
-      text: "An AHA can walk out of a session thinking about the instruction they worded badly, the activity that did not land, whether they should have asked for help earlier and whether the therapist noticed all of it.",
+      text: 'An AHA can walk out of a session thinking about the instruction they worded badly, the activity that did not land, whether they should have asked for help earlier and whether the therapist noticed all of it.',
     },
     {
       type: 'p',
@@ -134,11 +140,11 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "Jess and Robyn both talk pretty openly about our own ADHD, and that feeling of replaying conversations can be very real for us.",
+      text: 'Jess and Robyn both talk pretty openly about our own ADHD, and that feeling of replaying conversations can be very real for us.',
     },
     {
       type: 'p',
-      text: "So we don't need to wrap people in cotton wool, but we do think it helps to know there might already be a lot happening underneath a very simple, \"How did the session go?\"",
+      text: 'So we don\'t need to wrap people in cotton wool, but we do think it helps to know there might already be a lot happening underneath a very simple, "How did the session go?"',
     },
 
     {
@@ -148,7 +154,7 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
 
     {
       type: 'p',
-      text: "One way to make feedback feel less like a verdict is to turn it back into a conversation.",
+      text: 'One way to make feedback feel less like a verdict is to turn it back into a conversation.',
     },
     {
       type: 'p',
@@ -160,7 +166,7 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "Sometimes the AHA has already noticed exactly the thing you were going to raise.",
+      text: 'Sometimes the AHA has already noticed exactly the thing you were going to raise.',
     },
     {
       type: 'p',
@@ -168,7 +174,7 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "And if they did not notice it, you have a much clearer starting point for teaching.",
+      text: 'And if they did not notice it, you have a much clearer starting point for teaching.',
     },
 
     {
@@ -178,7 +184,7 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
 
     {
       type: 'p',
-      text: "This is a big one.",
+      text: 'This is a big one.',
     },
     {
       type: 'p',
@@ -186,7 +192,7 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "We need to be specific about what is working too.",
+      text: 'We need to be specific about what is working too.',
     },
     {
       type: 'p',
@@ -198,11 +204,11 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "Now the AHA knows what to keep doing.",
+      text: 'Now the AHA knows what to keep doing.',
     },
     {
       type: 'p',
-      text: "That matters for learning just as much as knowing what needs to change.",
+      text: 'That matters for learning just as much as knowing what needs to change.',
     },
 
     {
@@ -212,7 +218,7 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
 
     {
       type: 'p',
-      text: "This bit goes both ways.",
+      text: 'This bit goes both ways.',
     },
     {
       type: 'p',
@@ -236,7 +242,7 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "Those questions turn feedback into something useful instead of leaving you to fill in the gaps yourself.",
+      text: 'Those questions turn feedback into something useful instead of leaving you to fill in the gaps yourself.',
     },
 
     {
@@ -250,11 +256,11 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "People need the opportunity to understand the concern, make a change and get feedback on how that change is going.",
+      text: 'People need the opportunity to understand the concern, make a change and get feedback on how that change is going.',
     },
     {
       type: 'p',
-      text: "That is part of supervision.",
+      text: 'That is part of supervision.',
     },
     {
       type: 'p',
@@ -268,15 +274,15 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
 
     {
       type: 'p',
-      text: "We really want allied health teams to get more comfortable with this.",
+      text: 'We really want allied health teams to get more comfortable with this.',
     },
     {
       type: 'p',
-      text: "Supervision is not only the AHP talking and the AHA receiving.",
+      text: 'Supervision is not only the AHP talking and the AHA receiving.',
     },
     {
       type: 'p',
-      text: "An AHA might need to say, \"I understand the activity, but I'm still not clear about what you want me to do if they refuse it.\"",
+      text: 'An AHA might need to say, "I understand the activity, but I\'m still not clear about what you want me to do if they refuse it."',
     },
     {
       type: 'p',
@@ -284,11 +290,11 @@ export const feedbackBetweenAhasAndAhpsWithoutKnockingConfidence: BlogPost = {
     },
     {
       type: 'p',
-      text: "That is useful information for the supervisor too.",
+      text: 'That is useful information for the supervisor too.',
     },
     {
       type: 'p',
-      text: "The goal is not a hierarchy where one person always has the right answer. The AHP still holds responsibility for appropriate delegation and supervision, but good teamwork needs information moving in both directions.",
+      text: 'The goal is not a hierarchy where one person always has the right answer. The AHP still holds responsibility for appropriate delegation and supervision, but good teamwork needs information moving in both directions.',
     },
 
     {
