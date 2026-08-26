@@ -3,10 +3,11 @@ import {
   ArrowRight,
   CalendarDays,
   CheckCircle2,
-  Lightbulb,
+  HeartHandshake,
   Mail,
   MessageCircleQuestion,
   Sparkles,
+  UsersRound,
 } from "lucide-react";
 
 export default async function WebinarThankYouPage({
@@ -58,7 +59,7 @@ export default async function WebinarThankYouPage({
                   </p>
 
                   <h2 className="text-2xl font-bold leading-tight md:text-3xl">
-                    Creative, practical ideas for more engaging AHA sessions
+                    Inside The Allied Health Hive: Your Top 5 Questions Answered
                   </h2>
 
                   <p className="mt-4 text-base leading-relaxed text-[#3f5f5a]">
@@ -79,28 +80,50 @@ export default async function WebinarThankYouPage({
                 </p>
 
                 <h2 className="text-3xl font-bold">
-                  A welcoming hour of ideas, encouragement and honest conversation.
+                  A welcoming hour to understand what The Hive is really about.
                 </h2>
               </div>
 
               <div className="grid gap-4 md:grid-cols-3">
                 <InfoCard
-                  icon={<Lightbulb size={24} />}
-                  title="Fresh activity ideas"
-                  text="Discover playful ways to use masking tape, cups, balls and simple equipment in gross motor sessions."
+                  icon={<UsersRound size={24} />}
+                  title="Who The Hive is for"
+                  text="Hear how Allied Health Hive is designed for Allied Health Assistants while also supporting the professionals, supervisors and managers around them."
                 />
 
                 <InfoCard
                   icon={<Sparkles size={24} />}
-                  title="Creative adaptations"
-                  text="Learn how small changes to the activity, equipment or environment can help a session feel more achievable."
+                  title="What is actually inside"
+                  text="We will explain the community, webinars, practical tools, resources and reflective support being built through The Hive."
                 />
 
                 <InfoCard
                   icon={<MessageCircleQuestion size={24} />}
-                  title="Real AHA questions"
-                  text="Robyn and Jess will use submitted questions and common AHA challenges to shape the conversation."
+                  title="Your questions answered"
+                  text="Robyn and Jess will answer the questions we hear most often and use submitted questions to shape the live conversation."
                 />
+              </div>
+            </section>
+
+            <section className="mb-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-6">
+              <div className="flex gap-4">
+                <HeartHandshake
+                  className="mt-0.5 shrink-0 text-[#0f766e]"
+                  size={24}
+                />
+
+                <div>
+                  <h2 className="mb-2 text-xl font-bold">
+                    Bring your real questions
+                  </h2>
+
+                  <p className="text-sm leading-relaxed text-[#3f5f5a]">
+                    You do not need to understand The Hive before you come.
+                    That is exactly what this first webinar is for. Bring the
+                    things you are genuinely wondering about and we will talk
+                    them through together.
+                  </p>
+                </div>
               </div>
             </section>
 
@@ -140,10 +163,10 @@ export default async function WebinarThankYouPage({
               </Link>
 
               <Link
-                href="/"
+                href="/webinars"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-[#e8e4de] bg-white px-6 py-3 text-sm font-semibold text-[#5f5b73] transition hover:bg-[#faf8f5]"
               >
-                Back to home
+                Back to webinar page
               </Link>
             </div>
           </div>
