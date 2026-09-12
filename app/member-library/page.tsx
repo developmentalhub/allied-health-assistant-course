@@ -18,6 +18,7 @@ import {
   UsersRound,
   Video,
 } from "lucide-react";
+
 import MemberToolsCard from "@/components/MemberToolsCard";
 import { createClient } from "@/lib/supabase-server";
 
@@ -89,22 +90,33 @@ function getSupabaseAdmin() {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl) {
-    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL environment variable.");
+    throw new Error(
+      "Missing NEXT_PUBLIC_SUPABASE_URL environment variable.",
+    );
   }
 
   if (!serviceRoleKey) {
-    throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable.");
+    throw new Error(
+      "Missing SUPABASE_SERVICE_ROLE_KEY environment variable.",
+    );
   }
 
-  return createSupabaseAdminClient(supabaseUrl, serviceRoleKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
+  return createSupabaseAdminClient(
+    supabaseUrl,
+    serviceRoleKey,
+    {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
     },
-  });
+  );
 }
 
-function formatWebinarDate(startsAt: string, endsAt: string) {
+function formatWebinarDate(
+  startsAt: string,
+  endsAt: string,
+) {
   const startDate = new Date(startsAt);
   const endDate = new Date(endsAt);
 
@@ -148,9 +160,15 @@ export default async function MemberLibraryPage() {
     .eq("id", user.id)
     .maybeSingle();
 
-  const managementRoles = ["partner", "admin", "superadmin"];
+  const managementRoles = [
+    "partner",
+    "admin",
+    "superadmin",
+  ];
+
   const hasManagementPreview =
-    Boolean(profile?.role) && managementRoles.includes(profile!.role);
+    Boolean(profile?.role) &&
+    managementRoles.includes(profile!.role);
 
   const supabaseAdmin = getSupabaseAdmin();
 
@@ -159,57 +177,108 @@ export default async function MemberLibraryPage() {
     : "Active member";
 
   if (!hasManagementPreview) {
-    const { data: subscription, error: subscriptionError } = await supabaseAdmin
-      .from("aha_subscriptions")
-      .select("email, status, current_period_end")
-      .eq("email", user.email.toLowerCase())
-      .in("status", ["active", "trialing"])
+    const normalisedEmail =
+      user.email.toLowerCase();
+
+    const {
+      data: teamAccess,
+      error: teamAccessError,
+    } = await supabaseAdmin
+      .from("partner_team_members")
+      .select("id, email, status")
+      .eq("email", normalisedEmail)
+      .eq("status", "active")
+      .limit(1)
       .maybeSingle();
 
-    if (subscriptionError) {
-      throw new Error(subscriptionError.message);
+    if (teamAccessError) {
+      throw new Error(
+        teamAccessError.message,
+      );
     }
 
-    if (!subscription) {
-      redirect("/subscribe");
-    }
+    if (teamAccess) {
+      accessStatus = "Team access";
+    } else {
+      const {
+        data: subscription,
+        error: subscriptionError,
+      } = await supabaseAdmin
+        .from("aha_subscriptions")
+        .select(
+          "email, status, current_period_end",
+        )
+        .eq("email", normalisedEmail)
+        .in("status", ["active", "trialing"])
+        .maybeSingle();
 
-    accessStatus = subscription.status;
+      if (subscriptionError) {
+        throw new Error(
+          subscriptionError.message,
+        );
+      }
+
+      if (!subscription) {
+        redirect("/subscribe");
+      }
+
+      accessStatus =
+        subscription.status === "trialing"
+          ? "Trial member"
+          : "Active member";
+    }
   }
 
-  const { data: webinars, error: webinarsError } = await supabaseAdmin
+  const {
+    data: webinars,
+    error: webinarsError,
+  } = await supabaseAdmin
     .from("webinars")
     .select(
       "id, title, description, starts_at, ends_at, access_type, status, zoom_url, zoom_join_url, recording_url, resource_url, bunny_video_id, bunny_embed_url, bunny_playback_url, created_at",
     )
     .neq("status", "cancelled")
-    .order("starts_at", { ascending: true });
+    .order("starts_at", {
+      ascending: true,
+    });
 
   if (webinarsError) {
-    throw new Error(webinarsError.message);
+    throw new Error(
+      webinarsError.message,
+    );
   }
 
-  const typedWebinars = (webinars || []) as Webinar[];
+  const typedWebinars =
+    (webinars || []) as Webinar[];
+
   const now = new Date();
 
-  const upcomingWebinars = typedWebinars.filter(
-    (webinar) => new Date(webinar.starts_at) >= now,
-  );
+  const upcomingWebinars =
+    typedWebinars.filter(
+      (webinar) =>
+        new Date(webinar.starts_at) >= now,
+    );
 
-  const recordedWebinars = typedWebinars.filter(
-    (webinar) =>
-      webinar.status === "recorded" ||
-      Boolean(
-        webinar.bunny_embed_url ||
-          webinar.bunny_playback_url ||
-          webinar.recording_url,
-      ),
-  );
+  const recordedWebinars =
+    typedWebinars.filter(
+      (webinar) =>
+        webinar.status === "recorded" ||
+        Boolean(
+          webinar.bunny_embed_url ||
+            webinar.bunny_playback_url ||
+            webinar.recording_url,
+        ),
+    );
 
   const firstName =
-    profile?.full_name?.trim().split(" ")[0] ||
-    (typeof user.user_metadata?.full_name === "string"
-      ? user.user_metadata.full_name.trim().split(" ")[0]
+    profile?.full_name
+      ?.trim()
+      .split(" ")[0] ||
+    (typeof user.user_metadata
+      ?.full_name === "string"
+      ? user.user_metadata.full_name
+          .trim()
+          .split(" ")[0]
       : "");
 
   return (
@@ -229,14 +298,17 @@ export default async function MemberLibraryPage() {
               </h1>
 
               <p className="mt-6 max-w-3xl text-lg leading-relaxed text-[#5f5b73] md:text-xl">
-                Access your webinars, practical tools, learning topics and
-                workforce development resources in one place.
+                Access your webinars, practical tools,
+                learning topics and workforce development
+                resources in one place.
               </p>
 
               <p className="mt-4 max-w-3xl text-base leading-relaxed text-[#5f5b73]">
-                Start with whatever feels most useful today. You can prepare for
-                a session, reflect afterwards, revisit a recording or explore a
-                topic connected with your current work.
+                Start with whatever feels most useful
+                today. You can prepare for a session,
+                reflect afterwards, revisit a recording
+                or explore a topic connected with your
+                current work.
               </p>
             </div>
 
@@ -254,9 +326,16 @@ export default async function MemberLibraryPage() {
               </h2>
 
               <div className="grid gap-3">
-                <StatusItem text={`Access status: ${accessStatus}`} />
-                <StatusItem text={`Signed in as: ${user.email}`} />
+                <StatusItem
+                  text={`Access status: ${accessStatus}`}
+                />
+
+                <StatusItem
+                  text={`Signed in as: ${user.email}`}
+                />
+
                 <StatusItem text="Private webinar links are protected" />
+
                 <StatusItem text="New resources will appear here as released" />
               </div>
             </aside>
@@ -274,8 +353,9 @@ export default async function MemberLibraryPage() {
             </h2>
 
             <p className="mt-4 text-base leading-relaxed text-[#6b6880] md:text-lg">
-              Your library is organised around the practical areas AHAs manage
-              before, during and after sessions.
+              Your library is organised around the
+              practical areas AHAs manage before, during
+              and after sessions.
             </p>
           </div>
 
@@ -303,13 +383,15 @@ export default async function MemberLibraryPage() {
 
           {upcomingWebinars.length > 0 ? (
             <div className="grid gap-5">
-              {upcomingWebinars.map((webinar) => (
-                <MemberWebinarCard
-                  key={webinar.id}
-                  webinar={webinar}
-                  mode="upcoming"
-                />
-              ))}
+              {upcomingWebinars.map(
+                (webinar) => (
+                  <MemberWebinarCard
+                    key={webinar.id}
+                    webinar={webinar}
+                    mode="upcoming"
+                  />
+                ),
+              )}
             </div>
           ) : (
             <EmptyState
@@ -330,8 +412,9 @@ export default async function MemberLibraryPage() {
             </h2>
 
             <p className="mt-3 max-w-3xl text-base leading-relaxed text-[#3f5f5a]">
-              Use these tools around different sessions whenever you need a
-              clearer starting point or a more structured reflection.
+              Use these tools around different sessions
+              whenever you need a clearer starting point
+              or a more structured reflection.
             </p>
           </div>
 
@@ -348,13 +431,15 @@ export default async function MemberLibraryPage() {
 
           {recordedWebinars.length > 0 ? (
             <div className="grid gap-5">
-              {recordedWebinars.map((webinar) => (
-                <MemberWebinarCard
-                  key={webinar.id}
-                  webinar={webinar}
-                  mode="recording"
-                />
-              ))}
+              {recordedWebinars.map(
+                (webinar) => (
+                  <MemberWebinarCard
+                    key={webinar.id}
+                    webinar={webinar}
+                    mode="recording"
+                  />
+                ),
+              )}
             </div>
           ) : (
             <EmptyState
@@ -372,12 +457,14 @@ export default async function MemberLibraryPage() {
               </p>
 
               <h2 className="text-3xl font-bold leading-tight md:text-4xl">
-                Learning does not have to happen in one sitting.
+                Learning does not have to happen in one
+                sitting.
               </h2>
 
               <p className="mt-4 text-base leading-relaxed text-[#6b6880]">
-                Return to a topic, tool or recording when it becomes relevant to
-                a real session or workplace conversation.
+                Return to a topic, tool or recording when
+                it becomes relevant to a real session or
+                workplace conversation.
               </p>
             </div>
 
@@ -397,7 +484,11 @@ export default async function MemberLibraryPage() {
               />
 
               <PrivateLink
-                icon={<MessageCircleHeart size={22} />}
+                icon={
+                  <MessageCircleHeart
+                    size={22}
+                  />
+                }
                 title="Community"
                 text="Read, reflect and join conversations when you feel ready."
                 href="/community"
@@ -421,13 +512,15 @@ export default async function MemberLibraryPage() {
               </p>
 
               <h2 className="text-3xl font-bold leading-tight md:text-5xl">
-                Need workforce support beyond individual learning?
+                Need workforce support beyond individual
+                learning?
               </h2>
 
               <p className="mt-5 max-w-3xl text-base leading-relaxed text-[#d9d7e5] md:text-lg">
-                Managers and supervising professionals can explore team
-                onboarding, workforce development, reflective support and
-                custom resources.
+                Managers and supervising professionals
+                can explore team onboarding, workforce
+                development, reflective support and custom
+                resources.
               </p>
             </div>
 
@@ -467,7 +560,9 @@ function SectionHeading({
           {eyebrow}
         </p>
 
-        <h2 className="text-3xl font-bold md:text-4xl">{title}</h2>
+        <h2 className="text-3xl font-bold md:text-4xl">
+          {title}
+        </h2>
 
         <p className="mt-3 max-w-3xl text-base leading-relaxed text-[#6b6880]">
           {text}
@@ -496,7 +591,9 @@ function LearningAreaCard({
         {icon}
       </div>
 
-      <h3 className="mb-3 text-xl font-bold">{title}</h3>
+      <h3 className="mb-3 text-xl font-bold">
+        {title}
+      </h3>
 
       <p className="mb-5 flex-1 text-sm leading-relaxed text-[#6b6880]">
         {text}
@@ -513,7 +610,11 @@ function LearningAreaCard({
   );
 }
 
-function StatusItem({ text }: { text: string }) {
+function StatusItem({
+  text,
+}: {
+  text: string;
+}) {
   return (
     <div className="flex gap-3">
       <CheckCircle2
@@ -521,7 +622,9 @@ function StatusItem({ text }: { text: string }) {
         size={18}
       />
 
-      <p className="text-sm leading-relaxed text-[#3f5f5a]">{text}</p>
+      <p className="text-sm leading-relaxed text-[#3f5f5a]">
+        {text}
+      </p>
     </div>
   );
 }
@@ -533,14 +636,20 @@ function MemberWebinarCard({
   webinar: Webinar;
   mode: "upcoming" | "recording";
 }) {
-  const zoomLink = webinar.zoom_join_url || webinar.zoom_url;
+  const zoomLink =
+    webinar.zoom_join_url ||
+    webinar.zoom_url;
 
   const recordingLink =
     webinar.bunny_embed_url ||
     webinar.bunny_playback_url ||
     webinar.recording_url;
 
-  const dateTime = formatWebinarDate(webinar.starts_at, webinar.ends_at);
+  const dateTime =
+    formatWebinarDate(
+      webinar.starts_at,
+      webinar.ends_at,
+    );
 
   return (
     <article className="rounded-4xl border border-[#e8e4de] bg-white p-6 shadow-sm md:p-8">
@@ -597,7 +706,11 @@ function MemberWebinarCard({
 
         <MemberResourceButton
           icon={<PlayCircle size={18} />}
-          label={mode === "recording" ? "Watch recording" : "Recording"}
+          label={
+            mode === "recording"
+              ? "Watch recording"
+              : "Recording"
+          }
           href={recordingLink}
           emptyText="Added after the webinar"
         />
@@ -625,7 +738,9 @@ function MemberResourceButton({
           {label}
         </div>
 
-        <p className="text-sm text-[#6b6880]">{emptyText}</p>
+        <p className="text-sm text-[#6b6880]">
+          {emptyText}
+        </p>
       </div>
     );
   }
@@ -666,11 +781,17 @@ function PrivateLink({
       href={href}
       className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5 transition hover:border-[#0f766e] hover:bg-white"
     >
-      <div className="mb-3 text-[#0f766e]">{icon}</div>
+      <div className="mb-3 text-[#0f766e]">
+        {icon}
+      </div>
 
-      <h3 className="mb-2 text-lg font-bold">{title}</h3>
+      <h3 className="mb-2 text-lg font-bold">
+        {title}
+      </h3>
 
-      <p className="text-sm leading-relaxed text-[#6b6880]">{text}</p>
+      <p className="text-sm leading-relaxed text-[#6b6880]">
+        {text}
+      </p>
     </Link>
   );
 }
@@ -688,9 +809,13 @@ function EmptyState({
         <LockKeyhole size={24} />
       </div>
 
-      <h3 className="mb-2 text-xl font-bold">{title}</h3>
+      <h3 className="mb-2 text-xl font-bold">
+        {title}
+      </h3>
 
-      <p className="text-base leading-relaxed text-[#6b6880]">{message}</p>
+      <p className="text-base leading-relaxed text-[#6b6880]">
+        {message}
+      </p>
     </div>
   );
 }
