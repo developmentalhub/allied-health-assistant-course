@@ -1,6 +1,12 @@
 import Link from "next/link";
-import { LogIn } from "lucide-react";
+import {
+  LayoutDashboard,
+  LogIn,
+  ShieldCheck,
+} from "lucide-react";
+
 import { siteConfig } from "@/lib/site";
+import { createClient } from "@/lib/supabase-server";
 
 const navLinks = [
   { href: "/community", label: "For AHAs" },
@@ -13,11 +19,61 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Navbar() {
+export default async function Navbar() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let role: string | null = null;
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    role = profile?.role || null;
+  }
+
+  const isPartner = role === "partner";
+  const isAdmin = role === "admin" || role === "superadmin";
+
+  const accountLink = isPartner
+    ? {
+        href: "/partner",
+        label: "Hive Management",
+        icon: ShieldCheck,
+      }
+    : isAdmin
+      ? {
+          href: "/admin",
+          label: "Admin",
+          icon: ShieldCheck,
+        }
+      : user
+        ? {
+            href: "/dashboard",
+            label: "Dashboard",
+            icon: LayoutDashboard,
+          }
+        : {
+            href: "/login",
+            label: "Sign in",
+            icon: LogIn,
+          };
+
+  const AccountIcon = accountLink.icon;
+
   return (
     <header className="sticky top-0 z-50 border-b border-[#e8e4de] bg-[#fffaf3]/95 backdrop-blur">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-6">
-        <Link href="/" className="flex shrink-0 items-center gap-3">
+        <Link
+          href="/"
+          className="flex shrink-0 items-center gap-3"
+        >
           <img
             src={siteConfig.logoUrl}
             alt="Allied Health Hive"
@@ -48,11 +104,11 @@ export default function Navbar() {
         </div>
 
         <Link
-          href="/login"
+          href={accountLink.href}
           className="hidden items-center gap-2 rounded-full bg-[#0f766e] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d6962] sm:inline-flex"
         >
-          <LogIn size={16} />
-          Sign in
+          <AccountIcon size={16} />
+          {accountLink.label}
         </Link>
 
         <div className="flex items-center gap-2 lg:hidden">
@@ -64,16 +120,60 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="/login"
-            className="rounded-full border border-[#99f6e4] bg-white px-4 py-2 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
+            href={accountLink.href}
+            className="inline-flex items-center gap-2 rounded-full border border-[#99f6e4] bg-white px-4 py-2 text-sm font-semibold text-[#0f766e] transition hover:bg-[#f0fdfa]"
           >
-            Sign in
+            <AccountIcon size={15} />
+
+            <span className="hidden sm:inline">
+              {accountLink.label}
+            </span>
+
+            <span className="sm:hidden">
+              {isPartner
+                ? "Manage"
+                : isAdmin
+                  ? "Admin"
+                  : user
+                    ? "Account"
+                    : "Sign in"}
+            </span>
           </Link>
         </div>
       </nav>
 
       <div className="border-t border-[#e8e4de] bg-white/80 px-5 py-3 lg:hidden">
         <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto">
+          {isPartner ? (
+            <Link
+              href="/partner"
+              className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-2 text-sm font-semibold text-[#0f766e]"
+            >
+              <ShieldCheck size={15} />
+              Hive Management
+            </Link>
+          ) : null}
+
+          {isAdmin ? (
+            <Link
+              href="/admin"
+              className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-2 text-sm font-semibold text-[#0f766e]"
+            >
+              <ShieldCheck size={15} />
+              Admin
+            </Link>
+          ) : null}
+
+          {user && !isPartner && !isAdmin ? (
+            <Link
+              href="/dashboard"
+              className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#99f6e4] bg-[#f0fdfa] px-4 py-2 text-sm font-semibold text-[#0f766e]"
+            >
+              <LayoutDashboard size={15} />
+              Dashboard
+            </Link>
+          ) : null}
+
           {navLinks.map((link) => (
             <Link
               key={link.href}

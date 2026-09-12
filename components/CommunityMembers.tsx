@@ -1,20 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { UserRound, UsersRound } from "lucide-react";
+import {
+  MapPin,
+  UserRound,
+  UsersRound,
+} from "lucide-react";
 
 type CommunityMember = {
   id: string;
   name?: string | null;
-  role?: string | null;
-  organisation?: string | null;
-  location?: string | null;
-  created_at?: string | null;
+  community_role?: string | null;
+  discipline?: string | null;
+  location_region?: string | null;
+  bio?: string | null;
 };
 
 function getInitials(name: string) {
   return name
     .split(" ")
+    .filter(Boolean)
     .map((part) => part[0])
     .join("")
     .slice(0, 2)
@@ -38,10 +43,14 @@ export default function CommunityMembers() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data?.error || "Could not load community members.");
+        throw new Error(
+          data?.error || "Could not load community members.",
+        );
       }
 
-      setMembers(Array.isArray(data.members) ? data.members : []);
+      setMembers(
+        Array.isArray(data.members) ? data.members : [],
+      );
     } catch (error) {
       const message =
         error instanceof Error
@@ -68,13 +77,16 @@ export default function CommunityMembers() {
 
         <div>
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#0f766e]">
-            Members
+            Hive community
           </p>
 
-          <h2 className="text-xl font-bold">Who is joining</h2>
+          <h2 className="text-xl font-bold">
+            Who you are learning alongside
+          </h2>
 
           <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
-            A small snapshot of people joining the hive.
+            A small snapshot of people who have chosen to be
+            visible in the Hive.
           </p>
         </div>
       </div>
@@ -86,13 +98,18 @@ export default function CommunityMembers() {
       ) : null}
 
       {loading ? (
-        <p className="text-sm text-[#6b6880]">Loading members...</p>
+        <p className="text-sm text-[#6b6880]">
+          Loading members...
+        </p>
       ) : null}
 
-      {!loading && !errorMessage && members.length === 0 ? (
+      {!loading &&
+      !errorMessage &&
+      members.length === 0 ? (
         <div className="rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
           <p className="text-sm leading-relaxed text-[#6b6880]">
-            Members will appear here as people join the community.
+            Community profiles will begin appearing here as
+            members choose to introduce themselves.
           </p>
         </div>
       ) : null}
@@ -100,7 +117,15 @@ export default function CommunityMembers() {
       {!loading && members.length > 0 ? (
         <div className="grid gap-3">
           {members.map((member) => {
-            const name = member.name || "Community member";
+            const name =
+              member.name || "Community member";
+
+            const professionalDetails = [
+              member.community_role,
+              member.discipline,
+            ]
+              .filter(Boolean)
+              .join(" · ");
 
             return (
               <article
@@ -116,14 +141,38 @@ export default function CommunityMembers() {
                     )}
                   </div>
 
-                  <div className="min-w-0">
-                    <p className="font-semibold text-[#1e1b2e]">{name}</p>
-
-                    <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
-                      {[member.role, member.organisation, member.location]
-                        .filter(Boolean)
-                        .join(" · ") || "Part of the AHA community"}
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-[#1e1b2e]">
+                      {name}
                     </p>
+
+                    {professionalDetails ? (
+                      <p className="mt-1 text-sm leading-relaxed text-[#0f766e]">
+                        {professionalDetails}
+                      </p>
+                    ) : (
+                      <p className="mt-1 text-sm leading-relaxed text-[#6b6880]">
+                        Part of the Allied Health Hive
+                      </p>
+                    )}
+
+                    {member.location_region ? (
+                      <div className="mt-2 flex items-center gap-1.5 text-xs text-[#6b6880]">
+                        <MapPin
+                          size={13}
+                          className="shrink-0"
+                        />
+                        <span>
+                          {member.location_region}
+                        </span>
+                      </div>
+                    ) : null}
+
+                    {member.bio ? (
+                      <p className="mt-3 text-sm leading-relaxed text-[#5f5b73]">
+                        {member.bio}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </article>

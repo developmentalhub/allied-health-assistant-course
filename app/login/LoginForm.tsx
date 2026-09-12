@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   BookOpen,
@@ -12,15 +12,13 @@ import {
   Mail,
   UserRoundPlus,
 } from "lucide-react";
+
 import { createClient } from "@/lib/supabase";
 
 const SUPPORT_EMAIL = "jess@spectrumvillage.com.au";
 
 export default function LoginForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const redirectTo = searchParams.get("redirect") || "/member-library";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,12 +35,15 @@ export default function LoginForm() {
 
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const {
+      data: signInData,
+      error: signInError,
+    } = await supabase.auth.signInWithPassword({
       email: email.trim().toLowerCase(),
       password,
     });
 
-    if (error) {
+    if (signInError || !signInData.user) {
       setErrorMessage(
         "We could not sign you in with those details. Please check your email and password, then try again.",
       );
@@ -50,7 +51,35 @@ export default function LoginForm() {
       return;
     }
 
-    router.push(redirectTo);
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", signInData.user.id)
+      .maybeSingle();
+
+    if (profileError) {
+      console.error("Could not load profile after login:", profileError);
+    }
+
+    if (profile?.role === "superadmin") {
+      router.push("/admin");
+      router.refresh();
+      return;
+    }
+
+    if (profile?.role === "admin") {
+      router.push("/admin");
+      router.refresh();
+      return;
+    }
+
+    if (profile?.role === "partner") {
+      router.push("/partner");
+      router.refresh();
+      return;
+    }
+
+    router.push("/dashboard");
     router.refresh();
   }
 
@@ -63,12 +92,12 @@ export default function LoginForm() {
           </p>
 
           <h1 className="text-4xl font-bold leading-tight md:text-5xl">
-            Sign in to your private learning area.
+            Sign in to your private Hive area.
           </h1>
 
           <p className="mt-5 text-base leading-relaxed text-[#5f5b73]">
-            Accounts are used for private resources, member learning, team
-            access and administration areas.
+            Your account will take you directly to the part of the Allied
+            Health Hive connected with your role.
           </p>
 
           <div className="mt-7 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
@@ -106,7 +135,7 @@ export default function LoginForm() {
                 href="/subscribe"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e]"
               >
-                Register for the free webinar
+                Register for a webinar
                 <ArrowRight size={15} />
               </Link>
             </div>
@@ -167,11 +196,19 @@ export default function LoginForm() {
 
                 <button
                   type="button"
-                  onClick={() => setShowPassword((current) => !current)}
+                  onClick={() =>
+                    setShowPassword((current) => !current)
+                  }
                   className="flex items-center justify-center px-4 text-[#6b6880] transition hover:text-[#0f766e]"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-label={
+                    showPassword ? "Hide password" : "Show password"
+                  }
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
                 </button>
               </div>
             </label>
@@ -193,7 +230,10 @@ export default function LoginForm() {
 
           <div className="mt-6 rounded-3xl border border-[#e8e4de] bg-[#faf8f5] p-5">
             <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#1e1b2e]">
-              <Mail size={18} className="text-[#0f766e]" />
+              <Mail
+                size={18}
+                className="text-[#0f766e]"
+              />
               Forgotten your password?
             </div>
 
@@ -218,8 +258,8 @@ export default function LoginForm() {
             </div>
 
             <p className="mb-4 text-sm leading-relaxed text-[#3f5f5a]">
-              Begin with the free public tools, community and webinar. You do not
-              need to create a private account to explore these areas.
+              Begin with the free public tools, community and webinars. You do
+              not need to create a private account to explore these areas.
             </p>
 
             <div className="grid gap-3 sm:grid-cols-2">
@@ -245,8 +285,8 @@ export default function LoginForm() {
             </p>
 
             <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
-              Only use the administration registration page if you have been
-              given an approved invite code.
+              Administration registration is only for people who have been
+              specifically approved for full administration access.
             </p>
 
             <Link

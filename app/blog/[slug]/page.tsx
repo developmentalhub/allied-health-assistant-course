@@ -1,11 +1,13 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { Headphones } from 'lucide-react';
-import { getPostBySlug, getAllPostSlugs } from '@/lib/blog-posts';
-import { siteConfig } from '@/lib/site';
-import ArticleBody from '@/components/blog/ArticleBody';
-import CommentSection from '@/components/blog/CommentSection';
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Headphones } from "lucide-react";
+
+import { getPostBySlug, getAllPostSlugs } from "@/lib/blog-posts";
+import { siteConfig } from "@/lib/site";
+import ArticleBody from "@/components/blog/ArticleBody";
+import CommentSection from "@/components/blog/CommentSection";
+import SaveContentButton from "@/components/SaveContentButton";
 
 export function generateStaticParams() {
   return getAllPostSlugs().map((slug) => ({ slug }));
@@ -34,15 +36,14 @@ export async function generateMetadata({
   return {
     title: seoTitle,
     description: seoDescription,
-
     keywords: post.keywords,
 
     authors: [
       {
-        name: 'Jess Foster',
+        name: "Jess Foster",
       },
       {
-        name: 'Robyn Papworth',
+        name: "Robyn Papworth",
       },
     ],
 
@@ -54,12 +55,12 @@ export async function generateMetadata({
       title: seoTitle,
       description: seoDescription,
       url: canonicalUrl,
-      siteName: 'Allied Health Hive',
-      locale: 'en_AU',
-      type: 'article',
+      siteName: "Allied Health Hive",
+      locale: "en_AU",
+      type: "article",
       publishedTime,
       modifiedTime,
-      authors: ['Jess Foster', 'Robyn Papworth'],
+      authors: ["Jess Foster", "Robyn Papworth"],
       tags: [
         post.tag,
         ...(post.keywords || []),
@@ -67,7 +68,7 @@ export async function generateMetadata({
     },
 
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: seoTitle,
       description: seoDescription,
     },
@@ -78,9 +79,9 @@ export async function generateMetadata({
       googleBot: {
         index: true,
         follow: true,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-        'max-video-preview': -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
       },
     },
   };
@@ -105,49 +106,48 @@ export default async function BlogPostPage({
   ).toISOString();
 
   const articleStructuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
+    "@context": "https://schema.org",
+    "@type": "Article",
     headline: post.title,
     description: post.seoDescription || post.excerpt,
     datePublished: publishedDate,
     dateModified: modifiedDate,
 
     mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': articleUrl,
+      "@type": "WebPage",
+      "@id": articleUrl,
     },
 
     author: [
       {
-        '@type': 'Person',
-        name: 'Jess Foster',
+        "@type": "Person",
+        name: "Jess Foster",
       },
       {
-        '@type': 'Person',
-        name: 'Robyn Papworth',
+        "@type": "Person",
+        name: "Robyn Papworth",
       },
     ],
 
     publisher: {
-      '@type': 'Organization',
-      name: 'Allied Health Hive',
+      "@type": "Organization",
+      name: "Allied Health Hive",
       url: siteConfig.url,
     },
 
     about: [
       {
-        '@type': 'Thing',
+        "@type": "Thing",
         name: post.tag,
       },
       ...(post.keywords || []).map((keyword) => ({
-        '@type': 'Thing',
+        "@type": "Thing",
         name: keyword,
       })),
     ],
 
-    keywords: post.keywords?.join(', '),
-
-    inLanguage: 'en-AU',
+    keywords: post.keywords?.join(", "),
+    inLanguage: "en-AU",
   };
 
   return (
@@ -157,39 +157,51 @@ export default async function BlogPostPage({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(articleStructuredData).replace(
             /</g,
-            '\\u003c',
+            "\\u003c",
           ),
         }}
       />
 
       <main className="mx-auto max-w-2xl px-4 py-14 sm:py-20">
-        <Link href="/blog" className="hive-link text-sm font-medium">
+        <Link
+          href="/blog"
+          className="hive-link text-sm font-medium"
+        >
           ← Back to the blog
         </Link>
 
         <p className="hive-eyebrow mt-6">
-          {post.tag} ·{' '}
-          {new Date(post.date).toLocaleDateString('en-AU', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-          })}{' '}
+          {post.tag} ·{" "}
+          {new Date(post.date).toLocaleDateString("en-AU", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })}{" "}
           · {post.readMinutes} min read
         </p>
 
         <h1
           className="mt-2 font-display text-3xl font-semibold sm:text-4xl"
-          style={{ color: 'var(--hive-ink)' }}
+          style={{ color: "var(--hive-ink)" }}
         >
           {post.title}
         </h1>
 
         <p
           className="mt-4 text-sm leading-relaxed"
-          style={{ color: 'var(--hive-dusk)' }}
+          style={{ color: "var(--hive-dusk)" }}
         >
           By Jess Foster and Robyn Papworth
         </p>
+
+        <div className="mt-5">
+          <SaveContentButton
+            contentType="blog"
+            contentKey={post.slug}
+            title={post.title}
+            href={`/blog/${post.slug}`}
+          />
+        </div>
 
         {post.audioUrl ? (
           <section className="mt-8 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5 sm:p-6">
@@ -204,7 +216,7 @@ export default async function BlogPostPage({
                 </p>
 
                 <h2 className="mt-1 text-xl font-semibold text-[#1e1b2e]">
-                  {post.audioTitle || 'Listen to this article'}
+                  {post.audioTitle || "Listen to this article"}
                 </h2>
 
                 <p className="mt-2 text-sm leading-relaxed text-[#5f5b73]">
@@ -217,7 +229,10 @@ export default async function BlogPostPage({
                   preload="metadata"
                   className="mt-4 w-full"
                 >
-                  <source src={post.audioUrl} type="audio/mpeg" />
+                  <source
+                    src={post.audioUrl}
+                    type="audio/mpeg"
+                  />
                   Your browser does not support the audio player.
                 </audio>
               </div>
@@ -229,7 +244,10 @@ export default async function BlogPostPage({
           <ArticleBody blocks={post.body} />
         </div>
 
-        <div className="my-10 text-center text-2xl" aria-hidden="true">
+        <div
+          className="my-10 text-center text-2xl"
+          aria-hidden="true"
+        >
           🐝
         </div>
 

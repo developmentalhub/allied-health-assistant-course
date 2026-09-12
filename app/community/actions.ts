@@ -11,7 +11,7 @@ function cleanText(value: FormDataEntryValue | null) {
   return text.length > 0 ? text : null;
 }
 
-export async function submitWebinarQuestion(formData: FormData) {
+export async function submitPrivateHiveQuestion(formData: FormData) {
   const fullName = String(formData.get("fullName") || "").trim();
 
   const email = String(formData.get("email") || "")
@@ -20,32 +20,51 @@ export async function submitWebinarQuestion(formData: FormData) {
 
   const role = cleanText(formData.get("role"));
   const question = String(formData.get("question") || "").trim();
+
   const canShare = formData.get("canShare") === "on";
 
   if (!fullName) {
-    throw new Error("Please add your name.");
+    redirect(
+      "/community?questionError=" +
+        encodeURIComponent("Please add your name.") +
+        "#ask-the-hive",
+    );
   }
 
   if (!email) {
-    throw new Error("Please add your email.");
+    redirect(
+      "/community?questionError=" +
+        encodeURIComponent("Please add your email address.") +
+        "#ask-the-hive",
+    );
   }
 
   if (!question) {
-    throw new Error("Please add your question.");
+    redirect(
+      "/community?questionError=" +
+        encodeURIComponent("Please add your question.") +
+        "#ask-the-hive",
+    );
   }
 
   const supabase = await createClient();
 
-  const { error } = await supabase.from("webinar_questions").insert({
-    full_name: fullName,
-    email,
-    role,
-    question,
-    can_share: canShare,
-  });
+  const { error } = await supabase
+    .from("webinar_questions")
+    .insert({
+      full_name: fullName,
+      email,
+      role,
+      question,
+      can_share: canShare,
+    });
 
   if (error) {
-    throw new Error(error.message);
+    redirect(
+      "/community?questionError=" +
+        encodeURIComponent(error.message) +
+        "#ask-the-hive",
+    );
   }
 
   const resendApiKey = process.env.RESEND_API_KEY;
@@ -68,9 +87,9 @@ export async function submitWebinarQuestion(formData: FormData) {
             from: fromEmail,
             to: [JESS_EMAIL, ROBYN_EMAIL],
             reply_to: email,
-            subject: `New Hive question from ${fullName}`,
+            subject: `New private Hive question from ${fullName}`,
             text: [
-              "A new question has been submitted to the Allied Health Hive.",
+              "A new private question has been submitted through Ask the Hive.",
               "",
               `Name: ${fullName}`,
               `Email: ${email}`,
@@ -78,14 +97,14 @@ export async function submitWebinarQuestion(formData: FormData) {
               "",
               `Permission to share: ${
                 canShare
-                  ? "Yes, this question can be shared."
-                  : "No, keep this question private."
+                  ? "Yes. The question may be discussed without identifying details."
+                  : "No. Keep this question private."
               }`,
               "",
               "Question:",
               question,
               "",
-              "You can also review this inside Hive Management.",
+              "The question is also available inside Hive Management.",
             ].join("\n"),
           }),
         },
@@ -95,24 +114,17 @@ export async function submitWebinarQuestion(formData: FormData) {
         const responseText = await emailResponse.text();
 
         console.error(
-          "Hive question email was not accepted by Resend:",
+          "Private Hive question email was not accepted by Resend:",
           responseText,
         );
       }
     } catch (emailError) {
-      console.error("Hive question notification email failed:", emailError);
+      console.error(
+        "Private Hive question notification email failed:",
+        emailError,
+      );
     }
-  } else {
-    console.log(
-      "Hive question saved without notification email:",
-      {
-        fullName,
-        email,
-        role,
-        canShare,
-      },
-    );
   }
 
-  redirect("/webinars?question=received#webinar-question");
+  redirect("/community?questionReceived=true#ask-the-hive");
 }

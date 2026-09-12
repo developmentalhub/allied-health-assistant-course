@@ -142,21 +142,39 @@ export default async function MemberLibraryPage() {
     redirect("/login?redirect=/member-library");
   }
 
-  const supabaseAdmin = getSupabaseAdmin();
-
-  const { data: subscription, error: subscriptionError } = await supabaseAdmin
-    .from("aha_subscriptions")
-    .select("email, status, current_period_end")
-    .eq("email", user.email.toLowerCase())
-    .in("status", ["active", "trialing"])
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("full_name, role")
+    .eq("id", user.id)
     .maybeSingle();
 
-  if (subscriptionError) {
-    throw new Error(subscriptionError.message);
-  }
+  const managementRoles = ["partner", "admin", "superadmin"];
+  const hasManagementPreview =
+    Boolean(profile?.role) && managementRoles.includes(profile!.role);
 
-  if (!subscription) {
-    redirect("/subscribe");
+  const supabaseAdmin = getSupabaseAdmin();
+
+  let accessStatus = hasManagementPreview
+    ? "Management preview"
+    : "Active member";
+
+  if (!hasManagementPreview) {
+    const { data: subscription, error: subscriptionError } = await supabaseAdmin
+      .from("aha_subscriptions")
+      .select("email, status, current_period_end")
+      .eq("email", user.email.toLowerCase())
+      .in("status", ["active", "trialing"])
+      .maybeSingle();
+
+    if (subscriptionError) {
+      throw new Error(subscriptionError.message);
+    }
+
+    if (!subscription) {
+      redirect("/subscribe");
+    }
+
+    accessStatus = subscription.status;
   }
 
   const { data: webinars, error: webinarsError } = await supabaseAdmin
@@ -189,9 +207,10 @@ export default async function MemberLibraryPage() {
   );
 
   const firstName =
-    typeof user.user_metadata?.full_name === "string"
+    profile?.full_name?.trim().split(" ")[0] ||
+    (typeof user.user_metadata?.full_name === "string"
       ? user.user_metadata.full_name.trim().split(" ")[0]
-      : "";
+      : "");
 
   return (
     <main className="min-h-screen bg-[#fffaf3] px-5 py-12 text-[#1e1b2e] sm:px-6 md:py-20">
@@ -235,7 +254,7 @@ export default async function MemberLibraryPage() {
               </h2>
 
               <div className="grid gap-3">
-                <StatusItem text={`Access status: ${subscription.status}`} />
+                <StatusItem text={`Access status: ${accessStatus}`} />
                 <StatusItem text={`Signed in as: ${user.email}`} />
                 <StatusItem text="Private webinar links are protected" />
                 <StatusItem text="New resources will appear here as released" />

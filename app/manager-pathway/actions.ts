@@ -3,6 +3,9 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase-server";
 
+const ROBYN_EMAIL = "robyn@playmoveimprove.com.au";
+const JESS_EMAIL = "jess@spectrumvillage.com.au";
+
 function cleanText(value: FormDataEntryValue | null) {
   const text = String(value || "").trim();
   return text.length > 0 ? text : null;
@@ -20,7 +23,9 @@ function parseTeamEmails(value: FormDataEntryValue | null) {
 
 export async function submitManagerPathwayRequest(formData: FormData) {
   const fullName = String(formData.get("fullName") || "").trim();
-  const email = String(formData.get("email") || "").trim().toLowerCase();
+  const email = String(formData.get("email") || "")
+    .trim()
+    .toLowerCase();
 
   const phone = cleanText(formData.get("phone"));
   const organisation = cleanText(formData.get("organisation"));
@@ -94,6 +99,80 @@ export async function submitManagerPathwayRequest(formData: FormData) {
     if (teamError) {
       throw new Error(teamError.message);
     }
+  }
+
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  const fromEmail =
+    process.env.RESEND_FROM_EMAIL ||
+    "Allied Health Hive <onboarding@resend.dev>";
+
+  if (resendApiKey) {
+    try {
+      const emailResponse = await fetch(
+        "https://api.resend.com/emails",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: fromEmail,
+            to: [JESS_EMAIL, ROBYN_EMAIL],
+            reply_to: email,
+            subject: `New Allied Health Hive manager enquiry from ${organisation}`,
+            text: [
+              "A new manager or organisation enquiry has been submitted to the Allied Health Hive.",
+              "",
+              `Name: ${fullName}`,
+              `Organisation: ${organisation}`,
+              `Email: ${email}`,
+              `Phone: ${phone || "Not provided"}`,
+              `Role: ${role || "Not provided"}`,
+              `Team size: ${teamSize}`,
+              `Disciplines involved: ${disciplines || "Not provided"}`,
+              `Support requested: ${supportType}`,
+              "",
+              "Manager notes:",
+              message || "No additional notes submitted.",
+              "",
+              "Team email addresses:",
+              teamEmails.length > 0
+                ? teamEmails.join("\n")
+                : "No team email addresses submitted.",
+              "",
+              "This enquiry has been saved in the Allied Health Hive.",
+            ].join("\n"),
+          }),
+        },
+      );
+
+      if (!emailResponse.ok) {
+        const responseText = await emailResponse.text();
+
+        console.error(
+          "Manager enquiry email was not accepted by Resend:",
+          responseText,
+        );
+      }
+    } catch (emailError) {
+      console.error(
+        "Manager enquiry notification email failed:",
+        emailError,
+      );
+    }
+  } else {
+    console.log(
+      "Manager enquiry saved without notification email:",
+      {
+        fullName,
+        email,
+        organisation,
+        teamSize,
+        supportType,
+      },
+    );
   }
 
   redirect("/manager-pathway?success=true");
