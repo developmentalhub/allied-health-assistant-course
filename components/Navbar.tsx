@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import {
   LayoutDashboard,
   LogIn,
+  LogOut,
   ShieldCheck,
 } from "lucide-react";
 
@@ -39,7 +41,8 @@ export default async function Navbar() {
   }
 
   const isPartner = role === "partner";
-  const isAdmin = role === "admin" || role === "superadmin";
+  const isAdmin =
+    role === "admin" || role === "superadmin";
 
   const accountLink = isPartner
     ? {
@@ -66,6 +69,16 @@ export default async function Navbar() {
           };
 
   const AccountIcon = accountLink.icon;
+
+  async function handleSignOut() {
+    "use server";
+
+    const supabase = await createClient();
+
+    await supabase.auth.signOut();
+
+    redirect("/login");
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#e8e4de] bg-[#fffaf3]/95 backdrop-blur">
@@ -103,13 +116,28 @@ export default async function Navbar() {
           ))}
         </div>
 
-        <Link
-          href={accountLink.href}
-          className="hidden items-center gap-2 rounded-full bg-[#0f766e] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d6962] sm:inline-flex"
-        >
-          <AccountIcon size={16} />
-          {accountLink.label}
-        </Link>
+        <div className="hidden shrink-0 items-center gap-2 sm:flex">
+          <Link
+            href={accountLink.href}
+            className="inline-flex items-center gap-2 rounded-full bg-[#0f766e] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0d6962]"
+          >
+            <AccountIcon size={16} />
+            {accountLink.label}
+          </Link>
+
+          {user ? (
+            <form action={handleSignOut}>
+              <button
+                type="submit"
+                title="Sign out"
+                aria-label="Sign out"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#e8e4de] bg-white text-[#6b6880] transition hover:border-[#99f6e4] hover:bg-[#f0fdfa] hover:text-[#0f766e]"
+              >
+                <LogOut size={17} />
+              </button>
+            </form>
+          ) : null}
+        </div>
 
         <div className="flex items-center gap-2 lg:hidden">
           <Link
@@ -139,6 +167,19 @@ export default async function Navbar() {
                     : "Sign in"}
             </span>
           </Link>
+
+          {user ? (
+            <form action={handleSignOut}>
+              <button
+                type="submit"
+                title="Sign out"
+                aria-label="Sign out"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#e8e4de] bg-white text-[#6b6880] transition hover:border-[#99f6e4] hover:bg-[#f0fdfa] hover:text-[#0f766e]"
+              >
+                <LogOut size={16} />
+              </button>
+            </form>
+          ) : null}
         </div>
       </nav>
 
@@ -172,6 +213,21 @@ export default async function Navbar() {
               <LayoutDashboard size={15} />
               Dashboard
             </Link>
+          ) : null}
+
+          {user ? (
+            <form
+              action={handleSignOut}
+              className="shrink-0"
+            >
+              <button
+                type="submit"
+                className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#e8e4de] bg-white px-4 py-2 text-sm font-semibold text-[#5f5b73] transition hover:border-[#99f6e4] hover:bg-[#f0fdfa] hover:text-[#0f766e]"
+              >
+                <LogOut size={15} />
+                Sign out
+              </button>
+            </form>
           ) : null}
 
           {navLinks.map((link) => (

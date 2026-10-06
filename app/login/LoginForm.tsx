@@ -15,8 +15,6 @@ import {
 
 import { createClient } from "@/lib/supabase";
 
-const SUPPORT_EMAIL = "jess@spectrumvillage.com.au";
-
 export default function LoginForm() {
   const router = useRouter();
 
@@ -27,11 +25,17 @@ export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+  const [isResetting, setIsResetting] = useState(false);
+  const [resetMessage, setResetMessage] = useState("");
+
+  async function handleLogin(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
     setIsLoading(true);
     setErrorMessage("");
+    setResetMessage("");
 
     const supabase = createClient();
 
@@ -45,7 +49,7 @@ export default function LoginForm() {
 
     if (signInError || !signInData.user) {
       setErrorMessage(
-        "We could not sign you in with those details. Please check your email and password, then try again.",
+        "We could not sign you in with those details. Please check your email and password, then try again."
       );
       setIsLoading(false);
       return;
@@ -58,16 +62,16 @@ export default function LoginForm() {
       .maybeSingle();
 
     if (profileError) {
-      console.error("Could not load profile after login:", profileError);
+      console.error(
+        "Could not load profile after login:",
+        profileError
+      );
     }
 
-    if (profile?.role === "superadmin") {
-      router.push("/admin");
-      router.refresh();
-      return;
-    }
-
-    if (profile?.role === "admin") {
+    if (
+      profile?.role === "superadmin" ||
+      profile?.role === "admin"
+    ) {
       router.push("/admin");
       router.refresh();
       return;
@@ -83,6 +87,46 @@ export default function LoginForm() {
     router.refresh();
   }
 
+  async function handlePasswordReset() {
+    setErrorMessage("");
+    setResetMessage("");
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanEmail) {
+      setErrorMessage(
+        "Enter your email address above first, then select Send password reset email."
+      );
+      return;
+    }
+
+    setIsResetting(true);
+
+    const supabase = createClient();
+
+    const { error } =
+      await supabase.auth.resetPasswordForEmail(cleanEmail, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+
+    if (error) {
+      console.error("Password reset error:", error);
+
+      setErrorMessage(
+        "We could not send the password reset email. Please check your email address and try again."
+      );
+
+      setIsResetting(false);
+      return;
+    }
+
+    setResetMessage(
+      "Password reset email sent. Check your inbox and follow the link to choose a new password."
+    );
+
+    setIsResetting(false);
+  }
+
   return (
     <main className="min-h-screen bg-[#fffaf3] px-5 py-12 text-[#1e1b2e] sm:px-6 md:py-20">
       <section className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
@@ -96,8 +140,8 @@ export default function LoginForm() {
           </h1>
 
           <p className="mt-5 text-base leading-relaxed text-[#5f5b73]">
-            Your account will take you directly to the part of the Allied
-            Health Hive connected with your role.
+            Your account will take you directly to the part of the
+            Allied Health Hive connected with your role.
           </p>
 
           <div className="mt-7 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
@@ -110,8 +154,9 @@ export default function LoginForm() {
             </h2>
 
             <p className="text-sm leading-relaxed text-[#3f5f5a]">
-              Free tools, public learning topics, webinar registration and the
-              community entrance can still be accessed without signing in.
+              Free tools, public learning topics, webinar registration
+              and the community entrance can still be accessed without
+              signing in.
             </p>
 
             <div className="mt-5 grid gap-3">
@@ -157,8 +202,8 @@ export default function LoginForm() {
             </h2>
 
             <p className="mt-3 text-base leading-relaxed text-[#6b6880]">
-              Enter the email and password connected with your Allied Health
-              Hive account.
+              Enter the email and password connected with your Allied
+              Health Hive account.
             </p>
           </div>
 
@@ -171,7 +216,11 @@ export default function LoginForm() {
               <input
                 type="email"
                 value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                  setErrorMessage("");
+                  setResetMessage("");
+                }}
                 required
                 autoComplete="email"
                 placeholder="you@example.com"
@@ -188,7 +237,10 @@ export default function LoginForm() {
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={(event) => setPassword(event.target.value)}
+                  onChange={(event) => {
+                    setPassword(event.target.value);
+                    setErrorMessage("");
+                  }}
                   required
                   autoComplete="current-password"
                   className="min-w-0 flex-1 rounded-l-2xl bg-transparent px-4 py-3 text-base outline-none"
@@ -201,7 +253,9 @@ export default function LoginForm() {
                   }
                   className="flex items-center justify-center px-4 text-[#6b6880] transition hover:text-[#0f766e]"
                   aria-label={
-                    showPassword ? "Hide password" : "Show password"
+                    showPassword
+                      ? "Hide password"
+                      : "Show password"
                   }
                 >
                   {showPassword ? (
@@ -234,21 +288,35 @@ export default function LoginForm() {
                 size={18}
                 className="text-[#0f766e]"
               />
+
               Forgotten your password?
             </div>
 
             <p className="text-sm leading-relaxed text-[#6b6880]">
-              Contact Allied Health Hive support and include the email address
-              connected with your account.
+              Enter your email address above and we will send you a
+              secure link to choose a new password.
             </p>
 
-            <a
-              href={`mailto:${SUPPORT_EMAIL}?subject=Allied Health Hive password help`}
-              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e]"
+            {resetMessage ? (
+              <div className="mt-4 rounded-2xl border border-[#99f6e4] bg-[#f0fdfa] p-4 text-sm leading-relaxed text-[#0f766e]">
+                {resetMessage}
+              </div>
+            ) : null}
+
+            <button
+              type="button"
+              onClick={handlePasswordReset}
+              disabled={isResetting}
+              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0f766e] transition hover:text-[#0d6962] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Request account help
-              <ArrowRight size={15} />
-            </a>
+              {isResetting
+                ? "Sending reset email..."
+                : "Send password reset email"}
+
+              {!isResetting ? (
+                <ArrowRight size={15} />
+              ) : null}
+            </button>
           </div>
 
           <div className="mt-5 rounded-3xl border border-[#99f6e4] bg-[#f0fdfa] p-5">
@@ -258,8 +326,9 @@ export default function LoginForm() {
             </div>
 
             <p className="mb-4 text-sm leading-relaxed text-[#3f5f5a]">
-              Begin with the free public tools, community and webinars. You do
-              not need to create a private account to explore these areas.
+              Begin with the free public tools, community and webinars.
+              You do not need to create a private account to explore
+              these areas.
             </p>
 
             <div className="grid gap-3 sm:grid-cols-2">
@@ -285,8 +354,9 @@ export default function LoginForm() {
             </p>
 
             <p className="mb-4 text-sm leading-relaxed text-[#6b6880]">
-              Administration registration is only for people who have been
-              specifically approved for full administration access.
+              Administration registration is only for people who have
+              been specifically approved for full administration
+              access.
             </p>
 
             <Link
