@@ -112,9 +112,20 @@ export default function LoginForm() {
     if (error) {
       console.error("Password reset error:", error);
 
-      setErrorMessage(
-        "We could not send the password reset email. Please check your email address and try again."
-      );
+      const message = error.message.toLowerCase();
+
+      if (
+        message.includes("rate limit") ||
+        message.includes("email rate limit exceeded")
+      ) {
+        setErrorMessage(
+          "Too many password reset emails have been requested. Please wait a little while before trying again."
+        );
+      } else {
+        setErrorMessage(
+          "We could not send the password reset email. Please check your email address and try again."
+        );
+      }
 
       setIsResetting(false);
       return;
